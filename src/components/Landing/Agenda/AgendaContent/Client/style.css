@@ -1,0 +1,23 @@
+.client-content {
+  min-height: 260px;
+}
+.client-form-container {
+  justify-content: center;
+  .client-fields-container {
+    padding: 0px 30px 0px 30px;
+  }
+}
+
+.client-info-title {
+  font-size: 26px;
+  font-weight: 500;
+}
+.client-form-col-2 {
+  margin-left: 10px;
+}
+/* Media query for mobile screens */
+@media (max-width: 600px) {
+  .client-form-col-2 {
+    margin-left: 0px;
+  }
+}

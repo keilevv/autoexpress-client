@@ -1,0 +1,15 @@
+.appointment-content {
+  min-height: 260px;
+}
+.appointment-form-container {
+  justify-content: center;
+  margin-bottom: 20px;
+  .appointment-fields-container {
+    padding: 0px 30px 0px 30px;
+  }
+}
+
+.appointment-info-title {
+  font-size: 26px;
+  font-weight: 500;
+}

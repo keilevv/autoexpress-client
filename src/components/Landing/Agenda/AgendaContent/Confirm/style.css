@@ -1,0 +1,27 @@
+.appointment-confirm-content {
+  justify-content: center;
+  padding: 30px;
+
+  .appointment-confirm-title {
+    font-size: 36px;
+    font-weight: 500;
+    color: #c00113;
+    margin-bottom: 60px;
+    line-height: 26px;
+
+  }
+  .appointment-confirm-subtitle {
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    line-height: 26px;
+  }
+  .appointment-confirm-data {
+    font-size: 26px;
+    font-weight: 700;
+    color: black;
+    margin-bottom: 20px;
+    line-height: 26px;
+
+  }
+}

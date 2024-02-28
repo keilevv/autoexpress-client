@@ -1,0 +1,44 @@
+.login-form {
+  background-color: #fff;
+  max-width: 100%;
+  min-height: 100%;
+  border-radius: 10px;
+
+  .desktop {
+    padding: 150px 100px 50px 100px;
+  }
+  .mobile {
+    padding: 50px 0px 20px 0px;
+  }
+  .login-form-content {
+    display: flex;
+    justify-content: center;
+
+    .login-form-col {
+      width: 50%;
+      text-align: center;
+      padding: 0px 20px 0px 20px;
+
+      .login-input {
+        margin-bottom: 0px;
+        height: 50px;
+        border-radius: 25px;
+      }
+
+      .login-submit-button {
+        height: 50px;
+        border-radius: 25px;
+        background-color: #57b846;
+      }
+      .choose-form-button {
+        cursor: pointer;
+        &:hover {
+          color: lightblue;
+        }
+      }
+      .tenant-logo {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

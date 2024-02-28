@@ -1,0 +1,18 @@
+.agenda-banner-button {
+  margin-top: 46px;
+  background-color: #242424;
+  border: 1px solid #242424;
+  color: white;
+  font-weight: 700;
+  font-size: 30px !important;
+  border-radius: 0 !important;
+  height: 64px !important;
+}
+.agenda-modal {
+  width: 70% !important;
+  max-width: 900px;
+}
+
+.ant-modal-title {
+  font-size: 30px !important;
+}

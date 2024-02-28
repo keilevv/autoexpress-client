@@ -1,0 +1,67 @@
+.container {
+  overflow: hidden;
+  margin: auto;
+  max-width: 80vw;
+
+  .slider {
+    animation: slidein 30s linear infinite;
+    white-space: nowrap;
+    .logos {
+      width: 100%;
+      display: inline-block;
+      margin: 0px 0;
+      color: "#242424";
+      .fab {
+        width: calc(100% / 3);
+        padding: 0px 2%;
+        animation: fade-in 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards;
+      }
+      .seguros-del-estado {
+        object-fit: cover;
+        object-position: 25% 25%;
+      }
+    }
+  }
+}
+
+// @keyframes slidein {
+//   from {
+//     transform: translate3d(0, 0, 0);
+//   }
+//   to {
+//     transform: translate3d(-100%, 0, 0);
+//   }
+// }
+
+// @keyframes fade-in {
+//   0% {
+//     opacity: 0;
+//   }
+//   100% {
+//     opacity: 1;
+//   }
+// }
+
+@media (min-width: 1800px) {
+  .container {
+    .slider {
+      .logos {
+        .fab {
+          padding: 0px 150px;
+        }
+      }
+    }
+  }
+}
+
+.logos-column {
+  display: grid;
+  width: 100%;
+  padding: 0px 80px;
+  .logos-column-item {
+    width: 100%;
+  }
+  .seguros-bolivar{
+    margin-top: 15%;
+  }
+}

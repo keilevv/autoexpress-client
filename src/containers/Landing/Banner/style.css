@@ -1,0 +1,9 @@
+.banner-container {
+  background: #242424;
+  background-image: url("../../../assets/images/carousel/paint-cabin-1-min.jpg");
+  background-blend-mode: multiply;
+  width: 100%;
+  min-height: 600px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

@@ -1,0 +1,55 @@
+.banner-container {
+  background: #242424;
+  height: 100vh;
+  justify-content: center;
+  padding: 0px 20px 20px 20px;
+  display: flex;
+  justify-content: center;
+
+  .banner-content {
+    display: block;
+    margin: auto;
+
+    .tenant-logo-container {
+      width: calc(100vw / 3);
+      min-width: 300px;
+      margin: auto;
+      .tenant-logo {
+        width: 100%;
+      }
+    }
+  }
+
+  .banner-actions {
+    margin-top: 35px;
+    text-align: center;
+    gap: 30px;
+    .banner-actions-button-left {
+      border-radius: 0;
+      margin-left: 10px;
+    }
+    .banner-actions-button {
+      border-radius: 0;
+      margin-left: 10px;
+      background-color: #c00113;
+      color: white;
+      font-weight: 600;
+    }
+    .mobile {
+      margin-top: 15px;
+    }
+    .banner-actions-button:hover {
+      border-color: white;
+    }
+  }
+}
+
+@media (max-width: 1300px) {
+  .banner-container {
+    .banner-content {
+      .tenant-logo-container {
+        width: calc(100vw / 2);
+      }
+    }
+  }
+}

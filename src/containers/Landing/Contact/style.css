@@ -1,0 +1,60 @@
+.contact-container {
+  background-color: #242424;
+  justify-content: center;
+  padding: 50px 200px 20px 200px;
+  display: grid;
+  place-items: center;
+  --magnifier: 6;
+  --gap: 1vmin;
+  --transition: 0.5s;
+  color: white;
+
+  .contact-text-container {
+    .contact-title-header {
+      text-align: center;
+      text-decoration: underline;
+      font-size: 38px;
+    }
+    .contact-title {
+      font-weight: 400;
+      margin-bottom: 100px;
+      text-align: center;
+      margin-top: 0px;
+      font-size: 28px;
+    }
+  }
+  .contact-form-container {
+    justify-content: center;
+  }
+
+  .contact-content {
+    display: flex;
+    gap: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact-container {
+    padding: 50px 40px 20px 40px;
+    .contact-text-container {
+      .contact-title-header {
+        text-align: center;
+        font-size: 28px;
+      }
+      .contact-title {
+        font-size: 18px;
+        margin-bottom: 50px;
+      }
+    }
+    .contact-form-container {
+    }
+    .contact-content {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      gap: 50px;
+      .classic-car-icon {
+      }
+    }
+  }
+}

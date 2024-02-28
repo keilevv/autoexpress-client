@@ -1,0 +1,39 @@
+.agenda-banner-container {
+  background-color: #c00113;
+  text-align: center;
+  padding: 64px 24px 64px 24px;
+  .agenda-logo {
+    color: white;
+    font-size: 76px;
+  }
+
+  .agenda-banner-title {
+    text-align: center;
+    color: white;
+    font-size: 38px;
+    font-weight: 400;
+  }
+  .agenda-banner-title-description {
+    text-align: center;
+    color: white;
+    font-size: 28px;
+    font-weight: 200;
+    max-width: 400px;
+    margin: auto;
+  }
+}
+
+/* Media query for mobile screens */
+@media (max-width: 600px) {
+  .agenda-banner-container {
+    .agenda-logo {
+      font-size: 56px;
+    }
+    .agenda-banner-title {
+      font-size: 28px;
+    }
+    .agenda-banner-title-description {
+      font-size: 18px;
+    }
+  }
+}

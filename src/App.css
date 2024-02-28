@@ -1,0 +1,14 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.app {
+  min-height: 100vh;
+  max-width: 100vw;
+  min-width: 100vw;
+  display: flex;
+  color: #333333;
+  overflow-x: hidden;
+}
