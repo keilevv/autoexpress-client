@@ -2,3 +2,18 @@
   display: flex;
   justify-content: space-between;
 }
+
+.handle-steps {
+  display: flex;
+}
+.prev-slide-button {
+  margin: 0px 8px;
+}
+@media (max-width: 600px) {
+  .handle-steps {
+    flex-direction: column;
+  }
+  .prev-slide-button {
+    margin: 10px 0px;
+  }
+}

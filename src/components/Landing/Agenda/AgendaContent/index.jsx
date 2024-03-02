@@ -19,6 +19,7 @@ function AgendaContent({ isModalVisible }) {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [form, setForm] = useState(null);
+  const [showFullForm, setShowFullForm] = useState(false);
   const [appointmentPayload, setaAppointmentPayload] = useState({
     date: null,
     time: null,
@@ -27,8 +28,14 @@ function AgendaContent({ isModalVisible }) {
     car: null,
   });
 
-  const { createClient } = useClient();
-  const { createCar } = useCars();
+  const {
+    createClient,
+    getClientByCountryId,
+    updateClient,
+    client,
+    loading: loadingClient,
+  } = useClient();
+  const { createCar, loading: loadingCar } = useCars();
 
   const next = () => {
     setCurrent(current + 1);
@@ -38,37 +45,18 @@ function AgendaContent({ isModalVisible }) {
     setCurrent(current - 1);
   };
 
+  console.log("payload", appointmentPayload);
+
   const handleValidateForm = () => {
     form.validateFields().then((values) => {
       if (current === 0) {
-        values.birthday = moment(
-          new Date(values.birthday),
-          "DD/MM/YYYY",
-          true
-        ).format("DD/MM/YYYY");
-
-        createClient(values)
-          .then((response) => {
-            setaAppointmentPayload((payload) => {
-              return { ...payload, client: response.data.results._id };
-            });
-            notification.success({
-              message: "Cliente creado con éxito",
-              description:
-                response.data.results.name +
-                " " +
-                response.data.results.surname +
-                " " +
-                response.data.results.lastname,
-            });
-            next();
-          })
-          .catch((err) => {
-            notification.error({
-              message: "Error creando cliente",
-              description: err.message || err.message._message,
-            });
-          });
+        if (showFullForm) {
+          if (appointmentPayload.client) {
+            return handleUpdateClient(values);
+          }
+          return handleCreateClient(values);
+        }
+        return handleGetClient(values);
       }
       if (current === 1) {
         createCar(values)
@@ -95,7 +83,13 @@ function AgendaContent({ isModalVisible }) {
   const agendaSteps = [
     {
       title: "Cliente",
-      content: <ClientForm setForm={setForm} />,
+      content: (
+        <ClientForm
+          setForm={setForm}
+          showFullForm={showFullForm}
+          client={client}
+        />
+      ),
     },
     {
       title: "Auto",
@@ -128,18 +122,102 @@ function AgendaContent({ isModalVisible }) {
     marginTop: 16,
   };
 
+  const handleCreateClient = (values) => {
+    values.birthday = moment(
+      new Date(values.birthday),
+      "DD/MM/YYYY",
+      true
+    ).format("DD/MM/YYYY");
+
+    createClient(values)
+      .then((response) => {
+        setaAppointmentPayload((payload) => {
+          return { ...payload, client: response.data.results._id };
+        });
+        notification.success({
+          message: "Cliente creado con éxito",
+          description:
+            response.data.results.name +
+            " " +
+            response.data.results.surname +
+            " " +
+            response.data.results.lastname,
+        });
+        next();
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error creando cliente",
+          description: err.message || err.message._message,
+        });
+      });
+  };
+
+  const handleGetClient = (values) => {
+    getClientByCountryId(values.country_id)
+      .then((response) => {
+        notification.success({
+          message: "¡Bienvenido(a) de vuelta!",
+          description:
+            "Por favor ayúdenos a verificar que la información sea correcta",
+          duration: 7,
+        });
+        setaAppointmentPayload((payload) => {
+          return { ...payload, client: response.data.results._id };
+        });
+        setShowFullForm(true);
+      })
+      .catch(() => {
+        setShowFullForm(true);
+        notification.warning({
+          message: "Cliente no encontrado",
+        });
+      });
+  };
+
+  const handleUpdateClient = (values) => {
+    values.birthday = moment(
+      new Date(values.birthday),
+      "DD/MM/YYYY",
+      true
+    ).format("DD/MM/YYYY");
+
+    updateClient(appointmentPayload.client, values)
+      .then((response) => {
+        console.log("response", response);
+        notification.success({
+          message: "Cliente actualizado con éxito",
+          description:
+            response.data.results.name +
+            " " +
+            response.data.results.surname +
+            " " +
+            response.data.results.lastname,
+        });
+        next();
+        setShowFullForm(false);
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error actualizando cliente",
+          description: err.message || err.message._message,
+        });
+      });
+  };
+
   return (
     <>
       <Steps current={current} items={items} />
       <div style={contentStyle}>{agendaSteps[current].content}</div>
       <div style={{ marginTop: 24 }} className="agenda-footer-container">
-        <div>
+        <div className="handle-steps">
           {current < agendaSteps.length - 1 && (
             <Button
               type="primary"
               onClick={() => {
                 handleValidateForm();
               }}
+              loading={loadingClient || loadingCar}
             >
               Siguiente
             </Button>
@@ -153,7 +231,7 @@ function AgendaContent({ isModalVisible }) {
             </Button>
           )}
           {current > 0 && (
-            <Button style={{ margin: "0 8px" }} onClick={() => prev()}>
+            <Button className="prev-slide-button" onClick={() => prev()}>
               Previo
             </Button>
           )}

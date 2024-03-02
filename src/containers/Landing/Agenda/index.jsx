@@ -1,5 +1,4 @@
 import Agenda from "../../../components/Landing/Agenda";
-import { CalendarOutlined } from "@ant-design/icons";
 /* Style */
 import "./style.css";
 /**
@@ -16,7 +15,7 @@ function AgendaContainer({ agendaRef }) {
           directamente con nosotros.
         </h1>
 
-        {/* <Agenda /> */}
+        <Agenda />
       </div>
     </section>
   );

@@ -8,6 +8,7 @@ function useClient() {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [clients, setClients] = useState([]);
+  const [client, setClient] = useState(null);
 
   useEffect(() => {
     if (auth.user && auth.user.accessToken) {
@@ -24,7 +25,7 @@ function useClient() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error("error", err);
+        throwError(err.message.message);
         setLoading(false);
       });
   }, []);
@@ -39,12 +40,53 @@ function useClient() {
       })
       .catch((err) => {
         setLoading(false);
-        // Extract relevant information from the error response
         throwError(err.message.message);
       });
   }, []);
 
-  return { getClients, createClient, clients, loading };
+  const getClientByCountryId = useCallback((countryId) => {
+    setLoading(true);
+    return clientsService
+      .getClientByCountryId(countryId)
+      .then((response) => {
+        setClient(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setClient(null);
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
+
+  const updateClient = useCallback(
+    (clientId, payload) => {
+      setLoading(true);
+      return clientsService
+        .updateClient(clientId, payload)
+        .then((response) => {
+          setClient(response.data.results);
+          setLoading(false);
+          return response;
+        })
+        .catch((err) => {
+          setLoading(false);
+          throwError(err.response.data.message);
+        });
+    },
+    []
+  );
+
+  return {
+    getClients,
+    createClient,
+    getClientByCountryId,
+    updateClient,
+    client,
+    clients,
+    loading,
+  };
 }
 
 export default useClient;
