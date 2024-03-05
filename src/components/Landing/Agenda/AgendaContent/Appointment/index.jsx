@@ -13,6 +13,7 @@ import { current } from "@reduxjs/toolkit";
  * @param {{ setForm: () => void }} props
  */
 function AppointmentForm({ setForm }) {
+  const [hourValue, setHourValue] = useState(null);
   const [selectedHour, setSelectedHour] = useState("");
   const { getUnavailableTimesOfDay, unavailableTimes } = useAppointment();
   const [form] = Form.useForm();
@@ -114,6 +115,11 @@ function AppointmentForm({ setForm }) {
               ]}
             >
               <TimePicker
+                value={hourValue}
+                onChange={(value) => {
+                  setHourValue(value);
+                }}
+                inputReadOnly
                 showNow={false}
                 placeholder="Seleccionar hora"
                 size="large"
