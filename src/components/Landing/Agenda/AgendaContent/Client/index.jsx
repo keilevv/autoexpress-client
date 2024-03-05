@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import moment from "moment";
-import { Checkbox, Form, Input, Row, Col, DatePicker } from "antd";
+import { Form, Input, Row, Col, DatePicker } from "antd";
 import dayjs from "dayjs";
 import NumberInput from "../../../../Common/NumberInput";
 import Logo from "../../../../../assets/images/autoexpresslogo.png";
@@ -220,10 +220,6 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                   </Form.Item>
                 </Col>
               </Row>
-
-              {/* <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>Recordar mi informacion</Checkbox>
-          </Form.Item> */}
             </div>
           </div>
         </Form>

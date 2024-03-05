@@ -10,6 +10,7 @@ function useCars() {
   const [carBrands, setCarBrands] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [car, setCar] = useState(null);
 
   useEffect(() => {
     if (auth.user && auth.user.acessToken) {
@@ -77,14 +78,32 @@ function useCars() {
     }
   }
 
+  const getCarByPlate = useCallback((countryId, clientId) => {
+    setLoading(true);
+    return carsService
+      .getCarByPlate(countryId, clientId)
+      .then((response) => {
+        setCar(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setCar(null);
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
+
   return {
     cars,
+    car,
     carBrands,
     loading,
     carModels,
     getCars,
     getCarsApi,
     createCar,
+    getCarByPlate,
   };
 }
 
