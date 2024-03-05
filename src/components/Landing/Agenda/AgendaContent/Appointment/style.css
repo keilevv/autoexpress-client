@@ -4,12 +4,13 @@
 .appointment-form-container {
   justify-content: center;
   margin-bottom: 20px;
+
+  .appointment-info-title {
+    padding: 0px 30px;
+    font-size: 26px;
+    font-weight: 500;
+  }
   .appointment-fields-container {
     padding: 0px 30px 0px 30px;
   }
-}
-
-.appointment-info-title {
-  font-size: 26px;
-  font-weight: 500;
 }

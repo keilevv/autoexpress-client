@@ -276,7 +276,7 @@ function AgendaContent({ isModalVisible }) {
       });
   };
   return (
-    <div className="agenda-content">
+    <div className="agenda-content" style={{minWidth: "102px"}}>
       <Steps current={current} items={items} />
       <div style={contentStyle}>{agendaSteps[current].content}</div>
       <div style={{ marginTop: 24 }} className="agenda-footer-container">

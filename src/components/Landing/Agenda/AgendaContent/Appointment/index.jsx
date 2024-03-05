@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
-
+/* Components */
 import { Form, TimePicker, Calendar, theme, Row, ConfigProvider } from "antd";
+/* Helpers */
 import dayjs from "dayjs";
+import moment from "moment";
 import esES from "antd/lib/locale/es_ES"; //
+/* Hooks*/
+import useAppointment from "../../../../../hooks/useAppointment";
 import "./style.css";
+import { current } from "@reduxjs/toolkit";
 /**
  * @param {{ setForm: () => void }} props
  */
 function AppointmentForm({ setForm }) {
+  const [selectedHour, setSelectedHour] = useState("");
+  const { getUnavailableTimesOfDay, unavailableTimes } = useAppointment();
   const [form] = Form.useForm();
   const { token } = theme.useToken();
   const wrapperStyle = {
@@ -19,6 +26,34 @@ function AppointmentForm({ setForm }) {
   useEffect(() => {
     setForm(form), [form];
   });
+
+  const disabledDate = (current) => {
+    // Disable dates before the current day
+    const isBeforeToday = current && current < moment().startOf("day");
+
+    // Disable dates after 1 month from today
+    const isAfterOneMonth =
+      current && current > moment().add(1, "month").startOf("day");
+
+    return isBeforeToday || isAfterOneMonth;
+  };
+
+  const disabledTime = (current) => {
+    let disabledHours = [0, 1, 2, 3, 4, 5, 6, 7, 17, 18, 19, 20, 21, 22, 23];
+    const disabledMinutes = [];
+
+    if (unavailableTimes.length) {
+      unavailableTimes.forEach((unavailableTime) => {
+        if (selectedHour === unavailableTime.split(":")[0]) {
+          disabledMinutes.push(Number(unavailableTime.split(":")[1]));
+        }
+      });
+    }
+    return {
+      disabledHours: () => disabledHours,
+      disabledMinutes: () => disabledMinutes,
+    };
+  };
 
   return (
     <Form
@@ -52,7 +87,17 @@ function AppointmentForm({ setForm }) {
             >
               <div style={wrapperStyle}>
                 <ConfigProvider locale={esES}>
-                  <Calendar fullscreen={false} />
+                  <Calendar
+                    onSelect={(date) => {
+                      getUnavailableTimesOfDay(
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                    }}
+                    fullscreen={false}
+                    disabledDate={(current) => {
+                      return disabledDate(current);
+                    }}
+                  />
                 </ConfigProvider>
               </div>
             </Form.Item>
@@ -69,9 +114,15 @@ function AppointmentForm({ setForm }) {
               ]}
             >
               <TimePicker
+                showNow={false}
                 placeholder="Seleccionar hora"
                 size="large"
-                format={"hh:mm"}
+                format={"HH:mm"}
+                minuteStep={20}
+                disabledTime={disabledTime}
+                onSelect={(value) => {
+                  setSelectedHour(dayjs(value).format("HH"));
+                }}
               />
             </Form.Item>
           </Row>
