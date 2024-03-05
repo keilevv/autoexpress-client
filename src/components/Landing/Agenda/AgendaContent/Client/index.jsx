@@ -55,7 +55,16 @@ function ClientForm({ setForm, showFullForm = false, client }) {
         country_id,
         email,
         telephone_number,
-        birthday: moment(birthday, "dd/mm/yyy"),
+        birthday: dayjs(birthday, "DD/MM/YYYY", true),
+      });
+    } else {
+      form.setFieldsValue({
+        name: "",
+        surname: "",
+        lastname: "",
+        email: "",
+        telephone_number: "",
+        birthday: "",
       });
     }
   };

@@ -12,10 +12,11 @@ import useCars from "../../../../../hooks/useCars";
 import useViewport from "../../../../../hooks/useViewport";
 
 import "./style.css";
+import { current } from "@reduxjs/toolkit";
 /**
- * @param {{ setForm: () => void, showFullForm: boolean, client?: any, car: any }} props
+ * @param {{ setForm: () => void, showFullForm: boolean, client?: any, car: any, current: number }} props
  */
-function CarForm({ setForm, showFullForm, client, car }) {
+function CarForm({ setForm, showFullForm, client, car, current }) {
   const { isMobileScreen } = useViewport();
   const [brand, setBrand] = useState("");
   const [disableModels, setDisableModels] = useState(false);
@@ -25,8 +26,10 @@ function CarForm({ setForm, showFullForm, client, car }) {
   const [vinValue, setVinValue] = useState("");
 
   useEffect(() => {
-    getCarsApi();
-  }, []);
+    if (current === 1 && showFullForm) {
+      getCarsApi();
+    }
+  }, [current, showFullForm]);
 
   useEffect(() => {
     setForm(form);
@@ -94,18 +97,12 @@ function CarForm({ setForm, showFullForm, client, car }) {
         vin: vin,
         brand,
         model,
-        year: moment(year, "yyyy"),
+        year: dayjs(year),
         color,
       });
     } else {
       setVinValue("");
-      form.setFieldsValue({
-        vin: null,
-        brand: null,
-        model: null,
-        year: null,
-        color: null,
-      });
+      form.resetFields();
     }
   };
 

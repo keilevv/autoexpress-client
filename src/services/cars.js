@@ -29,5 +29,8 @@ const carsService = {
       client_id: clientId,
     });
   },
+  updateCar(carId, payload) {
+    return axios.put(`${apiUrl}/car/update/${carId}`, payload);
+  },
 };
 export default carsService;

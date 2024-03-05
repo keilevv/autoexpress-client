@@ -36,14 +36,26 @@ function AgendaContent({ isModalVisible }) {
     loading: loadingClient,
   } = useClient();
 
-  const { createCar, getCarByPlate, car, loading: loadingCar } = useCars();
+  const {
+    createCar,
+    getCarByPlate,
+    updateCar,
+    car,
+    loading: loadingCar,
+  } = useCars();
 
   const next = () => {
     setCurrent(current + 1);
   };
 
   const prev = () => {
-    setCurrent(current - 1);
+    if (current > 0) {
+      setCurrent(current - 1);
+    }
+    if (current === 0) {
+      setShowFullForm(false);
+      // form.resetFields();
+    }
   };
 
   const handleValidateForm = () => {
@@ -59,6 +71,9 @@ function AgendaContent({ isModalVisible }) {
       }
       if (current === 1) {
         if (showFullForm) {
+          if (appointmentPayload.car) {
+            return handleUpdateCar(values);
+          }
           return handleCreateCar(values);
         }
         return handleGetCar(values);
@@ -74,6 +89,7 @@ function AgendaContent({ isModalVisible }) {
           setForm={setForm}
           showFullForm={showFullForm}
           client={client}
+          current={current}
         />
       ),
     },
@@ -85,6 +101,7 @@ function AgendaContent({ isModalVisible }) {
           showFullForm={showFullForm}
           client={client}
           car={car}
+          current={current}
         />
       ),
     },
@@ -164,6 +181,8 @@ function AgendaContent({ isModalVisible }) {
         setShowFullForm(true);
         notification.warning({
           message: "Cliente no encontrado",
+          description:
+            "Por favor ingrese la información para ser registrado(a)",
         });
       });
   };
@@ -221,7 +240,7 @@ function AgendaContent({ isModalVisible }) {
     getCarByPlate(values.plate, appointmentPayload.client)
       .then((response) => {
         notification.success({
-          message: "¡Bienvenido(a) de vuelta!",
+          message: "Vehículo encontrado",
           description:
             "Por favor ayúdenos a verificar que la información sea correcta",
           duration: 7,
@@ -239,8 +258,25 @@ function AgendaContent({ isModalVisible }) {
       });
   };
 
+  const handleUpdateCar = (values) => {
+    updateCar(appointmentPayload.car, values)
+      .then((response) => {
+        notification.success({
+          message: "Vehiculo actualizado con éxito",
+          description: response.data.results.plate,
+        });
+        setShowFullForm(false);
+        next();
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error actualizando cliente",
+          description: err.message || err.message._message,
+        });
+      });
+  };
   return (
-    <>
+    <div className="agenda-content">
       <Steps current={current} items={items} />
       <div style={contentStyle}>{agendaSteps[current].content}</div>
       <div style={{ marginTop: 24 }} className="agenda-footer-container">
@@ -264,9 +300,13 @@ function AgendaContent({ isModalVisible }) {
               Terminar
             </Button>
           )}
-          {current > 0 && (
-            <Button className="prev-slide-button" onClick={() => prev()}>
-              Previo
+          {(current !== 0 || showFullForm) && (
+            <Button
+              className="prev-slide-button"
+              onClick={() => prev()}
+              loading={loadingClient || loadingCar}
+            >
+              Atras
             </Button>
           )}
         </div>
@@ -274,7 +314,7 @@ function AgendaContent({ isModalVisible }) {
           Limpiar
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 export default AgendaContent;

@@ -94,6 +94,21 @@ function useCars() {
       });
   }, []);
 
+  const updateCar = useCallback((carId, payload) => {
+    setLoading(true);
+    return carsService
+      .updateCar(carId, payload)
+      .then((response) => {
+        setCar(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
+
   return {
     cars,
     car,
@@ -104,6 +119,7 @@ function useCars() {
     getCarsApi,
     createCar,
     getCarByPlate,
+    updateCar,
   };
 }
 

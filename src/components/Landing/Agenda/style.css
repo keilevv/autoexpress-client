@@ -11,8 +11,32 @@
 .agenda-modal {
   width: 70% !important;
   max-width: 900px;
+  .ant-modal-content {
+    transition: max-height 1s;
+  }
 }
 
 .ant-modal-title {
   font-size: 30px !important;
+}
+.agenda-modal-enter {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.agenda-modal-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.agenda-modal-leave {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.agenda-modal-leave-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
 }
