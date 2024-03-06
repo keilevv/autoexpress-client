@@ -26,7 +26,14 @@ function AppointmentForm({ setForm }) {
 
   useEffect(() => {
     setForm(form), [form];
-  });
+  }, [form]);
+
+  useEffect(() => {
+    getUnavailableTimesOfDay(dayjs().format("DD/MM/YYYY"));
+    form.setFieldsValue({
+      date: dayjs().format("DD/MM/YYYY"),
+    });
+  }, []);
 
   const disabledDate = (current) => {
     // Disable dates before the current day
@@ -35,13 +42,28 @@ function AppointmentForm({ setForm }) {
     // Disable dates after 1 month from today
     const isAfterOneMonth =
       current && current > moment().add(1, "month").startOf("day");
+    const isToday = current.isSame(moment(), "day");
+    const isAfterWorkHours = current && current.hour() > 17;
 
-    return isBeforeToday || isAfterOneMonth;
+    return isBeforeToday || isAfterOneMonth || (isToday && isAfterWorkHours);
   };
 
   const disabledTime = (current) => {
-    let disabledHours = [0, 1, 2, 3, 4, 5, 6, 7, 17, 18, 19, 20, 21, 22, 23];
     const disabledMinutes = [];
+    const currentHour = moment().hour();
+
+    // Create an array of hours including all hours before the current hour
+    const disabledHours = Array.from({ length: currentHour }).map(
+      (_, index) => index
+    );
+
+    // Add the specific hours you want to disable
+    const additionalDisabledHours = [
+      0, 1, 2, 3, 4, 5, 6, 7, 17, 18, 19, 20, 21, 22, 23,
+    ];
+
+    // Combine both arrays to get the final array of disabled hours
+    const allDisabledHours = [...disabledHours, ...additionalDisabledHours];
 
     if (unavailableTimes.length) {
       unavailableTimes.forEach((unavailableTime) => {
@@ -51,7 +73,7 @@ function AppointmentForm({ setForm }) {
       });
     }
     return {
-      disabledHours: () => disabledHours,
+      disabledHours: () => allDisabledHours,
       disabledMinutes: () => disabledMinutes,
     };
   };
@@ -93,6 +115,10 @@ function AppointmentForm({ setForm }) {
                       getUnavailableTimesOfDay(
                         dayjs(date).format("DD/MM/YYYY")
                       );
+                      form.setFieldValue(
+                        "date",
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
                     }}
                     fullscreen={false}
                     disabledDate={(current) => {
@@ -106,7 +132,7 @@ function AppointmentForm({ setForm }) {
           <Row>
             <Form.Item
               label="Hora"
-              name="hour"
+              name="time"
               rules={[
                 {
                   required: true,

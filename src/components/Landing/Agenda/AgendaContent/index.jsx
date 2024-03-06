@@ -10,20 +10,19 @@ import AppointmentConfirm from "./Confirm";
 /* Hooks */
 import useClient from "../../../../hooks/useClient";
 import useCars from "../../../../hooks/useCars";
+import useAppointment from "../../../../hooks/useAppointment";
 import "./style.css";
+import dayjs from "dayjs";
 
 /**
- * @param {{ isModalVisible?: boolean }} props
+ * @param {{ isModalVisible?: boolean, setIsModalVisible?: () => void }} props
  */
-function AgendaContent({ isModalVisible }) {
+function AgendaContent({ isModalVisible, setIsModalVisible }) {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [form, setForm] = useState(null);
   const [showFullForm, setShowFullForm] = useState(false);
   const [appointmentPayload, setaAppointmentPayload] = useState({
-    date: null,
-    time: null,
-    user: null,
     client: null,
     car: null,
   });
@@ -43,6 +42,12 @@ function AgendaContent({ isModalVisible }) {
     car,
     loading: loadingCar,
   } = useCars();
+
+  const {
+    createAppointment,
+    appointment,
+    loading: loadingAppointment,
+  } = useAppointment();
 
   const next = () => {
     setCurrent(current + 1);
@@ -78,6 +83,9 @@ function AgendaContent({ isModalVisible }) {
         }
         return handleGetCar(values);
       }
+      if (current === 2) {
+        handleCreateAppointment(values);
+      }
     });
   };
 
@@ -110,8 +118,8 @@ function AgendaContent({ isModalVisible }) {
       content: <AppointmentForm setForm={setForm} />,
     },
     {
-      title: "Confirmar",
-      content: <AppointmentConfirm />,
+      title: "Confirmación",
+      content: <AppointmentConfirm appointment={appointment} />,
     },
   ];
 
@@ -275,8 +283,24 @@ function AgendaContent({ isModalVisible }) {
         });
       });
   };
+
+  const handleCreateAppointment = (values) => {
+    const formattedTime = dayjs(values.time).format("HH:mm");
+    const payload = { ...appointmentPayload, ...values, time: formattedTime };
+    createAppointment(payload)
+      .then(() => {
+        notification.success({ message: "Cita creada con éxito" });
+        next();
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error crendo cita",
+          description: err.message || err.message._message,
+        });
+      });
+  };
   return (
-    <div className="agenda-content" style={{minWidth: "102px"}}>
+    <div className="agenda-content" style={{ minWidth: "102px" }}>
       <Steps current={current} items={items} />
       <div style={contentStyle}>{agendaSteps[current].content}</div>
       <div style={{ marginTop: 24 }} className="agenda-footer-container">
@@ -287,7 +311,7 @@ function AgendaContent({ isModalVisible }) {
               onClick={() => {
                 handleValidateForm();
               }}
-              loading={loadingClient || loadingCar}
+              loading={loadingClient || loadingCar || loadingAppointment}
             >
               Siguiente
             </Button>
@@ -295,12 +319,17 @@ function AgendaContent({ isModalVisible }) {
           {current === agendaSteps.length - 1 && (
             <Button
               type="primary"
-              onClick={() => message.success("Processing complete!")}
+              onClick={() => {
+                setIsModalVisible(false);
+                form.resetFields();
+                setCurrent(0);
+              }}
             >
               Terminar
             </Button>
           )}
-          {(current !== 0 || showFullForm) && (
+          {((current !== 0 && current !== agendaSteps.length - 1) ||
+            showFullForm) && (
             <Button
               className="prev-slide-button"
               onClick={() => prev()}
@@ -310,9 +339,11 @@ function AgendaContent({ isModalVisible }) {
             </Button>
           )}
         </div>
-        <Button icon={<RestOutlined />} onClick={() => form.resetFields()}>
-          Limpiar
-        </Button>
+        {current !== agendaSteps.length - 1 && (
+          <Button icon={<RestOutlined />} onClick={() => form.resetFields()}>
+            Limpiar
+          </Button>
+        )}
       </div>
     </div>
   );
