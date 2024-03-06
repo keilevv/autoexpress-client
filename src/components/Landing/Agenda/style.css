@@ -42,6 +42,7 @@
 }
 
 @media screen and (max-width: 600px) {
-  .agenda-modal{
+  .agenda-modal {
     width: 100%;
   }
+}
