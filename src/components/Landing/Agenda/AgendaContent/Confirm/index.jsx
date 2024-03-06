@@ -1,17 +1,22 @@
+import { Result } from "antd";
 import "./style.css";
 /**
- * @param {{ setForm: () => void }} props
+ * @param {{ setForm: () => void, appointment: any }} props
  */
-function AppointmentConfirm({ setForm }) {
+function AppointmentConfirm({ setForm, appointment }) {
+  console.log("appointment", appointment);
   return (
     <div className="appointment-confirm-content">
-      <h1 className="appointment-confirm-title">Su cita ha sido creada!</h1>
-      <h2 className="appointment-confirm-subtitle">Dia:</h2>
-      <h3 className="appointment-confirm-data">23-02-2024</h3>
-      <div style={{ marginTop: "50px" }}>
-        <h2 className="appointment-confirm-subtitle">Hora:</h2>
-        <h3 className="appointment-confirm-data"> 10:20 a.m</h3>
-      </div>
+      <Result
+        status={"success"}
+        title="Cita creada!"
+        subTitle={`Dia: ${appointment.date} - Hora: ${appointment.time}`}
+        className="appointment-confirm-result"
+      />
+      <p className="appointment-confirm-description">
+        {`Se le enviará un correo con la confirmación a ${appointment.client.email}, por favor asegurarse de
+        revisar su bandeja de entrada y spam.`}
+      </p>
     </div>
   );
 }

@@ -29,7 +29,7 @@ function Agenda({ containerRef = null }) {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <AgendaContent isModalVisible={isModalVisible} />
+        <AgendaContent isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
       </Modal>
     </>
   );

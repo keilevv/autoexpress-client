@@ -1,26 +1,35 @@
+/* Helpers*/
 import { useEffect, useState, useCallback } from "react";
 import _debounce from "lodash/debounce";
+import dayjs from "dayjs";
+import moment from "moment";
+import Logo from "../../../../../assets/images/autoexpresslogo.png";
+/* Components */
 import { Form, Input, Row, Popover, DatePicker, Select } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
+/* Hooks */
 import useCars from "../../../../../hooks/useCars";
 import useViewport from "../../../../../hooks/useViewport";
-import dayjs from "dayjs";
 
 import "./style.css";
+import { current } from "@reduxjs/toolkit";
 /**
- * @param {{ setForm: () => void }} props
+ * @param {{ setForm: () => void, showFullForm: boolean, client?: any, car: any, current: number }} props
  */
-function CarForm({ setForm }) {
+function CarForm({ setForm, showFullForm, client, car, current }) {
   const { isMobileScreen } = useViewport();
   const [brand, setBrand] = useState("");
   const [disableModels, setDisableModels] = useState(false);
   const { getCarsApi, carBrands, loading, carModels } = useCars();
   const [model, setModel] = useState("");
   const [form] = Form.useForm();
+  const [vinValue, setVinValue] = useState("");
 
   useEffect(() => {
-    getCarsApi();
-  }, []);
+    if (current === 1 && showFullForm) {
+      getCarsApi();
+    }
+  }, [current, showFullForm]);
 
   useEffect(() => {
     setForm(form);
@@ -79,182 +88,266 @@ function CarForm({ setForm }) {
     </p>
   );
 
-  return (
-    <Form
-      form={form}
-      layout="vertical"
-      name="car"
-      labelCol={{
-        span: 30,
-      }}
-      style={{
-        maxWidth: 700,
-      }}
-      initialValues={{
-        remember: true,
-      }}
-      autoComplete="on"
-    >
-      <div className="car-form-container">
-        <p className="car-info-title"> Ingrese la información de su vehículo</p>
-        <div className="car-fields-container">
-          <Row>
-            <Form.Item
-              label="Placa"
-              name="plate"
-              rules={[
-                {
-                  validator: validateCarPlate,
-                  message: "Por favor ingrese una placa válida",
-                },
-                {
-                  required: true,
-                  message: "Por favor ingrese su placa",
-                },
-              ]}
-            >
-              <Input allowClear maxLength={6} className="uppercase-input" />
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item
-              label="VIN"
-              name="vin"
-              rules={[
-                {
-                  validator: validateVin,
-                  message: "Por favor ingrese un VIN válido",
-                },
-                {
-                  required: true,
-                  message: "Por favor ingrese su VIN",
-                },
-              ]}
-            >
-              <div className="form-item-explain">
-                <Input allowClear className="uppercase-input" maxLength={16} />
-                <Popover
-                  placement={isMobileScreen ? "top" : "right"}
-                  trigger={["click", "hover"]}
-                  content={vinExplainContent}
-                >
-                  <InfoCircleOutlined className="form-item-explain-info-icon" />
-                </Popover>
-              </div>
-            </Form.Item>
-          </Row>
-          <Row style={{ display: "block", minWidth: "100%" }}>
-            <Form.Item
-              label="Marca"
-              name="brand"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese la marca",
-                },
-              ]}
-            >
-              <Select
-                value={brand}
-                allowClear
-                loading={loading}
-                showSearch
-                options={carBrands}
-                onSearch={(value) => {
-                  debounceFn(value);
-                  setBrand(value);
-                  form.resetFields(["model"]);
-                }}
-                onChange={(value) => {
-                  if (value.length) {
-                    setBrand(value);
-                    form.resetFields(["model"]);
-                  }
-                }}
-                onDeselect={() => {
-                  setBrand("");
-                  form.resetFields(["model"]);
-                }}
-              />
-            </Form.Item>
-          </Row>
-          <Row style={{ display: "block", minWidth: "100%" }}>
-            <Form.Item
-              label="Modelo"
-              name="model"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese el modelo",
-                },
-              ]}
-            >
-              <Select
-                allowClear
-                disabled={disableModels}
-                loading={loading}
-                showSearch
-                options={carModels}
-                onSearch={(value) => {
-                  setModel(value);
-                  debounceFn(value, brand);
-                }}
-                onChange={(value) => {
-                  if (value.length) {
-                    setModel(value);
-                  }
-                }}
-                onDeselect={() => {
-                  setModel("");
-                  form.resetFields(["model"]);
-                }}
-              />
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item
-              label="Año"
-              name="year"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese un año",
-                },
-              ]}
-            >
-              <DatePicker
-                allowClear
-                placeholder="Fecha"
-                picker="year"
-                style={{ width: "100%" }}
-                format={"YYYY"}
-                disabledDate={(current) => {
-                  return current && current > dayjs().add(1, "y").endOf("day");
-                }}
-              />
-            </Form.Item>
-          </Row>
-          <Row>
-            <Form.Item
-              label="Color"
-              name="color"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese el color",
-                },
-              ]}
-            >
-              <Input allowClear />
-            </Form.Item>
-          </Row>
+  const handlePrefill = (car) => {
+    if (car) {
+      const { plate, vin, brand, model, year, color } = car;
+      setVinValue(vin);
+      form.setFieldsValue({
+        plate,
+        vin: vin,
+        brand,
+        model,
+        year: dayjs(year),
+        color,
+      });
+    } else {
+      setVinValue("");
+      form.resetFields();
+    }
+  };
 
-          {/* <Form.Item name="remember" valuePropName="checked">
-            <Checkbox>Recordar la informacion de mi vehiculo</Checkbox>
-          </Form.Item> */}
-        </div>
-      </div>
-    </Form>
-  );
+  useEffect(() => {
+    handlePrefill(car);
+  }, [car]);
+
+  const renderContent = () => {
+    if (showFullForm) {
+      return (
+        <Form
+          form={form}
+          layout="vertical"
+          name="car"
+          labelCol={{
+            span: 30,
+          }}
+          style={{
+            maxWidth: 700,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          autoComplete="on"
+        >
+          <div className="car-form-container">
+            <p className="car-info-title">
+              Ingrese la información de su vehículo
+            </p>
+            <div className="car-fields-container">
+              <Row>
+                <Form.Item
+                  label="Placa"
+                  name="plate"
+                  rules={[
+                    {
+                      validator: validateCarPlate,
+                      message: "Por favor ingrese una placa válida",
+                    },
+                    {
+                      required: true,
+                      message: "Por favor ingrese su placa",
+                    },
+                  ]}
+                >
+                  <Input allowClear maxLength={6} className="uppercase-input" />
+                </Form.Item>
+              </Row>
+              <Row>
+                <Form.Item
+                  label="VIN"
+                  name="vin"
+                  rules={[
+                    {
+                      validator: validateVin,
+                      message: "Por favor ingrese un VIN válido",
+                    },
+                    {
+                      required: true,
+                      message: "Por favor ingrese su VIN",
+                    },
+                  ]}
+                >
+                  <div className="form-item-explain">
+                    <Input
+                      allowClear
+                      className="uppercase-input"
+                      maxLength={16}
+                      onChange={(e) => {
+                        setVinValue(e.target.value);
+                      }}
+                      value={vinValue}
+                    />
+                    <Popover
+                      placement={isMobileScreen ? "top" : "right"}
+                      trigger={["click", "hover"]}
+                      content={vinExplainContent}
+                    >
+                      <InfoCircleOutlined className="form-item-explain-info-icon" />
+                    </Popover>
+                  </div>
+                </Form.Item>
+              </Row>
+              <Row style={{ display: "block", minWidth: "100%" }}>
+                <Form.Item
+                  label="Marca"
+                  name="brand"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese la marca",
+                    },
+                  ]}
+                >
+                  <Select
+                    value={brand}
+                    allowClear
+                    loading={loading}
+                    showSearch
+                    options={carBrands}
+                    onSearch={(value) => {
+                      debounceFn(value);
+                      setBrand(value);
+                      form.resetFields(["model"]);
+                    }}
+                    onChange={(value) => {
+                      if (value.length) {
+                        setBrand(value);
+                        form.resetFields(["model"]);
+                      }
+                    }}
+                    onDeselect={() => {
+                      setBrand("");
+                      form.resetFields(["model"]);
+                    }}
+                  />
+                </Form.Item>
+              </Row>
+              <Row style={{ display: "block", minWidth: "100%" }}>
+                <Form.Item
+                  label="Modelo"
+                  name="model"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese el modelo",
+                    },
+                  ]}
+                >
+                  <Select
+                    allowClear
+                    disabled={disableModels && !car}
+                    loading={loading}
+                    showSearch
+                    options={carModels}
+                    onSearch={(value) => {
+                      setModel(value);
+                      debounceFn(value, brand);
+                    }}
+                    onChange={(value) => {
+                      if (value.length) {
+                        setModel(value);
+                      }
+                    }}
+                    onDeselect={() => {
+                      setModel("");
+                      form.resetFields(["model"]);
+                    }}
+                  />
+                </Form.Item>
+              </Row>
+              <Row>
+                <Form.Item
+                  label="Año"
+                  name="year"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese un año",
+                    },
+                  ]}
+                >
+                  <DatePicker
+                    allowClear
+                    placeholder="Fecha"
+                    picker="year"
+                    style={{ width: "100%" }}
+                    format={"YYYY"}
+                    disabledDate={(current) => {
+                      return (
+                        current && current > dayjs().add(1, "y").endOf("day")
+                      );
+                    }}
+                  />
+                </Form.Item>
+              </Row>
+              <Row>
+                <Form.Item
+                  label="Color"
+                  name="color"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Por favor ingrese el color",
+                    },
+                  ]}
+                >
+                  <Input allowClear />
+                </Form.Item>
+              </Row>
+            </div>
+          </div>
+        </Form>
+      );
+    } else {
+      return (
+        <Form
+          form={form}
+          layout="vertical"
+          name="car"
+          labelCol={{
+            span: 30,
+          }}
+          style={{
+            maxWidth: 700,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          autoComplete="on"
+        >
+          <div className="car-form-container">
+            <div className="logo-container">
+              <img className="logo" src={Logo} />
+            </div>
+            <p className="car-info-title">{`¡Bienvenido${
+              client ? ` ${client.name}` : ""
+            }!`}</p>
+            <p className="car-info-description">
+              Por favor permítanos verificar la informacion de su vehículo
+            </p>
+            <div className="car-fields-container">
+              <Form.Item
+                label="Placa"
+                name="plate"
+                rules={[
+                  {
+                    validator: validateCarPlate,
+                    message: "Por favor ingrese una placa válida",
+                  },
+                  {
+                    required: true,
+                    message: "Por favor ingrese su placa",
+                  },
+                ]}
+              >
+                <Input allowClear maxLength={6} className="uppercase-input" />
+              </Form.Item>
+            </div>
+          </div>
+        </Form>
+      );
+    }
+  };
+
+  return renderContent();
 }
 export default CarForm;

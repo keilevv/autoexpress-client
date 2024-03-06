@@ -24,5 +24,13 @@ const carsService = {
   createCar(payload) {
     return axios.post(`${apiUrl}/car/register`, payload);
   },
+  getCarByPlate(carPlate, clientId) {
+    return axios.post(`${apiUrl}/car/plate/${carPlate}`, {
+      client_id: clientId,
+    });
+  },
+  updateCar(carId, payload) {
+    return axios.put(`${apiUrl}/car/update/${carId}`, payload);
+  },
 };
 export default carsService;

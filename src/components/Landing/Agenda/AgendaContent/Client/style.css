@@ -11,6 +11,26 @@
 .client-info-title {
   font-size: 26px;
   font-weight: 500;
+  color: #242424;
+  padding: 0px 10px;
+}
+.logo-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px 10px;
+  .logo {
+    max-width: 200px;
+    object-fit: contain;
+    width: 100%;
+  }
+}
+
+.client-info-description {
+  font-size: 16px;
+  font-weight: 400;
+  color: #242424;
+  margin-bottom: 50px;
+  padding: 0px 10px;
 }
 .client-form-col-2 {
   margin-left: 10px;

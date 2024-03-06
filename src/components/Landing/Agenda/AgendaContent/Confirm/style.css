@@ -1,6 +1,6 @@
 .appointment-confirm-content {
   justify-content: center;
-  padding: 30px;
+  padding: 50px 30px 30px 30px;
 
   .appointment-confirm-title {
     font-size: 36px;
@@ -8,7 +8,6 @@
     color: #c00113;
     margin-bottom: 60px;
     line-height: 26px;
-
   }
   .appointment-confirm-subtitle {
     font-size: 26px;
@@ -16,12 +15,32 @@
     margin-bottom: 20px;
     line-height: 26px;
   }
-  .appointment-confirm-data {
-    font-size: 26px;
-    font-weight: 700;
-    color: black;
-    margin-bottom: 20px;
-    line-height: 26px;
 
+  .appointment-confirm-description {
+    line-height: 20px;
+  }
+
+  .appointment-confirm-result {
+    padding: 0px;
+    .ant-result-icon {
+      max-height: 150px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .ant-result-title {
+      font-size: 26px;
+      color: #242424;
+    }
+    .ant-result-subtitle {
+      font-size: 16px;
+      color: #242424;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .appointment-confirm-content {
+    padding: 30px 15px 15px 15px;
   }
 }
