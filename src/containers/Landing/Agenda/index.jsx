@@ -15,7 +15,7 @@ function AgendaContainer({ agendaRef }) {
           directamente con nosotros.
         </h1>
 
-        <Agenda />
+        {/* <Agenda /> */}
       </div>
     </section>
   );
