@@ -17,10 +17,6 @@ function CarsContainer() {
     getCars();
   }, []);
 
-  return (
-    <MainLayout defaultLocation={defaultSelectedItem}>
-      <Cars />
-    </MainLayout>
-  );
+  return <Cars />;
 }
 export default CarsContainer;

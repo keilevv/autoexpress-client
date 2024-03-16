@@ -4,19 +4,14 @@ import carsService from "../services/cars";
 import { throwError } from "../helpers";
 
 function useCars() {
-  const auth = useSelector((state) => state.auth);
-  const [token, setToken] = useState(null);
+  const token = useSelector((state) => state.auth.user.accessToken);
   const [cars, setCars] = useState([]);
   const [carBrands, setCarBrands] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(null);
 
-  useEffect(() => {
-    if (auth.user && auth.user.acessToken) {
-      setToken(auth.user.accessToken);
-    }
-  }, [auth]);
+  console.log("token", token);
 
   function getCars() {
     carsService

@@ -60,7 +60,9 @@ function App() {
             path="/operations/cars"
             element={
               <ProtectedRoute>
-                <CarsContainer />
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <CarsContainer />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
