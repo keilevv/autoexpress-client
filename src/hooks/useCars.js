@@ -11,15 +11,16 @@ function useCars() {
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(null);
 
-  console.log("token", token);
-
   function getCars() {
+    setLoading(true);
     carsService
       .get(token)
       .then((response) => {
+        setLoading(false);
         setCars(response.data.results);
       })
       .catch((err) => {
+        setLoading(false);
         console.log("error", error);
       });
   }
