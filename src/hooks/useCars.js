@@ -21,7 +21,6 @@ function useCars() {
       })
       .catch((err) => {
         setLoading(false);
-        console.log("error", error);
       });
   }
 
@@ -34,10 +33,9 @@ function useCars() {
         return response;
       })
       .catch((err) => {
-        console.log("err", err);
         setLoading(false);
         // Extract relevant information from the error response
-        throwError(err);
+        throwError(err.response.data.message);
       });
   }, []);
 

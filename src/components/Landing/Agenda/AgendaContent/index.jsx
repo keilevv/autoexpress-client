@@ -166,7 +166,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       .catch((err) => {
         notification.error({
           message: "Error creando cliente",
-          description: err.message || err.message._message,
+          description: err,
         });
       });
   };
@@ -239,7 +239,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       .catch((err) => {
         notification.error({
           message: "Error creando auto",
-          description: err.message._message || err.message,
+          description: err,
         });
       });
   };

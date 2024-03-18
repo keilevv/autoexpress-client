@@ -4,7 +4,7 @@ import MainLayout from "../../Layout";
 /* Hooks*/
 import useCars from "../../../hooks/useCars";
 /* Components */
-import Cars from "../../../components/operations/Cars";
+import CarsTable from "../../../components/operations/Cars/CarsTable";
 import { useSelector } from "react-redux";
 
 function CarsContainer() {
@@ -15,6 +15,6 @@ function CarsContainer() {
     getCars();
   }, [user]);
 
-  return <Cars cars={cars} getCars={getCars} loading={loading} />;
+  return <CarsTable cars={cars} getCars={getCars} loading={loading} />;
 }
 export default CarsContainer;

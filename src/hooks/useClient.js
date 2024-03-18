@@ -40,7 +40,7 @@ function useClient() {
       })
       .catch((err) => {
         setLoading(false);
-        throwError(err.message.message);
+        throwError(err.response.data.message);
       });
   }, []);
 
@@ -60,23 +60,20 @@ function useClient() {
       });
   }, []);
 
-  const updateClient = useCallback(
-    (clientId, payload) => {
-      setLoading(true);
-      return clientsService
-        .updateClient(clientId, payload)
-        .then((response) => {
-          setClient(response.data.results);
-          setLoading(false);
-          return response;
-        })
-        .catch((err) => {
-          setLoading(false);
-          throwError(err.response.data.message);
-        });
-    },
-    []
-  );
+  const updateClient = useCallback((clientId, payload) => {
+    setLoading(true);
+    return clientsService
+      .updateClient(clientId, payload)
+      .then((response) => {
+        setClient(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
 
   return {
     getClients,

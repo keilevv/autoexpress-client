@@ -22,6 +22,8 @@ function MainLayout({ children }) {
   const { items, defaultSelectedHeader } = useMenu();
   const [collapsed, setCollapsed] = useState(false);
   const [userHeaderProps, setUserHeaderProps] = useState({});
+  const [selectedSider, setSelectedSider] = useState("");
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -60,17 +62,22 @@ function MainLayout({ children }) {
     setUserHeaderProps({ type: "default" });
   }, [isMobileScreen]);
 
-  let defaultSelected = ["operations"];
-  if (window.location.pathname.includes("operations")) {
-    defaultSelected = ["operations"];
-  }
-  if (window.location.pathname.includes("agenda")) {
-    defaultSelected = ["agenda"];
-  }
-  if (window.location.pathname.includes("billing")) {
-    defaultSelected = ["billing"];
-  }
+  const getSelectedSider = () => {
+    const splitItems = window.location.pathname.split("/");
+    headerModules.forEach((module) => {
+      splitItems.forEach((item, index) => {
+        if (module === item) {
+          setSelectedSider(splitItems[index + 1]);
+        } else {
+          setSelectedSider(splitItems[index]);
+        }
+      });
+    });
+  };
 
+  useEffect(() => {
+    getSelectedSider();
+  }, [window.location.pathname]);
   return (
     <Layout className="operations-layout">
       <Sider
@@ -91,8 +98,9 @@ function MainLayout({ children }) {
           theme="dark"
           mode="inline"
           items={items}
-          defaultSelectedKeys={defaultSelected}
+          selectedKeys={[selectedSider]}
           onClick={(value) => {
+            setSelectedSider(value.key);
             headerModules.forEach((module) => {
               if (window.location.pathname.includes(module)) {
                 if (value.key === module) {
