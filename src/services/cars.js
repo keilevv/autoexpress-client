@@ -3,7 +3,7 @@ import { apiUrl } from "../helpers/constants";
 
 const carsService = {
   get(token) {
-    return axios.get(`${apiUrl}/admin/cars`, {
+    return axios.get(`${apiUrl}/operations/cars`, {
       headers: { Authorization: `${token}` },
     });
   },
@@ -30,7 +30,7 @@ const carsService = {
     });
   },
   getCarListByPlate(token, carPlate) {
-    return axios.get(`${apiUrl}/admin/cars/plate/${carPlate}`, {
+    return axios.get(`${apiUrl}/operations/cars/plate/${carPlate}`, {
       headers: { Authorization: `${token}` },
     });
   },

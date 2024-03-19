@@ -19,7 +19,7 @@ function useClient() {
   const getClients = useCallback(() => {
     setLoading(true);
     return clientsService
-      .getClients(token)
+      .getClients(auth.user.accessToken)
       .then((response) => {
         setClients(response.data.results);
         setLoading(false);
@@ -60,6 +60,19 @@ function useClient() {
       });
   }, []);
 
+  function getClientListByName(nameValue) {
+    setLoading(true);
+    clientsService
+      .getClientListByName(token, nameValue)
+      .then((response) => {
+        setLoading(false);
+        setClients(response.data.results);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }
+
   const updateClient = useCallback((clientId, payload) => {
     setLoading(true);
     return clientsService
@@ -80,6 +93,7 @@ function useClient() {
     createClient,
     getClientByCountryId,
     updateClient,
+    getClientListByName,
     client,
     clients,
     loading,

@@ -9,10 +9,11 @@ import useMenu from "./hooks/useMenu";
 import OperationsContainer from "./containers/Operations";
 import CarsContainer from "./containers/Operations/Cars";
 import LandingContainer from "./containers/Landing";
+import ClientsContainer from "./containers/Operations/Clients";
+
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
-import Clients from "./components/operations/Clients";
 import Settings from "./components/operations/Settings";
 import Dashboard from "./components/operations/Dashboard";
 
@@ -81,7 +82,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <Clients />
+                  <ClientsContainer />
                 </MainLayout>
               </ProtectedRoute>
             }

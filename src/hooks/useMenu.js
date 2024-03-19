@@ -24,22 +24,22 @@ function useMenu() {
           label: "Inicio",
           icon: React.createElement(HomeOutlined),
         },
-        {
-          key: "jobs",
-          label: "Trabajos",
-          icon: React.createElement(ScheduleOutlined),
-        },
+        // {
+        //   key: "jobs",
+        //   label: "Trabajos",
+        //   icon: React.createElement(ScheduleOutlined),
+        // },
         { key: "cars", label: "Autos", icon: React.createElement(CarOutlined) },
         {
           key: "clients",
           label: "Clientes",
           icon: React.createElement(TeamOutlined),
         },
-        {
-          key: "settings",
-          label: "Configuracion",
-          icon: React.createElement(SettingOutlined),
-        },
+        // {
+        //   key: "settings",
+        //   label: "Configuracion",
+        //   icon: React.createElement(SettingOutlined),
+        // },
       ];
       setDefaultSelectedHeader("operations");
       setItems(currentItems);
