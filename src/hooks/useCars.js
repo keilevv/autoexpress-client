@@ -24,6 +24,19 @@ function useCars() {
       });
   }
 
+  function getCarListByPlate(plateValue) {
+    setLoading(true);
+    carsService
+      .getCarListByPlate(token, plateValue)
+      .then((response) => {
+        setLoading(false);
+        setCars(response.data.results);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }
+
   const createCar = useCallback((payload) => {
     setLoading(true);
     return carsService
@@ -114,6 +127,7 @@ function useCars() {
     createCar,
     getCarByPlate,
     updateCar,
+    getCarListByPlate,
   };
 }
 

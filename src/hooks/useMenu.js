@@ -31,8 +31,8 @@ function useMenu() {
         },
         { key: "cars", label: "Autos", icon: React.createElement(CarOutlined) },
         {
-          key: "operators",
-          label: "Operadores",
+          key: "clients",
+          label: "Clientes",
           icon: React.createElement(TeamOutlined),
         },
         {
