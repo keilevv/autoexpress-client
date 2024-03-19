@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-/* Containers*/
-import MainLayout from "../../Layout";
 /* Hooks*/
 import useCars from "../../../hooks/useCars";
 /* Components */
 import CarsTable from "../../../components/operations/Cars/CarsTable";
+import TableActions from "../../../components/operations/TableActions";
 import { useSelector } from "react-redux";
 
 function CarsContainer() {
@@ -15,6 +14,12 @@ function CarsContainer() {
     getCars();
   }, [user]);
 
-  return <CarsTable cars={cars} getCars={getCars} loading={loading} />;
+  return (
+    <div className="cars-container">
+      <h1>Autos</h1>
+      <TableActions />
+      <CarsTable cars={cars} getCars={getCars} loading={loading} />
+    </div>
+  );
 }
 export default CarsContainer;

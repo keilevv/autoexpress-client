@@ -1,4 +1,5 @@
-import { Table, Tag, Spin } from "antd";
+import { Table, Tag, Input } from "antd";
+import "./style.css";
 /**
  * @param {{ cars: any, getCars: () => void, loading: boolean }} props
  */
@@ -61,7 +62,6 @@ function CarsTable({ cars, getCars, loading }) {
 
   return (
     <>
-      <h1>CarsTable component</h1>
       <div className="table-container">
         <Table dataSource={dataSource} columns={columns} loading={loading} />
       </div>

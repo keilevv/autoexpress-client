@@ -27,6 +27,8 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
     car: null,
   });
 
+  console.log("appointmentPayload", appointmentPayload);
+
   const {
     createClient,
     getClientByCountryId,
@@ -225,6 +227,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
   };
 
   const handleCreateCar = (values) => {
+    values.clients = [appointmentPayload.client];
     createCar(values)
       .then((response) => {
         setaAppointmentPayload((payload) => {
