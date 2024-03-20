@@ -31,7 +31,7 @@ function MainLayout({ children }) {
   const headerItems = [
     { key: "operations", label: "Operaciones" },
     { key: "agenda", label: "Agenda" },
-    { key: "billing", label: "Facturacion" },
+    // { key: "billing", label: "Facturacion" },
   ];
 
   const userItems = [

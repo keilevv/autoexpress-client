@@ -154,12 +154,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
         });
         notification.success({
           message: "Cliente creado con éxito",
-          description:
-            response.data.results.name +
-            " " +
-            response.data.results.surname +
-            " " +
-            response.data.results.lastname,
+          description: `${response.data.results.name} ${response.data.results.surname} ${response.data.results.lastname}`,
         });
         next();
       })
@@ -186,6 +181,9 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
         setShowFullForm(true);
       })
       .catch(() => {
+        setaAppointmentPayload((payload) => {
+          return { ...payload, client: null };
+        });
         setShowFullForm(true);
         notification.warning({
           message: "Cliente no encontrado",
@@ -195,26 +193,25 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       });
   };
 
-  const handleUpdateClient = (values) => {
-    values.birthday = moment(
-      new Date(values.birthday),
-      "DD/MM/YYYY",
-      true
-    ).format("DD/MM/YYYY");
+  const handleUpdateClient = (values, isCarCreation = false) => {
+    if (!isCarCreation) {
+      values.birthday = moment(
+        new Date(values.birthday),
+        "DD/MM/YYYY",
+        true
+      ).format("DD/MM/YYYY");
+    }
 
     updateClient(appointmentPayload.client, values)
       .then((response) => {
         notification.success({
-          message: "Cliente actualizado con éxito",
-          description:
-            response.data.results.name +
-            " " +
-            response.data.results.surname +
-            " " +
-            response.data.results.lastname,
+          message: isCarCreation
+            ? "Auto asignado a cliente"
+            : "Cliente actualizado con válido",
+          description: `${response.data.results.name} ${response.data.results.surname} ${response.data.results.lastname}`,
         });
         setShowFullForm(false);
-        next();
+        !isCarCreation && next();
       })
       .catch((err) => {
         notification.error({
@@ -235,6 +232,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
           message: "Auto registrado con éxito",
           description: response.data.results.plate,
         });
+        handleUpdateClient({ cars: [response.data.results._id] }, true);
         next();
       })
       .catch((err) => {
@@ -260,6 +258,9 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
         setShowFullForm(true);
       })
       .catch(() => {
+        setaAppointmentPayload((payload) => {
+          return { ...payload, car: null };
+        });
         setShowFullForm(true);
         notification.warning({
           message: "Vehiculo no encontrado",

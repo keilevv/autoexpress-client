@@ -19,7 +19,7 @@ function ClientsTable({ clients, getClients, loading }) {
         <>
           {cars.map((car) => {
             return (
-              <Tag color={"geekblue"} key={client}>
+              <Tag color={"geekblue"} key={car._id}>
                 {car.plate.toUpperCase()}
               </Tag>
             );
