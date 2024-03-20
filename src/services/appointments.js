@@ -8,5 +8,10 @@ const appointmentsService = {
   createAppointment(payload) {
     return axios.post(`${apiUrl}/appointment/register`, payload);
   },
+  getAppointmentList(token) {
+    return axios.get(`${apiUrl}/agenda/appointments`, {
+      headers: { Authorization: `${token}` },
+    });
+  },
 };
 export default appointmentsService;

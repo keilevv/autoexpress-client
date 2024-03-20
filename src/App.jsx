@@ -19,6 +19,7 @@ import Dashboard from "./components/operations/Dashboard";
 
 /* Styling */
 import "./App.css";
+import AgendaContainer from "./containers/Agenda";
 
 function App() {
   const { defaultSelectedHeader } = useMenu();
@@ -102,12 +103,10 @@ function App() {
             path="/agenda"
             element={
               <ProtectedRoute>
-                <OperationsContainer />
+                <AgendaContainer />
               </ProtectedRoute>
             }
-          >
-            <Route path="/agenda" element={<OperationsContainer />} />
-          </Route>
+          ></Route>
           <Route
             path="/billing"
             element={
