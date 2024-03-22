@@ -89,7 +89,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
           initialValues={{
             remember: true,
           }}
-          autoComplete="on"
+          autoComplete="off"
         >
           <div className="client-form-container">
             <p className="client-info-title">
@@ -109,7 +109,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input disabled={client ? true : false} />
                 </Form.Item>
               </Row>
               <Row>
@@ -124,7 +124,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input disabled={client ? true : false} />
                   </Form.Item>
                 </Col>
                 <Col className="client-form-col-2">
@@ -138,7 +138,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input disabled={client ? true : false} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -175,6 +175,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                   ]}
                 >
                   <DatePicker
+                    disabled={client ? true : false}
                     placeholder="Fecha"
                     style={{ width: "100%" }}
                     format={"DD/MM/YYYY"}
@@ -248,7 +249,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
           initialValues={{
             remember: true,
           }}
-          autoComplete="on"
+          autoComplete="off"
         >
           <div className="client-form-container">
             <div className="logo-container">

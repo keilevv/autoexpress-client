@@ -24,6 +24,9 @@ function AppointmentsTable({ appointments, getAppointments, loading }) {
       title: "Cliente",
       dataIndex: "client",
       key: "client",
+      render: (_, { client }) => {
+        return <>{client.toUpperCase()}</>;
+      },
     },
     {
       title: "Auto",

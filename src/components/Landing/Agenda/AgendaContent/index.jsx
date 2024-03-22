@@ -292,6 +292,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
     createAppointment(payload)
       .then(() => {
         notification.success({ message: "Cita creada con éxito" });
+        setaAppointmentPayload({ client: null, car: null });
         next();
       })
       .catch((err) => {
