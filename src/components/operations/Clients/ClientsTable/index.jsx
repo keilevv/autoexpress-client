@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Table, Tag } from "antd";
+import "./style.css";
 /**
  * @param {{ clients: any, getClients: () => void, loading: boolean }} props
  */
@@ -16,7 +17,7 @@ function ClientsTable({ clients, getClients, loading }) {
       dataIndex: "cars",
       key: "cars",
       render: (_, { cars }) => (
-        <>
+        <div className="car-tags-container">
           {cars.map((car) => {
             return (
               <Tag color={"geekblue"} key={car._id}>
@@ -24,7 +25,7 @@ function ClientsTable({ clients, getClients, loading }) {
               </Tag>
             );
           })}
-        </>
+        </div>
       ),
     },
     {

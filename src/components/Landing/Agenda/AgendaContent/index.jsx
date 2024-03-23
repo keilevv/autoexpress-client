@@ -150,7 +150,10 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
     createClient(values)
       .then((response) => {
         setaAppointmentPayload((payload) => {
-          return { ...payload, client: response.data.results._id };
+          return {
+            ...payload,
+            client: response.data.results,
+          };
         });
         notification.success({
           message: "Cliente creado con éxito",
@@ -176,11 +179,14 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
           duration: 7,
         });
         setaAppointmentPayload((payload) => {
-          return { ...payload, client: response.data.results._id };
+          return {
+            ...payload,
+            client: response.data.results,
+          };
         });
         setShowFullForm(true);
       })
-      .catch(() => {
+      .catch((err) => {
         setaAppointmentPayload((payload) => {
           return { ...payload, client: null };
         });
@@ -202,7 +208,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       ).format("DD/MM/YYYY");
     }
 
-    updateClient(appointmentPayload.client, values)
+    updateClient(appointmentPayload.client._id, values)
       .then((response) => {
         notification.success({
           message: isCarCreation
@@ -226,13 +232,23 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
     createCar(values)
       .then((response) => {
         setaAppointmentPayload((payload) => {
-          return { ...payload, car: response.data.results._id };
+          return {
+            ...payload,
+            car: response.data.results,
+          };
         });
         notification.success({
           message: "Auto registrado con éxito",
           description: response.data.results.plate,
         });
-        handleUpdateClient({ cars: [response.data.results._id] }, true);
+        handleUpdateClient(
+          {
+            cars: [response.data.results._id].concat(
+              appointmentPayload.client.cars
+            ),
+          },
+          true
+        );
         next();
       })
       .catch((err) => {
@@ -253,23 +269,32 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
           duration: 7,
         });
         setaAppointmentPayload((payload) => {
-          return { ...payload, car: response.data.results._id };
+          return {
+            ...payload,
+            car: response.data.results,
+          };
         });
         setShowFullForm(true);
       })
-      .catch(() => {
+      .catch((err) => {
         setaAppointmentPayload((payload) => {
           return { ...payload, car: null };
         });
-        setShowFullForm(true);
-        notification.warning({
-          message: "Vehiculo no encontrado",
-        });
+        if (err === "Unable to get car") {
+          notification.error({
+            message: "Sin autorización",
+          });
+        } else {
+          notification.warning({
+            message: "Auto no encontrado",
+          });
+          setShowFullForm(true);
+        }
       });
   };
 
   const handleUpdateCar = (values) => {
-    updateCar(appointmentPayload.car, values)
+    updateCar(appointmentPayload.car._id, values)
       .then((response) => {
         notification.success({
           message: "Vehiculo actualizado con éxito",

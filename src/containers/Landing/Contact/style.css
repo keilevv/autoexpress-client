@@ -12,15 +12,15 @@
   .contact-text-container {
     .contact-title-header {
       text-align: center;
-      text-decoration: underline;
       font-size: 38px;
     }
     .contact-title {
-      font-weight: 400;
+      font-weight: 200;
       margin-bottom: 100px;
       text-align: center;
       margin-top: 0px;
       font-size: 28px;
+      max-width: 600px;
     }
   }
   .contact-form-container {

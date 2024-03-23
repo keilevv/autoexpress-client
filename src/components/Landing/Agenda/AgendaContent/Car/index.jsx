@@ -126,7 +126,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
           initialValues={{
             remember: true,
           }}
-          autoComplete="on"
+          autoComplete="off"
         >
           <div className="car-form-container">
             <p className="car-info-title">
@@ -312,7 +312,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
           initialValues={{
             remember: true,
           }}
-          autoComplete="on"
+          autocomplete="off"
         >
           <div className="car-form-container">
             <div className="logo-container">

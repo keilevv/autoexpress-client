@@ -7,6 +7,7 @@
     padding: 0px 30px 0px 30px;
     .ant-form-item-explain-error {
       max-width: 179px;
+      margin: auto;
     }
   }
 }

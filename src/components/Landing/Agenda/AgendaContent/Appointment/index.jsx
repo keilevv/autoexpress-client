@@ -97,7 +97,7 @@ function AppointmentForm({ setForm }) {
       initialValues={{
         remember: true,
       }}
-      autoComplete="on"
+      autocomplete="off"
     >
       <div className="appointment-form-container">
         <p className="appointment-info-title"> Ingrese la fecha deseada</p>
