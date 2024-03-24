@@ -52,7 +52,7 @@ function ServicesCard(props) {
             >
               {renderDescription()}
             </span>
-            {props.type !== "parts" && props.type !== "membership" && (
+            {props.showMore && (
               <p
                 onClick={() => {
                   setOpen(true);
