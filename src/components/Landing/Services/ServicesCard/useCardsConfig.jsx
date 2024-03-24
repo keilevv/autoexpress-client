@@ -1,9 +1,8 @@
-import BodyWorkIcon from "../../../../assets/icons/piston-icon.png";
-import PaintIcon from "../../../../assets/icons/car-wash-icon.png";
-import DetailingIcon from "../../../../assets/icons/brakes-icon.png";
-import PartsIcon from "../../../../assets/icons/wheel-icon.png";
-import MembershipIcon from "../../../../assets/icons/transmission-icon.png";
 import ServiceModalContent from "../ServiceModal/Content";
+import PaintBodyworkIcon from "../../../../assets/icons/spray-gun-white.png";
+import DiagnosticIcon from "../../../../assets/icons/magnifier-white.png";
+import ElectromecanicIcon from "../../../../assets/icons/tools-white.png";
+import SpecialServicesIcon from "../../../../assets/icons/star-white.png";
 
 function useCardsConfig() {
   const bodyworkDescription = (
@@ -38,49 +37,45 @@ function useCardsConfig() {
   );
   const ServicesCardConfig = [
     {
-      key: "bodywork",
-      type: "bodywork",
+      key: "paint-bodywork",
+      type: "paint-bodywork",
       placement: "top",
-      icon: BodyWorkIcon,
-      title: "Latonería",
-      content: <ServiceModalContent type={"bodywork"} />,
+      icon: PaintBodyworkIcon,
+      title: "Latonería y pintura",
+      content: <ServiceModalContent type={"paint-bodywork"} />,
       description: bodyworkDescription,
+      color: "#F90E0C",
     },
     {
-      key: "paint",
-      type: "paint",
+      key: "diagnostic",
+      type: "diagnostic",
       placement: "top",
-      icon: PaintIcon,
-      title: "Pintura",
-      content: <ServiceModalContent type={"paint"} />,
+      icon: DiagnosticIcon,
+      title: "Diagnostico y peritaje",
+      content: <ServiceModalContent type={"diagnostic"} />,
       description: paintDescription,
+      color: "#06823D",
     },
     {
-      type: "detailing",
-      key: "detailing",
+      type: "electromecanic",
+      key: "electromecanic",
       placement: "bottom",
-      icon: DetailingIcon,
-      title: "Detailing",
-      content: <ServiceModalContent type={"detailing"} />,
+      icon: ElectromecanicIcon,
+      title: "Electromecánica",
+      content: <ServiceModalContent type={"electromecanic"} />,
       description: detailingDescription,
+      color: "#126398",
     },
     {
-      type: "parts",
-      key: "parts",
+      type: "special-services",
+      key: "special-services",
       placement: "bottom",
-      icon: PartsIcon,
-      title: "Repuestos",
+      icon: SpecialServicesIcon,
+      title: "Servicios Especiales",
       description:
         "Importamos repuestos originales con proveedores de confianza para cualquier marca.",
-    },
-    {
-      key: "membership",
-      type: "membership",
-      placement: "bottom",
-      icon: MembershipIcon,
-      title: "Membresía",
-      description:
-        "¡Espere próximamente nuestro plan para miembros amantes de su vehículo!",
+
+      color: "#FF9800",
     },
   ];
   function getCardContent(key = "") {

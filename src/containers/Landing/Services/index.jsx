@@ -22,13 +22,7 @@ function ServicesContainer({ servicesRef }) {
           {ServicesCardConfig.map((props) => {
             return (
               <Row justify={"center"} key={props.key}>
-                <Col
-                  xs={13}
-                  sm={8}
-                  md={5}
-                  key={props.key}
-                  style={{ marginTop: "16px" }}
-                >
+                <Col style={{ marginTop: "16px", maxWidth: "250px" }}>
                   <ServicesCard {...props} />
                 </Col>
               </Row>
@@ -44,7 +38,7 @@ function ServicesContainer({ servicesRef }) {
             {ServicesCardConfig.map((props) => {
               if (props.placement === "top") {
                 return (
-                  <Col xs={8} sm={7} md={7} lg={8} xl={6} key={props.key}>
+                  <Col style={{ maxWidth: "250px" }} key={props.key}>
                     <ServicesCard {...props} />
                   </Col>
                 );
@@ -55,7 +49,7 @@ function ServicesContainer({ servicesRef }) {
             {ServicesCardConfig.map((props) => {
               if (props.placement === "bottom") {
                 return (
-                  <Col xs={8} sm={7} md={7} lg={8} xl={6} key={props.key}>
+                  <Col style={{ maxWidth: "250px" }} key={props.key}>
                     <ServicesCard {...props} />
                   </Col>
                 );

@@ -36,7 +36,10 @@ function ServicesCard(props) {
           });
         }}
       >
-        <div className="service-icon-container">
+        <div
+          className="service-icon-container"
+          style={{ background: props.color }}
+        >
           <img src={props.icon} className="service-icon" />
         </div>
         <h2 className="service-card-title">{props.title}</h2>
