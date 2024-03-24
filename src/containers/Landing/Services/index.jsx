@@ -23,11 +23,11 @@ function ServicesContainer({ servicesRef }) {
             return (
               <Row justify={"center"} key={props.key}>
                 <Col
-                  xs={13}
-                  sm={8}
-                  md={5}
-                  key={props.key}
-                  style={{ marginTop: "16px" }}
+                  style={{
+                    marginTop: "16px",
+                    maxWidth: "40%",
+                    minWidth: "180px",
+                  }}
                 >
                   <ServicesCard {...props} />
                 </Col>
@@ -39,30 +39,15 @@ function ServicesContainer({ servicesRef }) {
       return oneColumn;
     } else {
       const twoColumns = (
-        <div className="services-two-colomns">
-          <Row justify={"center"} gutter={16}>
-            {ServicesCardConfig.map((props) => {
-              if (props.placement === "top") {
-                return (
-                  <Col xs={8} sm={7} md={7} lg={8} xl={6} key={props.key}>
-                    <ServicesCard {...props} />
-                  </Col>
-                );
-              }
-            })}
-          </Row>
-          <Row justify={"center"} gutter={16} style={{ marginTop: "16px" }}>
-            {ServicesCardConfig.map((props) => {
-              if (props.placement === "bottom") {
-                return (
-                  <Col xs={8} sm={7} md={7} lg={8} xl={6} key={props.key}>
-                    <ServicesCard {...props} />
-                  </Col>
-                );
-              }
-            })}
-          </Row>
-        </div>
+        <Row justify={"center"} gutter={16} style={{ marginTop: "100px" }}>
+          {ServicesCardConfig.map((props) => {
+            return (
+              <Col style={{ maxWidth: "250px" }} key={props.key}>
+                <ServicesCard {...props} />
+              </Col>
+            );
+          })}
+        </Row>
       );
       return twoColumns;
     }

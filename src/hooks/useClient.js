@@ -19,7 +19,7 @@ function useClient() {
   const getClients = useCallback(() => {
     setLoading(true);
     return clientsService
-      .getClients(token)
+      .getClients(auth.user.accessToken)
       .then((response) => {
         setClients(response.data.results);
         setLoading(false);
@@ -40,7 +40,7 @@ function useClient() {
       })
       .catch((err) => {
         setLoading(false);
-        throwError(err.message.message);
+        throwError(err.response.data.message);
       });
   }, []);
 
@@ -60,29 +60,40 @@ function useClient() {
       });
   }, []);
 
-  const updateClient = useCallback(
-    (clientId, payload) => {
-      setLoading(true);
-      return clientsService
-        .updateClient(clientId, payload)
-        .then((response) => {
-          setClient(response.data.results);
-          setLoading(false);
-          return response;
-        })
-        .catch((err) => {
-          setLoading(false);
-          throwError(err.response.data.message);
-        });
-    },
-    []
-  );
+  function getClientListByName(nameValue) {
+    setLoading(true);
+    clientsService
+      .getClientListByName(token, nameValue)
+      .then((response) => {
+        setLoading(false);
+        setClients(response.data.results);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }
+
+  const updateClient = useCallback((clientId, payload) => {
+    setLoading(true);
+    return clientsService
+      .updateClient(clientId, payload)
+      .then((response) => {
+        setClient(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
 
   return {
     getClients,
     createClient,
     getClientByCountryId,
     updateClient,
+    getClientListByName,
     client,
     clients,
     loading,

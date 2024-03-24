@@ -3,7 +3,12 @@ import { apiUrl } from "../helpers/constants";
 
 const clientsService = {
   getClients(token) {
-    return axios.get(`${apiUrl}/clients`, {
+    return axios.get(`${apiUrl}/operations/clients`, {
+      headers: { Authorization: `${token}` },
+    });
+  },
+  getClientListByName(token, name) {
+    return axios.get(`${apiUrl}/operations/clients/name/${name}`, {
       headers: { Authorization: `${token}` },
     });
   },

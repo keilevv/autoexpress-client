@@ -15,13 +15,15 @@ import "./style.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-function MainLayout({ children, defaultLocation = "" }) {
+function MainLayout({ children }) {
   const { isMobileScreen } = useViewport();
   const { logoutUser } = useAuth();
   const navigate = useNavigate();
-  const { items } = useMenu();
+  const { items, defaultSelectedHeader } = useMenu();
   const [collapsed, setCollapsed] = useState(false);
   const [userHeaderProps, setUserHeaderProps] = useState({});
+  const [selectedSider, setSelectedSider] = useState("");
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -29,7 +31,7 @@ function MainLayout({ children, defaultLocation = "" }) {
   const headerItems = [
     { key: "operations", label: "Operaciones" },
     { key: "agenda", label: "Agenda" },
-    { key: "billing", label: "Facturacion" },
+    // { key: "billing", label: "Facturacion" },
   ];
 
   const userItems = [
@@ -60,6 +62,22 @@ function MainLayout({ children, defaultLocation = "" }) {
     setUserHeaderProps({ type: "default" });
   }, [isMobileScreen]);
 
+  const getSelectedSider = () => {
+    const splitItems = window.location.pathname.split("/");
+    headerModules.forEach((module) => {
+      splitItems.forEach((item, index) => {
+        if (module === item) {
+          setSelectedSider(splitItems[index + 1]);
+        } else {
+          setSelectedSider(splitItems[index]);
+        }
+      });
+    });
+  };
+
+  useEffect(() => {
+    getSelectedSider();
+  }, [window.location.pathname]);
   return (
     <Layout className="operations-layout">
       <Sider
@@ -80,8 +98,9 @@ function MainLayout({ children, defaultLocation = "" }) {
           theme="dark"
           mode="inline"
           items={items}
-          defaultSelectedKeys={[defaultLocation]}
+          selectedKeys={[selectedSider]}
           onClick={(value) => {
+            setSelectedSider(value.key);
             headerModules.forEach((module) => {
               if (window.location.pathname.includes(module)) {
                 if (value.key === module) {
@@ -114,12 +133,12 @@ function MainLayout({ children, defaultLocation = "" }) {
             }}
           />
           <Menu
-            selectedKeys={[defaultLocation]}
+            selectedKeys={[defaultSelectedHeader]}
             mode="horizontal"
             items={headerItems}
             style={{ flex: 1, minWidth: 0 }}
             onClick={(value) => {
-              navigate(`/${value.key}`);
+              navigate(`/${value.key}`, { replace: true });
             }}
           />
           <Dropdown menu={userMenuProps} trigger={"click"}>

@@ -1,7 +1,7 @@
 .services-container {
   display: grid;
   /* justify-content: center; */
-  padding: 36px 36px 36px 36px;
+  padding: 50px 50px 50px 50px;
   overflow: hidden;
 
   .services-title {
@@ -16,6 +16,7 @@
   overflow-y: auto;
   max-height: 500px;
   overflow: scroll;
+  margin: auto;
 }
 
 .services-one-column::before,

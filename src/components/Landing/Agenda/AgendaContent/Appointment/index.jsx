@@ -8,7 +8,6 @@ import esES from "antd/lib/locale/es_ES"; //
 /* Hooks*/
 import useAppointment from "../../../../../hooks/useAppointment";
 import "./style.css";
-import { current } from "@reduxjs/toolkit";
 /**
  * @param {{ setForm: () => void }} props
  */
@@ -53,9 +52,15 @@ function AppointmentForm({ setForm }) {
     const currentHour = moment().hour();
 
     // Create an array of hours including all hours before the current hour
-    const disabledHours = Array.from({ length: currentHour }).map(
-      (_, index) => index
-    );
+    let disabledHours = [];
+    if (form.getFieldValue("date").length) {
+      if (form.getFieldValue("date") === dayjs().format("DD/MM/YYYY")) {
+        for (let i = 0; i < currentHour; i++) {
+          disabledHours.push(i);
+        }
+      }
+    }
+
 
     // Add the specific hours you want to disable
     const additionalDisabledHours = [
@@ -92,7 +97,7 @@ function AppointmentForm({ setForm }) {
       initialValues={{
         remember: true,
       }}
-      autoComplete="on"
+      autocomplete="off"
     >
       <div className="appointment-form-container">
         <p className="appointment-info-title"> Ingrese la fecha deseada</p>

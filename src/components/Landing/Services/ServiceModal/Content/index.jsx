@@ -60,40 +60,30 @@ function ServiceModalContent({ type }) {
     );
   }
 
-  if (type === "detailing") {
+  if (type === "special-services") {
     return (
       <>
-        <ul className="service-modal-subtitle">
-          <li className="service-modal-item">Pulido general</li>
-        </ul>
-        <p>
-          Restauramos el brillo y la claridad de la pintura mediante un proceso
-          de pulido meticuloso para dejar tu vehículo como nuevo.
+        <p className="service-modal-subtitle">
+          Servicios de alistamiento y mantenimiento
         </p>
-        <ul className="service-modal-subtitle">
-          <li>Lavado de tapicería</li>
+        <ul>
+          <li className="item">Lavados profesionales</li>
+          <li className="item">Detallado exterior e interior</li>
+          <li className="item">Detallado de motor</li>
+          <li className="item">Nebulización de aire acondicionado</li>
+          <li className="item">Lavado de tapicería</li>
+          <li className="item">Restauración de farolas</li>
+          <li className="item">Polarizado</li>
         </ul>
-        <p>
-          Limpiamos a fondo los asientos, alfombras y paneles interiores para
-          eliminar manchas y olores, devolviendo el interior de tu vehículo a su
-          estado original.
-        </p>
-        <ul className="service-modal-subtitle">
-          <li>Lavado premium de carrocería</li>
+        <p className="service-modal-subtitle">Servicios correctivos</p>
+        <ul>
+          <li className="item">Corrección de pintura</li>
         </ul>
-        <p>
-          Utilizando técnicas de lavado avanzadas y productos de calidad,
-          eliminamos la suciedad y los residuos sin dañar la pintura, dejando tu
-          vehículo con un aspecto reluciente.
-        </p>
-        <ul className="service-modal-subtitle">
-          <li>Aplicación de nanocerámica</li>
+        <p className="service-modal-subtitle">Servicios de protección</p>
+        <ul>
+          <li className="item">Protección nanocerámcia de largo plazo</li>
+          <li className="item">Protección anticorrosiva de chasis</li>
         </ul>
-        <p>
-          Proteja la pintura de tu vehículo contra los elementos y el desgaste
-          diario con nuestro revestimiento de nanocerámica de última generación,
-          que proporciona una barrera duradera y resistente a los arañazos.
-        </p>
       </>
     );
   }

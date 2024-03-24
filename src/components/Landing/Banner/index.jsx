@@ -39,6 +39,17 @@ function Banner({ agendaRef }) {
           Agende una cita con nosotros
         </Button>
       </div>
+      <div className="banner-socials">
+        <a href="https://www.instagram.com/autoexpress_ctg/" target="_blank">
+          <i className="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.facebook.com/ADSANAUTOS" target="_blank">
+          <i className="fa-brands fa-square-facebook"></i>{" "}
+        </a>
+        <a href="https://www.youtube.com/@AUTOEXPRESS_CTG" target="_blank">
+          <i className="fa-brands fa-square-youtube"></i>{" "}
+        </a>
+      </div>
     </div>
   );
 }

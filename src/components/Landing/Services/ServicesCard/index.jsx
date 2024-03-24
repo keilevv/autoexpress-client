@@ -36,7 +36,10 @@ function ServicesCard(props) {
           });
         }}
       >
-        <div className="service-icon-container">
+        <div
+          className="service-icon-container"
+          style={{ background: props.color }}
+        >
           <img src={props.icon} className="service-icon" />
         </div>
         <h2 className="service-card-title">{props.title}</h2>
@@ -49,7 +52,7 @@ function ServicesCard(props) {
             >
               {renderDescription()}
             </span>
-            {props.type !== "parts" && props.type !== "membership" && (
+            {props.showMore && (
               <p
                 onClick={() => {
                   setOpen(true);

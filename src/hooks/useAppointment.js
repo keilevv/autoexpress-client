@@ -1,10 +1,28 @@
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import appointmentsService from "../services/appointments";
 
 function useAppointment() {
+  const token = useSelector((state) => state.auth.user.accessToken);
   const [unavailableTimes, setUnavailableTimes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [appointment, setAppointment] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+
+
+
+  function getAppointments() {
+    setLoading(true);
+    appointmentsService
+      .getAppointmentList(token)
+      .then((response) => {
+        setLoading(false);
+        setAppointments(response.data.results);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }
 
   const getUnavailableTimesOfDay = useCallback((date) => {
     setLoading(true);
@@ -44,6 +62,8 @@ function useAppointment() {
   return {
     getUnavailableTimesOfDay,
     createAppointment,
+    getAppointments,
+    appointments,
     unavailableTimes,
     appointment,
     loading,

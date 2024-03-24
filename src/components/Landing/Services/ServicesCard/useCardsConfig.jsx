@@ -1,9 +1,8 @@
-import BodyWorkIcon from "../../../../assets/icons/piston-icon.png";
-import PaintIcon from "../../../../assets/icons/car-wash-icon.png";
-import DetailingIcon from "../../../../assets/icons/brakes-icon.png";
-import PartsIcon from "../../../../assets/icons/wheel-icon.png";
-import MembershipIcon from "../../../../assets/icons/transmission-icon.png";
 import ServiceModalContent from "../ServiceModal/Content";
+import PaintBodyworkIcon from "../../../../assets/icons/spray-gun-white.png";
+import DiagnosticIcon from "../../../../assets/icons/magnifier-white.png";
+import ElectromecanicIcon from "../../../../assets/icons/tools-white.png";
+import SpecialServicesIcon from "../../../../assets/icons/star-white.png";
 
 function useCardsConfig() {
   const bodyworkDescription = (
@@ -12,75 +11,82 @@ function useCardsConfig() {
         <li className="item">Golpes y abolladuras</li>
         <li className="item">Enderezado de chasis</li>
         <li className="item">Reemplazo de páneles</li>
-      </ul>
-    </>
-  );
-
-  const paintDescription = (
-    <>
-      <ul className="service-card-description list">
         <li className="item">Pintura de fábrica</li>
         <li className="item">Pintura personalizada</li>
-        <li className="item">Correción de defectos</li>
       </ul>
     </>
   );
 
-  const detailingDescription = (
+  const diagnosticDescription = (
     <>
       <ul className="service-card-description list">
-        <li className="item">Pulido general</li>
-        <li className="item">Lavado de tapicería</li>
-        <li className="item">Lavado premium de carrocería</li>
-        <li className="item">Aplicación de nanocerámica</li>
+        <li className="item">Cotización de reparaciones y partes</li>
+        <li className="item">Convenio con aseguradoras</li>
+        <li className="item">Reclamo y/o aviso del siniestro</li>
+      </ul>
+    </>
+  );
+  const electromecanicDescription = (
+    <>
+      <p>
+        Se detectan fallas y/o partes averiadas y se procede a su reparación o
+        sustitución, dejando en optimas condiciones motor y demás sistemas
+        electromecánicos.
+      </p>
+    </>
+  );
+
+  const specialServicesDescription = (
+    <>
+      <ul className="service-card-description list">
+        <li className="item">Servicios de alistamiento y mantenimiento</li>
+        <li className="item">Servicios correctivos</li>
+        <li className="item">Servicios correctivos</li>
       </ul>
     </>
   );
   const ServicesCardConfig = [
     {
-      key: "bodywork",
-      type: "bodywork",
+      key: "paint-bodywork",
+      type: "paint-bodywork",
       placement: "top",
-      icon: BodyWorkIcon,
-      title: "Latonería",
-      content: <ServiceModalContent type={"bodywork"} />,
+      icon: PaintBodyworkIcon,
+      title: "Latonería y pintura",
+      // content: <ServiceModalContent type={"paint-bodywork"} />,
       description: bodyworkDescription,
+      color: "#F90E0C",
     },
     {
-      key: "paint",
-      type: "paint",
+      key: "diagnostic",
+      type: "diagnostic",
       placement: "top",
-      icon: PaintIcon,
-      title: "Pintura",
-      content: <ServiceModalContent type={"paint"} />,
-      description: paintDescription,
+      icon: DiagnosticIcon,
+      title: "Diagnostico y peritaje",
+      // content: <ServiceModalContent type={"diagnostic"} />,
+      description: diagnosticDescription,
+      color: "#06823D",
     },
     {
-      type: "detailing",
-      key: "detailing",
+      type: "electromecanic",
+      key: "electromecanic",
       placement: "bottom",
-      icon: DetailingIcon,
-      title: "Detailing",
-      content: <ServiceModalContent type={"detailing"} />,
-      description: detailingDescription,
+      icon: ElectromecanicIcon,
+      title: "Electromecánica",
+      // content: <ServiceModalContent type={"electromecanic"} />,
+      description: electromecanicDescription,
+      color: "#126398",
     },
     {
-      type: "parts",
-      key: "parts",
+      type: "special-services",
+      key: "special-services",
       placement: "bottom",
-      icon: PartsIcon,
-      title: "Repuestos",
-      description:
-        "Importamos repuestos originales con proveedores de confianza para cualquier marca.",
-    },
-    {
-      key: "membership",
-      type: "membership",
-      placement: "bottom",
-      icon: MembershipIcon,
-      title: "Membresía",
-      description:
-        "¡Espere próximamente nuestro plan para miembros amantes de su vehículo!",
+      icon: SpecialServicesIcon,
+      title: "Servicios Especiales",
+      content: <ServiceModalContent type={"special-services"} />,
+
+      description: specialServicesDescription,
+      color: "#FF9800",
+      showMore: true,
     },
   ];
   function getCardContent(key = "") {

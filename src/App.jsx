@@ -9,15 +9,17 @@ import useMenu from "./hooks/useMenu";
 import OperationsContainer from "./containers/Operations";
 import CarsContainer from "./containers/Operations/Cars";
 import LandingContainer from "./containers/Landing";
+import ClientsContainer from "./containers/Operations/Clients";
+
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
-import Clients from "./components/operations/Clients";
 import Settings from "./components/operations/Settings";
 import Dashboard from "./components/operations/Dashboard";
 
 /* Styling */
 import "./App.css";
+import AgendaContainer from "./containers/Agenda";
 
 function App() {
   const { defaultSelectedHeader } = useMenu();
@@ -60,7 +62,9 @@ function App() {
             path="/operations/cars"
             element={
               <ProtectedRoute>
-                <CarsContainer />
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <CarsContainer />
+                </MainLayout>
               </ProtectedRoute>
             }
           />
@@ -79,7 +83,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <Clients />
+                  <ClientsContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -99,12 +103,10 @@ function App() {
             path="/agenda"
             element={
               <ProtectedRoute>
-                <OperationsContainer />
+                <AgendaContainer />
               </ProtectedRoute>
             }
-          >
-            <Route path="/agenda" element={<OperationsContainer />} />
-          </Route>
+          ></Route>
           <Route
             path="/billing"
             element={

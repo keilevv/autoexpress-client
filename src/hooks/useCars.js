@@ -4,28 +4,36 @@ import carsService from "../services/cars";
 import { throwError } from "../helpers";
 
 function useCars() {
-  const auth = useSelector((state) => state.auth);
-  const [token, setToken] = useState(null);
+  const token = useSelector((state) => state.auth.user.accessToken);
   const [cars, setCars] = useState([]);
   const [carBrands, setCarBrands] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(null);
 
-  useEffect(() => {
-    if (auth.user && auth.user.acessToken) {
-      setToken(auth.user.accessToken);
-    }
-  }, [auth]);
-
   function getCars() {
+    setLoading(true);
     carsService
       .get(token)
       .then((response) => {
+        setLoading(false);
         setCars(response.data.results);
       })
       .catch((err) => {
-        console.log("error", error);
+        setLoading(false);
+      });
+  }
+
+  function getCarListByPlate(plateValue) {
+    setLoading(true);
+    carsService
+      .getCarListByPlate(token, plateValue)
+      .then((response) => {
+        setLoading(false);
+        setCars(response.data.results);
+      })
+      .catch((err) => {
+        setLoading(false);
       });
   }
 
@@ -38,10 +46,9 @@ function useCars() {
         return response;
       })
       .catch((err) => {
-        console.log("err", err);
         setLoading(false);
         // Extract relevant information from the error response
-        throwError(err);
+        throwError(err.response.data.message);
       });
   }, []);
 
@@ -120,6 +127,7 @@ function useCars() {
     createCar,
     getCarByPlate,
     updateCar,
+    getCarListByPlate,
   };
 }
 

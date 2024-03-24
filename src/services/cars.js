@@ -3,7 +3,7 @@ import { apiUrl } from "../helpers/constants";
 
 const carsService = {
   get(token) {
-    return axios.get(`${apiUrl}/cars`, {
+    return axios.get(`${apiUrl}/operations/cars`, {
       headers: { Authorization: `${token}` },
     });
   },
@@ -27,6 +27,11 @@ const carsService = {
   getCarByPlate(carPlate, clientId) {
     return axios.post(`${apiUrl}/car/plate/${carPlate}`, {
       client_id: clientId,
+    });
+  },
+  getCarListByPlate(token, carPlate) {
+    return axios.get(`${apiUrl}/operations/cars/plate/${carPlate}`, {
+      headers: { Authorization: `${token}` },
     });
   },
   updateCar(carId, payload) {
