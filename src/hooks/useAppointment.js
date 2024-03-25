@@ -4,13 +4,17 @@ import appointmentsService from "../services/appointments";
 
 function useAppointment() {
   const auth = useSelector((state) => state.auth);
-  const token = useSelector((state) => state.auth.user.accessToken);
+  const [token, setToken] = useState("");
   const [unavailableTimes, setUnavailableTimes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [appointment, setAppointment] = useState(null);
   const [appointments, setAppointments] = useState([]);
 
-  console.log("authAppointment", auth);
+  useEffect(() => {
+    if (auth.user && auth.user.accessToken) {
+      setToken(auth.user.accessToken);
+    }
+  }, [auth]);
 
   function getAppointments() {
     setLoading(true);
