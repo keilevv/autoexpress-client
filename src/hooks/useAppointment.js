@@ -3,13 +3,14 @@ import { useSelector } from "react-redux";
 import appointmentsService from "../services/appointments";
 
 function useAppointment() {
+  const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.auth.user.accessToken);
   const [unavailableTimes, setUnavailableTimes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [appointment, setAppointment] = useState(null);
   const [appointments, setAppointments] = useState([]);
 
-
+  console.log("authAppointment", auth);
 
   function getAppointments() {
     setLoading(true);
