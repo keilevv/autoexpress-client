@@ -5,25 +5,16 @@ import { throwError } from "../helpers";
 
 function useCars() {
   const auth = useSelector((state) => state.auth);
-  const [token, setToken] = useState("");
   const [cars, setCars] = useState([]);
   const [carBrands, setCarBrands] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(null);
 
-  useEffect(() => {
-    if (auth.user && auth.user.accessToken) {
-      setToken(auth.user.accessToken);
-    }
-  }, [auth]);
-  console.log("authCars", auth);
-
-
-  function getCars() {
+  const getCars = useCallback(() => {
     setLoading(true);
     carsService
-      .get(token)
+      .get(auth.user.accessToken)
       .then((response) => {
         setLoading(false);
         setCars(response.data.results);
@@ -31,12 +22,11 @@ function useCars() {
       .catch((err) => {
         setLoading(false);
       });
-  }
-
+  }, []);
   function getCarListByPlate(plateValue) {
     setLoading(true);
     carsService
-      .getCarListByPlate(token, plateValue)
+      .getCarListByPlate(auth.user.accessToken, plateValue)
       .then((response) => {
         setLoading(false);
         setCars(response.data.results);

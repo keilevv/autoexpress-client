@@ -4,22 +4,15 @@ import appointmentsService from "../services/appointments";
 
 function useAppointment() {
   const auth = useSelector((state) => state.auth);
-  const [token, setToken] = useState("");
   const [unavailableTimes, setUnavailableTimes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [appointment, setAppointment] = useState(null);
   const [appointments, setAppointments] = useState([]);
 
-  useEffect(() => {
-    if (auth.user && auth.user.accessToken) {
-      setToken(auth.user.accessToken);
-    }
-  }, [auth]);
-
   function getAppointments() {
     setLoading(true);
     appointmentsService
-      .getAppointmentList(token)
+      .getAppointmentList(auth.user.accessToken)
       .then((response) => {
         setLoading(false);
         setAppointments(response.data.results);

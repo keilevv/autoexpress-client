@@ -16,7 +16,6 @@ function useClient() {
     }
   }, [auth]);
 
-  console.log("authClient", auth);
 
   const getClients = useCallback(() => {
     setLoading(true);

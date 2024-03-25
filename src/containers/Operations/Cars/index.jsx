@@ -12,7 +12,9 @@ function CarsContainer() {
   const { cars, getCars, getCarListByPlate, loading } = useCars();
 
   useEffect(() => {
-    getCars();
+    if (user && user.accessToken) {
+      getCars(user.accessToken);
+    }
   }, [user]);
 
   function handleSearchCar(plateValue) {
