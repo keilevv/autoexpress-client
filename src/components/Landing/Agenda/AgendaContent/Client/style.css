@@ -37,7 +37,7 @@
   padding: 0px 10px;
 }
 .client-form-col-2 {
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 /* Media query for mobile screens */
 @media (max-width: 600px) {

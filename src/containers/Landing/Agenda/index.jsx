@@ -14,7 +14,6 @@ function AgendaContainer({ agendaRef }) {
           Para su comodidad, ahora puede agendar una cita directamente con
           nosotros.
         </h1>
-
         <Agenda />
       </div>
     </section>

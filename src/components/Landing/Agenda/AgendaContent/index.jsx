@@ -19,7 +19,7 @@ import dayjs from "dayjs";
  */
 function AgendaContent({ isModalVisible, setIsModalVisible }) {
   const { token } = theme.useToken();
-  const [current, setCurrent] = useState(0);
+  const [current, setCurrent] = useState(2);
   const [form, setForm] = useState(null);
   const [showFullForm, setShowFullForm] = useState(false);
   const [appointmentPayload, setaAppointmentPayload] = useState({

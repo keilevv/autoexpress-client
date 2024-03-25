@@ -43,8 +43,13 @@ function AppointmentForm({ setForm }) {
       current && current > moment().add(1, "month").startOf("day");
     const isToday = current.isSame(moment(), "day");
     const isAfterWorkHours = current && current.hour() > 17;
-
-    return isBeforeToday || isAfterOneMonth || (isToday && isAfterWorkHours);
+    const isSunday = current && current.day() === 0;
+    return (
+      isBeforeToday ||
+      isAfterOneMonth ||
+      isSunday ||
+      (isToday && isAfterWorkHours)
+    );
   };
 
   const disabledTime = (current) => {
@@ -60,7 +65,6 @@ function AppointmentForm({ setForm }) {
         }
       }
     }
-
 
     // Add the specific hours you want to disable
     const additionalDisabledHours = [
