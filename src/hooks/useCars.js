@@ -5,14 +5,20 @@ import { throwError } from "../helpers";
 
 function useCars() {
   const auth = useSelector((state) => state.auth);
-  const token = useSelector((state) => state.auth.user.accessToken);
+  const [token, setToken] = useState("");
   const [cars, setCars] = useState([]);
   const [carBrands, setCarBrands] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(null);
 
+  useEffect(() => {
+    if (auth.user && auth.user.accessToken) {
+      setToken(auth.user.accessToken);
+    }
+  }, [auth]);
   console.log("authCars", auth);
+
 
   function getCars() {
     setLoading(true);
