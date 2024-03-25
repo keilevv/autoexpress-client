@@ -4,12 +4,15 @@ import carsService from "../services/cars";
 import { throwError } from "../helpers";
 
 function useCars() {
+  const auth = useSelector((state) => state.auth);
   const token = useSelector((state) => state.auth.user.accessToken);
   const [cars, setCars] = useState([]);
   const [carBrands, setCarBrands] = useState([]);
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(null);
+
+  console.log("authCars", auth);
 
   function getCars() {
     setLoading(true);
