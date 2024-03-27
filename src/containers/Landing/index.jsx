@@ -39,7 +39,10 @@ function LandingContainer() {
 
   return (
     <Layout className="landing-container">
-      <Header className={showNavbar ? "sticky-navbar" : "ghost-navbar"} style={{position: "fixed"}}>
+      <Header
+        className={showNavbar ? "sticky-navbar" : "ghost-navbar"}
+        style={{ position: "fixed" }}
+      >
         <Menu
           style={{ backgroundColor: "#242424" }}
           theme="dark"
@@ -70,7 +73,7 @@ function LandingContainer() {
       <Footer
         style={{ textAlign: "center", background: "#242424", color: "white" }}
       >
-        Autoexpress S.A.S. All rights reserved
+        Autoexpress© 2024. All rights reserved
       </Footer>
     </Layout>
   );
