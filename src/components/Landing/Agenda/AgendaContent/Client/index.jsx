@@ -23,7 +23,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
   };
 
   const validateCountryId = async (rule, value) => {
-    const alphaNumericRegex = /^\d{10}$/;
+    const alphaNumericRegex = /^(?:\d{7}|\d{10})$/;
 
     if (!value || alphaNumericRegex.test(value)) {
       return Promise.resolve();

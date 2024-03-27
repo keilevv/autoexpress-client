@@ -165,7 +165,7 @@ function MainLayout({ children }) {
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Autoexpress S.A.S ©2023 Created by keilev.
+          Autoexpress© 2024 Created by Caleb Villalba.
         </Footer>
       </Layout>
     </Layout>
