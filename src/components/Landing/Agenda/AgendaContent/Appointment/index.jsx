@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 /* Components */
-import { Form, TimePicker, Calendar, theme, Row, ConfigProvider } from "antd";
+import { Form, TimePicker, Calendar, theme, Row } from "antd";
 /* Helpers */
 import dayjs from "dayjs";
 import moment from "moment";
-import esES from "antd/lib/locale/es_ES"; //
 /* Hooks*/
 import useAppointment from "../../../../../hooks/useAppointment";
 import "./style.css";
@@ -118,23 +117,19 @@ function AppointmentForm({ setForm }) {
               ]}
             >
               <div style={wrapperStyle}>
-                <ConfigProvider locale={esES}>
-                  <Calendar
-                    onSelect={(date) => {
-                      getUnavailableTimesOfDay(
-                        dayjs(date).format("DD/MM/YYYY")
-                      );
-                      form.setFieldValue(
-                        "date",
-                        dayjs(date).format("DD/MM/YYYY")
-                      );
-                    }}
-                    fullscreen={false}
-                    disabledDate={(current) => {
-                      return disabledDate(current);
-                    }}
-                  />
-                </ConfigProvider>
+                <Calendar
+                  onSelect={(date) => {
+                    getUnavailableTimesOfDay(dayjs(date).format("DD/MM/YYYY"));
+                    form.setFieldValue(
+                      "date",
+                      dayjs(date).format("DD/MM/YYYY")
+                    );
+                  }}
+                  fullscreen={false}
+                  disabledDate={(current) => {
+                    return disabledDate(current);
+                  }}
+                />
               </div>
             </Form.Item>
           </Row>

@@ -3,6 +3,11 @@ import { ConfigProvider } from "antd";
 import LoginContainer from "./containers/Login";
 import MainLayout from "./containers/Layout";
 import ProtectedRoute from "./helpers/ProtectedRoute";
+import esES from "antd/lib/locale/es_ES";
+import dayjs from "dayjs";
+import "dayjs/locale/es-mx";
+dayjs.locale("es-mx");
+
 /* Hooks */
 import useMenu from "./hooks/useMenu";
 /* Containers */
@@ -26,6 +31,7 @@ function App() {
   return (
     <div className="app">
       <ConfigProvider
+        locale={esES}
         theme={{
           token: {
             // Seed Token
