@@ -45,10 +45,10 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
   }, [brand]);
 
   useEffect(() => {
-    if (brand.length) {
+    if (brand && brand.length) {
       form.setFieldValue("brand", brand);
     }
-    if (model.length) {
+    if (model && model.length) {
       form.setFieldValue("model", model);
     }
   }, [brand, model]);
@@ -205,7 +205,10 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                     options={carBrands}
                     onSearch={(value) => {
                       debounceFn(value);
-                      setBrand(value);
+                      if (value) {
+                        setBrand(value);
+                      }
+
                       form.resetFields(["model"]);
                     }}
                     onChange={(value) => {
@@ -233,14 +236,17 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                   ]}
                 >
                   <Select
+                    value={model}
                     allowClear
                     disabled={disableModels && !car}
                     loading={loading}
                     showSearch
                     options={carModels}
                     onSearch={(value) => {
-                      setModel(value);
-                      debounceFn(value, brand);
+                      if (value) {
+                        setModel(value);
+                        debounceFn(value, brand);
+                      }
                     }}
                     onChange={(value) => {
                       if (value.length) {

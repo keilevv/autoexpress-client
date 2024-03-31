@@ -16,7 +16,6 @@ function useClient() {
     }
   }, [auth]);
 
-
   const getClients = useCallback(() => {
     setLoading(true);
     return clientsService
@@ -41,7 +40,7 @@ function useClient() {
       })
       .catch((err) => {
         setLoading(false);
-        throwError(err.response.data.message);
+        throwError(err.response.data.error);
       });
   }, []);
 
