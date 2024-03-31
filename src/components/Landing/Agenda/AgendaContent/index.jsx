@@ -260,7 +260,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
   };
 
   const handleGetCar = (values) => {
-    getCarByPlate(values.plate, appointmentPayload.client)
+    getCarByPlate(values.plate, appointmentPayload.client._id)
       .then((response) => {
         notification.success({
           message: "Vehículo encontrado",

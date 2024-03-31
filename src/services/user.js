@@ -7,9 +7,14 @@ const userService = {
       .post(`${apiUrl}/auth/login`, { ...data })
       .then((response) => response);
   },
-  createUser(data) {
+  createUser(payload) {
     return axios.post(`${apiUrl}/auth/register`, payload, {
       headers: { Authorization: `JWT ${token}` },
+    });
+  },
+  getUser(token, userId) {
+    return axios.get(`${apiUrl}/user/${userId}`, {
+      headers: { Authorization: `${token}` },
     });
   },
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -17,12 +18,17 @@ const { Header, Content, Footer, Sider } = Layout;
 
 function MainLayout({ children }) {
   const { isMobileScreen } = useViewport();
-  const { logoutUser } = useAuth();
+  const { logoutUser, getUser } = useAuth();
   const navigate = useNavigate();
   const { items, defaultSelectedHeader } = useMenu();
   const [collapsed, setCollapsed] = useState(false);
   const [userHeaderProps, setUserHeaderProps] = useState({});
   const [selectedSider, setSelectedSider] = useState("");
+  const auth = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    getUser(auth.user.id);
+  }, []);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
