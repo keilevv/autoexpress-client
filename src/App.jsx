@@ -109,7 +109,9 @@ function App() {
             path="/agenda"
             element={
               <ProtectedRoute>
-                <AgendaContainer />
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <AgendaContainer />
+                </MainLayout>
               </ProtectedRoute>
             }
           ></Route>

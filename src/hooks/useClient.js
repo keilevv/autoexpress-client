@@ -9,6 +9,7 @@ function useClient() {
   const [loading, setLoading] = useState(false);
   const [clients, setClients] = useState([]);
   const [client, setClient] = useState(null);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (auth.user && auth.user.accessToken) {
@@ -16,12 +17,15 @@ function useClient() {
     }
   }, [auth]);
 
-  const getClients = useCallback(() => {
+  const getClients = useCallback((page = 1, limit = 10, filter = "") => {
+    
     setLoading(true);
     return clientsService
-      .getClients(auth.user.accessToken)
+      .getClients(auth.user.accessToken, page, limit, filter)
       .then((response) => {
+        setCount(response.data.count);
         setClients(response.data.results);
+
         setLoading(false);
       })
       .catch((err) => {
@@ -97,6 +101,7 @@ function useClient() {
     client,
     clients,
     loading,
+    count,
   };
 }
 

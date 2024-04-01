@@ -1,9 +1,9 @@
 import { Table, Tag, Input } from "antd";
 import "./style.css";
 /**
- * @param {{ cars: any, getCars: () => void, loading: boolean }} props
+ * @param {{ cars: any, getCars: () => void, loading: boolean,  pagination: any, setPagination: () => void }} props
  */
-function CarsTable({ cars, getCars, loading }) {
+function CarsTable({ cars, loading, pagination, setPagination }) {
   const columns = [
     {
       title: "Placa",
@@ -60,10 +60,20 @@ function CarsTable({ cars, getCars, loading }) {
     };
   });
 
+  const handleTableChange = (newPagination) => {
+    setPagination(newPagination);
+  };
+
   return (
     <>
       <div className="table-container">
-        <Table dataSource={dataSource} columns={columns} loading={loading} />
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          loading={loading}
+          pagination={pagination}
+          onChange={handleTableChange}
+        />
       </div>
     </>
   );

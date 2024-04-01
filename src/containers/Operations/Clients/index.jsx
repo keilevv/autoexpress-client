@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 /* Hooks*/
 import useClient from "../../../hooks/useClient";
 /* Components */
@@ -10,29 +10,34 @@ import { useSelector } from "react-redux";
 
 function ClientsContainer() {
   const user = useSelector((state) => state.auth.user);
-  const { clients, getClients, loading, getClientListByName } = useClient();
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+
+  const { clients, count, getClients, loading } = useClient();
 
   useEffect(() => {
-    getClients();
-  }, [user]);
+    setPagination({ ...pagination, total: count });
+  }, [count]);
 
-  function handleSearchClient(nameValue) {
-    if (!nameValue) {
-      getClients();
-      return;
-    }
-    getClientListByName(nameValue);
-  }
+  useEffect(() => {
+    getClients(pagination.current, pagination.pageSize, "");
+  }, [pagination.current, pagination.pageSize, user]);
+
   return (
     <div className="clients-container">
       <h1>Clientes</h1>
-      <TableActions onSearch={handleSearchClient} />
+      <TableActions />
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Spin size="large" style={{ marginTop: "50px" }} />
         </div>
       ) : (
         <ClientsTable
+          pagination={pagination}
+          setPagination={setPagination}
           clients={clients}
           getClients={getClients}
           loading={loading}

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 /* Hooks*/
 import useCars from "../../../hooks/useCars";
 /* Components */
@@ -9,33 +9,38 @@ import { Spin } from "antd";
 
 function CarsContainer() {
   const user = useSelector((state) => state.auth.user);
-  const { cars, getCars, getCarListByPlate, loading } = useCars();
+  const { cars, count, getCars, loading } = useCars();
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
 
   useEffect(() => {
-    if (user && user.accessToken) {
-      getCars(user.accessToken);
-    }
-  }, [user]);
+    setPagination({ ...pagination, total: count });
+  }, [count]);
 
-  function handleSearchCar(plateValue) {
-    if (!plateValue) {
-      getCars();
-      return;
-    }
-    getCarListByPlate(plateValue);
-  }
+  useEffect(() => {
+    getCars(pagination.current, pagination.pageSize, "");
+  }, [pagination.current, pagination.pageSize, user]);
 
   return (
     <div className="cars-container">
       <h1>Autos</h1>
-      <TableActions onSearch={handleSearchCar} />
+      <TableActions />
 
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Spin size="large" style={{ marginTop: "50px" }} />
         </div>
       ) : (
-        <CarsTable cars={cars} getCars={getCars} loading={loading} />
+        <CarsTable
+          cars={cars}
+          getCars={getCars}
+          loading={loading}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
       )}
     </div>
   );

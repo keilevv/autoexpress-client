@@ -8,19 +8,21 @@ function useAppointment() {
   const [loading, setLoading] = useState(false);
   const [appointment, setAppointment] = useState(null);
   const [appointments, setAppointments] = useState([]);
+  const [count, setCount] = useState(0);
 
-  function getAppointments() {
+  const getAppointments = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     appointmentsService
-      .getAppointmentList(auth.user.accessToken)
+      .getAppointmentList(auth.user.accessToken, page, limit, filter)
       .then((response) => {
         setLoading(false);
         setAppointments(response.data.results);
+        setCount(response.data.count);
       })
       .catch((err) => {
         setLoading(false);
       });
-  }
+  }, []);
 
   const getUnavailableTimesOfDay = useCallback((date) => {
     setLoading(true);
@@ -65,6 +67,7 @@ function useAppointment() {
     unavailableTimes,
     appointment,
     loading,
+    count,
   };
 }
 

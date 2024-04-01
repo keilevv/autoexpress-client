@@ -10,19 +10,22 @@ function useCars() {
   const [carModels, setCarModels] = useState([]);
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState(null);
+  const [count, setCount] = useState(0);
 
-  const getCars = useCallback(() => {
+  const getCars = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     carsService
-      .get(auth.user.accessToken)
+      .get(auth.user.accessToken, page, limit, filter)
       .then((response) => {
         setLoading(false);
+        setCount(response.data.count);
         setCars(response.data.results);
       })
       .catch((err) => {
         setLoading(false);
       });
   }, []);
+
   function getCarListByPlate(plateValue) {
     setLoading(true);
     carsService
@@ -46,7 +49,6 @@ function useCars() {
       })
       .catch((err) => {
         setLoading(false);
-        // Extract relevant information from the error response
         throwError(err.response.data.message);
       });
   }, []);
@@ -121,6 +123,7 @@ function useCars() {
     carBrands,
     loading,
     carModels,
+    count,
     getCars,
     getCarsApi,
     createCar,
