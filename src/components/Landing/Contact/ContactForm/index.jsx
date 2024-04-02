@@ -1,14 +1,29 @@
-import { Form, Input, Button } from "antd";
-import NumberInput from "../../../Common/NumberInput";
-import "./style.css";
 import { useState } from "react";
+import { Form, Input, Button, notification } from "antd";
+import NumberInput from "../../../Common/NumberInput";
+import useMessages from "../../../../hooks/useMessages";
+import "./style.css";
 function ContactForm() {
+  const { createMessage, loading } = useMessages();
   const [showClear, setShowClear] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    console.log("Received values:", values);
-    // You can handle form submission logic here
+    createMessage(values)
+      .then(() => {
+        notification.success({
+          message: "Mensaje enviado con exito",
+          description: "Un operario se pondrá en contacto con usted.",
+        });
+        form.resetFields();
+        showClear(false);
+      })
+      .catch(() => {
+        notification.error({
+          message: "Error al enviar mensaje",
+          description: "Por favor intentelo nuevamente mas tarde.",
+        });
+      });
   };
 
   const validatePhoneNumber = async (rule, value) => {
@@ -44,7 +59,7 @@ function ContactForm() {
       <div>
         <span className="contact-form-input-label">Teléfono</span>
         <Form.Item
-          name="phone"
+          name="telephone_number"
           rules={[
             { required: true, message: "Ingrese su teléfono" },
             {
@@ -82,7 +97,7 @@ function ContactForm() {
         >
           <Input.TextArea
             className="contact-form-input-text"
-            maxLength={200}
+            maxLength={280}
             allowClear
           />
         </Form.Item>
@@ -93,6 +108,7 @@ function ContactForm() {
             type="primary"
             htmlType="submit"
             className="contact-form-submit"
+            loading={loading}
           >
             <span className="contact-form-input-label">Enviar</span>
           </Button>

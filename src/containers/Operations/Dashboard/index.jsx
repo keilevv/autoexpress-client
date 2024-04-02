@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Dashboard from "../../components/operations/Dashboard";
-import MainLayout from "../Layout";
-import MessagesTable from "../../components/operations/Dashboard/MessagesTable";
-import useMessages from "../../hooks/useMessages";
-import useMenu from "../../hooks/useMenu";
-function OperationsContainer() {
+import Dashboard from "../../../components/operations/Dashboard";
+import useMessages from "../../../hooks/useMessages";
+import MessagesTable from "../../../components/operations/Dashboard/MessagesTable";
+
+function DashboardContainer() {
   const user = useSelector((state) => state.auth.user);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 5,
     total: 0,
   });
-
-  console.log("pagination", pagination);
 
   const { messages, count, getMessages, loading } = useMessages();
 
@@ -26,9 +23,15 @@ function OperationsContainer() {
   }, [pagination.current, pagination.pageSize, user]);
 
   return (
-    <MainLayout defaultLocation={defaultSelectedItem}>
+    <div className="dashboard-container">
       <Dashboard />
-    </MainLayout>
+      <h2>Mensajes</h2>
+      <MessagesTable
+        messages={messages}
+        pagination={pagination}
+        setPagination={setPagination}
+      />
+    </div>
   );
 }
-export default OperationsContainer;
+export default DashboardContainer;
