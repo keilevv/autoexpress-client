@@ -26,10 +26,14 @@ function ClientsContainer() {
     getClients(pagination.current, pagination.pageSize, "");
   }, [pagination.current, pagination.pageSize, user]);
 
+  const handleSearch = (value) => {
+    getClients(pagination.current, pagination.pageSize, "name=" + value);
+  };
+
   return (
     <div className="clients-container">
       <h1>Clientes</h1>
-      <TableActions />
+      <TableActions onSearch={handleSearch} type="clients" />
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Spin size="large" style={{ marginTop: "50px" }} />

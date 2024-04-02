@@ -24,10 +24,14 @@ function CarsContainer() {
     getCars(pagination.current, pagination.pageSize, "");
   }, [pagination.current, pagination.pageSize, user]);
 
+  const handleSearch = (value) => {
+    getCars(pagination.current, pagination.pageSize, "plate=" + value);
+  };
+
   return (
     <div className="cars-container">
       <h1>Autos</h1>
-      <TableActions />
+      <TableActions onSearch={handleSearch} type="cars" />
 
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center" }}>

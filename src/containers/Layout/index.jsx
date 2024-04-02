@@ -21,7 +21,7 @@ function MainLayout({ children }) {
   const { logoutUser, getUser } = useAuth();
   const navigate = useNavigate();
   const { items, defaultSelectedHeader } = useMenu();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const [userHeaderProps, setUserHeaderProps] = useState({});
   const [selectedSider, setSelectedSider] = useState("");
   const auth = useSelector((state) => state.auth);
@@ -41,7 +41,6 @@ function MainLayout({ children }) {
   ];
 
   const userItems = [
-    { key: "user-settings", label: "Opciones de usuario" },
     {
       key: "logout",
       label: (
