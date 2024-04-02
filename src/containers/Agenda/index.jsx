@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 /* Components */
 import { Spin } from "antd";
@@ -11,14 +11,24 @@ import useMenu from "../../hooks/useMenu";
 
 function AgendaContainer() {
   const user = useSelector((state) => state.auth.user);
-  const { appointments, loading, getAppointments } = useAppointment();
+  const { appointments, loading, getAppointments, count } = useAppointment();
   const { defaultSelectedItem } = useMenu();
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
 
   useEffect(() => {
-    getAppointments();
-  }, [user]);
+    setPagination({ ...pagination, total: count });
+  }, [count]);
+
+  useEffect(() => {
+    getAppointments(pagination.current, pagination.pageSize, "");
+  }, [pagination.current, pagination.pageSize, user]);
+
   return (
-    <MainLayout defaultLocation={defaultSelectedItem}>
+    <div className="agenda-container">
       <h1>Agenda</h1>
       <TableActions />
       {loading ? (
@@ -30,9 +40,11 @@ function AgendaContainer() {
           appointments={appointments}
           getAppointments={getAppointments}
           loading={loading}
+          pagination={pagination}
+          setPagination={setPagination}
         />
       )}
-    </MainLayout>
+    </div>
   );
 }
 export default AgendaContainer;

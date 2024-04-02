@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { Table, Tag } from "antd";
 import "./style.css";
 /**
- * @param {{ clients: any, getClients: () => void, loading: boolean }} props
+ * @param {{ clients: any, getClients: () => void, loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
-function ClientsTable({ clients, getClients, loading }) {
-  const [data, setData] = useState([]);
+function ClientsTable({ clients, loading, pagination, setPagination }) {
   const columns = [
     {
       title: "Nombre",
@@ -40,25 +39,29 @@ function ClientsTable({ clients, getClients, loading }) {
     },
   ];
 
-  useEffect(() => {
-    if (clients.length) {
-      const dataSource = clients.map((item, index) => {
-        return {
-          key: index,
-          full_name: item.name + " " + item.surname + " " + item.lastname,
-          cars: item.cars,
-          email: item.email,
-          telephone_number: item.telephone_number,
-        };
-      });
-      setData(dataSource);
-    }
-  }, [clients]);
+  const handleTableChange = (newPagination) => {
+    setPagination(newPagination);
+  };
+
+  const dataSource = clients.map((item, index) => {
+    return {
+      key: index,
+      full_name: item.name + " " + item.surname + " " + item.lastname,
+      cars: item.cars,
+      email: item.email,
+      telephone_number: item.telephone_number,
+    };
+  });
 
   return (
     <>
       <div className="table-container">
-        <Table dataSource={data} columns={columns} />
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          pagination={pagination}
+          onChange={handleTableChange}
+        />
       </div>
     </>
   );

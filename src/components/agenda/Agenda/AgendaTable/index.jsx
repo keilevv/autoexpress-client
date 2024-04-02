@@ -1,8 +1,13 @@
 import { Table, Tag, Input } from "antd";
 /**
- * @param {{ appointments: any, getAppointments: () => void, loading: boolean }} props
+ * @param {{ appointments: any, getAppointments: () => void, loading: boolean, pagination: any, setPagination: () => void  }} props
  */
-function AppointmentsTable({ appointments, getAppointments, loading }) {
+function AppointmentsTable({
+  appointments,
+  loading,
+  pagination,
+  setPagination,
+}) {
   const columns = [
     {
       title: "Fecha",
@@ -49,11 +54,20 @@ function AppointmentsTable({ appointments, getAppointments, loading }) {
       client: `${appointment.client.name} ${appointment.client.surname} ${appointment.client.lastname}`,
     };
   });
+  const handleTableChange = (newPagination) => {
+    setPagination(newPagination);
+  };
 
   return (
     <>
       <div className="table-container">
-        <Table dataSource={dataSource} columns={columns} loading={loading} />
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          loading={loading}
+          pagination={pagination}
+          onChange={handleTableChange}
+        />
       </div>
     </>
   );

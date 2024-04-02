@@ -2,10 +2,13 @@ import axios from "axios";
 import { apiUrl } from "../helpers/constants";
 
 const carsService = {
-  get(token) {
-    return axios.get(`${apiUrl}/operations/cars`, {
-      headers: { Authorization: `${token}` },
-    });
+  get(token, page, limit, filter) {
+    return axios.get(
+      `${apiUrl}/operations/cars/?page=${page}&limit=${limit}&filter=${filter}`,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
   },
   getCarBrandsWithApi(brandName) {
     return axios.get(

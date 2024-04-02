@@ -1,7 +1,7 @@
 function Dashboard() {
   return (
     <>
-      <h1>Dashboard component</h1>
+      <h1>Operaciones</h1>
     </>
   );
 }

@@ -11,7 +11,7 @@ dayjs.locale("es-mx");
 /* Hooks */
 import useMenu from "./hooks/useMenu";
 /* Containers */
-import OperationsContainer from "./containers/Operations";
+import DashboardContainer from "./containers/Operations/Dashboard";
 import CarsContainer from "./containers/Operations/Cars";
 import LandingContainer from "./containers/Landing";
 import ClientsContainer from "./containers/Operations/Clients";
@@ -20,7 +20,6 @@ import ClientsContainer from "./containers/Operations/Clients";
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
 import Settings from "./components/operations/Settings";
-import Dashboard from "./components/operations/Dashboard";
 
 /* Styling */
 import "./App.css";
@@ -49,7 +48,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <Dashboard />
+                  <DashboardContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -109,21 +108,12 @@ function App() {
             path="/agenda"
             element={
               <ProtectedRoute>
-                <AgendaContainer />
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <AgendaContainer />
+                </MainLayout>
               </ProtectedRoute>
             }
           ></Route>
-          <Route
-            path="/billing"
-            element={
-              <ProtectedRoute>
-                <OperationsContainer />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/billing" element={<OperationsContainer />} />
-          </Route>
-
           <Route path="/login" element={<LoginContainer />} />
           <Route path="/landing" element={<LandingContainer />} />
         </Routes>
