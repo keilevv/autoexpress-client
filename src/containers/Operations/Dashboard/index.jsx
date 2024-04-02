@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Dashboard from "../../../components/operations/Dashboard";
 import useMessages from "../../../hooks/useMessages";
 import MessagesTable from "../../../components/operations/Dashboard/MessagesTable";
 
@@ -24,8 +23,8 @@ function DashboardContainer() {
 
   return (
     <div className="dashboard-container">
-      <Dashboard />
-      <h2>Mensajes</h2>
+      <h1 className="dashboard-title">Operaciones</h1>
+      <h2 className="dashboard-subtitle">Mensajes</h2>
       <MessagesTable
         messages={messages}
         pagination={pagination}
