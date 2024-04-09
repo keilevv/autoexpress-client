@@ -3,6 +3,7 @@ import { Form, Input, Button, notification } from "antd";
 import NumberInput from "../../../Common/NumberInput";
 import useMessages from "../../../../hooks/useMessages";
 import "./style.css";
+
 function ContactForm() {
   const { createMessage, loading } = useMessages();
   const [showClear, setShowClear] = useState(false);
@@ -15,10 +16,10 @@ function ContactForm() {
           message: "Mensaje enviado con exito",
           description: "Un operario se pondrá en contacto con usted.",
         });
-        form.resetFields();
-        showClear(false);
+        setShowClear(false);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log("err", err);
         notification.error({
           message: "Error al enviar mensaje",
           description: "Por favor intentelo nuevamente mas tarde.",

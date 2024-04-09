@@ -4,7 +4,7 @@ import { apiUrl } from "../helpers/constants";
 const carsService = {
   get(token, page, limit, filter) {
     return axios.get(
-      `${apiUrl}/operations/cars/?page=${page}&limit=${limit}&filter=${filter}`,
+      `${apiUrl}/cars/operations?page=${page}&limit=${limit}&filter=${filter}`,
       {
         headers: { Authorization: `${token}` },
       }
@@ -25,20 +25,20 @@ const carsService = {
     );
   },
   createCar(payload) {
-    return axios.post(`${apiUrl}/car/register`, payload);
+    return axios.post(`${apiUrl}/cars/register`, payload);
   },
   getCarByPlate(carPlate, clientId) {
-    return axios.post(`${apiUrl}/car/plate/${carPlate}`, {
+    return axios.post(`${apiUrl}/cars/plate/${carPlate}`, {
       client_id: clientId,
     });
   },
   getCarListByPlate(token, carPlate) {
-    return axios.get(`${apiUrl}/operations/cars/plate/${carPlate}`, {
+    return axios.get(`${apiUrl}/cars/operations/plate/${carPlate}`, {
       headers: { Authorization: `${token}` },
     });
   },
   updateCar(carId, payload) {
-    return axios.put(`${apiUrl}/car/update/${carId}`, payload);
+    return axios.put(`${apiUrl}/cars/update/${carId}`, payload);
   },
 };
 export default carsService;

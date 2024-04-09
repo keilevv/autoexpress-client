@@ -13,7 +13,7 @@ const userService = {
     });
   },
   getUser(token, userId) {
-    return axios.get(`${apiUrl}/user/${userId}`, {
+    return axios.get(`${apiUrl}/users/${userId}`, {
       headers: { Authorization: `${token}` },
     });
   },
