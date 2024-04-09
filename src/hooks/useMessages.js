@@ -8,18 +8,21 @@ function useMessages() {
   const [messages, setMessages] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
+
   const getMessages = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
-    messagesService
+    return messagesService
       .getMessagesList(auth.user.accessToken, page, limit, filter)
       .then((response) => {
         setMessages(response.data.results);
         setCount(response.data.count);
         setLoading(false);
+        return response;
       })
       .catch((err) => {
-        throwError(err.message.message);
         setLoading(false);
+        throwError(err.message.message);
+        return err;
       });
   }, []);
 
@@ -32,8 +35,8 @@ function useMessages() {
         return response;
       })
       .catch((err) => {
-        throwError(err.message.message);
         setLoading(false);
+        throwError(err.message.message);
       });
   }, []);
   return { messages, getMessages, createMessage, count, loading };
