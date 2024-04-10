@@ -4,3 +4,10 @@
   flex-wrap: wrap;
   max-width: 150px;
 }
+.table-container {
+}
+@media screen and (max-width: 768px) {
+  .table-container {
+    overflow-x: scroll;
+  }
+}

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useMessages from "../../../hooks/useMessages";
 import MessagesTable from "../../../components/operations/Dashboard/MessagesTable";
+import DashboardGrid from "../../../components/operations/Dashboard/DashboardGrid";
+import "./style.css";
 
 function DashboardContainer() {
   const user = useSelector((state) => state.auth.user);
@@ -24,6 +26,9 @@ function DashboardContainer() {
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">Operaciones</h1>
+      <div className="dashboard-grid-container">
+        <DashboardGrid />
+      </div>
       <h2 className="dashboard-subtitle">Mensajes</h2>
       <MessagesTable
         messages={messages}
