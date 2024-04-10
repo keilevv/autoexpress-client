@@ -1,0 +1,15 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+  .dashboard-grid-item {
+    padding: 20px;
+    border: 3px solid #ccc;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  .dashboard-grid-item:hover {
+    background-color: #ccc;
+    border: 3px solid #888;
+  }
+}
