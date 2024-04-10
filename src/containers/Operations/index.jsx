@@ -13,8 +13,6 @@ function OperationsContainer() {
     total: 0,
   });
 
-  console.log("pagination", pagination);
-
   const { messages, count, getMessages, loading } = useMessages();
 
   useEffect(() => {

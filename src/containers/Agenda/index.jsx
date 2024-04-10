@@ -27,6 +27,14 @@ function AgendaContainer() {
     getAppointments(pagination.current, pagination.pageSize, "");
   }, [pagination.current, pagination.pageSize, user]);
 
+  const handleSearch = (value) => {
+    getAppointments(
+      pagination.current,
+      pagination.pageSize,
+      "&client=" + value
+    );
+  };
+
   return (
     <div className="agenda-container">
       <h1>Agenda</h1>

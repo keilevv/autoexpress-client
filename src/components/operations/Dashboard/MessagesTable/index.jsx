@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table, Popover } from "antd";
 import "./style.css";
+import { size } from "lodash";
 /**
  * @param {{ messages: any[], loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
@@ -34,7 +35,7 @@ function MessagesTable({ messages, loading, pagination, setPagination }) {
         return (
           <div className="popover-container">
             <Popover content={content} title="Mensaje">
-              <p>Ver mensaje</p>
+              <p className="message-popover-text">Ver mensaje</p>
             </Popover>
           </div>
         );
@@ -60,7 +61,6 @@ function MessagesTable({ messages, loading, pagination, setPagination }) {
     <>
       <div className="table-container">
         <Table
-          size="small"
           dataSource={dataSource}
           columns={columns}
           pagination={pagination}
