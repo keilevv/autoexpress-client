@@ -7,7 +7,7 @@ const messagesService = {
   },
   getMessagesList(token, page, limit, filter) {
     return axios.get(
-      `${apiUrl}/messages/operations/?page=${page}&limit=${limit}&filter=${filter}`,
+      `${apiUrl}/messages/operations/?page=${page}&limit=${limit}${filter}`,
       {
         headers: { Authorization: `${token}` },
       }

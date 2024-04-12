@@ -21,11 +21,11 @@ function CarsContainer() {
   }, [count]);
 
   useEffect(() => {
-    getCars(pagination.current, pagination.pageSize, "");
+    getCars(pagination.current, pagination.pageSize, "&archived=false");
   }, [pagination.current, pagination.pageSize, user]);
 
   const handleSearch = (value) => {
-    getCars(pagination.current, pagination.pageSize, "plate=" + value);
+    getCars(pagination.current, pagination.pageSize, "&plate=" + value);
   };
 
   return (

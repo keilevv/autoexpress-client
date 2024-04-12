@@ -1,9 +1,10 @@
 import { Table, Tag, Input } from "antd";
+import TableMenu from "../../TableMenu";
 import "./style.css";
 /**
  * @param {{ cars: any, getCars: () => void, loading: boolean,  pagination: any, setPagination: () => void }} props
  */
-function CarsTable({ cars, loading, pagination, setPagination }) {
+function CarsTable({ cars, loading, pagination, setPagination, getCars }) {
   const columns = [
     {
       title: "Placa",
@@ -48,6 +49,28 @@ function CarsTable({ cars, loading, pagination, setPagination }) {
         </>
       ),
     },
+    {
+      title: "",
+      dataIndex: "carId",
+      key: "carId",
+      render: (_, { carId }) => {
+        // const ref = useRef(null);
+
+        return (
+          <TableMenu
+            id={carId}
+            type="cars"
+            onArchive={() =>
+              getCars(
+                pagination.current,
+                pagination.pageSize,
+                "&archived=false"
+              )
+            }
+          />
+        );
+      },
+    },
   ];
   const dataSource = cars.map((item, key) => {
     return {
@@ -57,6 +80,7 @@ function CarsTable({ cars, loading, pagination, setPagination }) {
       model: item.model,
       color: item.color,
       clients: item.clients,
+      carId: item._id,
     };
   });
 
