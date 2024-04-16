@@ -1,10 +1,17 @@
-import { useState, useEffect } from "react";
 import { Table, Tag } from "antd";
+import TableMenu from "../../TableMenu";
+
 import "./style.css";
 /**
  * @param {{ clients: any, getClients: () => void, loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
-function ClientsTable({ clients, loading, pagination, setPagination }) {
+function ClientsTable({
+  clients,
+  loading,
+  pagination,
+  setPagination,
+  getClients,
+}) {
   const columns = [
     {
       title: "Nombre",
@@ -37,6 +44,26 @@ function ClientsTable({ clients, loading, pagination, setPagination }) {
       dataIndex: "telephone_number",
       key: "telephone_number",
     },
+    {
+      title: "",
+      dataIndex: "clientId",
+      key: "clientId",
+      render: (_, { clientId }) => {
+        return (
+          <TableMenu
+            id={clientId}
+            type="clients"
+            onArchive={() =>
+              getClients(
+                pagination.current,
+                pagination.pageSize,
+                "&archived=false"
+              )
+            }
+          />
+        );
+      },
+    },
   ];
 
   const handleTableChange = (newPagination) => {
@@ -50,6 +77,7 @@ function ClientsTable({ clients, loading, pagination, setPagination }) {
       cars: item.cars,
       email: item.email,
       telephone_number: item.telephone_number,
+      clientId: item._id,
     };
   });
 

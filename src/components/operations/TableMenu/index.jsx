@@ -1,11 +1,17 @@
 import { Tooltip, Button, notification, Popconfirm } from "antd";
 import useCars from "../../../hooks/useCars";
+import useClient from "../../../hooks/useClient";
+import useAppointment from "../../../hooks/useAppointment";
+import useMessages from "../../../hooks/useMessages";
 
 /**
  * @param {{id: string, type: string, onArchive: () => void, onEdit: () => void}} props
  */
 function TableMenu({ id, type, onArchive, onEdit }) {
   const { updateCar } = useCars();
+  const { updateClient } = useClient();
+  const { updateAppointment } = useAppointment();
+  const { updateMessage } = useMessages();
 
   function getDescription() {
     if (type === "cars") {
@@ -26,8 +32,35 @@ function TableMenu({ id, type, onArchive, onEdit }) {
     if (type === "cars") {
       updateCar(id, { archived: true }).then((response) => {
         notification.success({
-          message: "Vehiculo archivado con exito",
+          message: "Vehiculo archivado con éxito",
           description: response.data.results.plate,
+        });
+        onArchive();
+      });
+    }
+    if (type === "clients") {
+      updateClient(id, { archived: true }).then((response) => {
+        notification.success({
+          message: "Cliente archivado con éxito",
+          description: response.data.results.name,
+        });
+        onArchive();
+      });
+    }
+    if (type === "appointments") {
+      updateAppointment(id, { archived: true }).then((response) => {
+        notification.success({
+          message: "Cita archivada con éxito",
+          description: response.data.results.date,
+        });
+        onArchive();
+      });
+    }
+    if (type === "messages") {
+      updateMessage(id, { archived: true }).then((response) => {
+        notification.success({
+          message: "Mensaje archivada con éxito",
+          description: response.data.results.date,
         });
         onArchive();
       });

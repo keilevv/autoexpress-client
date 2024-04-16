@@ -18,5 +18,8 @@ const messagesService = {
       headers: { Authorization: `${token}` },
     });
   },
+  updateMessage(messageId, payload) {
+    return axios.put(`${apiUrl}/messages/update/${messageId}`, payload);
+  },
 };
 export default messagesService;

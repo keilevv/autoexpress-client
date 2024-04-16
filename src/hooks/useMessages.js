@@ -8,6 +8,7 @@ function useMessages() {
   const [messages, setMessages] = useState([]);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(null);
 
   const getMessages = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
@@ -39,7 +40,31 @@ function useMessages() {
         throwError(err.message.message);
       });
   }, []);
-  return { messages, getMessages, createMessage, count, loading };
+
+  const updateMessage = useCallback((messageId, payload) => {
+    setLoading(true);
+    return messagesService
+      .updateMessage(messageId, payload)
+      .then((response) => {
+        setMessage(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
+
+  return {
+    messages,
+    message,
+    getMessages,
+    createMessage,
+    updateMessage,
+    count,
+    loading,
+  };
 }
 
 export default useMessages;

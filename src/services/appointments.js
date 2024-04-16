@@ -16,5 +16,12 @@ const appointmentsService = {
       }
     );
   },
+  updateAppointment(token, appointmentId, payload) {
+    return axios.put(
+      `${apiUrl}/appointments/update/${appointmentId}`,
+      payload,
+      { headers: { Authorization: `${token}` } }
+    );
+  },
 };
 export default appointmentsService;

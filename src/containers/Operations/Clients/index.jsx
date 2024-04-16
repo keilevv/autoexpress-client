@@ -23,7 +23,7 @@ function ClientsContainer() {
   }, [count]);
 
   useEffect(() => {
-    getClients(pagination.current, pagination.pageSize, "");
+    getClients(pagination.current, pagination.pageSize, "&archived=false");
   }, [pagination.current, pagination.pageSize, user]);
 
   const handleSearch = (value) => {

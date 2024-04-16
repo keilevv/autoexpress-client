@@ -24,7 +24,7 @@ function AgendaContainer() {
   }, [count]);
 
   useEffect(() => {
-    getAppointments(pagination.current, pagination.pageSize, "");
+    getAppointments(pagination.current, pagination.pageSize, "&archived=false");
   }, [pagination.current, pagination.pageSize, user]);
 
   const handleSearch = (value) => {
