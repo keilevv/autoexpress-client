@@ -14,10 +14,11 @@ import useViewport from "../../../../../hooks/useViewport";
 import "./style.css";
 import { current } from "@reduxjs/toolkit";
 /**
- * @param {{ setForm: () => void, showFullForm: boolean, client?: any, car: any, current: number, isCarDetails?: boolean, isEditing?: boolean }} props
+ * @param {{ setIsChanged?: () => void, setForm: () => void, showFullForm: boolean, client?: any, car: any, current: number, isCarDetails?: boolean, isEditing?: boolean }} props
  */
 function CarForm({
   setForm,
+  setIsChanged,
   showFullForm,
   client,
   car,
@@ -116,12 +117,15 @@ function CarForm({
 
   useEffect(() => {
     handlePrefill(car);
-  }, [car]);
+  }, [car, isEditing]);
 
   const renderContent = () => {
     if (showFullForm) {
       return (
         <Form
+          onFieldsChange={() => {
+            setIsChanged && setIsChanged(true);
+          }}
           form={form}
           layout="vertical"
           name="car"

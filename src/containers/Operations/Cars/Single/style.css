@@ -1,22 +1,51 @@
 .single-car-container {
   padding: 0px 0px 68px 12px;
   .single-car-content {
-    .single-car-title {
-      font-size: 26px;
-      margin-top: 50px;
-      margin-bottom: 10px;
+    .single-car-header {
+      display: flex;
+      align-items: baseline;
+      .single-car-header-info {
+        .single-car-title {
+          font-size: 26px;
+          margin-bottom: 10px;
+        }
+      }
+      .edit-button {
+        margin-left: 20px;
+      }
     }
-    .car-form{
+    .car-form {
       border-radius: 8px;
       max-width: 600px;
-      background-color: #F5F5F5;
+      background-color: #f5f5f5;
+      .car-form-save-button {
+        opacity: 1;
+        margin: 0px;
+      }
+      .car-form-cancel-button {
+        margin: 0px 20px 20px 20px;
+      }
+      .disabled {
+        opacity: 0;
+      }
 
       .car-fields-container {
         padding: 20px;
       }
     }
-   
+
     .ant-form-item-label > label {
       font-weight: 500;
     }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .single-car-container {
+    .single-car-content {
+      .single-car-header {
+        flex-direction: column;
+      }
+    }
+  }
 }
