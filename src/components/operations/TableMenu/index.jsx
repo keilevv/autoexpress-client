@@ -3,11 +3,13 @@ import useCars from "../../../hooks/useCars";
 import useClient from "../../../hooks/useClient";
 import useAppointment from "../../../hooks/useAppointment";
 import useMessages from "../../../hooks/useMessages";
+import { useNavigate } from "react-router-dom";
 
 /**
  * @param {{id: string, type: string, onArchive: () => void, onEdit: () => void}} props
  */
 function TableMenu({ id, type, onArchive, onEdit }) {
+  const navigate = useNavigate();
   const { updateCar } = useCars();
   const { updateClient } = useClient();
   const { updateAppointment } = useAppointment();
@@ -27,7 +29,20 @@ function TableMenu({ id, type, onArchive, onEdit }) {
       return "este mensaje";
     }
   }
-  function handleEdit() {}
+  function handleEdit() {
+    if (type === "cars") {
+      navigate(`/operations/cars/${id}/`);
+    }
+    if (type === "clients") {
+      navigate(`/operations/clients/${id}/`);
+    }
+    if (type === "appointments") {
+      navigate(`/operations/appointments/${id}/`);
+    }
+    if (type === "messages") {
+      navigate(`/operations/messages/${id}/`);
+    }
+  }
   function handleArchive() {
     if (type === "cars") {
       updateCar(id, { archived: true }).then((response) => {
@@ -73,6 +88,7 @@ function TableMenu({ id, type, onArchive, onEdit }) {
           type="text"
           shape="circle"
           icon={<i className="fa-solid fa-pen"></i>}
+          onClick={handleEdit}
         />
       </Tooltip>
       <Tooltip title="Archivar">

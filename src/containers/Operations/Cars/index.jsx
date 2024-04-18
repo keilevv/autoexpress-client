@@ -6,6 +6,7 @@ import CarsTable from "../../../components/operations/Cars/CarsTable";
 import TableActions from "../../../components/operations/TableActions";
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
+import "./style.css";
 
 function CarsContainer() {
   const user = useSelector((state) => state.auth.user);
@@ -30,7 +31,7 @@ function CarsContainer() {
 
   return (
     <div className="cars-container">
-      <h1>Autos</h1>
+      <h1 className="cars-container-title">Autos</h1>
       <TableActions onSearch={handleSearch} type="cars" />
 
       {loading ? (

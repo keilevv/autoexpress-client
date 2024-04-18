@@ -14,9 +14,17 @@ import useViewport from "../../../../../hooks/useViewport";
 import "./style.css";
 import { current } from "@reduxjs/toolkit";
 /**
- * @param {{ setForm: () => void, showFullForm: boolean, client?: any, car: any, current: number }} props
+ * @param {{ setForm: () => void, showFullForm: boolean, client?: any, car: any, current: number, isCarDetails?: boolean, isEditing?: boolean }} props
  */
-function CarForm({ setForm, showFullForm, client, car, current }) {
+function CarForm({
+  setForm,
+  showFullForm,
+  client,
+  car,
+  current,
+  isCarDetails,
+  isEditing,
+}) {
   const { isMobileScreen } = useViewport();
   const [brand, setBrand] = useState("");
   const [disableModels, setDisableModels] = useState(false);
@@ -130,7 +138,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
         >
           <div className="car-form-container">
             <p className="car-info-title">
-              Ingrese la información de su vehículo
+              {!isCarDetails && "Ingrese la información de su vehículo"}
             </p>
             <div className="car-fields-container">
               <Row>
@@ -148,7 +156,12 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                     },
                   ]}
                 >
-                  <Input allowClear maxLength={6} className="uppercase-input" />
+                  <Input
+                    allowClear
+                    maxLength={6}
+                    className="uppercase-input"
+                    disabled={!isEditing}
+                  />
                 </Form.Item>
               </Row>
               <Row>
@@ -168,6 +181,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                 >
                   <div className="form-item-explain">
                     <Input
+                      disabled={!isEditing}
                       allowClear
                       className="uppercase-input"
                       maxLength={16}
@@ -198,6 +212,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                   ]}
                 >
                   <Select
+                    disabled={!isEditing}
                     value={brand}
                     allowClear
                     loading={loading}
@@ -238,7 +253,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                   <Select
                     value={model}
                     allowClear
-                    disabled={disableModels && !car}
+                    disabled={(disableModels && !car) || !isEditing}
                     loading={loading}
                     showSearch
                     options={carModels}
@@ -272,6 +287,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                   ]}
                 >
                   <DatePicker
+                    disabled={!isEditing}
                     allowClear
                     placeholder="Fecha"
                     picker="year"
@@ -296,7 +312,7 @@ function CarForm({ setForm, showFullForm, client, car, current }) {
                     },
                   ]}
                 >
-                  <Input allowClear />
+                  <Input allowClear disabled={!isEditing} />
                 </Form.Item>
               </Row>
             </div>
