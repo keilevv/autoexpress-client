@@ -333,6 +333,16 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       <div style={contentStyle}>{agendaSteps[current].content}</div>
       <div style={{ marginTop: 24 }} className="agenda-footer-container">
         <div className="handle-steps">
+          {((current !== 0 && current !== agendaSteps.length - 1) ||
+            showFullForm) && (
+            <Button
+              className="prev-slide-button"
+              onClick={() => prev()}
+              loading={loadingClient || loadingCar}
+            >
+              Atras
+            </Button>
+          )}
           {current < agendaSteps.length - 1 && (
             <Button
               type="primary"
@@ -354,16 +364,6 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
               }}
             >
               Terminar
-            </Button>
-          )}
-          {((current !== 0 && current !== agendaSteps.length - 1) ||
-            showFullForm) && (
-            <Button
-              className="prev-slide-button"
-              onClick={() => prev()}
-              loading={loadingClient || loadingCar}
-            >
-              Atras
             </Button>
           )}
         </div>

@@ -23,8 +23,8 @@ function CarForm({
   client,
   car,
   current,
-  isCarDetails,
-  isEditing,
+  isCarDetails = false,
+  isEditing = true,
 }) {
   const { isMobileScreen } = useViewport();
   const [brand, setBrand] = useState("");
@@ -141,9 +141,11 @@ function CarForm({
           autoComplete="off"
         >
           <div className="car-form-container">
-            <p className="car-info-title">
-              {!isCarDetails && "Ingrese la información de su vehículo"}
-            </p>
+            {!isCarDetails && (
+              <p className="car-info-title">
+                Ingrese la información de su vehículo
+              </p>
+            )}
             <div className="car-fields-container">
               <Row>
                 <Form.Item
