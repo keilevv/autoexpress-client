@@ -14,7 +14,15 @@ import useViewport from "../../../../../hooks/useViewport";
 import "./style.css";
 import { current } from "@reduxjs/toolkit";
 /**
- * @param {{ setIsChanged?: () => void, setForm: () => void, showFullForm: boolean, client?: any, car: any, current: number, isCarDetails?: boolean, isEditing?: boolean }} props
+ * @param {{ setIsChanged?: () => void,
+ * setForm: () => void,
+ * showFullForm: boolean,
+ * client?: any,
+ * car: any,
+ * current: number,
+ * isCarDetails?: boolean,
+ * isEditing?: boolean
+ * }} props
  */
 function CarForm({
   setForm,

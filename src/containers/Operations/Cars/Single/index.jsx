@@ -50,7 +50,8 @@ function SingleCarContainer() {
               message: "Vehiculo actualizado con éxito",
               description: response.data.results.plate,
             });
-
+            setIsEditing(false);
+            setShowSave(false);
             getCar(carId);
           })
           .catch((err) => {

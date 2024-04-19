@@ -7,9 +7,23 @@ import Logo from "../../../../../assets/images/autoexpresslogo.png";
 
 import "./style.css";
 /**
- * @param {{ setForm: () => void, showFullForm?: boolean, client: any }} props
+ * @param {{
+ * setIsChanged?: () => void,
+ * setForm: () => void,
+ * showFullForm?: boolean,
+ * client: any,
+ * isClientDetails?: boolean,
+ * isEditing?: boolean
+ * }} props
  */
-function ClientForm({ setForm, showFullForm = false, client }) {
+function ClientForm({
+  setForm,
+  setIsChanged,
+  showFullForm = false,
+  client,
+  isClientDetails = false,
+  isEditing = true,
+}) {
   const [form] = Form.useForm();
 
   const validatePhoneNumber = async (rule, value) => {
@@ -71,12 +85,15 @@ function ClientForm({ setForm, showFullForm = false, client }) {
 
   useEffect(() => {
     handlePrefill(client);
-  }, [client]);
+  }, [client, isEditing]);
 
   const renderContent = () => {
     if (showFullForm) {
       return (
         <Form
+          onFieldsChange={() => {
+            setIsChanged && setIsChanged(true);
+          }}
           form={form}
           layout="vertical"
           name="client"
@@ -109,7 +126,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                     },
                   ]}
                 >
-                  <Input disabled={client ? true : false} />
+                  <Input disabled={!isEditing && client ? true : false} />
                 </Form.Item>
               </Row>
               <Row>
@@ -124,7 +141,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                       },
                     ]}
                   >
-                    <Input disabled={client ? true : false} />
+                    <Input disabled={!isEditing && client ? true : false} />
                   </Form.Item>
                 </Col>
                 <Col className="client-form-col-2">
@@ -138,7 +155,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                       },
                     ]}
                   >
-                    <Input disabled={client ? true : false} />
+                    <Input disabled={!isEditing && client ? true : false} />
                   </Form.Item>
                 </Col>
               </Row>
@@ -159,7 +176,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                 >
                   <NumberInput
                     maxLength={10}
-                    disabled={client ? true : false}
+                    disabled={!isEditing && client ? true : false}
                   />
                 </Form.Item>
               </Row>
@@ -175,7 +192,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                   ]}
                 >
                   <DatePicker
-                    disabled={client ? true : false}
+                    disabled={!isEditing && client ? true : false}
                     placeholder="Fecha"
                     style={{ width: "100%" }}
                     format={"DD/MM/YYYY"}
@@ -208,7 +225,7 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input disabled={!isEditing} />
                   </Form.Item>
                 </Col>
                 <Col className="client-form-col-2">
@@ -226,7 +243,11 @@ function ClientForm({ setForm, showFullForm = false, client }) {
                       },
                     ]}
                   >
-                    <NumberInput prefix={"+57"} maxLength={10} />
+                    <NumberInput
+                      prefix={"+57"}
+                      maxLength={10}
+                      disabled={!isEditing}
+                    />
                   </Form.Item>
                 </Col>
               </Row>

@@ -72,9 +72,12 @@ function MainLayout({ children }) {
     headerModules.forEach((module) => {
       splitItems.forEach((item, index) => {
         if (module === item) {
+          if (splitItems.length <= 2) {
+            setSelectedSider(module);
+            return;
+          }
           setSelectedSider(splitItems[index + 1]);
-        } else {
-          setSelectedSider(splitItems[index]);
+          return;
         }
       });
     });

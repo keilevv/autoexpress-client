@@ -44,13 +44,14 @@ function SingleClient() {
   function handleUpdateClient() {
     if (clientId) {
       form.validateFields().then((values) => {
-        updateCar(clientId, values)
+        updateClient(clientId, values)
           .then((response) => {
             notification.success({
-              message: "Vehiculo actualizado con éxito",
-              description: response.data.results.plate,
+              message: "Cliente actualizado con éxito",
+              description: `${response.data.results.name} ${response.data.results.surname} ${response.data.results.lastname}`,
             });
-
+            setIsEditing(false);
+            setShowSave(false);
             getClient(clientId);
           })
           .catch((err) => {
@@ -65,18 +66,17 @@ function SingleClient() {
 
   function handleArchiveClient() {
     if (clientId) {
-      updateCar(clientId, { archived: true })
+      updateClient(clientId, { archived: true })
         .then((response) => {
           notification.success({
-            message: "Vehiculo archivado con éxito",
-            description: response.data.results.plate,
+            message: "Cliente archivado con éxito",
+            description: `${response.data.results.name} ${response.data.results.surname} ${response.data.results.lastname}`,
           });
-
           getClient(clientId);
         })
         .catch((err) => {
           notification.error({
-            message: "Error archivando auto",
+            message: "Cliente archivando auto",
             description: err.message || err.message._message,
           });
         });
@@ -106,7 +106,9 @@ function SingleClient() {
                       </a>
                     ),
                   },
-                  { title: client?.plate },
+                  {
+                    title: `${client.name} ${client.surname} ${client.lastname}`,
+                  },
                 ]}
               />
               {client.archived && (
