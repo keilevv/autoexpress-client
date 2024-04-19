@@ -36,7 +36,6 @@ function MainLayout({ children }) {
 
   const headerItems = [
     { key: "operations", label: "Operaciones" },
-    { key: "agenda", label: "Agenda" },
     // { key: "billing", label: "Facturacion" },
   ];
 
@@ -109,15 +108,11 @@ function MainLayout({ children }) {
           selectedKeys={[selectedSider]}
           onClick={(value) => {
             setSelectedSider(value.key);
-            headerModules.forEach((module) => {
-              if (window.location.pathname.includes(module)) {
-                if (value.key === module) {
-                  navigate(`/${module}`);
-                } else {
-                  navigate(`/${module}/${value.key}`);
-                }
-              }
-            });
+            if (value.key === "operations") {
+              navigate(`/operations`, { replace: true });
+            } else {
+              navigate(`/operations/${value.key}`);
+            }
           }}
         />
       </Sider>
@@ -135,6 +130,7 @@ function MainLayout({ children }) {
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             onClick={() => setCollapsed(!collapsed)}
             style={{
+              border: "none",
               fontSize: "16px",
               width: 64,
               height: 64,

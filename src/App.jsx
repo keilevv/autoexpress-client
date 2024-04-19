@@ -127,7 +127,7 @@ function App() {
           />
           <Route path="/" element={<LandingContainer />}></Route>
           <Route
-            path="/agenda"
+            path="/operations/agenda"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
