@@ -141,11 +141,11 @@ function CarForm({
           autoComplete="off"
         >
           <div className="car-form-container">
-            {!isCarDetails && (
-              <p className="car-info-title">
-                Ingrese la información de su vehículo
-              </p>
-            )}
+            <p className="car-info-title">
+              {!isCarDetails
+                ? "Ingrese la información de su vehículo"
+                : "Información del vehículo"}
+            </p>
             <div className="car-fields-container">
               <Row>
                 <Form.Item

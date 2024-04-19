@@ -1,22 +1,22 @@
-.single-car-container {
+.single-client-container {
   padding: 0px 0px 68px 12px;
-  .single-car-content {
-    .single-car-header {
+  .single-client-content {
+    .single-client-header {
       display: flex;
       align-items: baseline;
-      .single-car-header-info {
-        .single-car-title {
+      .single-client-header-info {
+        .single-client-title {
           font-size: 26px;
           margin-bottom: 10px;
         }
-        .single-car-status {
+        .single-client-status {
           margin-top: 10px;
         }
-        .single-car-date {
+        .single-client-date {
           color: gray;
         }
       }
-      .single-car-buttons {
+      .single-client-buttons {
         margin-left: 30px;
         display: flex;
         gap: 10px;
@@ -25,28 +25,30 @@
     .highlight {
       border: 1px solid #c00113;
     }
-    .car-form {
+    .client-form {
       border-radius: 8px;
       max-width: 600px;
       background-color: #f5f5f5;
       margin-top: 20px;
-      .car-info-title {
+
+      .client-info-title {
         padding: 20px 20px 0px 20px;
         font-size: 20px;
+        margin-top: 0px;
       }
 
-      .car-form-save-button {
+      .client-form-save-button {
         opacity: 1;
         margin: 0px;
       }
-      .car-form-cancel-button {
+      .client-form-cancel-button {
         margin: 0px 20px 20px 20px;
       }
       .disabled {
         opacity: 0;
       }
 
-      .car-fields-container {
+      .client-fields-container {
         padding: 20px;
       }
     }
@@ -58,11 +60,11 @@
 }
 
 @media screen and (max-width: 600px) {
-  .single-car-container {
-    .single-car-content {
-      .single-car-header {
+  .single-client-container {
+    .single-client-content {
+      .single-client-header {
         flex-direction: column;
-        .single-car-buttons {
+        .single-client-buttons {
           margin: 0px;
         }
       }
