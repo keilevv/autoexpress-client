@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 /* Components */
 import { Spin } from "antd";
-import MainLayout from "../Layout";
-import AgendaTable from "../../components/agenda/Agenda/AgendaTable";
-import TableActions from "../../components/operations/TableActions";
+import AgendaTable from "../../../components/operations/Agenda/AgendaTable";
+import TableActions from "../../../components/operations/TableActions";
 /* Hooks */
-import useAppointment from "../../hooks/useAppointment";
-import useMenu from "../../hooks/useMenu";
+import useAppointment from "../../../hooks/useAppointment";
+import useMenu from "../../../hooks/useMenu";
 import "./style.css";
 
 function AgendaContainer() {

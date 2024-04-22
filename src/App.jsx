@@ -25,7 +25,7 @@ import Settings from "./components/operations/Settings";
 
 /* Styling */
 import "./App.css";
-import AgendaContainer from "./containers/Agenda";
+import AgendaContainer from "./containers/Operations/Agenda";
 
 function App() {
   const { defaultSelectedHeader } = useMenu();
