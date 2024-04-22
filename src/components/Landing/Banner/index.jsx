@@ -12,6 +12,7 @@ function Banner({ agendaRef }) {
     <div className="banner-content">
       <div className="tenant-logo-container">
         <img src={Logo} alt="tenant-logo" className="tenant-logo"></img>
+        <h1 className="tenant-logo-trademark">©</h1>
       </div>
       <div className={`banner-actions`}>
         <Button
