@@ -1,4 +1,5 @@
 import { Table, Tag, Input } from "antd";
+import TableMenu from "../../../../components/operations/TableMenu";
 /**
  * @param {{ appointments: any, getAppointments: () => void, loading: boolean, pagination: any, setPagination: () => void  }} props
  */
@@ -7,6 +8,7 @@ function AppointmentsTable({
   loading,
   pagination,
   setPagination,
+  getAppointments,
 }) {
   const columns = [
     {
@@ -45,6 +47,26 @@ function AppointmentsTable({
         </>
       ),
     },
+    {
+      title: "",
+      dataIndex: "appointmentId",
+      key: "appointmentId",
+      render: (_, { appointmentId }) => {
+        return (
+          <TableMenu
+            id={appointmentId}
+            type="appointments"
+            onArchive={() =>
+              getAppointments(
+                pagination.current,
+                pagination.pageSize,
+                "&archived=false"
+              )
+            }
+          />
+        );
+      },
+    },
   ];
   const dataSource = appointments.map((appointment, index) => {
     return {
@@ -52,6 +74,7 @@ function AppointmentsTable({
       key: index,
       operator: appointment.user.username,
       client: `${appointment.client.name} ${appointment.client.surname} ${appointment.client.lastname}`,
+      appointmentId: appointment._id,
     };
   });
   const handleTableChange = (newPagination) => {

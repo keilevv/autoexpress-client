@@ -1,3 +1,9 @@
 .dashboard-grid-container {
   margin-bottom: 20px;
 }
+
+.dashboard-container {
+  .dashboard-title {
+    font-size: 26px;
+  }
+}

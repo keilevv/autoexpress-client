@@ -7,7 +7,7 @@ const messagesService = {
   },
   getMessagesList(token, page, limit, filter) {
     return axios.get(
-      `${apiUrl}/messages/operations/?page=${page}&limit=${limit}&filter=${filter}`,
+      `${apiUrl}/messages/operations/?page=${page}&limit=${limit}${filter}`,
       {
         headers: { Authorization: `${token}` },
       }
@@ -17,6 +17,9 @@ const messagesService = {
     return axios.get(`${apiUrl}/operations/messages/${userId}`, {
       headers: { Authorization: `${token}` },
     });
+  },
+  updateMessage(messageId, payload) {
+    return axios.put(`${apiUrl}/messages/update/${messageId}`, payload);
   },
 };
 export default messagesService;

@@ -15,11 +15,24 @@ function useCars() {
   const getCars = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     carsService
-      .get(auth.user.accessToken, page, limit, filter)
+      .getCarsList(auth.user.accessToken, page, limit, filter)
       .then((response) => {
         setLoading(false);
         setCount(response.data.count);
         setCars(response.data.results);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, []);
+
+  const getCar = useCallback((carId) => {
+    setLoading(true);
+    carsService
+      .getCar(auth.user.accessToken, carId)
+      .then((response) => {
+        setLoading(false);
+        setCar(response.data.results);
       })
       .catch((err) => {
         setLoading(false);
@@ -124,6 +137,7 @@ function useCars() {
     loading,
     carModels,
     count,
+    getCar,
     getCars,
     getCarsApi,
     createCar,

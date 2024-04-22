@@ -18,7 +18,6 @@ function useClient() {
   }, [auth]);
 
   const getClients = useCallback((page = 1, limit = 10, filter = "") => {
-    
     setLoading(true);
     return clientsService
       .getClients(auth.user.accessToken, page, limit, filter)
@@ -30,6 +29,19 @@ function useClient() {
       })
       .catch((err) => {
         throwError(err.message.message);
+        setLoading(false);
+      });
+  }, []);
+
+  const getClient = useCallback((clientId) => {
+    setLoading(true);
+    clientsService
+      .getClient(auth.user.accessToken, clientId)
+      .then((response) => {
+        setLoading(false);
+        setClient(response.data.results);
+      })
+      .catch((err) => {
         setLoading(false);
       });
   }, []);
@@ -98,6 +110,7 @@ function useClient() {
     getClientByCountryId,
     updateClient,
     getClientListByName,
+    getClient,
     client,
     clients,
     loading,

@@ -32,7 +32,7 @@ function TableActions({ onSearch, type }) {
       </div>
       <div className="action-buttons">
         <Button shape="circle" className="filter-button">
-          <i className="fa-solid fa-filter"></i>
+          <i className="fa-solid fa-filter icon"></i>
         </Button>
       </div>
     </div>

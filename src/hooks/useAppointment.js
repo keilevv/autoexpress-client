@@ -59,10 +59,26 @@ function useAppointment() {
     [setLoading]
   );
 
+  const updateAppointment = useCallback((appointmentId, payload) => {
+    setLoading(true);
+    return appointmentsService
+      .updateAppointment(auth.user.accessToken, appointmentId, payload)
+      .then((response) => {
+        setAppointment(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
+
   return {
     getUnavailableTimesOfDay,
     createAppointment,
     getAppointments,
+    updateAppointment,
     appointments,
     unavailableTimes,
     appointment,

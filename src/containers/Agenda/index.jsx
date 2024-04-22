@@ -8,6 +8,7 @@ import TableActions from "../../components/operations/TableActions";
 /* Hooks */
 import useAppointment from "../../hooks/useAppointment";
 import useMenu from "../../hooks/useMenu";
+import "./style.css";
 
 function AgendaContainer() {
   const user = useSelector((state) => state.auth.user);
@@ -24,7 +25,7 @@ function AgendaContainer() {
   }, [count]);
 
   useEffect(() => {
-    getAppointments(pagination.current, pagination.pageSize, "");
+    getAppointments(pagination.current, pagination.pageSize, "&archived=false");
   }, [pagination.current, pagination.pageSize, user]);
 
   const handleSearch = (value) => {
@@ -37,7 +38,7 @@ function AgendaContainer() {
 
   return (
     <div className="agenda-container">
-      <h1>Agenda</h1>
+      <h1 className="agenda-container-title">Agenda</h1>
       <TableActions />
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center" }}>

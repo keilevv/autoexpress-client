@@ -24,12 +24,20 @@
     }
   }
   .contact-form-container {
+    display: block;
     justify-content: center;
+    margin: auto;
+    max-width: 300px;
+    width: 100%;
   }
 
   .contact-content {
     display: flex;
     gap: 100px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 50px;
   }
 }
 

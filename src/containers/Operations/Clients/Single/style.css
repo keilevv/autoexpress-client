@@ -1,0 +1,73 @@
+.single-client-container {
+  padding: 0px 0px 68px 12px;
+  .single-client-content {
+    .single-client-header {
+      display: flex;
+      align-items: baseline;
+      .single-client-header-info {
+        .single-client-title {
+          font-size: 26px;
+          margin-bottom: 10px;
+        }
+        .single-client-status {
+          margin-top: 10px;
+        }
+        .single-client-date {
+          color: gray;
+        }
+      }
+      .single-client-buttons {
+        margin-left: 30px;
+        display: flex;
+        gap: 10px;
+      }
+    }
+    .highlight {
+      border: 1px solid #c00113;
+    }
+    .client-form {
+      border-radius: 8px;
+      max-width: 600px;
+      background-color: #f5f5f5;
+      margin-top: 20px;
+
+      .client-info-title {
+        padding: 20px 20px 0px 20px;
+        font-size: 20px;
+        margin-top: 0px;
+      }
+
+      .client-form-save-button {
+        opacity: 1;
+        margin: 0px;
+      }
+      .client-form-cancel-button {
+        margin: 0px 20px 20px 20px;
+      }
+      .disabled {
+        opacity: 0;
+      }
+
+      .client-fields-container {
+        padding: 20px;
+      }
+    }
+
+    .ant-form-item-label > label {
+      font-weight: 500;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .single-client-container {
+    .single-client-content {
+      .single-client-header {
+        flex-direction: column;
+        .single-client-buttons {
+          margin: 0px;
+        }
+      }
+    }
+  }
+}
