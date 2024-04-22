@@ -1,5 +1,6 @@
 import { Table, Tag } from "antd";
 import TableMenu from "../../TableMenu";
+import { useNavigate } from "react-router-dom";
 
 import "./style.css";
 /**
@@ -12,11 +13,17 @@ function ClientsTable({
   setPagination,
   getClients,
 }) {
+  const navigate = useNavigate();
   const columns = [
     {
       title: "Nombre",
       dataIndex: "full_name",
       key: "full_name",
+      render: (_, { clientId, full_name }) => (
+        <a onClick={() => navigate(`/operations/clients/${clientId}`)}>
+          {full_name.toUpperCase()}
+        </a>
+      ),
     },
     {
       title: "Autos",
@@ -26,8 +33,13 @@ function ClientsTable({
         <div className="car-tags-container">
           {cars.map((car) => {
             return (
-              <Tag color={"geekblue"} key={car._id}>
-                {car.plate.toUpperCase()}
+              <Tag color={"geekblue"} key={car}>
+                <a
+                  style={{ color: "#1d79C4" }}
+                  onClick={() => navigate(`/operations/cars/${car._id}`)}
+                >
+                  {car.plate.toUpperCase()}
+                </a>
               </Tag>
             );
           })}

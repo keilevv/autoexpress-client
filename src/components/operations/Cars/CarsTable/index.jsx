@@ -1,15 +1,22 @@
 import { Table, Tag, Input } from "antd";
 import TableMenu from "../../TableMenu";
+import { useNavigate } from "react-router-dom";
 import "./style.css";
 /**
  * @param {{ cars: any, getCars: () => void, loading: boolean,  pagination: any, setPagination: () => void }} props
  */
 function CarsTable({ cars, loading, pagination, setPagination, getCars }) {
+  const navigate = useNavigate();
   const columns = [
     {
       title: "Placa",
       dataIndex: "plate",
       key: "plate",
+      render: (_, { plate, carId }) => (
+        <a onClick={() => navigate(`/operations/cars/${carId}`)}>
+          {plate.toUpperCase()}
+        </a>
+      ),
     },
     {
       title: "Marca",
@@ -36,13 +43,18 @@ function CarsTable({ cars, loading, pagination, setPagination, getCars }) {
           {clients.map((client) => {
             return (
               <Tag color={"geekblue"} key={client}>
-                {(
-                  client.name +
-                  " " +
-                  client.surname +
-                  " " +
-                  client.lastname
-                ).toUpperCase()}
+                <a
+                  style={{ color: "#1d79C4" }}
+                  onClick={() => navigate(`/operations/clients/${client._id}`)}
+                >
+                  {(
+                    client.name +
+                    " " +
+                    client.surname +
+                    " " +
+                    client.lastname
+                  ).toUpperCase()}
+                </a>
               </Tag>
             );
           })}
