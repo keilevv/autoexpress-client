@@ -1,5 +1,5 @@
 import { Table, Tag, Input } from "antd";
-import TableMenu from "../../../../components/operations/TableMenu";
+import TableMenu from "../../TableMenu";
 /**
  * @param {{ appointments: any, getAppointments: () => void, loading: boolean, pagination: any, setPagination: () => void  }} props
  */

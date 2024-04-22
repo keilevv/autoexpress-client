@@ -5,10 +5,11 @@ import useClient from "../../../hooks/useClient";
 /* Components */
 import TableActions from "../../../components/operations/TableActions";
 import ClientsTable from "../../../components/operations/Clients/ClientsTable";
-import { Spin } from "antd";
+import { Spin, Tabs } from "antd";
 import "./style.css";
 
 function ClientsContainer() {
+  const [currentTab, setCurrentTab] = useState("all");
   const user = useSelector((state) => state.auth.user);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -23,13 +24,44 @@ function ClientsContainer() {
   }, [count]);
 
   useEffect(() => {
-    getClients(pagination.current, pagination.pageSize, "&archived=false");
-  }, [pagination.current, pagination.pageSize, user]);
+    getClients(
+      pagination.current,
+      pagination.pageSize,
+      `&archived=${currentTab === "archived"}`
+    );
+  }, [pagination.current, pagination.pageSize, user, currentTab]);
 
   const handleSearch = (value) => {
     getClients(pagination.current, pagination.pageSize, "&name=" + value);
   };
-
+  const items = [
+    {
+      key: "all",
+      label: "Todos",
+      children: (
+        <ClientsTable
+          pagination={pagination}
+          setPagination={setPagination}
+          clients={clients}
+          getClients={getClients}
+          loading={loading}
+        />
+      ),
+    },
+    {
+      key: "archived",
+      label: "Archivados",
+      children: (
+        <ClientsTable
+          pagination={pagination}
+          setPagination={setPagination}
+          clients={clients}
+          getClients={getClients}
+          loading={loading}
+        />
+      ),
+    },
+  ];
   return (
     <div className="clients-container">
       <h1 className="clients-container-title">Clientes</h1>
@@ -39,12 +71,12 @@ function ClientsContainer() {
           <Spin size="large" style={{ marginTop: "50px" }} />
         </div>
       ) : (
-        <ClientsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          clients={clients}
-          getClients={getClients}
-          loading={loading}
+        <Tabs
+          activeKey={currentTab}
+          items={items}
+          onChange={(key) => {
+            setCurrentTab(key);
+          }}
         />
       )}
     </div>

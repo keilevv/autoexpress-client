@@ -66,10 +66,12 @@ function SingleCarContainer() {
 
   function handleArchiveCar() {
     if (carId) {
-      updateCar(carId, { archived: true })
+      updateCar(carId, { archived: car.archived ? false : true })
         .then((response) => {
           notification.success({
-            message: "Vehiculo archivado con éxito",
+            message: `Vehiculo ${
+              car.archived ? "desarchivado" : "archivado"
+            } con éxito`,
             description: response.data.results.plate,
           });
 
@@ -141,14 +143,24 @@ function SingleCarContainer() {
                 </Tooltip>
               </Fragment>
               <Fragment>
-                <Tooltip title={"Archivar"}>
+                <Tooltip title={car.archived ? "Desarchivar" : "Archivar"}>
                   <Popconfirm
-                    title="Archivar vehículo"
-                    description={`¿Está seguro de archivar este vehículo?`}
+                    title={
+                      car.archived
+                        ? "Desarchivar vehículo"
+                        : "Archivar vehículo"
+                    }
+                    description={`¿Está seguro de ${
+                      car.archived ? "desarchivar" : "archivar"
+                    } este vehículo?`}
                     onConfirm={handleArchiveCar}
                   >
                     <Button className="edit-button" shape="circle">
-                      <i className="fa-solid fa-archive icon"></i>
+                      {car.archived ? (
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                      ) : (
+                        <i className="fa-solid fa-box-archive icon"></i>
+                      )}
                     </Button>
                   </Popconfirm>
                 </Tooltip>

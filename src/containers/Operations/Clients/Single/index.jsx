@@ -66,17 +66,19 @@ function SingleClient() {
 
   function handleArchiveClient() {
     if (clientId) {
-      updateClient(clientId, { archived: true })
+      updateClient(clientId, { archived: client.archived ? false : true })
         .then((response) => {
           notification.success({
-            message: "Cliente archivado con éxito",
+            message: `Cliente ${
+              client.archived ? "desarchivado" : "archivado"
+            } con éxito`,
             description: `${response.data.results.name} ${response.data.results.surname} ${response.data.results.lastname}`,
           });
           getClient(clientId);
         })
         .catch((err) => {
           notification.error({
-            message: "Cliente archivando auto",
+            message: "Error archivando cliente",
             description: err.message || err.message._message,
           });
         });
@@ -144,14 +146,22 @@ function SingleClient() {
                 </Tooltip>
               </Fragment>
               <Fragment>
-                <Tooltip title={"Archivar"}>
+                <Tooltip title={client.archived ? "Desarchivar" : "Archivar"}>
                   <Popconfirm
-                    title="Archivar cliente"
-                    description={`¿Está seguro de archivar este cliente?`}
+                    title={`${
+                      client.archived ? "Desarchivar" : "Archivar"
+                    } cliente`}
+                    description={`¿Está seguro de ${
+                      client.archived ? "desarchivar" : "archivar"
+                    } este cliente?`}
                     onConfirm={handleArchiveClient}
                   >
                     <Button className="edit-button" shape="circle">
-                      <i className="fa-solid fa-archive icon"></i>
+                      {client.archived ? (
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                      ) : (
+                        <i className="fa-solid fa-box-archive icon"></i>
+                      )}{" "}
                     </Button>
                   </Popconfirm>
                 </Tooltip>
