@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 /* Components */
-import { Spin } from "antd";
+import { Spin, Tabs } from "antd";
 import AgendaTable from "../../../components/operations/Agenda/AgendaTable";
 import TableActions from "../../../components/operations/TableActions";
 /* Hooks */
@@ -10,6 +10,7 @@ import useMenu from "../../../hooks/useMenu";
 import "./style.css";
 
 function AgendaContainer() {
+  const [currentTab, setCurrentTab] = useState("active");
   const user = useSelector((state) => state.auth.user);
   const { appointments, loading, getAppointments, count } = useAppointment();
   const { defaultSelectedItem } = useMenu();
@@ -24,8 +25,12 @@ function AgendaContainer() {
   }, [count]);
 
   useEffect(() => {
-    getAppointments(pagination.current, pagination.pageSize, "&archived=false");
-  }, [pagination.current, pagination.pageSize, user]);
+    getAppointments(
+      pagination.current,
+      pagination.pageSize,
+      `&archived=${currentTab === "archived"}`
+    );
+  }, [pagination.current, pagination.pageSize, user, currentTab]);
 
   const handleSearch = (value) => {
     getAppointments(
@@ -34,6 +39,35 @@ function AgendaContainer() {
       "&client=" + value
     );
   };
+
+  const items = [
+    {
+      key: "active",
+      label: "Activas",
+      children: (
+        <AgendaTable
+          appointments={appointments}
+          getAppointments={getAppointments}
+          loading={loading}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
+      ),
+    },
+    {
+      key: "archived",
+      label: "Archivados",
+      children: (
+        <AgendaTable
+          appointments={appointments}
+          getAppointments={getAppointments}
+          loading={loading}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
+      ),
+    },
+  ];
 
   return (
     <div className="agenda-container">
@@ -44,12 +78,12 @@ function AgendaContainer() {
           <Spin size="large" style={{ marginTop: "50px" }} />
         </div>
       ) : (
-        <AgendaTable
-          appointments={appointments}
-          getAppointments={getAppointments}
-          loading={loading}
-          pagination={pagination}
-          setPagination={setPagination}
+        <Tabs
+          activeKey={currentTab}
+          items={items}
+          onChange={(key) => {
+            setCurrentTab(key);
+          }}
         />
       )}
     </div>

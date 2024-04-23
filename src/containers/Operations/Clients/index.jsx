@@ -9,7 +9,7 @@ import { Spin, Tabs } from "antd";
 import "./style.css";
 
 function ClientsContainer() {
-  const [currentTab, setCurrentTab] = useState("all");
+  const [currentTab, setCurrentTab] = useState("active");
   const user = useSelector((state) => state.auth.user);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -36,8 +36,8 @@ function ClientsContainer() {
   };
   const items = [
     {
-      key: "all",
-      label: "Todos",
+      key: "active",
+      label: "Activos",
       children: (
         <ClientsTable
           pagination={pagination}

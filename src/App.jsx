@@ -17,6 +17,7 @@ import LandingContainer from "./containers/Landing";
 import ClientsContainer from "./containers/Operations/Clients";
 import SingleCarContainer from "./containers/Operations/Cars/Single";
 import SingleClientContainer from "./containers/Operations/Clients/Single";
+import SingleAgendaContainer from "./containers/Operations/Agenda/Single";
 
 /* Components*/
 import Jobs from "./components/operations/Jobs";
@@ -132,6 +133,16 @@ function App() {
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <AgendaContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/agenda/:appointmentId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <SingleAgendaContainer />
                 </MainLayout>
               </ProtectedRoute>
             }

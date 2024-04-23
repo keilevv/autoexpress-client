@@ -1,6 +1,71 @@
-.agenda-container {
-    .agenda-container-title {
-      font-size: 28px;
+.single-appointment-container {
+  padding: 0px 0px 68px 12px;
+  .single-appointment-content {
+    .single-appointment-header {
+      display: flex;
+      align-items: baseline;
+      .single-appointment-header-info {
+        .single-appointment-title {
+          font-size: 26px;
+          margin-bottom: 10px;
+        }
+        .single-appointment-status {
+          margin-top: 10px;
+        }
+        .single-appointment-date {
+          color: gray;
+        }
+      }
+      .single-appointment-buttons {
+        margin-left: 30px;
+        display: flex;
+        gap: 10px;
+      }
+    }
+    .highlight {
+      border: 1px solid #c00113;
+    }
+    .appointment-form {
+      border-radius: 8px;
+      max-width: 600px;
+      background-color: #f5f5f5;
+      margin-top: 20px;
+      .appointment-info-title {
+        padding: 20px 20px 0px 20px;
+        font-size: 20px;
+      }
+
+      .appointment-form-save-button {
+        opacity: 1;
+        margin: 0px;
+      }
+      .appointment-form-cancel-button {
+        margin: 0px 20px 20px 20px;
+      }
+      .disabled {
+        opacity: 0;
+      }
+
+      .appointment-fields-container {
+        padding: 20px;
+      }
+    }
+
+    .ant-form-item-label > label {
+      font-weight: 500;
     }
   }
-  
+}
+
+@media screen and (max-width: 600px) {
+  .single-appointment-container {
+    .single-appointment-content {
+      .single-appointment-header {
+        flex-direction: column;
+        .single-appointment-buttons {
+          margin: 0px;
+        }
+      }
+    }
+  }
+}

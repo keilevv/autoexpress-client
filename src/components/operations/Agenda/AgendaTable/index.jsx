@@ -1,4 +1,5 @@
 import { Table, Tag, Input } from "antd";
+import { useNavigate } from "react-router-dom";
 import TableMenu from "../../TableMenu";
 /**
  * @param {{ appointments: any, getAppointments: () => void, loading: boolean, pagination: any, setPagination: () => void  }} props
@@ -10,11 +11,19 @@ function AppointmentsTable({
   setPagination,
   getAppointments,
 }) {
+  const navigate = useNavigate();
   const columns = [
     {
       title: "Fecha",
       dataIndex: "date",
       key: "date",
+      render: (_, { appointmentId, date }) => {
+        return (
+          <a onClick={() => navigate(`/operations/agenda/${appointmentId}`)}>
+            {date}
+          </a>
+        );
+      },
     },
     {
       title: "Hora",
@@ -32,7 +41,11 @@ function AppointmentsTable({
       dataIndex: "client",
       key: "client",
       render: (_, { client }) => {
-        return <>{client.toUpperCase()}</>;
+        return (
+          <a onClick={() => navigate(`/operations/client/${client._id}`)}>
+            {client.toUpperCase()}
+          </a>
+        );
       },
     },
     {
@@ -41,8 +54,13 @@ function AppointmentsTable({
       key: "car",
       render: (_, { car }) => (
         <>
-          <Tag color={"geekblue"} key={car.plate}>
-            {car.plate}
+          <Tag color={"geekblue"} key={car}>
+            <a
+              style={{ color: "#1d79C4" }}
+              onClick={() => navigate(`/operations/cars/${car._id}`)}
+            >
+              {car.plate.toUpperCase()}
+            </a>
           </Tag>
         </>
       ),

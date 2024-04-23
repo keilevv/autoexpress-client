@@ -10,6 +10,19 @@ function useAppointment() {
   const [appointments, setAppointments] = useState([]);
   const [count, setCount] = useState(0);
 
+  const getAppointment = useCallback((carId) => {
+    setLoading(true);
+    appointmentsService
+      .getAppointment(auth.user.accessToken, carId)
+      .then((response) => {
+        setLoading(false);
+        setAppointment(response.data.results);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, []);
+
   const getAppointments = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     appointmentsService
@@ -79,6 +92,7 @@ function useAppointment() {
     createAppointment,
     getAppointments,
     updateAppointment,
+    getAppointment,
     appointments,
     unavailableTimes,
     appointment,

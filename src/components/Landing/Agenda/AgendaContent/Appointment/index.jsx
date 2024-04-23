@@ -8,9 +8,22 @@ import moment from "moment";
 import useAppointment from "../../../../../hooks/useAppointment";
 import "./style.css";
 /**
- * @param {{ setForm: () => void }} props
+ * @param {{
+ *  setForm: () => void,
+ *  setIsChanged?: () => void,
+ *  isEditing?: boolean,
+ *  appointment?: any,
+ *  isAppointmentDetails?: boolean
+ * }} props
  */
-function AppointmentForm({ setForm }) {
+function AppointmentForm({
+  setForm,
+  setIsChanged,
+  isAppointmentDetails,
+  isEditing = true,
+  appointment,
+}) {
+  const [dateValue, setDateValue] = useState(dayjs());
   const [hourValue, setHourValue] = useState(null);
   const [selectedHour, setSelectedHour] = useState("");
   const { getUnavailableTimesOfDay, unavailableTimes } = useAppointment();
@@ -43,13 +56,30 @@ function AppointmentForm({ setForm }) {
     const isToday = current.isSame(moment(), "day");
     const isAfterWorkHours = current && current.hour() > 17;
     const isSunday = current && current.day() === 0;
+
     return (
       isBeforeToday ||
       isAfterOneMonth ||
       isSunday ||
+      !isEditing ||
       (isToday && isAfterWorkHours)
     );
   };
+
+  function handlePrefill() {
+    if (appointment) {
+      setDateValue(dayjs(appointment.date, "DD/MM/YYYY"));
+      setHourValue(dayjs(appointment.time, "HH:mm"));
+      form.setFieldsValue({
+        date: dayjs(appointment.date, "DD/MM/YYYY"),
+        time: dayjs(appointment.time, "HH:mm"),
+      });
+    }
+  }
+
+  useEffect(() => {
+    handlePrefill();
+  }, [appointment, isEditing]);
 
   const disabledTime = (current) => {
     const disabledMinutes = [];
@@ -88,6 +118,9 @@ function AppointmentForm({ setForm }) {
 
   return (
     <Form
+      onFieldsChange={() => {
+        setIsChanged && setIsChanged(true);
+      }}
       form={form}
       layout="vertical"
       name="car"
@@ -103,7 +136,11 @@ function AppointmentForm({ setForm }) {
       autoComplete="off"
     >
       <div className="appointment-form-container">
-        <p className="appointment-info-title"> Ingrese la fecha deseada</p>
+        <p className="appointment-info-title">
+          {isAppointmentDetails
+            ? "Información de la cita"
+            : "Ingrese la fecha deseada"}
+        </p>
         <div className="appointment-fields-container">
           <Row>
             <Form.Item
@@ -118,12 +155,15 @@ function AppointmentForm({ setForm }) {
             >
               <div style={wrapperStyle}>
                 <Calendar
+                  value={dateValue}
                   onSelect={(date) => {
                     getUnavailableTimesOfDay(dayjs(date).format("DD/MM/YYYY"));
                     form.setFieldValue(
                       "date",
                       dayjs(date).format("DD/MM/YYYY")
                     );
+                    setDateValue(dayjs(date));
+                    setIsChanged(true);
                   }}
                   fullscreen={false}
                   disabledDate={(current) => {
@@ -145,6 +185,7 @@ function AppointmentForm({ setForm }) {
               ]}
             >
               <TimePicker
+                disabled={!isEditing}
                 value={hourValue}
                 onChange={(value) => {
                   setHourValue(value);

@@ -37,7 +37,7 @@ function TableMenu({ id, type, onArchive, onEdit }) {
       navigate(`/operations/clients/${id}/`);
     }
     if (type === "appointments") {
-      navigate(`/operations/appointments/${id}/`);
+      navigate(`/operations/agenda/${id}/`);
     }
     if (type === "messages") {
       navigate(`/operations/messages/${id}/`);
