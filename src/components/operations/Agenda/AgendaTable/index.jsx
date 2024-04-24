@@ -69,16 +69,17 @@ function AppointmentsTable({
       title: "",
       dataIndex: "appointmentId",
       key: "appointmentId",
-      render: (_, { appointmentId }) => {
+      render: (_, { appointmentId, archived }) => {
         return (
           <TableMenu
+            isArchived={archived}
             id={appointmentId}
             type="appointments"
             onArchive={() =>
               getAppointments(
                 pagination.current,
                 pagination.pageSize,
-                "&archived=false"
+                `&archived=${archived}`
               )
             }
           />
@@ -89,7 +90,7 @@ function AppointmentsTable({
   const dataSource = appointments.map((appointment, index) => {
     return {
       ...appointment,
-      key: index,
+      key: appointment._id,
       operator: appointment.user.username,
       client: `${appointment.client.name} ${appointment.client.surname} ${appointment.client.lastname}`,
       appointmentId: appointment._id,

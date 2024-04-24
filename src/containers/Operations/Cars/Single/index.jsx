@@ -157,7 +157,7 @@ function SingleCarContainer() {
                   >
                     <Button className="edit-button" shape="circle">
                       {car.archived ? (
-                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        <i className="fa-solid fa-arrow-up-from-bracket"></i>
                       ) : (
                         <i className="fa-solid fa-box-archive icon"></i>
                       )}

@@ -4,6 +4,20 @@
 .appointment-form-container {
   justify-content: center;
   margin-bottom: 20px;
+  .appointment-field {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+    .appointment-field-title {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .appointment-car {
+      max-width: 70px;
+      text-align: center;
+    }
+  }
 
   .appointment-info-title {
     padding: 0px 30px;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 /* Components */
-import { Spin, Tabs } from "antd";
+import { Tabs } from "antd";
 import AgendaTable from "../../../components/operations/Agenda/AgendaTable";
 import TableActions from "../../../components/operations/TableActions";
 /* Hooks */
@@ -56,7 +56,7 @@ function AgendaContainer() {
     },
     {
       key: "archived",
-      label: "Archivados",
+      label: "Archivadas",
       children: (
         <AgendaTable
           appointments={appointments}
@@ -73,19 +73,13 @@ function AgendaContainer() {
     <div className="agenda-container">
       <h1 className="agenda-container-title">Agenda</h1>
       <TableActions />
-      {loading ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Spin size="large" style={{ marginTop: "50px" }} />
-        </div>
-      ) : (
-        <Tabs
-          activeKey={currentTab}
-          items={items}
-          onChange={(key) => {
-            setCurrentTab(key);
-          }}
-        />
-      )}
+      <Tabs
+        activeKey={currentTab}
+        items={items}
+        onChange={(key) => {
+          setCurrentTab(key);
+        }}
+      />
     </div>
   );
 }

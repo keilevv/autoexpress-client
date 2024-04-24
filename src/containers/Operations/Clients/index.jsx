@@ -65,20 +65,14 @@ function ClientsContainer() {
   return (
     <div className="clients-container">
       <h1 className="clients-container-title">Clientes</h1>
-      <TableActions onSearch={handleSearch} type="clients" />
-      {loading ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Spin size="large" style={{ marginTop: "50px" }} />
-        </div>
-      ) : (
-        <Tabs
-          activeKey={currentTab}
-          items={items}
-          onChange={(key) => {
-            setCurrentTab(key);
-          }}
-        />
-      )}
+      <TableActions onSearch={handleSearch} type="clients" />{" "}
+      <Tabs
+        activeKey={currentTab}
+        items={items}
+        onChange={(key) => {
+          setCurrentTab(key);
+        }}
+      />
     </div>
   );
 }

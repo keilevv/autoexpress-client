@@ -68,19 +68,13 @@ function CarsContainer() {
       <h1 className="cars-container-title">Autos</h1>
       <TableActions onSearch={handleSearch} type="cars" />
 
-      {loading ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Spin size="large" style={{ marginTop: "50px" }} />
-        </div>
-      ) : (
-        <Tabs
-          activeKey={currentTab}
-          items={items}
-          onChange={(key) => {
-            setCurrentTab(key);
-          }}
-        />
-      )}
+      <Tabs
+        activeKey={currentTab}
+        items={items}
+        onChange={(key) => {
+          setCurrentTab(key);
+        }}
+      />
     </div>
   );
 }
