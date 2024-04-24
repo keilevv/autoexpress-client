@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 /* Components */
-import { Form, TimePicker, Calendar, theme, Row, Tag } from "antd";
+import { Form, TimePicker, Calendar, theme, Row, Tag, DatePicker } from "antd";
 /* Helpers */
 import dayjs from "dayjs";
 import moment from "moment";
 /* Hooks*/
+import useViewPort from "../../../../../hooks/useViewport";
 import useAppointment from "../../../../../hooks/useAppointment";
 import "./style.css";
 /**
@@ -24,6 +25,7 @@ function AppointmentForm({
   isEditing = true,
   appointment,
 }) {
+  const { isMobileScreen } = useViewPort();
   const navigate = useNavigate();
   const [dateValue, setDateValue] = useState(dayjs());
   const [hourValue, setHourValue] = useState(null);
@@ -178,22 +180,48 @@ function AppointmentForm({
               ]}
             >
               <div style={wrapperStyle}>
-                <Calendar
-                  value={dateValue}
-                  onSelect={(date) => {
-                    getUnavailableTimesOfDay(dayjs(date).format("DD/MM/YYYY"));
-                    form.setFieldValue(
-                      "date",
-                      dayjs(date).format("DD/MM/YYYY")
-                    );
-                    setDateValue(dayjs(date));
-                    setIsChanged && setIsChanged(true);
-                  }}
-                  fullscreen={false}
-                  disabledDate={(current) => {
-                    return disabledDate(current);
-                  }}
-                />
+                {isMobileScreen ? (
+                  <DatePicker
+                    className="mobile-date-picker"
+                    disabled={!isEditing}
+                    size="large"
+                    value={dateValue}
+                    format={"DD/MM/YYYY"}
+                    onSelect={(date) => {
+                      getUnavailableTimesOfDay(
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      form.setFieldValue(
+                        "date",
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      setDateValue(dayjs(date));
+                      setIsChanged && setIsChanged(true);
+                    }}
+                    disabledDate={(current) => {
+                      return disabledDate(current);
+                    }}
+                  />
+                ) : (
+                  <Calendar
+                    value={dateValue}
+                    onSelect={(date) => {
+                      getUnavailableTimesOfDay(
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      form.setFieldValue(
+                        "date",
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      setDateValue(dayjs(date));
+                      setIsChanged && setIsChanged(true);
+                    }}
+                    fullscreen={false}
+                    disabledDate={(current) => {
+                      return disabledDate(current);
+                    }}
+                  />
+                )}
               </div>
             </Form.Item>
           </Row>
