@@ -12,17 +12,19 @@ aside {
   width: 100vw;
 }
 .main-layout-header {
-  padding: 0px 64px;
+  padding: 0px calc((100vw - 1800px) / 2);
 }
 .main-layout-content {
-  margin: 24px 64px;
+  width: 100%;
+  max-width: 1800px;
+  margin: 24px auto;
 }
 
 @media screen and (max-width: 600px) {
   .main-layout-content {
     margin: 24px 12px;
   }
-  .main-layout-header{
+  .main-layout-header {
     padding: 0px 12px;
   }
 }
