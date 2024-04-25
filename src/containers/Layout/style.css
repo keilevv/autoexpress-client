@@ -17,7 +17,7 @@ aside {
 .main-layout-content {
   margin: 24px 12px;
   max-width: 1800px;
-  width: calc(100% - 12px - 12px);
+  width: calc(100% - 26px);
   margin: 12px auto;
 }
 
