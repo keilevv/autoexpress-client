@@ -15,9 +15,10 @@ aside {
   padding: 0px calc((100vw - 1800px) / 2);
 }
 .main-layout-content {
-  width: 100%;
+  margin: 24px 12px;
   max-width: 1800px;
-  margin: 24px auto;
+  width: calc(100% - 12px - 12px);
+  margin: 12px auto;
 }
 
 @media screen and (max-width: 600px) {
