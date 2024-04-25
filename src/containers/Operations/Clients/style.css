@@ -1,6 +1,6 @@
 .clients-container {
-    .clients-container-title {
-      font-size: 28px;
-    }
+  width: 100%;
+  .clients-container-title {
+    font-size: 28px;
   }
-  
+}

@@ -61,7 +61,7 @@ function useCardsConfig() {
       type: "diagnostic",
       placement: "top",
       icon: DiagnosticIcon,
-      title: "Diagnostico y peritaje",
+      title: "Diagnóstico y peritaje",
       // content: <ServiceModalContent type={"diagnostic"} />,
       description: diagnosticDescription,
       color: "#06823D",

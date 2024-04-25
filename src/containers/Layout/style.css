@@ -8,6 +8,21 @@
 aside {
   background-color: #242424 !important;
 }
-.operations-layout{
+.operations-layout {
   width: 100vw;
+}
+.main-layout-header {
+  padding: 0px 64px;
+}
+.main-layout-content {
+  margin: 24px 64px;
+}
+
+@media screen and (max-width: 600px) {
+  .main-layout-content {
+    margin: 24px 12px;
+  }
+  .main-layout-header{
+    padding: 0px 12px;
+  }
 }

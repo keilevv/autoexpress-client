@@ -4,6 +4,7 @@ import useClient from "../../../hooks/useClient";
 import useAppointment from "../../../hooks/useAppointment";
 import useMessages from "../../../hooks/useMessages";
 import { useNavigate } from "react-router-dom";
+import "./style.css"
 
 /**
  * @param {{
@@ -113,7 +114,6 @@ function TableMenu({ id, type, isArchived = false, onArchive, onEdit }) {
         >
           <Button
             type="text"
-            style={{ marginLeft: "5px" }}
             shape="circle"
             icon={<i className="fa-solid fa-box-archive"></i>}
           />

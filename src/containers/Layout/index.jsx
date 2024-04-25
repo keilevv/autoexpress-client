@@ -60,6 +60,7 @@ function MainLayout({ children }) {
 
   useEffect(() => {
     if (isMobileScreen) {
+      setCollapsed(true);
       setUserHeaderProps({ type: "text" });
       return;
     }
@@ -118,24 +119,13 @@ function MainLayout({ children }) {
       </Sider> */}
       <Layout>
         <Header
+          className="main-layout-header"
           style={{
-            paddingLeft: "16px",
             background: "#242424",
             width: "100%",
             display: "flex",
-            justifyContent: "space-between",
           }}
         >
-          {/* <Button
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              border: "none",
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          /> */}
           <Menu
             selectedKeys={[selectedSider]}
             mode="horizontal"
@@ -153,31 +143,26 @@ function MainLayout({ children }) {
           />
           <Dropdown menu={userMenuProps} trigger={"click"}>
             <Button
-              {...userHeaderProps}
               shape="circle"
               ghost
               size="large"
-              style={{ margin: "auto", marginRight: "15px" }}
+              style={{ margin: "auto", marginRight: "15px", color: "white" }}
             >
               <UserOutlined />
             </Button>
           </Dropdown>
         </Header>
-        <Content style={{ margin: "24px 16px 0" }}>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
-            {children}
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Autoexpress© 2024 Created by Caleb Villalba.
-        </Footer>
+        <div
+          className="main-layout-content"
+          style={{
+            padding: 24,
+            minHeight: 360,
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          {children}
+        </div>
       </Layout>
     </Layout>
   );

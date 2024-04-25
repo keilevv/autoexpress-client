@@ -1,0 +1,10 @@
+.table-menu-container {
+  display: flex;
+  column-gap: 10px;
+}
+
+@media screen and (max-width: 600px) {
+  .table-menu-container {
+    flex-direction: column;
+  }
+}

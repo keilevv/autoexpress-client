@@ -57,6 +57,10 @@
   }
 }
 
+.agenda-container {
+  width: 100%;
+}
+
 @media screen and (max-width: 600px) {
   .single-appointment-container {
     .single-appointment-content {
