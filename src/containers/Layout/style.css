@@ -9,7 +9,8 @@ aside {
   background-color: #242424 !important;
 }
 .operations-layout {
-  width: 100vw;
+  flex: 1;
+  overflow-y: scroll;
 }
 .main-layout-header {
   padding: 0px calc((100vw - 1800px) / 2);

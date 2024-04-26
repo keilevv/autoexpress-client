@@ -88,25 +88,20 @@ function MainLayout({ children }) {
   }, [window.location.pathname]);
   return (
     <Layout className="operations-layout">
-      {/* <Sider
-        collapsed={collapsed}
-        breakpoint="lg"
-        collapsedWidth={isMobileScreen ? 45 : 80}
-        onBreakpoint={(broken) => {
-          setCollapsed(broken);
-          // console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          // console.log(collapsed, type);
+      <Header
+        className="main-layout-header"
+        style={{
+          background: "#242424",
+          width: "100%",
+          display: "flex",
         }}
       >
-        <div className="demo-logo-vertical" />
         <Menu
-          style={{ backgroundColor: "#242424" }}
-          theme="dark"
-          mode="inline"
-          items={items}
           selectedKeys={[selectedSider]}
+          mode="horizontal"
+          theme="dark"
+          items={items}
+          style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
           onClick={(value) => {
             setSelectedSider(value.key);
             if (value.key === "operations") {
@@ -116,54 +111,27 @@ function MainLayout({ children }) {
             }
           }}
         />
-      </Sider> */}
-      <Layout>
-        <Header
-          className="main-layout-header"
-          style={{
-            background: "#242424",
-            width: "100%",
-            display: "flex",
-          }}
-        >
-          <Menu
-            selectedKeys={[selectedSider]}
-            mode="horizontal"
-            theme="dark"
-            items={items}
-            style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
-            onClick={(value) => {
-              setSelectedSider(value.key);
-              if (value.key === "operations") {
-                navigate(`/operations`, { replace: true });
-              } else {
-                navigate(`/operations/${value.key}`);
-              }
-            }}
-          />
-          <Dropdown menu={userMenuProps} trigger={"click"}>
-            <Button
-              shape="circle"
-              ghost
-              size="large"
-              style={{ margin: "auto", marginRight: "15px", color: "white" }}
-            >
-              <UserOutlined />
-            </Button>
-          </Dropdown>
-        </Header>
-        <div
-          className="main-layout-content"
-          style={{
-            padding: 24,
-            minHeight: 360,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-          {children}
-        </div>
-      </Layout>
+        <Dropdown menu={userMenuProps} trigger={"click"}>
+          <Button
+            shape="circle"
+            ghost
+            size="large"
+            style={{ margin: "auto", marginRight: "15px", color: "white" }}
+          >
+            <UserOutlined />
+          </Button>
+        </Dropdown>
+      </Header>
+      <div
+        className="main-layout-content"
+        style={{
+          padding: 24,
+          background: colorBgContainer,
+          borderRadius: borderRadiusLG,
+        }}
+      >
+        {children}
+      </div>
     </Layout>
   );
 }

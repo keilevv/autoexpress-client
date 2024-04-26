@@ -13,3 +13,7 @@ export function isNumeric(str) {
     !isNaN(parseFloat(str))
   ); // ...and ensure strings of whitespace fail
 }
+
+export function isOverflown(element) {
+  return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+}

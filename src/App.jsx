@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { ConfigProvider } from "antd";
+import { isOverflown } from "./helpers";
 import LoginContainer from "./containers/Login";
 import MainLayout from "./containers/Layout";
 import ProtectedRoute from "./helpers/ProtectedRoute";
@@ -27,11 +28,12 @@ import Settings from "./components/operations/Settings";
 /* Styling */
 import "./App.css";
 import AgendaContainer from "./containers/Operations/Agenda";
+import { useEffect } from "react";
 
 function App() {
   const { defaultSelectedHeader } = useMenu();
   return (
-    <div className="app">
+    <div className="app" id="app">
       <ConfigProvider
         locale={esES}
         theme={{
