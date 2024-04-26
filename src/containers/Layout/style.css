@@ -10,7 +10,6 @@ aside {
 }
 .operations-layout {
   flex: 1;
-  overflow-y: scroll;
 }
 .main-layout-header {
   padding: 0px calc((100vw - 1800px) / 2);

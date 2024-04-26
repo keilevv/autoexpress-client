@@ -68,11 +68,13 @@ function MainLayout({ children }) {
   }, [isMobileScreen]);
 
   const getSelectedSider = () => {
-    const splitItems = window.location.pathname.split("/");
+    const splitItems = window.location.pathname
+      .split("/")
+      .filter((item) => item !== "");
     headerModules.forEach((module) => {
       splitItems.forEach((item, index) => {
         if (module === item) {
-          if (splitItems.length <= 2) {
+          if (splitItems.length <= 1) {
             setSelectedSider(module);
             return;
           }
