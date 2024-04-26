@@ -10,6 +10,8 @@ aside {
 }
 .operations-layout {
   flex: 1;
+  background-color: #ccc;
+  width: 100%;
 }
 .main-layout-header {
   padding: 0px calc((100vw - 1800px) / 2);
@@ -28,4 +30,10 @@ aside {
   .main-layout-header {
     padding: 0px 12px;
   }
+}
+
+.ant-table-wrapper {
+  border: 2px solid #e6e6e6;
+  border-radius: 8px;
+  overflow-x: scroll;
 }
