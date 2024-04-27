@@ -61,6 +61,7 @@ function MessagesTable({ messages, loading, pagination, setPagination }) {
     <>
       <div className="table-container">
         <Table
+          loading={loading}
           dataSource={dataSource}
           columns={columns}
           pagination={pagination}

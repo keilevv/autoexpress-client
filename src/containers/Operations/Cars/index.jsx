@@ -9,7 +9,7 @@ import { Spin, Tabs } from "antd";
 import "./style.css";
 
 function CarsContainer() {
-  const [currentTab, setCurrentTab] = useState("all");
+  const [currentTab, setCurrentTab] = useState("active");
   const user = useSelector((state) => state.auth.user);
   const { cars, count, getCars, loading } = useCars();
   const [pagination, setPagination] = useState({
@@ -20,8 +20,8 @@ function CarsContainer() {
 
   const items = [
     {
-      key: "all",
-      label: "Todos",
+      key: "active",
+      label: "Activos",
       children: (
         <CarsTable
           pagination={pagination}
@@ -68,19 +68,13 @@ function CarsContainer() {
       <h1 className="cars-container-title">Autos</h1>
       <TableActions onSearch={handleSearch} type="cars" />
 
-      {loading ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Spin size="large" style={{ marginTop: "50px" }} />
-        </div>
-      ) : (
-        <Tabs
-          activeKey={currentTab}
-          items={items}
-          onChange={(key) => {
-            setCurrentTab(key);
-          }}
-        />
-      )}
+      <Tabs
+        activeKey={currentTab}
+        items={items}
+        onChange={(key) => {
+          setCurrentTab(key);
+        }}
+      />
     </div>
   );
 }

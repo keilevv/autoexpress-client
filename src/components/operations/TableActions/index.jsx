@@ -12,10 +12,13 @@ function TableActions({ onSearch, type }) {
     if (type === "cars") {
       return "Buscar por placa...";
     }
+    if (type === "appointments") {
+      return "Buscar por cliente...";
+    }
     return "Buscar...";
   }
   const searchPlaceholder = getSearchPlaceholder();
-  
+
   const handleSearch = _debounce((value) => {
     onSearch(value);
   }, 300);

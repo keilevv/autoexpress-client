@@ -2,10 +2,10 @@ import { useEffect, useState, Fragment } from "react";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 /* Hooks*/
-import useCars from "../../../../hooks/useCars";
+import useAppointment from "../../../../hooks/useAppointment";
 /* Components */
 import { useSelector } from "react-redux";
-import CarForm from "../../../../components/Landing/Agenda/AgendaContent/Car";
+import AppointmentForm from "../../../../components/Landing/Agenda/AgendaContent/Appointment";
 import {
   Skeleton,
   Breadcrumb,
@@ -18,33 +18,41 @@ import {
 
 import "./style.css";
 
-function SingleCarContainer() {
+function SingleAgendaContainer() {
   const navitate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [showSave, setShowSave] = useState(false);
-  const [carId, setCarId] = useState("");
+  const [appointmentId, setAppointmentId] = useState("");
   const [form, setForm] = useState(null);
   const user = useSelector((state) => state.auth.user);
-  const { car, getCar, loading, updateCar } = useCars();
+  const { appointment, getAppointment, loading, updateAppointment } =
+    useAppointment();
 
   useEffect(() => {
-    if (carId) {
-      getCar(carId);
+    if (appointmentId) {
+      getAppointment(appointmentId);
     }
-  }, [carId, user]);
+  }, [appointmentId, user]);
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
-      if (item === "cars") {
-        setCarId(window.location.pathname.split("/")[index + 1]);
+      if (item === "agenda") {
+        setAppointmentId(window.location.pathname.split("/")[index + 1]);
       }
     });
   }, [window.location.pathname]);
 
-  function handleUpdateCar() {
-    if (carId) {
+  function handleUpdateAppointment() {
+    if (appointmentId) {
       form.validateFields().then((values) => {
-        updateCar(carId, values)
+        if (dayjs(values.date).isValid()) {
+          values.date = dayjs(values.date).format("DD/MM/YYYY");
+        }
+        if (values.time) {
+          values.time = dayjs(values.time).format("HH:mm");
+        }
+
+        updateAppointment(appointmentId, values)
           .then((response) => {
             notification.success({
               message: "Vehiculo actualizado con éxito",
@@ -52,7 +60,7 @@ function SingleCarContainer() {
             });
             setIsEditing(false);
             setShowSave(false);
-            getCar(carId);
+            getAppointment(appointmentId);
           })
           .catch((err) => {
             notification.error({
@@ -64,18 +72,20 @@ function SingleCarContainer() {
     }
   }
 
-  function handleArchiveCar() {
-    if (carId) {
-      updateCar(carId, { archived: car.archived ? false : true })
+  function handleArchiveAppointment() {
+    if (appointmentId) {
+      updateAppointment(appointmentId, {
+        archived: appointment.archived ? false : true,
+      })
         .then((response) => {
           notification.success({
             message: `Vehiculo ${
-              car.archived ? "desarchivado" : "archivado"
+              appointment.archived ? "desarchivado" : "archivado"
             } con éxito`,
             description: response.data.results.plate,
           });
 
-          getCar(carId);
+          getAppointment(appointmentId);
         })
         .catch((err) => {
           notification.error({
@@ -87,14 +97,14 @@ function SingleCarContainer() {
   }
 
   return (
-    <div className="single-car-container">
-      {loading || !car ? (
+    <div className="single-appointment-container">
+      {loading || !appointment ? (
         <Skeleton />
       ) : (
-        <div className="single-car-content">
-          <div className="single-car-header">
-            <div className="single-car-header-info">
-              <h1 className="single-car-title">Detalles del vehículo</h1>
+        <div className="single-appointment-content">
+          <div className="single-appointment-header">
+            <div className="single-appointment-header-info">
+              <h1 className="single-appointment-title">Detalles de la cita</h1>
               <Breadcrumb
                 items={[
                   {
@@ -104,24 +114,26 @@ function SingleCarContainer() {
                   },
                   {
                     title: (
-                      <a onClick={() => navitate("/operations/cars")}>Autos</a>
+                      <a onClick={() => navitate("/operations/agenda")}>
+                        Agenda
+                      </a>
                     ),
                   },
-                  { title: car?.plate },
+                  { title: appointment?.client.name },
                 ]}
               />
-              {car.archived && (
-                <Tag className="single-car-status" color={"gray"}>
+              {appointment.archived && (
+                <Tag className="single-appointment-status" color={"gray"}>
                   Archivado
                 </Tag>
               )}
-              {car.created_date && (
-                <p className="single-car-date">{`Fecha de creación: ${dayjs(
-                  car.created_date
+              {appointment.created_date && (
+                <p className="single-appointment-date">{`Fecha de creación: ${dayjs(
+                  appointment.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>
-            <div className="single-car-buttons">
+            <div className="single-appointment-buttons">
               <Fragment>
                 <Tooltip title={isEditing ? "Cancelar" : "Editar"}>
                   <Button
@@ -143,20 +155,22 @@ function SingleCarContainer() {
                 </Tooltip>
               </Fragment>
               <Fragment>
-                <Tooltip title={car.archived ? "Desarchivar" : "Archivar"}>
+                <Tooltip
+                  title={appointment.archived ? "Desarchivar" : "Archivar"}
+                >
                   <Popconfirm
                     title={
-                      car.archived
-                        ? "Desarchivar vehículo"
-                        : "Archivar vehículo"
+                      appointment.archived
+                        ? "Desarchivar cita"
+                        : "Archivar cita"
                     }
                     description={`¿Está seguro de ${
-                      car.archived ? "desarchivar" : "archivar"
-                    } este vehículo?`}
-                    onConfirm={handleArchiveCar}
+                      appointment.archived ? "desarchivar" : "archivar"
+                    } esta cita?`}
+                    onConfirm={handleArchiveAppointment}
                   >
                     <Button className="edit-button" shape="circle">
-                      {car.archived ? (
+                      {appointment.archived ? (
                         <i className="fa-solid fa-arrow-up-from-bracket"></i>
                       ) : (
                         <i className="fa-solid fa-box-archive icon"></i>
@@ -167,14 +181,13 @@ function SingleCarContainer() {
               </Fragment>
             </div>
           </div>
-          <div className={`car-form ${isEditing ? "highlight" : ""}`}>
-            <CarForm
+          <div className={`appointment-form ${isEditing ? "highlight" : ""}`}>
+            <AppointmentForm
               isEditing={isEditing}
-              car={car}
+              appointment={appointment}
               setForm={setForm}
-              showFullForm={true}
-              isCarDetails={true}
               setIsChanged={setShowSave}
+              isAppointmentDetails={true}
             />
 
             {isEditing && (
@@ -184,7 +197,7 @@ function SingleCarContainer() {
                   form.resetFields();
                   setShowSave(false);
                 }}
-                className={`car-form-cancel-button`}
+                className={`appointment-form-cancel-button`}
               >
                 Cancelar
               </Button>
@@ -192,9 +205,11 @@ function SingleCarContainer() {
             {showSave && (
               <Button
                 type="primary"
-                className={`car-form-save-button ${!showSave && "disabled"}`}
+                className={`appointment-form-save-button ${
+                  !showSave && "disabled"
+                }`}
                 icon={<i className="fa-solid fa-save"></i>}
-                onClick={handleUpdateCar}
+                onClick={handleUpdateAppointment}
               >
                 Guardar
               </Button>
@@ -205,4 +220,4 @@ function SingleCarContainer() {
     </div>
   );
 }
-export default SingleCarContainer;
+export default SingleAgendaContainer;

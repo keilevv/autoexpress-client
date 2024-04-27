@@ -31,6 +31,7 @@ function DashboardContainer() {
       </div>
       <h2 className="dashboard-subtitle">Mensajes</h2>
       <MessagesTable
+        loading={loading}
         messages={messages}
         pagination={pagination}
         setPagination={setPagination}

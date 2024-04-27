@@ -65,18 +65,19 @@ function CarsTable({ cars, loading, pagination, setPagination, getCars }) {
       title: "",
       dataIndex: "carId",
       key: "carId",
-      render: (_, { carId }) => {
+      render: (_, { carId, archived }) => {
         // const ref = useRef(null);
 
         return (
           <TableMenu
+            isArchived={archived}
             id={carId}
             type="cars"
             onArchive={() =>
               getCars(
                 pagination.current,
                 pagination.pageSize,
-                "&archived=false"
+                `&archived=${archived}`
               )
             }
           />
@@ -86,7 +87,8 @@ function CarsTable({ cars, loading, pagination, setPagination, getCars }) {
   ];
   const dataSource = cars.map((item, key) => {
     return {
-      key: key,
+      ...item,
+      key: item._id,
       plate: item.plate,
       brand: item.brand,
       model: item.model,

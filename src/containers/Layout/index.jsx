@@ -60,6 +60,7 @@ function MainLayout({ children }) {
 
   useEffect(() => {
     if (isMobileScreen) {
+      setCollapsed(true);
       setUserHeaderProps({ type: "text" });
       return;
     }
@@ -67,11 +68,13 @@ function MainLayout({ children }) {
   }, [isMobileScreen]);
 
   const getSelectedSider = () => {
-    const splitItems = window.location.pathname.split("/");
+    const splitItems = window.location.pathname
+      .split("/")
+      .filter((item) => item !== "");
     headerModules.forEach((module) => {
       splitItems.forEach((item, index) => {
         if (module === item) {
-          if (splitItems.length <= 2) {
+          if (splitItems.length <= 1) {
             setSelectedSider(module);
             return;
           }
@@ -87,25 +90,20 @@ function MainLayout({ children }) {
   }, [window.location.pathname]);
   return (
     <Layout className="operations-layout">
-      <Sider
-        collapsed={collapsed}
-        breakpoint="lg"
-        collapsedWidth={isMobileScreen ? 45 : 80}
-        onBreakpoint={(broken) => {
-          setCollapsed(broken);
-          // console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          // console.log(collapsed, type);
+      <Header
+        className="main-layout-header"
+        style={{
+          background: "#242424",
+          width: "100%",
+          display: "flex",
         }}
       >
-        <div className="demo-logo-vertical" />
         <Menu
-          style={{ backgroundColor: "#242424" }}
-          theme="dark"
-          mode="inline"
-          items={items}
           selectedKeys={[selectedSider]}
+          mode="horizontal"
+          theme="dark"
+          items={items}
+          style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
           onClick={(value) => {
             setSelectedSider(value.key);
             if (value.key === "operations") {
@@ -115,63 +113,27 @@ function MainLayout({ children }) {
             }
           }}
         />
-      </Sider>
-      <Layout>
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-            width: "100%",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
+        <Dropdown menu={userMenuProps} trigger={"click"}>
           <Button
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              border: "none",
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          />
-          <Menu
-            selectedKeys={[defaultSelectedHeader]}
-            mode="horizontal"
-            items={headerItems}
-            style={{ flex: 1, minWidth: 0 }}
-            onClick={(value) => {
-              navigate(`/${value.key}`, { replace: true });
-            }}
-          />
-          <Dropdown menu={userMenuProps} trigger={"click"}>
-            <Button
-              {...userHeaderProps}
-              shape="circle"
-              size="large"
-              style={{ margin: "auto", marginRight: "15px" }}
-            >
-              <UserOutlined />
-            </Button>
-          </Dropdown>
-        </Header>
-        <Content style={{ margin: "24px 16px 0" }}>
-          <div
-            style={{
-              padding: 24,
-              minHeight: 360,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
+            shape="circle"
+            ghost
+            size="large"
+            style={{ margin: "auto", marginRight: "15px", color: "white" }}
           >
-            {children}
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Autoexpress© 2024 Created by Caleb Villalba.
-        </Footer>
-      </Layout>
+            <UserOutlined />
+          </Button>
+        </Dropdown>
+      </Header>
+      <div
+        className="main-layout-content"
+        style={{
+          padding: 24,
+          background: colorBgContainer,
+          borderRadius: borderRadiusLG,
+        }}
+      >
+        {children}
+      </div>
     </Layout>
   );
 }

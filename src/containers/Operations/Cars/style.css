@@ -1,4 +1,5 @@
 .cars-container {
+  width: 100%;
   .cars-container-title {
     font-size: 28px;
   }

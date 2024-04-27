@@ -1,4 +1,5 @@
 import { Table, Tag, Input } from "antd";
+import { useNavigate } from "react-router-dom";
 import TableMenu from "../../TableMenu";
 /**
  * @param {{ appointments: any, getAppointments: () => void, loading: boolean, pagination: any, setPagination: () => void  }} props
@@ -10,11 +11,19 @@ function AppointmentsTable({
   setPagination,
   getAppointments,
 }) {
+  const navigate = useNavigate();
   const columns = [
     {
       title: "Fecha",
       dataIndex: "date",
       key: "date",
+      render: (_, { appointmentId, date }) => {
+        return (
+          <a onClick={() => navigate(`/operations/agenda/${appointmentId}`)}>
+            {date}
+          </a>
+        );
+      },
     },
     {
       title: "Hora",
@@ -32,7 +41,11 @@ function AppointmentsTable({
       dataIndex: "client",
       key: "client",
       render: (_, { client }) => {
-        return <>{client.toUpperCase()}</>;
+        return (
+          <a onClick={() => navigate(`/operations/clients/${client._id}`)}>
+            {`${client.name} ${client.surname} ${client.lastname}`.toUpperCase()}
+          </a>
+        );
       },
     },
     {
@@ -41,8 +54,13 @@ function AppointmentsTable({
       key: "car",
       render: (_, { car }) => (
         <>
-          <Tag color={"geekblue"} key={car.plate}>
-            {car.plate}
+          <Tag color={"geekblue"} key={car}>
+            <a
+              style={{ color: "#1d79C4" }}
+              onClick={() => navigate(`/operations/cars/${car._id}`)}
+            >
+              {car.plate.toUpperCase()}
+            </a>
           </Tag>
         </>
       ),
@@ -51,16 +69,17 @@ function AppointmentsTable({
       title: "",
       dataIndex: "appointmentId",
       key: "appointmentId",
-      render: (_, { appointmentId }) => {
+      render: (_, { appointmentId, archived }) => {
         return (
           <TableMenu
+            isArchived={archived}
             id={appointmentId}
             type="appointments"
             onArchive={() =>
               getAppointments(
                 pagination.current,
                 pagination.pageSize,
-                "&archived=false"
+                `&archived=${archived}`
               )
             }
           />
@@ -71,9 +90,9 @@ function AppointmentsTable({
   const dataSource = appointments.map((appointment, index) => {
     return {
       ...appointment,
-      key: index,
+      key: appointment._id,
       operator: appointment.user.username,
-      client: `${appointment.client.name} ${appointment.client.surname} ${appointment.client.lastname}`,
+      client: appointment.client,
       appointmentId: appointment._id,
     };
   });

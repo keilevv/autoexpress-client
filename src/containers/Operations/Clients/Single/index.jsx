@@ -158,7 +158,7 @@ function SingleClient() {
                   >
                     <Button className="edit-button" shape="circle">
                       {client.archived ? (
-                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        <i className="fa-solid fa-arrow-up-from-bracket"></i>
                       ) : (
                         <i className="fa-solid fa-box-archive icon"></i>
                       )}{" "}

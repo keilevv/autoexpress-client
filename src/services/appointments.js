@@ -2,6 +2,11 @@ import axios from "axios";
 import { apiUrl } from "../helpers/constants";
 
 const appointmentsService = {
+  getAppointment(token, appointmentId) {
+    return axios.get(`${apiUrl}/appointments/operations/${appointmentId}`, {
+      headers: { Authorization: `${token}` },
+    });
+  },
   getUnavailableTimes(payload) {
     return axios.post(`${apiUrl}/appointments/check`, payload);
   },

@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 /* Components */
-import { Form, TimePicker, Calendar, theme, Row } from "antd";
+import { Form, TimePicker, Calendar, theme, Row, Tag, DatePicker } from "antd";
 /* Helpers */
 import dayjs from "dayjs";
 import moment from "moment";
 /* Hooks*/
+import useViewPort from "../../../../../hooks/useViewport";
 import useAppointment from "../../../../../hooks/useAppointment";
 import "./style.css";
 /**
- * @param {{ setForm: () => void }} props
+ * @param {{
+ *  setForm: () => void,
+ *  setIsChanged?: () => void,
+ *  isEditing?: boolean,
+ *  appointment?: any,
+ *  isAppointmentDetails?: boolean
+ * }} props
  */
-function AppointmentForm({ setForm }) {
+function AppointmentForm({
+  setForm,
+  setIsChanged,
+  isAppointmentDetails,
+  isEditing = true,
+  appointment,
+}) {
+  const { isMobileScreen } = useViewPort();
+  const navigate = useNavigate();
+  const [dateValue, setDateValue] = useState(dayjs());
   const [hourValue, setHourValue] = useState(null);
   const [selectedHour, setSelectedHour] = useState("");
   const { getUnavailableTimesOfDay, unavailableTimes } = useAppointment();
@@ -43,13 +60,30 @@ function AppointmentForm({ setForm }) {
     const isToday = current.isSame(moment(), "day");
     const isAfterWorkHours = current && current.hour() > 17;
     const isSunday = current && current.day() === 0;
+
     return (
       isBeforeToday ||
       isAfterOneMonth ||
       isSunday ||
+      !isEditing ||
       (isToday && isAfterWorkHours)
     );
   };
+
+  function handlePrefill() {
+    if (appointment) {
+      setDateValue(dayjs(appointment.date, "DD/MM/YYYY"));
+      setHourValue(dayjs(appointment.time, "HH:mm"));
+      form.setFieldsValue({
+        date: dayjs(appointment.date, "DD/MM/YYYY"),
+        time: dayjs(appointment.time, "HH:mm"),
+      });
+    }
+  }
+
+  useEffect(() => {
+    handlePrefill();
+  }, [appointment, isEditing]);
 
   const disabledTime = (current) => {
     const disabledMinutes = [];
@@ -88,6 +122,9 @@ function AppointmentForm({ setForm }) {
 
   return (
     <Form
+      onFieldsChange={() => {
+        setIsChanged && setIsChanged(true);
+      }}
       form={form}
       layout="vertical"
       name="car"
@@ -103,8 +140,34 @@ function AppointmentForm({ setForm }) {
       autoComplete="off"
     >
       <div className="appointment-form-container">
-        <p className="appointment-info-title"> Ingrese la fecha deseada</p>
+        <p className="appointment-info-title">
+          {isAppointmentDetails
+            ? "Información de la cita"
+            : "Ingrese la fecha deseada"}
+        </p>
         <div className="appointment-fields-container">
+          <div className="appointment-field">
+            <span className="appointment-field-title">Cliente</span>
+            <a
+              onClick={() =>
+                navigate(`/operations/clients/${appointment?.client?._id}`)
+              }
+            >
+              {`${appointment?.client?.name} ${appointment?.client?.surname} ${appointment?.client?.lastname}`.toUpperCase()}
+            </a>
+          </div>
+          <div className="appointment-field">
+            <span className="appointment-field-title">Auto</span>
+            <Tag color={"geekblue"} className="appointment-car">
+              <a
+                onClick={() =>
+                  navigate(`/operations/cars/${appointment?.car?._id}`)
+                }
+              >
+                {appointment?.car?.plate}
+              </a>
+            </Tag>
+          </div>
           <Row>
             <Form.Item
               label="Fecha"
@@ -117,19 +180,48 @@ function AppointmentForm({ setForm }) {
               ]}
             >
               <div style={wrapperStyle}>
-                <Calendar
-                  onSelect={(date) => {
-                    getUnavailableTimesOfDay(dayjs(date).format("DD/MM/YYYY"));
-                    form.setFieldValue(
-                      "date",
-                      dayjs(date).format("DD/MM/YYYY")
-                    );
-                  }}
-                  fullscreen={false}
-                  disabledDate={(current) => {
-                    return disabledDate(current);
-                  }}
-                />
+                {isMobileScreen ? (
+                  <DatePicker
+                    className="mobile-date-picker"
+                    disabled={!isEditing}
+                    size="large"
+                    value={dateValue}
+                    format={"DD/MM/YYYY"}
+                    onSelect={(date) => {
+                      getUnavailableTimesOfDay(
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      form.setFieldValue(
+                        "date",
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      setDateValue(dayjs(date));
+                      setIsChanged && setIsChanged(true);
+                    }}
+                    disabledDate={(current) => {
+                      return disabledDate(current);
+                    }}
+                  />
+                ) : (
+                  <Calendar
+                    value={dateValue}
+                    onSelect={(date) => {
+                      getUnavailableTimesOfDay(
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      form.setFieldValue(
+                        "date",
+                        dayjs(date).format("DD/MM/YYYY")
+                      );
+                      setDateValue(dayjs(date));
+                      setIsChanged && setIsChanged(true);
+                    }}
+                    fullscreen={false}
+                    disabledDate={(current) => {
+                      return disabledDate(current);
+                    }}
+                  />
+                )}
               </div>
             </Form.Item>
           </Row>
@@ -145,6 +237,7 @@ function AppointmentForm({ setForm }) {
               ]}
             >
               <TimePicker
+                disabled={!isEditing}
                 value={hourValue}
                 onChange={(value) => {
                   setHourValue(value);

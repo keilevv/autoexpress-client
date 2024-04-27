@@ -60,16 +60,17 @@ function ClientsTable({
       title: "",
       dataIndex: "clientId",
       key: "clientId",
-      render: (_, { clientId }) => {
+      render: (_, { clientId, archived }) => {
         return (
           <TableMenu
+            isArchived={archived}
             id={clientId}
             type="clients"
             onArchive={() =>
               getClients(
                 pagination.current,
                 pagination.pageSize,
-                "&archived=false"
+                `&archived=${archived}`
               )
             }
           />
@@ -84,7 +85,8 @@ function ClientsTable({
 
   const dataSource = clients.map((item, index) => {
     return {
-      key: index,
+      ...item,
+      key: item._id,
       full_name: item.name + " " + item.surname + " " + item.lastname,
       cars: item.cars,
       email: item.email,
@@ -97,6 +99,7 @@ function ClientsTable({
     <>
       <div className="table-container">
         <Table
+          loading={loading}
           dataSource={dataSource}
           columns={columns}
           pagination={pagination}

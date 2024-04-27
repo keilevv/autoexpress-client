@@ -9,7 +9,7 @@ import { Spin, Tabs } from "antd";
 import "./style.css";
 
 function ClientsContainer() {
-  const [currentTab, setCurrentTab] = useState("all");
+  const [currentTab, setCurrentTab] = useState("active");
   const user = useSelector((state) => state.auth.user);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -32,12 +32,12 @@ function ClientsContainer() {
   }, [pagination.current, pagination.pageSize, user, currentTab]);
 
   const handleSearch = (value) => {
-    getClients(pagination.current, pagination.pageSize, "&name=" + value);
+    getClients(pagination.current, pagination.pageSize, "&full_name=" + value);
   };
   const items = [
     {
-      key: "all",
-      label: "Todos",
+      key: "active",
+      label: "Activos",
       children: (
         <ClientsTable
           pagination={pagination}
@@ -65,20 +65,14 @@ function ClientsContainer() {
   return (
     <div className="clients-container">
       <h1 className="clients-container-title">Clientes</h1>
-      <TableActions onSearch={handleSearch} type="clients" />
-      {loading ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Spin size="large" style={{ marginTop: "50px" }} />
-        </div>
-      ) : (
-        <Tabs
-          activeKey={currentTab}
-          items={items}
-          onChange={(key) => {
-            setCurrentTab(key);
-          }}
-        />
-      )}
+      <TableActions onSearch={handleSearch} type="clients" />{" "}
+      <Tabs
+        activeKey={currentTab}
+        items={items}
+        onChange={(key) => {
+          setCurrentTab(key);
+        }}
+      />
     </div>
   );
 }
