@@ -42,8 +42,8 @@ function AppointmentsTable({
       key: "client",
       render: (_, { client }) => {
         return (
-          <a onClick={() => navigate(`/operations/client/${client._id}`)}>
-            {client.toUpperCase()}
+          <a onClick={() => navigate(`/operations/clients/${client._id}`)}>
+            {`${client.name} ${client.surname} ${client.lastname}`.toUpperCase()}
           </a>
         );
       },
@@ -92,7 +92,7 @@ function AppointmentsTable({
       ...appointment,
       key: appointment._id,
       operator: appointment.user.username,
-      client: `${appointment.client.name} ${appointment.client.surname} ${appointment.client.lastname}`,
+      client: appointment.client,
       appointmentId: appointment._id,
     };
   });

@@ -19,21 +19,22 @@ aside {
 .main-layout-content {
   margin: 24px 12px;
   max-width: 1800px;
-  width: calc(100% - 26px);
-  margin: 12px auto;
+  margin: 18px auto;
+  width: calc(100% - 24px);
+}
+.ant-table-wrapper {
+  border: 2px solid #e6e6e6;
+  border-radius: 8px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
   .main-layout-content {
     margin: 24px 12px;
   }
   .main-layout-header {
     padding: 0px 12px;
   }
-}
-
-.ant-table-wrapper {
-  border: 2px solid #e6e6e6;
-  border-radius: 8px;
-  overflow-x: scroll;
+  .ant-table-wrapper {
+    overflow-x: scroll;
+  }
 }

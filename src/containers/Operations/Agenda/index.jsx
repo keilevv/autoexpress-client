@@ -36,7 +36,7 @@ function AgendaContainer() {
     getAppointments(
       pagination.current,
       pagination.pageSize,
-      "&client=" + value
+      "&full_name=" + value
     );
   };
 
@@ -72,7 +72,7 @@ function AgendaContainer() {
   return (
     <div className="agenda-container">
       <h1 className="agenda-container-title">Agenda</h1>
-      <TableActions />
+      <TableActions onSearch={handleSearch} type="appointments" />
       <Tabs
         activeKey={currentTab}
         items={items}

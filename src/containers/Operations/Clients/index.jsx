@@ -32,7 +32,7 @@ function ClientsContainer() {
   }, [pagination.current, pagination.pageSize, user, currentTab]);
 
   const handleSearch = (value) => {
-    getClients(pagination.current, pagination.pageSize, "&name=" + value);
+    getClients(pagination.current, pagination.pageSize, "&full_name=" + value);
   };
   const items = [
     {
