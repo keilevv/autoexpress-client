@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
+import { getFilterString } from "../../../helpers";
 /* Hooks*/
 import useCars from "../../../hooks/useCars";
 /* Components */
 import CarsTable from "../../../components/operations/Cars/CarsTable";
 import TableActions from "../../../components/operations/TableActions";
 import { useSelector } from "react-redux";
-import { Spin, Tabs } from "antd";
+import { Tabs } from "antd";
 import "./style.css";
 
 function CarsContainer() {
   const [currentTab, setCurrentTab] = useState("active");
   const user = useSelector((state) => state.auth.user);
+  const [searchValue, setSearchValue] = useState(null);
   const { cars, count, getCars, loading } = useCars();
   const [pagination, setPagination] = useState({
     current: 1,
@@ -60,13 +62,28 @@ function CarsContainer() {
   }, [pagination.current, pagination.pageSize, user, currentTab]);
 
   const handleSearch = (value) => {
+    setSearchValue(value);
     getCars(pagination.current, pagination.pageSize, "&plate=" + value);
+  };
+
+  const handleApplyFilters = (values) => {
+    getCars(
+      pagination.current,
+      pagination.pageSize,
+      `${searchValue ? "&plate=" + searchValue : ""}${getFilterString(values)}`
+    );
   };
 
   return (
     <div className="cars-container">
       <h1 className="cars-container-title">Autos</h1>
-      <TableActions onSearch={handleSearch} type="cars" />
+      <TableActions
+        onSearch={handleSearch}
+        type="cars"
+        onApplyFilters={(values) => {
+          handleApplyFilters(values);
+        }}
+      />
 
       <Tabs
         activeKey={currentTab}

@@ -15,5 +15,16 @@ export function isNumeric(str) {
 }
 
 export function isOverflown(element) {
-  return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+  return (
+    element.scrollHeight > element.clientHeight ||
+    element.scrollWidth > element.clientWidth
+  );
+}
+
+export function getFilterString(filters) {
+  let filterString = "";
+  Object.keys(filters).forEach((key) => {
+    filterString += `&${key}=${filters[key]}`;
+  });
+  return filterString;
 }
