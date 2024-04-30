@@ -1,5 +1,82 @@
 .table-actions {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 20px;
+
+  .filters {
+    display: flex;
+    gap: 50px;
+
+    .ant-picker-range {
+      width: 100%;
+    }
+
+    .date-picker {
+      transition: opacity 0.3s ease-in-out;
+      visibility: hidden;
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .date-picker.show {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      .submit-button {
+        min-width: 80px;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s ease-out;
+        margin: auto;
+      }
+      .submit-button.show {
+        margin: 0px;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+
+  .action-buttons {
+    transition: scale 0.3s ease-in-out;
+
+    .filter-button.highlighted {
+      outline: solid red;
+      color: red;
+      box-shadow: 0 0 10px red;
+      font-weight: bold;
+      transform: scale(1.2);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .table-actions {
+    flex-direction: column;
+    .filters {
+      flex-direction: column;
+
+      .submit-button {
+        display: none;
+        text-align: center;
+        justify-content: center;
+      }
+      .submit-button.show {
+        display: flex;
+      }
+    }
+    .filters.show {
+      display: flex;
+      margin-bottom: 40px;
+      padding: 0px 10
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }

@@ -37,4 +37,10 @@ aside {
   .ant-table-wrapper {
     overflow-x: scroll;
   }
+
+  .ant-picker-panels {
+    display: flex;
+    flex-direction: column;
+  }
+  
 }
