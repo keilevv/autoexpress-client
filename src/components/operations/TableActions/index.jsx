@@ -3,9 +3,9 @@ import _debounce from "lodash/debounce";
 import "./style.css";
 import { useEffect, useState } from "react";
 /**
- * @param {{ onSearch?: () => string, type?: string, onApplyFilters?: () => any }} props
+ * @param {{ onSearch?: () => string, type?: string, onApplyFilters?: () => any, tab?: string }} props
  */
-function TableActions({ type, onApplyFilters, onSearch }) {
+function TableActions({ type, tab, onApplyFilters, onSearch }) {
   const [showFilters, setShowFilters] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
   const [form] = Form.useForm();
@@ -38,6 +38,11 @@ function TableActions({ type, onApplyFilters, onSearch }) {
     }
     onApplyFilters(values);
   }
+
+  useEffect(() => {
+    form.resetFields();
+    setShowSubmit(false);
+  }, [tab]);
 
   return (
     <div className="table-actions">
@@ -88,12 +93,13 @@ function TableActions({ type, onApplyFilters, onSearch }) {
             onClick={() => onApplyFilters && handleApplyFilters()}
             className={`submit-button ${showSubmit ? "show" : ""}`}
           >
-            Filtrar
+            Aplicar
           </Button>
           <Button
             onClick={() => {
               form.resetFields();
               setShowSubmit(false);
+              onApplyFilters({});
             }}
             className={`submit-button ${showSubmit ? "show" : ""}`}
           >

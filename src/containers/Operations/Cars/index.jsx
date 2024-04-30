@@ -63,14 +63,20 @@ function CarsContainer() {
 
   const handleSearch = (value) => {
     setSearchValue(value);
-    getCars(pagination.current, pagination.pageSize, "&plate=" + value);
+    getCars(
+      pagination.current,
+      pagination.pageSize,
+      `&archived=${currentTab === "archived"}&plate=${value}`
+    );
   };
 
   const handleApplyFilters = (values) => {
     getCars(
       pagination.current,
       pagination.pageSize,
-      `${searchValue ? "&plate=" + searchValue : ""}${getFilterString(values)}`
+      `&archived=${currentTab === "archived"}${
+        searchValue ? "&plate=" + searchValue : ""
+      }${getFilterString(values)}`
     );
   };
 
@@ -78,6 +84,7 @@ function CarsContainer() {
     <div className="cars-container">
       <h1 className="cars-container-title">Autos</h1>
       <TableActions
+        tab={currentTab}
         onSearch={handleSearch}
         type="cars"
         onApplyFilters={(values) => {
