@@ -146,28 +146,32 @@ function AppointmentForm({
             : "Ingrese la fecha deseada"}
         </p>
         <div className="appointment-fields-container">
-          <div className="appointment-field">
-            <span className="appointment-field-title">Cliente</span>
-            <a
-              onClick={() =>
-                navigate(`/operations/clients/${appointment?.client?._id}`)
-              }
-            >
-              {`${appointment?.client?.name} ${appointment?.client?.surname} ${appointment?.client?.lastname}`.toUpperCase()}
-            </a>
-          </div>
-          <div className="appointment-field">
-            <span className="appointment-field-title">Auto</span>
-            <Tag color={"geekblue"} className="appointment-car">
-              <a
-                onClick={() =>
-                  navigate(`/operations/cars/${appointment?.car?._id}`)
-                }
-              >
-                {appointment?.car?.plate}
-              </a>
-            </Tag>
-          </div>
+          {isAppointmentDetails && (
+            <>
+              <div className="appointment-field">
+                <span className="appointment-field-title">Cliente</span>
+                <a
+                  onClick={() =>
+                    navigate(`/operations/clients/${appointment?.client?._id}`)
+                  }
+                >
+                  {`${appointment?.client?.name} ${appointment?.client?.surname} ${appointment?.client?.lastname}`.toUpperCase()}
+                </a>
+              </div>
+              <div className="appointment-field">
+                <span className="appointment-field-title">Auto</span>
+                <Tag color={"geekblue"} className="appointment-car">
+                  <a
+                    onClick={() =>
+                      navigate(`/operations/cars/${appointment?.car?._id}`)
+                    }
+                  >
+                    {appointment?.car?.plate}
+                  </a>
+                </Tag>
+              </div>
+            </>
+          )}
           <Row>
             <Form.Item
               label="Fecha"
