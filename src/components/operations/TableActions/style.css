@@ -1,10 +1,24 @@
 .table-actions {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  align-content: center;
 
   .filters {
     display: flex;
-    gap: 50px;
+    gap: 30px;
+
+    .ant-row {
+      gap: 0px;
+    }
+
+    .form-item {
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .form-item.show {
+      opacity: 1;
+    }
 
     .ant-picker-range {
       width: 100%;
@@ -49,16 +63,26 @@
       color: red;
       box-shadow: 0 0 10px red;
       font-weight: bold;
-      transform: scale(1.2);
     }
+  }
+  .action-buttons.highlighted {
+    scale: 1.1;
   }
 }
 
 @media screen and (max-width: 768px) {
   .table-actions {
     flex-direction: column;
+    margin-bottom: 0px;
+
     .filters {
       flex-direction: column;
+      .table-filters {
+        display: none;
+      }
+      .table-filters.show {
+        display: flex;
+      }
 
       .submit-button {
         display: none;
@@ -68,11 +92,12 @@
       .submit-button.show {
         display: flex;
       }
+      .filter-actions.show {
+        margin-bottom: 20px;
+      }
     }
     .filters.show {
       display: flex;
-      margin-bottom: 40px;
-      padding: 0px 10
     }
     .action-buttons {
       display: flex;

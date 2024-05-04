@@ -55,7 +55,7 @@ function TableActions({ type, tab, onApplyFilters, onSearch }) {
             }}
           />
         </div>
-        <div className="action-buttons">
+        <div className={`action-buttons ${showFilters ? "highlighted" : ""}`}>
           <Button
             icon={<i className="fa-solid fa-filter"></i>}
             className={`filter-button ${showFilters ? "highlighted" : ""}`}
@@ -77,17 +77,20 @@ function TableActions({ type, tab, onApplyFilters, onSearch }) {
           autoComplete="off"
           onFieldsChange={() => setShowSubmit(true)}
           form={form}
+          className={`table-filters ${showFilters ? "show" : ""}`}
         >
           <Form.Item
             name={"date-range"}
             style={{ width: "100%", margin: "0px" }}
+            label="Fecha de creación"
+            className={`form-item ${showFilters ? "show" : ""}`}
           >
             <RangePicker
               className={`date-picker ${showFilters ? "show" : ""}`}
             />
           </Form.Item>
         </Form>
-        <div className="filter-actions">
+        <div className={`filter-actions ${showSubmit ? "show" : ""}`}>
           <Button
             type="primary"
             onClick={() => onApplyFilters && handleApplyFilters()}
