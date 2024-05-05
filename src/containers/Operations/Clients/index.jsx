@@ -81,8 +81,8 @@ function ClientsContainer() {
     },
   ];
   return (
-    <div className="clients-container">
-      <h1 className="clients-container-title">Clientes</h1>
+    <div>
+      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Clientes</h1>
       <TableActions
         onSearch={handleSearch}
         type="clients"

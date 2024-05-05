@@ -1,0 +1,16 @@
+/* CSS */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+}
+
+.hover\\:glow:hover {
+  animation: glow 1s infinite alternate;
+}

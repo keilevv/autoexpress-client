@@ -91,7 +91,7 @@ function MainLayout({ children }) {
   return (
     <Layout className="max-w-none bg-inherit">
       <Header
-        className="flex"
+        className="flex px-4 md:px-8 lg:px-12"
         style={{
           background: "#242424",
         }}
@@ -112,14 +112,9 @@ function MainLayout({ children }) {
               }
             }}
           />
-          <Dropdown menu={userMenuProps} trigger={"click"}>
-            <Button
-              shape="circle"
-              ghost
-              size="large"
-              style={{ margin: "auto", marginRight: "15px", color: "white" }}
-            >
-              <UserOutlined />
+          <Dropdown menu={userMenuProps} trigger={"click"} className="m-auto">
+            <Button shape="circle" ghost size="large">
+              <i className="fa-solid fa-user"></i>
             </Button>
           </Dropdown>
         </div>
