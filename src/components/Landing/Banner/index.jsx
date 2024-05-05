@@ -9,11 +9,8 @@ import "./style.css";
 function Banner({ agendaRef }) {
   const { isMobileScreen } = useViewport();
   return (
-    <div className="banner-content">
-      <div className="tenant-logo-container">
-        <img src={Logo} alt="tenant-logo" className="tenant-logo"></img>
-        <h1 className="tenant-logo-trademark">©</h1>
-      </div>
+    <div className="container">
+      <img src={Logo} alt="tenant-logo" className="tenant-logo max-w-90 mx-auto"></img>
       <div className={`banner-actions`}>
         <Button
           ghost={true}

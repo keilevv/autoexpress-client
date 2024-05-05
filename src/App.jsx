@@ -33,7 +33,7 @@ import { useEffect } from "react";
 function App() {
   const { defaultSelectedHeader } = useMenu();
   return (
-    <div className="app" id="app" style={{ backgroundColor: "#ffff" }}>
+    <div className="app mx-0" id="app">
       <ConfigProvider
         locale={esES}
         theme={{

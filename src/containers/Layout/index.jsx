@@ -89,50 +89,43 @@ function MainLayout({ children }) {
     getSelectedSider();
   }, [window.location.pathname]);
   return (
-    <Layout className="operations-layout">
+    <Layout className="max-w-none bg-inherit">
       <Header
-        className="main-layout-header"
+        className="flex"
         style={{
           background: "#242424",
-          width: "100%",
-          display: "flex",
         }}
       >
-        <Menu
-          selectedKeys={[selectedSider]}
-          mode="horizontal"
-          theme="dark"
-          items={items}
-          style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
-          onClick={(value) => {
-            setSelectedSider(value.key);
-            if (value.key === "operations") {
-              navigate(`/operations`, { replace: true });
-            } else {
-              navigate(`/operations/${value.key}`);
-            }
-          }}
-        />
-        <Dropdown menu={userMenuProps} trigger={"click"}>
-          <Button
-            shape="circle"
-            ghost
-            size="large"
-            style={{ margin: "auto", marginRight: "15px", color: "white" }}
-          >
-            <UserOutlined />
-          </Button>
-        </Dropdown>
+        <div className="container flex mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
+          <Menu
+            selectedKeys={[selectedSider]}
+            mode="horizontal"
+            theme="dark"
+            items={items}
+            style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
+            onClick={(value) => {
+              setSelectedSider(value.key);
+              if (value.key === "operations") {
+                navigate(`/operations`, { replace: true });
+              } else {
+                navigate(`/operations/${value.key}`);
+              }
+            }}
+          />
+          <Dropdown menu={userMenuProps} trigger={"click"}>
+            <Button
+              shape="circle"
+              ghost
+              size="large"
+              style={{ margin: "auto", marginRight: "15px", color: "white" }}
+            >
+              <UserOutlined />
+            </Button>
+          </Dropdown>
+        </div>
       </Header>
-      <div
-        className="main-layout-content"
-        style={{
-          padding: 24,
-          background: colorBgContainer,
-          borderRadius: borderRadiusLG,
-        }}
-      >
-        {children}
+      <div className="mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
+        <div className="container bg-white rounded-lg p-5">{children}</div>
       </div>
     </Layout>
   );
