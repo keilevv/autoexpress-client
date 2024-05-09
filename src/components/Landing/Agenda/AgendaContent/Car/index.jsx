@@ -148,13 +148,13 @@ function CarForm({
           }}
           autoComplete="off"
         >
-          <div className="car-form-container">
-            <p className="car-info-title">
+          <div>
+            <p className="ext text-xl text-red-700 mb-4">
               {!isCarDetails
                 ? "Ingrese la información de su vehículo"
                 : "Información del vehículo"}
             </p>
-            <div className="car-fields-container">
+            <div>
               <Row>
                 <Form.Item
                   label="Placa"
@@ -193,7 +193,7 @@ function CarForm({
                     },
                   ]}
                 >
-                  <div className="form-item-explain">
+                  <div className="flex gap-2">
                     <Input
                       disabled={!isEditing}
                       allowClear
@@ -350,7 +350,7 @@ function CarForm({
           }}
           autoComplete="off"
         >
-          <div className="car-form-container">
+          <div className="">
             <div className="logo-container">
               <img className="logo" src={Logo} />
             </div>

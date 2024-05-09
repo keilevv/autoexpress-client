@@ -108,8 +108,8 @@ function ClientForm({
           }}
           autoComplete="off"
         >
-          <div className="client-form-container">
-            <p className="client-info-title">
+          <div>
+            <p className="text text-xl text-red-700 mb-4">
               {client
                 ? "Información personal"
                 : "Ingrese su información personal"}
@@ -144,7 +144,7 @@ function ClientForm({
                     <Input disabled={!isEditing && client ? true : false} />
                   </Form.Item>
                 </Col>
-                <Col className="client-form-col-2">
+                <Col>
                   <Form.Item
                     label="Segundo apellido"
                     name="lastname"
@@ -203,7 +203,7 @@ function ClientForm({
                 </Form.Item>
               </Row>
             </div>
-            <p className="client-info-title">
+            <p className="text text-xl text-red-700 my-4">
               {client
                 ? "Información de contacto"
                 : "Ingrese su información de contacto"}
@@ -228,7 +228,7 @@ function ClientForm({
                     <Input disabled={!isEditing} />
                   </Form.Item>
                 </Col>
-                <Col className="client-form-col-2">
+                <Col>
                   <Form.Item
                     label="Celular"
                     name="telephone_number"
