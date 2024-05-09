@@ -9,14 +9,11 @@ function ContactContainer({ contactRef }) {
     <section key="contact" ref={contactRef}>
       <div className="contact-container">
         <div className="contact-text-container">
-          <h1 className="contact-title-header" style={{ marginBottom: "45px" }}>
-            ¿Tiene una inquietud?
-          </h1>
-          <h1 className="contact-title">
-            Entendemos que puede tener preguntas o inquietudes. Estamos aquí
-            para responder a todas sus dudas, explicar el proceso y brindarle la
-            información que necesita para sentirse tranquilo durante la
-            reparación de su vehículo.
+          <h1 className="text-4xl text-center mb-10">¿Tiene una inquietud?</h1>
+          <h1 className="text-2xl font-light my-20 lg:text-center">
+            Estamos aquí para responder a todas sus dudas, explicar el proceso y
+            brindarle la información que necesita para sentirse tranquilo
+            durante la reparación de su vehículo.
           </h1>
         </div>
         <div className="contact-content">

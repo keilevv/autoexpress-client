@@ -25,9 +25,9 @@ function LocationContainer({ locationRef }) {
         <div className="location-container">
           <div className="location-text-container">
             <h1
-              className="location-text"
+              className="text-3xl text-center font-semibold mb-10"
               onClick={redirect}
-              style={{ fontWeight: "500" }}
+              
             >
               Ubicación:
             </h1>

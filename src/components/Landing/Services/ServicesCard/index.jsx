@@ -1,74 +1,34 @@
-import { Card } from "antd";
-import ServiceModal from "../ServiceModal";
 import useViewPort from "../../../../hooks/useViewport";
 import "./style.css";
 import { useState } from "react";
 function ServicesCard(props) {
-  const [showText, setShowText] = useState(false);
   const [open, setOpen] = useState(false);
   const { type } = props;
-  const { isMobileScreen } = useViewPort();
-
-  const handleCardClick = (show = false) => {
-    setShowText(show);
-  };
-
-  const renderDescription = () => {
-    if (typeof props.description === "string") {
-      return (
-        <p className={`service-card-description ${showText ? "expanded" : ""}`}>
-          {props.description}
-        </p>
-      );
-    }
-    return props.description;
-  };
 
   return (
-    <>
-      <Card
-        style={{ width: "100%" }}
-        className={`service-card ${showText ? "expanded" : ""}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          handleCardClick((prev) => {
-            return !prev;
-          });
-        }}
-      >
+    <div
+      className={`flex flex-col bg-white p-4 cursor-pointer rounded-lg hover:shadow-lg ${
+        open ? "h-[300px]" : ""
+      } hover:bg-gray-200 transition-background duration-300`}
+      onClick={() => setOpen(!open)}
+    >
+      <div className="flex justify-center">
         <div
-          className="service-icon-container"
+          className="max-w-[100px] max-h-[100px] rounded-full flex justify-center items-center"
           style={{ background: props.color }}
         >
-          <img src={props.icon} className="service-icon" />
+          <img src={props.icon} className="p-4" />
         </div>
-        <h2 className="service-card-title">{props.title}</h2>
-        {(!isMobileScreen || showText) && (
-          <>
-            <span
-              className={`service-card-description ${
-                showText ? "expanded" : ""
-              }`}
-            >
-              {renderDescription()}
-            </span>
-            {props.showMore && (
-              <p
-                onClick={() => {
-                  setOpen(true);
-                }}
-                className={`service-card-description more ${
-                  showText ? "expanded" : ""
-                }`}
-              >
-                Ver más
-              </p>
-            )}
-          </>
-        )}
-      </Card>
-      <ServiceModal open={open} setOpen={setOpen} {...props} />
-    </>
+      </div>
+      <h2 className="text-xl text-red-700 my-4 text-center">{props.title}</h2>
+      <div
+        className={`flex justify-center transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0 h-0"
+        }`}
+      >
+        <p>{props.description}</p>
+      </div>
+    </div>
   );
 }
 export default ServicesCard;

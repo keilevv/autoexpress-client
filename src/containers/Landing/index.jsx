@@ -59,6 +59,9 @@ function LandingContainer() {
             if (item.key === "contact") {
               contactRef.current?.scrollIntoView({ behavior: "smooth" });
             }
+            if (item.key === "agenda") {
+              agendaRef.current?.scrollIntoView({ behavior: "smooth" });
+            }
           }}
         />
       </Header>

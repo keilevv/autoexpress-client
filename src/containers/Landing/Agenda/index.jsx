@@ -9,7 +9,7 @@ function AgendaContainer({ agendaRef }) {
     <section key="agenda" ref={agendaRef}>
       <div className="agenda-banner-container">
         <i className="fa-solid fa-calendar-days agenda-logo"></i>
-        <h1 className="agenda-banner-title">Agende una cita.</h1>
+        <h1 className="text-4xl text-white font-semibold my-4">Agende una cita.</h1>
         <h1 className="agenda-banner-title-description">
           Para su comodidad, ahora puede agendar una cita directamente con
           nosotros.

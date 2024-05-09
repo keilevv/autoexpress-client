@@ -3,4 +3,5 @@ export const headerItems = [
   { key: "services", label: "Servicios" },
   // { key: "vehicle", label: "Ver mi vehículo" },
   { key: "contact", label: "Contáctenos" },
+  { key: "agenda", label: "Agende una cita" },
 ];
