@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useCars from "../../../../hooks/useCars";
 /* Components */
 import { useSelector } from "react-redux";
-import CarForm from "../../../../components/Landing/Agenda/AgendaContent/Car";
+import CarForm from "../../../../components/Common/CarForm";
 import {
   Skeleton,
   Breadcrumb,

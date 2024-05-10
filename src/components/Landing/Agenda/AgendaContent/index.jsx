@@ -3,9 +3,9 @@ import moment from "moment";
 /* Components */
 import { RestOutlined } from "@ant-design/icons";
 import { Steps, theme, Button, message, notification } from "antd";
-import ClientForm from "./Client";
-import CarForm from "./Car";
-import AppointmentForm from "./Appointment";
+import ClientForm from "../../../Common/ClientForm";
+import CarForm from "../../../Common/CarForm";
+import AppointmentForm from "../../../Common/AppointmentForm";
 import AppointmentConfirm from "./Confirm";
 /* Hooks */
 import useClient from "../../../../hooks/useClient";

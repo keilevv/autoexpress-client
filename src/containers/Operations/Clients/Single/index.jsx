@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useClient from "../../../../hooks/useClient";
 /* Components */
 import { useSelector } from "react-redux";
-import ClientForm from "../../../../components/Landing/Agenda/AgendaContent/Client";
+import ClientForm from "../../../../components/Common/ClientForm";
 import {
   Skeleton,
   Breadcrumb,

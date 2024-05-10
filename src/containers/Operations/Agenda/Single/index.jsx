@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useAppointment from "../../../../hooks/useAppointment";
 /* Components */
 import { useSelector } from "react-redux";
-import AppointmentForm from "../../../../components/Landing/Agenda/AgendaContent/Appointment";
+import AppointmentForm from "../../../../components/Common/AppointmentForm";
 import {
   Skeleton,
   Breadcrumb,

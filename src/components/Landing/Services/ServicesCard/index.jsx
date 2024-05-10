@@ -26,7 +26,7 @@ function ServicesCard(props) {
           open ? "opacity-100" : "opacity-0 h-0"
         }`}
       >
-        <p>{props.description}</p>
+        <div>{props.description}</div>
       </div>
     </div>
   );

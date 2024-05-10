@@ -6,9 +6,8 @@ import { Form, TimePicker, Calendar, theme, Row, Tag, DatePicker } from "antd";
 import dayjs from "dayjs";
 import moment from "moment";
 /* Hooks*/
-import useViewPort from "../../../../../hooks/useViewport";
-import useAppointment from "../../../../../hooks/useAppointment";
-import "./style.css";
+import useViewPort from "../../../hooks/useViewport";
+import useAppointment from "../../../hooks/useAppointment";
 /**
  * @param {{
  *  setForm: () => void,

@@ -2,17 +2,14 @@
 import { useEffect, useState, useCallback } from "react";
 import _debounce from "lodash/debounce";
 import dayjs from "dayjs";
-import moment from "moment";
-import Logo from "../../../../../assets/images/autoexpresslogo.png";
+import Logo from "../../../assets/images/autoexpresslogo.png";
 /* Components */
 import { Form, Input, Row, Popover, DatePicker, Select } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 /* Hooks */
-import useCars from "../../../../../hooks/useCars";
-import useViewport from "../../../../../hooks/useViewport";
+import useCars from "../../../hooks/useCars";
+import useViewport from "../../../hooks/useViewport";
 
-import "./style.css";
-import { current } from "@reduxjs/toolkit";
 /**
  * @param {{ setIsChanged?: () => void,
  * setForm: () => void,

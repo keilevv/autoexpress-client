@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import moment from "moment";
 import { Form, Input, Row, Col, DatePicker } from "antd";
 import dayjs from "dayjs";
-import NumberInput from "../../../../Common/NumberInput";
-import Logo from "../../../../../assets/images/autoexpresslogo.png";
+import NumberInput from "../../Common/NumberInput"
+import Logo from "../../../assets/images/autoexpresslogo.png";
 
-import "./style.css";
 /**
  * @param {{
  * setIsChanged?: () => void,
