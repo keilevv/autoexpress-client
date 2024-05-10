@@ -1,13 +1,13 @@
 import Banner from "../../../components/Landing/Banner";
 import "./style.css";
 /**
- * @param {{ bannerRef: any, agendaRef: any }} props
+ * @param {{ bannerRef: any, appointmentRef: any }} props
  */
-function BannerContainer({ bannerRef, agendaRef }) {
+function BannerContainer({ bannerRef, appointmentRef }) {
   return (
     <section key="banner" ref={bannerRef}>
       <div className="banner-container">
-        <Banner agendaRef={agendaRef} />
+        <Banner appointmentRef={appointmentRef} />
       </div>
     </section>
   );

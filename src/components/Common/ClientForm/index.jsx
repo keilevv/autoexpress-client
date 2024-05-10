@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Form, Input, Row, Col, DatePicker } from "antd";
 import dayjs from "dayjs";
-import NumberInput from "../../Common/NumberInput"
+import NumberInput from "../../Common/NumberInput";
 import Logo from "../../../assets/images/autoexpresslogo.png";
 
 /**
@@ -106,7 +106,7 @@ function ClientForm({
           }}
           autoComplete="off"
         >
-          <div>
+          <div className="p-4">
             <p className="text text-xl text-red-700 mb-4">
               {client
                 ? "Información personal"
@@ -270,12 +270,14 @@ function ClientForm({
           }}
           autoComplete="off"
         >
-          <div className="client-form-container">
-            <div className="logo-container">
+          <div className="p-4">
+            <div className="max-w-[300px] m-auto">
               <img className="logo" src={Logo} />
             </div>
-            <p className="client-info-title">¡Bienvenido!</p>
-            <p className="client-info-description">
+            <p className="text text-2xl text-red-700 font-semibold mb-4">
+              ¡Bienvenido!
+            </p>
+            <p className="text text-lg font-medium mb-4">
               Por favor permítanos verificar su información
             </p>
             <div className="client-fields-container">

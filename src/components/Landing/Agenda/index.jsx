@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Button, Modal } from "antd";
 import AgendaContent from "./AgendaContent";
+import { useNavigate } from "react-router-dom";
 import "./style.css";
 function Agenda({ containerRef = null }) {
+  const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -18,7 +20,11 @@ function Agenda({ containerRef = null }) {
 
   return (
     <>
-      <Button className="agenda-banner-button" size="large" onClick={showModal}>
+      <Button
+        className="agenda-banner-button"
+        size="large"
+        onClick={() => navigate("/appointment")}
+      >
         Agendar ahora
       </Button>
       <Modal
@@ -29,7 +35,10 @@ function Agenda({ containerRef = null }) {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <AgendaContent isModalVisible={isModalVisible} setIsModalVisible={setIsModalVisible} />
+        <AgendaContent
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+        />
       </Modal>
     </>
   );

@@ -8,6 +8,7 @@ import CarForm from "../../../Common/CarForm";
 import AppointmentForm from "../../../Common/AppointmentForm";
 import AppointmentConfirm from "./Confirm";
 /* Hooks */
+import { useNavigate } from "react-router-dom";
 import useClient from "../../../../hooks/useClient";
 import useCars from "../../../../hooks/useCars";
 import useAppointment from "../../../../hooks/useAppointment";
@@ -18,6 +19,7 @@ import dayjs from "dayjs";
  * @param {{ isModalVisible?: boolean, setIsModalVisible?: () => void }} props
  */
 function AgendaContent({ isModalVisible, setIsModalVisible }) {
+  const navigate = useNavigate();
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [form, setForm] = useState(null);
@@ -328,10 +330,10 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       });
   };
   return (
-    <div className="agenda-content" style={{ minWidth: "102px" }}>
+    <div>
       <Steps current={current} items={items} />
       <div style={contentStyle}>{agendaSteps[current].content}</div>
-      <div style={{ marginTop: 24 }} className="agenda-footer-container">
+      <div className="flex gap-4 mt-8 justify-center">
         <div className="handle-steps">
           {((current !== 0 && current !== agendaSteps.length - 1) ||
             showFullForm) && (
@@ -358,9 +360,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
             <Button
               type="primary"
               onClick={() => {
-                setIsModalVisible(false);
-                form.resetFields();
-                setCurrent(0);
+                navigate("/home");
               }}
             >
               Terminar

@@ -1,16 +1,22 @@
 import Logo from "../../../assets/images/autoexpresslogo.png";
 import { Button } from "antd";
 import useViewport from "../../../hooks/useViewport";
+import { useNavigate } from "react-router-dom";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import "./style.css";
 /**
- * @param {{  agendaRef: any }} props
+ * @param {{  appointmentRef: any }} props
  */
-function Banner({ agendaRef }) {
+function Banner({ appointmentRef }) {
+  const navigate = useNavigate();
   const { isMobileScreen } = useViewport();
   return (
     <div className="container">
-      <img src={Logo} alt="tenant-logo" className="tenant-logo max-w-90 mx-auto"></img>
+      <img
+        src={Logo}
+        alt="tenant-logo"
+        className="tenant-logo max-w-90 mx-auto"
+      ></img>
       <div className={`banner-actions`}>
         <Button
           ghost={true}
@@ -31,7 +37,7 @@ function Banner({ agendaRef }) {
           className={`banner-actions-button ${isMobileScreen ? "mobile" : ""}`}
           size="large"
           onClick={() => {
-            agendaRef?.current?.scrollIntoView({ behavior: "smooth" });
+            navigate("/appointment")
           }}
         >
           Agende una cita con nosotros

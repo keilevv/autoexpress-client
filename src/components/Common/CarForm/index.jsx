@@ -145,7 +145,7 @@ function CarForm({
           }}
           autoComplete="off"
         >
-          <div>
+          <div className="p-4">
             <p className="ext text-xl text-red-700 mb-4">
               {!isCarDetails
                 ? "Ingrese la información de su vehículo"
@@ -170,7 +170,7 @@ function CarForm({
                   <Input
                     allowClear
                     maxLength={6}
-                    className="uppercase-input"
+                    style={{ textTransform: "uppercase" }}
                     disabled={!isEditing}
                   />
                 </Form.Item>
@@ -347,14 +347,14 @@ function CarForm({
           }}
           autoComplete="off"
         >
-          <div className="">
-            <div className="logo-container">
+          <div className="p-4">
+            <div className="max-w-[300px] m-auto">
               <img className="logo" src={Logo} />
             </div>
-            <p className="car-info-title">{`¡Bienvenido${
+            <p className="text text-2xl text-red-700 font-semibold mb-4">{`¡Bienvenido${
               client ? ` ${client.name}` : ""
             }!`}</p>
-            <p className="car-info-description">
+            <p className="text text-lg font-medium mb-4">
               Por favor permítanos verificar la informacion de su vehículo
             </p>
             <div className="car-fields-container">
@@ -372,7 +372,12 @@ function CarForm({
                   },
                 ]}
               >
-                <Input allowClear maxLength={6} className="uppercase-input" />
+                <Input
+                  allowClear
+                  maxLength={6}
+                  className="uppercase-input"
+                  style={{ textTransform: "uppercase" }}
+                />
               </Form.Item>
             </div>
           </div>

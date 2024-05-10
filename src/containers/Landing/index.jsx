@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import { headerItems } from "./landing.config";
+import { useNavigate } from "react-router-dom";
 /* Containers */
 import BannerContainer from "./Banner";
 import ServicesContainer from "./Services";
@@ -15,9 +16,10 @@ import ContactContainer from "./Contact";
 const { Header, Footer, Content } = Layout;
 
 function LandingContainer() {
+  const navigate = useNavigate();
   const bannerRef = useRef(null);
   const servicesRef = useRef(null);
-  const agendaRef = useRef(null);
+  const appointmentRef = useRef(null);
   const locationRef = useRef(null);
   const galleryRef = useRef(null);
   const contactRef = useRef(null);
@@ -40,8 +42,7 @@ function LandingContainer() {
   return (
     <Layout className="landing-container">
       <Header
-        className={showNavbar ? "sticky-navbar" : "ghost-navbar"}
-        style={{ position: "fixed" }}
+        className={` px-4 ${showNavbar ? "sticky-navbar" : "ghost-navbar"}`}
       >
         <Menu
           style={{ backgroundColor: "#242424" }}
@@ -59,16 +60,16 @@ function LandingContainer() {
             if (item.key === "contact") {
               contactRef.current?.scrollIntoView({ behavior: "smooth" });
             }
-            if (item.key === "agenda") {
-              agendaRef.current?.scrollIntoView({ behavior: "smooth" });
+            if (item.key === "appointment") {
+              navigate("/appointment");
             }
           }}
         />
       </Header>
       <Content>
-        <BannerContainer bannerRef={bannerRef} agendaRef={agendaRef} />
+        <BannerContainer bannerRef={bannerRef} appointmentRef={appointmentRef} />
         <ServicesContainer servicesRef={servicesRef} />
-        <AgendaContainer agendaRef={agendaRef} />
+        <AgendaContainer appointmentRef={appointmentRef} />
         <LocationContainer locationRef={locationRef} />
         <GalleryContainer galleryRef={galleryRef} />
         <ContactContainer contactRef={contactRef} />
