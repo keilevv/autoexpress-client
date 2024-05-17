@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import moment from "moment";
 import { Form, Input, Row, Col, DatePicker } from "antd";
 import dayjs from "dayjs";
-import NumberInput from "../../../../Common/NumberInput";
-import Logo from "../../../../../assets/images/autoexpresslogo.png";
+import NumberInput from "../../Common/NumberInput";
+import Logo from "../../../assets/images/autoexpresslogo.png";
 
-import "./style.css";
 /**
  * @param {{
  * setIsChanged?: () => void,
@@ -108,8 +106,8 @@ function ClientForm({
           }}
           autoComplete="off"
         >
-          <div className="client-form-container">
-            <p className="client-info-title">
+          <div className="p-4">
+            <p className="text text-xl text-red-700 mb-4">
               {client
                 ? "Información personal"
                 : "Ingrese su información personal"}
@@ -144,7 +142,7 @@ function ClientForm({
                     <Input disabled={!isEditing && client ? true : false} />
                   </Form.Item>
                 </Col>
-                <Col className="client-form-col-2">
+                <Col>
                   <Form.Item
                     label="Segundo apellido"
                     name="lastname"
@@ -203,7 +201,7 @@ function ClientForm({
                 </Form.Item>
               </Row>
             </div>
-            <p className="client-info-title">
+            <p className="text text-xl text-red-700 my-4">
               {client
                 ? "Información de contacto"
                 : "Ingrese su información de contacto"}
@@ -228,7 +226,7 @@ function ClientForm({
                     <Input disabled={!isEditing} />
                   </Form.Item>
                 </Col>
-                <Col className="client-form-col-2">
+                <Col>
                   <Form.Item
                     label="Celular"
                     name="telephone_number"
@@ -272,12 +270,14 @@ function ClientForm({
           }}
           autoComplete="off"
         >
-          <div className="client-form-container">
-            <div className="logo-container">
+          <div className="p-4">
+            <div className="max-w-[300px] m-auto">
               <img className="logo" src={Logo} />
             </div>
-            <p className="client-info-title">¡Bienvenido!</p>
-            <p className="client-info-description">
+            <p className="text text-2xl text-red-700 font-semibold mb-4">
+              ¡Bienvenido!
+            </p>
+            <p className="text text-lg font-medium mb-4">
               Por favor permítanos verificar su información
             </p>
             <div className="client-fields-container">

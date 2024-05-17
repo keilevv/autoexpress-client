@@ -6,44 +6,35 @@ import SpecialServicesIcon from "../../../../assets/icons/star-white.png";
 
 function useCardsConfig() {
   const bodyworkDescription = (
-    <>
-      <ul className="service-card-description list">
-        <li className="item">Golpes y abolladuras</li>
-        <li className="item">Enderezado de chasis</li>
-        <li className="item">Reemplazo de páneles</li>
-        <li className="item">Pintura de fábrica</li>
-        <li className="item">Pintura personalizada</li>
-      </ul>
-    </>
+    <ul className="list-disc">
+      <li>Golpes y abolladuras</li>
+      <li>Enderezado de chasis</li>
+      <li>Reemplazo de páneles</li>
+      <li>Pintura de fábrica</li>
+      <li>Pintura personalizada</li>
+    </ul>
   );
 
   const diagnosticDescription = (
-    <>
-      <ul className="service-card-description list">
-        <li className="item">Cotización de reparaciones y partes</li>
-        <li className="item">Convenio con aseguradoras</li>
-        <li className="item">Reclamo y/o aviso del siniestro</li>
-      </ul>
-    </>
+    <ul className="list-disc">
+      <li>Cotización de reparaciones</li>
+      <li>Convenio con aseguradoras</li>
+      <li>Reclamo y/o aviso del siniestro</li>
+    </ul>
   );
   const electromecanicDescription = (
-    <>
-      <p>
-        Se detectan fallas y/o partes averiadas y se procede a su reparación o
-        sustitución, dejando en optimas condiciones motor y demás sistemas
-        electromecánicos.
-      </p>
-    </>
+    <p>
+      Se detectan fallas y/o partes averiadas y se procede a su reparación o
+      sustitución, dejando en optimas condiciones motor y demás sistemas
+      electromecánicos.
+    </p>
   );
 
   const specialServicesDescription = (
-    <>
-      <ul className="service-card-description list">
-        <li className="item">Servicios de alistamiento y mantenimiento</li>
-        <li className="item">Servicios correctivos</li>
-        <li className="item">Servicios correctivos</li>
-      </ul>
-    </>
+    <ul className="list-disc">
+      <li>Alistamiento y mantenimiento</li>
+      <li>Servicios correctivos</li>
+    </ul>
   );
   const ServicesCardConfig = [
     {

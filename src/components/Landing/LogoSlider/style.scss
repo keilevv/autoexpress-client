@@ -1,7 +1,6 @@
 .container {
   overflow: hidden;
   margin: auto;
-  max-width: 80vw;
 
   .slider {
     animation: slidein 30s linear infinite;
@@ -24,35 +23,6 @@
   }
 }
 
-// @keyframes slidein {
-//   from {
-//     transform: translate3d(0, 0, 0);
-//   }
-//   to {
-//     transform: translate3d(-100%, 0, 0);
-//   }
-// }
-
-// @keyframes fade-in {
-//   0% {
-//     opacity: 0;
-//   }
-//   100% {
-//     opacity: 1;
-//   }
-// }
-
-@media (min-width: 1800px) {
-  .container {
-    .slider {
-      .logos {
-        .fab {
-          padding: 0px 150px;
-        }
-      }
-    }
-  }
-}
 
 .logos-column {
   margin: auto;
@@ -63,7 +33,7 @@
   .logos-column-item {
     width: 100%;
   }
-  .seguros-bolivar{
+  .seguros-bolivar {
     margin-top: 15%;
   }
 }

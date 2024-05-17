@@ -70,8 +70,8 @@ function AgendaContainer() {
   ];
 
   return (
-    <div className="agenda-container">
-      <h1 className="agenda-container-title">Agenda</h1>
+    <div>
+      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Agenda</h1>
       <TableActions onSearch={handleSearch} type="appointments" />
       <Tabs
         activeKey={currentTab}

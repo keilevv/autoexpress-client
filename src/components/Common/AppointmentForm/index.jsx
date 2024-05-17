@@ -6,9 +6,8 @@ import { Form, TimePicker, Calendar, theme, Row, Tag, DatePicker } from "antd";
 import dayjs from "dayjs";
 import moment from "moment";
 /* Hooks*/
-import useViewPort from "../../../../../hooks/useViewport";
-import useAppointment from "../../../../../hooks/useAppointment";
-import "./style.css";
+import useViewPort from "../../../hooks/useViewport";
+import useAppointment from "../../../hooks/useAppointment";
 /**
  * @param {{
  *  setForm: () => void,
@@ -139,8 +138,8 @@ function AppointmentForm({
       }}
       autoComplete="off"
     >
-      <div className="appointment-form-container">
-        <p className="appointment-info-title">
+      <div className="p-4">
+        <p className="text text-xl text-red-700 mb-4">
           {isAppointmentDetails
             ? "Información de la cita"
             : "Ingrese la fecha deseada"}
@@ -148,8 +147,8 @@ function AppointmentForm({
         <div className="appointment-fields-container">
           {isAppointmentDetails && (
             <>
-              <div className="appointment-field">
-                <span className="appointment-field-title">Cliente</span>
+              <div className="flex gap-2 mb-2">
+                <span className="text">Cliente</span>
                 <a
                   onClick={() =>
                     navigate(`/operations/clients/${appointment?.client?._id}`)
@@ -158,7 +157,7 @@ function AppointmentForm({
                   {`${appointment?.client?.name} ${appointment?.client?.surname} ${appointment?.client?.lastname}`.toUpperCase()}
                 </a>
               </div>
-              <div className="appointment-field">
+              <div className="flex gap-2 mb-8">
                 <span className="appointment-field-title">Auto</span>
                 <Tag color={"geekblue"} className="appointment-car">
                   <a

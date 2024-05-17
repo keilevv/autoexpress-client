@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useAppointment from "../../../../hooks/useAppointment";
 /* Components */
 import { useSelector } from "react-redux";
-import AppointmentForm from "../../../../components/Landing/Agenda/AgendaContent/Appointment";
+import AppointmentForm from "../../../../components/Common/AppointmentForm";
 import {
   Skeleton,
   Breadcrumb,
@@ -97,14 +97,16 @@ function SingleAgendaContainer() {
   }
 
   return (
-    <div className="single-appointment-container">
+    <div>
       {loading || !appointment ? (
         <Skeleton />
       ) : (
-        <div className="single-appointment-content">
-          <div className="single-appointment-header">
-            <div className="single-appointment-header-info">
-              <h1 className="single-appointment-title">Detalles de la cita</h1>
+        <div>
+          <div className="lg:flex lg:justify-between lg:items-top mb-5">
+            <div className="mb-4">
+              <h1 className="text-2xl text-red-700 mb-2 font-semibold">
+                Detalles de la cita
+              </h1>
               <Breadcrumb
                 items={[
                   {
@@ -133,7 +135,7 @@ function SingleAgendaContainer() {
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>
-            <div className="single-appointment-buttons">
+            <div className="flex gap-2">
               <Fragment>
                 <Tooltip title={isEditing ? "Cancelar" : "Editar"}>
                   <Button
@@ -181,7 +183,11 @@ function SingleAgendaContainer() {
               </Fragment>
             </div>
           </div>
-          <div className={`appointment-form ${isEditing ? "highlight" : ""}`}>
+          <div
+            className={`container bg-gray-200 rounded-lg ${
+              isEditing ? "outline" : ""
+            } outline-blue-200 p-4`}
+          >
             <AppointmentForm
               isEditing={isEditing}
               appointment={appointment}

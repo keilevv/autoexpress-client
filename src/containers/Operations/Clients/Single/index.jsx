@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useClient from "../../../../hooks/useClient";
 /* Components */
 import { useSelector } from "react-redux";
-import ClientForm from "../../../../components/Landing/Agenda/AgendaContent/Client";
+import ClientForm from "../../../../components/Common/ClientForm";
 import {
   Skeleton,
   Breadcrumb,
@@ -90,10 +90,10 @@ function SingleClient() {
       {loading || !client ? (
         <Skeleton />
       ) : (
-        <div className="single-client-content">
-          <div className="single-client-header">
-            <div className="single-client-header-info">
-              <h1 className="single-client-title">Detalles del cliente</h1>
+        <div>
+          <div className="lg:flex lg:justify-between lg:items-top mb-5">
+            <div className="mb-4">
+              <h1 className="text-2xl text-red-700 mb-2 font-semibold">Detalles del cliente</h1>
               <Breadcrumb
                 items={[
                   {
@@ -124,7 +124,7 @@ function SingleClient() {
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>
-            <div className="single-client-buttons">
+            <div className="single-client-buttons flex gap-2">
               <Fragment>
                 <Tooltip title={isEditing ? "Cancelar" : "Editar"}>
                   <Button
@@ -168,7 +168,7 @@ function SingleClient() {
               </Fragment>
             </div>
           </div>
-          <div className={`client-form ${isEditing ? "highlight" : ""}`}>
+          <div className={`container bg-gray-200 rounded-lg ${isEditing ? "outline" : ""} outline-blue-200 p-4 p-4`}>
             <ClientForm
               isEditing={isEditing}
               client={client}

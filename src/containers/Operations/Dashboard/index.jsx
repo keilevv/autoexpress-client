@@ -24,12 +24,12 @@ function DashboardContainer() {
   }, [pagination.current, pagination.pageSize, user]);
 
   return (
-    <div className="dashboard-container">
-      <h1 className="dashboard-title">Operaciones</h1>
+    <div>
+      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Operaciones</h1>
       <div className="dashboard-grid-container">
         <DashboardGrid />
       </div>
-      <h2 className="dashboard-subtitle">Mensajes</h2>
+      <h2 className="text-xl text-red-700 font-semibold mb-5">Mensajes</h2>
       <MessagesTable
         loading={loading}
         messages={messages}

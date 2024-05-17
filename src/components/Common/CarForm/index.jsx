@@ -2,17 +2,14 @@
 import { useEffect, useState, useCallback } from "react";
 import _debounce from "lodash/debounce";
 import dayjs from "dayjs";
-import moment from "moment";
-import Logo from "../../../../../assets/images/autoexpresslogo.png";
+import Logo from "../../../assets/images/autoexpresslogo.png";
 /* Components */
 import { Form, Input, Row, Popover, DatePicker, Select } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 /* Hooks */
-import useCars from "../../../../../hooks/useCars";
-import useViewport from "../../../../../hooks/useViewport";
+import useCars from "../../../hooks/useCars";
+import useViewport from "../../../hooks/useViewport";
 
-import "./style.css";
-import { current } from "@reduxjs/toolkit";
 /**
  * @param {{ setIsChanged?: () => void,
  * setForm: () => void,
@@ -148,13 +145,13 @@ function CarForm({
           }}
           autoComplete="off"
         >
-          <div className="car-form-container">
-            <p className="car-info-title">
+          <div className="p-4">
+            <p className="ext text-xl text-red-700 mb-4">
               {!isCarDetails
                 ? "Ingrese la información de su vehículo"
                 : "Información del vehículo"}
             </p>
-            <div className="car-fields-container">
+            <div>
               <Row>
                 <Form.Item
                   label="Placa"
@@ -173,7 +170,7 @@ function CarForm({
                   <Input
                     allowClear
                     maxLength={6}
-                    className="uppercase-input"
+                    style={{ textTransform: "uppercase" }}
                     disabled={!isEditing}
                   />
                 </Form.Item>
@@ -193,7 +190,7 @@ function CarForm({
                     },
                   ]}
                 >
-                  <div className="form-item-explain">
+                  <div className="flex gap-2">
                     <Input
                       disabled={!isEditing}
                       allowClear
@@ -350,14 +347,14 @@ function CarForm({
           }}
           autoComplete="off"
         >
-          <div className="car-form-container">
-            <div className="logo-container">
+          <div className="p-4">
+            <div className="max-w-[300px] m-auto">
               <img className="logo" src={Logo} />
             </div>
-            <p className="car-info-title">{`¡Bienvenido${
+            <p className="text text-2xl text-red-700 font-semibold mb-4">{`¡Bienvenido${
               client ? ` ${client.name}` : ""
             }!`}</p>
-            <p className="car-info-description">
+            <p className="text text-lg font-medium mb-4">
               Por favor permítanos verificar la informacion de su vehículo
             </p>
             <div className="car-fields-container">
@@ -375,7 +372,12 @@ function CarForm({
                   },
                 ]}
               >
-                <Input allowClear maxLength={6} className="uppercase-input" />
+                <Input
+                  allowClear
+                  maxLength={6}
+                  className="uppercase-input"
+                  style={{ textTransform: "uppercase" }}
+                />
               </Form.Item>
             </div>
           </div>

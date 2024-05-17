@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useCars from "../../../../hooks/useCars";
 /* Components */
 import { useSelector } from "react-redux";
-import CarForm from "../../../../components/Landing/Agenda/AgendaContent/Car";
+import CarForm from "../../../../components/Common/CarForm";
 import {
   Skeleton,
   Breadcrumb,
@@ -87,14 +87,14 @@ function SingleCarContainer() {
   }
 
   return (
-    <div className="single-car-container">
+    <div>
       {loading || !car ? (
         <Skeleton />
       ) : (
-        <div className="single-car-content">
-          <div className="single-car-header">
-            <div className="single-car-header-info">
-              <h1 className="single-car-title">Detalles del vehículo</h1>
+        <div>
+          <div className="lg:flex lg:justify-between lg:items-top mb-5">
+            <div className="mb-4">
+              <h1 className="text-2xl text-red-700 mb-2 font-semibold">Detalles del vehículo</h1>
               <Breadcrumb
                 items={[
                   {
@@ -121,7 +121,7 @@ function SingleCarContainer() {
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>
-            <div className="single-car-buttons">
+            <div className="flex gap-2">
               <Fragment>
                 <Tooltip title={isEditing ? "Cancelar" : "Editar"}>
                   <Button
@@ -167,7 +167,9 @@ function SingleCarContainer() {
               </Fragment>
             </div>
           </div>
-          <div className={`car-form ${isEditing ? "highlight" : ""}`}>
+          <div className={`container bg-gray-200 rounded-lg ${
+              isEditing ? "outline" : ""
+            } outline-blue-200 p-4`}>
             <CarForm
               isEditing={isEditing}
               car={car}

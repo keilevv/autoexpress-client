@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import { ConfigProvider } from "antd";
-import { isOverflown } from "./helpers";
 import LoginContainer from "./containers/Login";
 import MainLayout from "./containers/Layout";
 import ProtectedRoute from "./helpers/ProtectedRoute";
@@ -19,7 +18,7 @@ import ClientsContainer from "./containers/Operations/Clients";
 import SingleCarContainer from "./containers/Operations/Cars/Single";
 import SingleClientContainer from "./containers/Operations/Clients/Single";
 import SingleAgendaContainer from "./containers/Operations/Agenda/Single";
-
+import AppointmentContainer from "./containers/Appointment";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
@@ -33,7 +32,7 @@ import { useEffect } from "react";
 function App() {
   const { defaultSelectedHeader } = useMenu();
   return (
-    <div className="app" id="app" style={{ backgroundColor: "#ffff" }}>
+    <div className="app mx-0" id="app">
       <ConfigProvider
         locale={esES}
         theme={{
@@ -151,6 +150,7 @@ function App() {
           ></Route>
           <Route path="/login" element={<LoginContainer />} />
           <Route path="/landing" element={<LandingContainer />} />
+          <Route path="/appointment" element={<AppointmentContainer />} />
         </Routes>
       </ConfigProvider>
     </div>
