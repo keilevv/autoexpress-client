@@ -138,7 +138,7 @@ function AppointmentForm({
       }}
       autoComplete="off"
     >
-      <div>
+      <div className="p-4">
         <p className="text text-xl text-red-700 mb-4">
           {isAppointmentDetails
             ? "Información de la cita"

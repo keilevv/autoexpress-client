@@ -215,7 +215,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
         notification.success({
           message: isCarCreation
             ? "Auto asignado a cliente"
-            : "Cliente actualizado con válido",
+            : "Cliente actualizado con éxito",
           description: `${response.data.results.name} ${response.data.results.surname} ${response.data.results.lastname}`,
         });
         setShowFullForm(false);
@@ -334,11 +334,10 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       <Steps current={current} items={items} />
       <div style={contentStyle}>{agendaSteps[current].content}</div>
       <div className="flex gap-4 mt-8 justify-center">
-        <div className="handle-steps">
+        <div className="flex gap-2">
           {((current !== 0 && current !== agendaSteps.length - 1) ||
             showFullForm) && (
             <Button
-              className="prev-slide-button"
               onClick={() => prev()}
               loading={loadingClient || loadingCar}
             >
