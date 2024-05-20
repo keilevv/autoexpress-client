@@ -82,7 +82,9 @@ function TableActions({ type, tab, onApplyFilters, onSearch }) {
           <Form.Item
             name={"date-range"}
             style={{ width: "100%", margin: "0px" }}
-            label="Fecha de creación"
+            label={`Fecha de ${
+              type === "appointments" ? "servicio" : "creación"
+            }`}
             className={`form-item ${showFilters ? "show" : ""}`}
           >
             <RangePicker
