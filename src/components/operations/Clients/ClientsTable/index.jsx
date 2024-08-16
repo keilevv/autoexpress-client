@@ -86,7 +86,7 @@ function ClientsTable({
   const dataSource = clients.map((item, index) => {
     return {
       ...item,
-      key: item._id,
+      key: index,
       full_name: item.name + " " + item.surname + " " + item.lastname,
       cars: item.cars,
       email: item.email,
