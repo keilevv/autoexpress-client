@@ -1,12 +1,31 @@
-import { Modal, Form, Input, Select } from "antd";
-import NumberInput from "../../../../components/Common/NumberInput";
-function AddProductModal({ isModalOpen, setIsModalOpen }) {
+import { Modal, Form, Input, Select, notification } from "antd";
+import NumberInput from "../../../Common/NumberInput";
+import useMaterials from "../../../../hooks/useMaterials";
+
+function AddMaterialModal({ isModalOpen, setIsModalOpen }) {
+  const { createStorageMaterial } = useMaterials();
   const [form] = Form.useForm();
+
   const handleOk = () => {
-    form.validateFields().then((values) => {
-      setIsModalOpen(false);
-    });
+    form
+      .validateFields()
+      .then((values) => {
+        createStorageMaterial(values).then(() => {
+          notification.success({
+            message: "Material agregado con exito",
+          });
+          setIsModalOpen(false);
+          form.resetFields();
+        });
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error al agregar material",
+          description: err.message,
+        });
+      });
   };
+
   const handleCancel = () => {
     setIsModalOpen(false);
     form.resetFields();
@@ -84,4 +103,4 @@ function AddProductModal({ isModalOpen, setIsModalOpen }) {
   );
 }
 
-export default AddProductModal;
+export default AddMaterialModal;

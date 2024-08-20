@@ -3,7 +3,7 @@ import { Tabs } from "antd";
 import StorageInventoryContainer from "./Storage";
 import StorageMenu from "../../../components/operations/Inventory/StorageMenu";
 function InventoryContainer() {
-  const [currentTab, setCurrentTab] = useState("main-inventory");
+  const [currentTab, setCurrentTab] = useState("storage-inventory");
 
   const items = [
     {
