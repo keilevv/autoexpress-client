@@ -3,7 +3,7 @@ import { apiUrl } from "../helpers/constants";
 
 const materialsService = {
   getStorageMaterial(token, materialId) {
-    return axios.get(`${apiUrl}/materials/operations/storage/${materialId}`, {
+    return axios.get(`${apiUrl}/materials/operations/${materialId}`, {
       headers: { Authorization: `${token}` },
     });
   },
@@ -22,8 +22,23 @@ const materialsService = {
     });
   },
 
-  updateMaterial(materialId, payload) {
-    return axios.put(`${apiUrl}/materials/operations/update/${materialId}`, payload);
+  deleteStorageMaterial(token, materialId) {
+    return axios.delete(
+      `${apiUrl}/materials/operations/delete/storage/${materialId}`,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
+  },
+
+  updateStorageMaterial(token, materialId, payload) {
+    return axios.put(
+      `${apiUrl}/materials/operations/update/${materialId}`,
+      payload,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
   },
 };
 export default materialsService;

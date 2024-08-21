@@ -19,7 +19,6 @@ function ContactForm() {
         setShowClear(false);
       })
       .catch((err) => {
-        console.log("err", err);
         notification.error({
           message: "Error al enviar mensaje",
           description: "Por favor intentelo nuevamente mas tarde.",

@@ -1,11 +1,21 @@
 import { useState, useEffect } from "react";
-import { Table, Popover } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Table, Popover, notification } from "antd";
 import "./style.css";
-import { size } from "lodash";
+import MaterialTableMenu from "./Menu";
+import useMaterials from "../../../../hooks/useMaterials";
 /**
  * @param {{ data: any[], loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
-function MaterialsTable({ data, loading, pagination, setPagination }) {
+function MaterialsTable({
+  data,
+  loading,
+  pagination,
+  setPagination,
+  getMaterials,
+}) {
+  const { updateStorageMaterial } = useMaterials();
+  const navigate = useNavigate();
   const columns = [
     {
       title: "Nombre",
@@ -32,6 +42,39 @@ function MaterialsTable({ data, loading, pagination, setPagination }) {
       dataIndex: "quantity",
       key: "quantity",
     },
+    {
+      title: "",
+      dataIndex: "",
+      key: "",
+      render: (item) => {
+        const handleOnEdit = () => {
+          navigate(`/operations/inventory/material/${item.key}`);
+        };
+        return (
+          <MaterialTableMenu
+            onEdit={handleOnEdit}
+            onArchive={() => {
+              updateStorageMaterial(item.key, { archived: !item.archived })
+                .then((response) => {
+                  if (response) {
+                    notification.success({
+                      message: "Material archivado exitosamente",
+                      description: `${response.data.results.name} - ${response.data.results.reference}`,
+                    });
+                    getMaterials();
+                  }
+                })
+                .catch((err) => {
+                  notification.error({
+                    message: "Error archivando material",
+                    description: err.message || err.message._message,
+                  });
+                });
+            }}
+          />
+        );
+      },
+    },
   ];
 
   const handleTableChange = (newPagination) => {
@@ -40,7 +83,7 @@ function MaterialsTable({ data, loading, pagination, setPagination }) {
 
   const dataSource = data.map((item, index) => {
     return {
-      key: index,
+      key: item._id,
       name: item.name,
       reference: item.reference,
       unit: item.unit,

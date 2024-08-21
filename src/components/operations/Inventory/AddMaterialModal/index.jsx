@@ -1,9 +1,10 @@
 import { Modal, Form, Input, Select, notification } from "antd";
 import NumberInput from "../../../Common/NumberInput";
 import useMaterials from "../../../../hooks/useMaterials";
+import MaterialForm from "../MaterialForm";
 
-function AddMaterialModal({ isModalOpen, setIsModalOpen }) {
-  const { createStorageMaterial } = useMaterials();
+function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish }) {
+  const { createStorageMaterial, loading } = useMaterials();
   const [form] = Form.useForm();
 
   const handleOk = () => {
@@ -16,6 +17,7 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen }) {
           });
           setIsModalOpen(false);
           form.resetFields();
+          onFinish();
         });
       })
       .catch((err) => {
@@ -31,74 +33,17 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen }) {
     form.resetFields();
   };
 
-  const unitOptions = [
-    { value: "unit", label: "Unidad" },
-    { value: "litro", label: "Litro" },
-    { value: "galon", label: "Galón" },
-    { value: "kilo", label: "Kilo" },
-  ];
   return (
-    <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+    <Modal
+      confirmLoading={loading}
+      open={isModalOpen}
+      onOk={handleOk}
+      onCancel={handleCancel}
+    >
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
         Agregar producto
       </h1>
-      <Form form={form} layout="vertical" initialValues={{ unit: "unit" }}>
-        <Form.Item
-          name={"name"}
-          label="Nombre"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese el nombre del producto",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name={"reference"}
-          label="Referencia"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese el numero de referencia",
-            },
-          ]}
-        >
-          <NumberInput />
-        </Form.Item>
-        <Form.Item
-          name={"unit"}
-          label="Unidad de medida"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese la unidad de medida",
-            },
-          ]}
-        >
-          <Select options={unitOptions} />
-        </Form.Item>
-        <Form.Item
-          name={"quantity"}
-          label="Cantidad"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese la cantidad",
-            },
-          ]}
-        >
-          <NumberInput />
-        </Form.Item>
-        <Form.Item name={"price"} label="Precio">
-          <NumberInput prefix="$" />
-        </Form.Item>
-      </Form>
+      <MaterialForm form={form} />
     </Modal>
   );
 }

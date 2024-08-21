@@ -51,13 +51,44 @@ function useMaterials() {
     []
   );
 
-  const updateStorageMaterial = useCallback((payload) => {
+  const getStorageMaterial = useCallback((materialId) => {
     setLoading(true);
     return materialsService
-      .updateMaterials(auth.user.accessToken, payload)
+      .getStorageMaterial(auth.user.accessToken, materialId)
+      .then((response) => {
+        setStorageMaterial(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+        return err;
+      });
+  }, []);
+
+  const updateStorageMaterial = useCallback((materialId, payload) => {
+    setLoading(true);
+    return materialsService
+      .updateStorageMaterial(auth.user.accessToken, materialId, payload)
       .then((response) => {
         if (response.data) {
           setStorageMaterial(response.data);
+          setLoading(false);
+          return response;
+        }
+      })
+      .catch((err) => {
+        throwError(err.response.data.message);
+      });
+  }, []);
+
+  const deleteStorageMaterial = useCallback((marterialId) => {
+    setLoading(true);
+    return materialsService
+      .deleteStorageMaterial(auth.user.accessToken, marterialId)
+      .then((response) => {
+        if (response.data) {
           setLoading(false);
           return response;
         }
@@ -71,6 +102,8 @@ function useMaterials() {
     createStorageMaterial,
     getStorageMaterials,
     updateStorageMaterial,
+    deleteStorageMaterial,
+    getStorageMaterial,
     storageMaterial,
     storageMaterials,
     count,
