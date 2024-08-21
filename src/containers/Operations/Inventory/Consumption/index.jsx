@@ -1,11 +1,11 @@
 import MaterialsTable from "../../../../components/operations/Inventory/MaterialsTable";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import useInventory from "../../../../hooks/useInventory";
+import useMaterials from "../../../../hooks/useInventory";
 
-function StorageInventoryContainer() {
+function ConsumptionInventoryContainer() {
   const { storageMaterials, getStorageMaterials, loading, count } =
-    useInventory();
+    useMaterials();
   const user = useSelector((state) => state.auth.user);
   const [pagination, setPagination] = useState({
     current: 1,
@@ -60,4 +60,4 @@ function StorageInventoryContainer() {
     </div>
   );
 }
-export default StorageInventoryContainer;
+export default ConsumptionInventoryContainer;

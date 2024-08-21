@@ -107,6 +107,17 @@ function MaterialForm({
         >
           <Select options={unitOptions} disabled={!isEditing} />
         </Form.Item>
+        <Form.Item name={"price"} label="Precio unidad">
+          <InputNumber
+            min={0}
+            className="w-full"
+            disabled={!isEditing}
+            formatter={(value) =>
+              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+          />
+        </Form.Item>
+
         <Form.Item
           name={"quantity"}
           label="Cantidad"
@@ -119,16 +130,6 @@ function MaterialForm({
           ]}
         >
           <InputNumber min={0} className="w-full" disabled={!isEditing} />
-        </Form.Item>
-        <Form.Item name={"price"} label="Precio">
-          <InputNumber
-            min={0}
-            className="w-full"
-            disabled={!isEditing}
-            formatter={(value) =>
-              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-          />
         </Form.Item>
       </Form>
     );

@@ -2,7 +2,7 @@ import { useEffect, useState, Fragment } from "react";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 /* Hooks*/
-import useMaterials from "../../../../hooks/useMaterials";
+import useInventory from "../../../../hooks/useInventory";
 /* Components */
 import { useSelector } from "react-redux";
 import MaterialForm from "../../../../components/operations/Inventory/MaterialForm";
@@ -31,7 +31,7 @@ function SingleMaterial() {
     getStorageMaterial,
     loading,
     updateStorageMaterial,
-  } = useMaterials();
+  } = useInventory();
 
   useEffect(() => {
     if (materialId) {

@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import materialsService from "../services/materials";
+import materialsService from "../services/inventory";
 import { useSelector } from "react-redux";
 import { throwError } from "../helpers";
-function useMaterials() {
+function useInventory() {
   const [storageMaterial, setStorageMaterial] = useState({});
   const [storageMaterials, setStorageMaterials] = useState([]);
   const [token, setToken] = useState(null);
@@ -111,4 +111,4 @@ function useMaterials() {
   };
 }
 
-export default useMaterials;
+export default useInventory;

@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, Popover, notification } from "antd";
-import "./style.css";
 import MaterialTableMenu from "./Menu";
-import useMaterials from "../../../../hooks/useMaterials";
+import useInventory from "../../../../hooks/useInventory";
 /**
  * @param {{ data: any[], loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
@@ -13,10 +12,20 @@ function MaterialsTable({
   pagination,
   setPagination,
   getMaterials,
+  type = "storage",
 }) {
-  const { updateStorageMaterial } = useMaterials();
+  const [columns, setColumns] = useState([]);
+  const { updateStorageMaterial } = useInventory();
   const navigate = useNavigate();
-  const columns = [
+
+  useEffect(() => {
+    if (type !== "storage") {
+      setColumns(columns.filter((c) => c.dataIndex !== "price"));
+    } else {
+      setColumns(defaultColumns);
+    }
+  }, [type]);
+  const defaultColumns = [
     {
       title: "Nombre",
       dataIndex: "name",

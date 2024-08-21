@@ -1,10 +1,10 @@
 import { Modal, Form, Input, Select, notification } from "antd";
 import NumberInput from "../../../Common/NumberInput";
-import useMaterials from "../../../../hooks/useMaterials";
+import useInventory from "../../../../hooks/useInventory";
 import MaterialForm from "../MaterialForm";
 
 function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish }) {
-  const { createStorageMaterial, loading } = useMaterials();
+  const { createStorageMaterial, loading } = useInventory();
   const [form] = Form.useForm();
 
   const handleOk = () => {

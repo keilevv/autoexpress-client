@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tabs } from "antd";
 import StorageInventoryContainer from "./Storage";
+import ConsumptionInventoryContainer from "./Consumption";
 import StorageMenu from "../../../components/operations/Inventory/StorageMenu";
 function InventoryContainer() {
   const [currentTab, setCurrentTab] = useState("storage-inventory");
@@ -14,7 +15,7 @@ function InventoryContainer() {
     {
       key: "consumption-inventory",
       label: "Inventario de consumo",
-      children: <div> Inventario de consumos</div>,
+      children: <ConsumptionInventoryContainer />,
     },
   ];
   return (
