@@ -6,6 +6,7 @@ import {
   SettingOutlined,
   CalendarOutlined,
   DollarCircleOutlined,
+  ContainerOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
@@ -31,11 +32,11 @@ function useMenu() {
         label: "Clientes",
         icon: React.createElement(TeamOutlined),
       },
-      // {
-      //   key: "settings",
-      //   label: "Configuracion",
-      //   icon: React.createElement(SettingOutlined),
-      // },
+      {
+        key: "inventory",
+        label: "Inventario",
+        icon: React.createElement(ContainerOutlined),
+      },
     ];
     setDefaultSelectedHeader("operations");
     setItems(currentItems);

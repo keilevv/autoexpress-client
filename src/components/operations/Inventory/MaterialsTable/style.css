@@ -1,0 +1,16 @@
+.table-container {
+    .popover-container {
+      max-width: 80px;
+      .message-popover-text {
+        margin: 0px;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .table-container {
+      overflow-x: scroll;
+    }
+  }
+  

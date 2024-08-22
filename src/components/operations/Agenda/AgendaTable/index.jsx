@@ -1,6 +1,7 @@
 import { Table, Tag, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import TableMenu from "../../TableMenu";
+import dayjs from "dayjs";
 /**
  * @param {{ appointments: any, getAppointments: () => void, loading: boolean, pagination: any, setPagination: () => void  }} props
  */
@@ -20,7 +21,7 @@ function AppointmentsTable({
       render: (_, { appointmentId, date }) => {
         return (
           <a onClick={() => navigate(`/operations/agenda/${appointmentId}`)}>
-            {date}
+            {dayjs(date).isValid() ? dayjs(date).format("DD/MM/YYYY") : date}
           </a>
         );
       },

@@ -71,10 +71,14 @@ function AppointmentForm({
 
   function handlePrefill() {
     if (appointment) {
-      setDateValue(dayjs(appointment.date, "DD/MM/YYYY"));
+      const date = dayjs(appointment.date).isValid()
+        ? dayjs(appointment.date, true).format("DD/MM/YYYY")
+        : appointment.date;
+
+      setDateValue(dayjs(date, "DD/MM/YYYY"));
       setHourValue(dayjs(appointment.time, "HH:mm"));
       form.setFieldsValue({
-        date: dayjs(appointment.date, "DD/MM/YYYY"),
+        date: dayjs(date, "DD/MM/YYYY"),
         time: dayjs(appointment.time, "HH:mm"),
       });
     }

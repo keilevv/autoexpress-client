@@ -19,6 +19,8 @@ import SingleCarContainer from "./containers/Operations/Cars/Single";
 import SingleClientContainer from "./containers/Operations/Clients/Single";
 import SingleAgendaContainer from "./containers/Operations/Agenda/Single";
 import AppointmentContainer from "./containers/Appointment";
+import InventoryContainer from "./containers/Operations/Inventory";
+import SingleMaterialContainer from "./containers/Operations/Inventory/Single";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
@@ -144,6 +146,26 @@ function App() {
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <SingleAgendaContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/material/:materialId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <SingleMaterialContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
