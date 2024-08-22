@@ -18,7 +18,7 @@ function useCardsConfig() {
   const diagnosticDescription = (
     <ul className="list-disc">
       <li>Cotización de reparaciones</li>
-      <li>Convenio con aseguradoras</li>
+      <li>Convenios con aseguradoras</li>
       <li>Reclamo y/o aviso del siniestro</li>
     </ul>
   );

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import useInventory from "../../../../hooks/useInventory";
 /* Components */
 import { useSelector } from "react-redux";
-import MaterialForm from "../../../../components/operations/Inventory/MaterialForm";
+import StorageMaterialForm from "../../../../components/operations/Inventory/StrorageMaterialForm";
 import {
   Skeleton,
   Breadcrumb,
@@ -185,7 +185,7 @@ function SingleMaterial() {
               isEditing ? "outline" : ""
             } outline-blue-200 p-4 p-4`}
           >
-            <MaterialForm
+            <StorageMaterialForm
               form={form}
               isEditing={isEditing}
               storageMaterial={storageMaterial}

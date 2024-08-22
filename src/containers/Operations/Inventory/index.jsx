@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Tabs } from "antd";
 import StorageInventoryContainer from "./Storage";
 import ConsumptionInventoryContainer from "./Consumption";
-import StorageMenu from "../../../components/operations/Inventory/StorageMenu";
+import TableMenu from "../../../components/operations/Inventory/TableMenu";
 function InventoryContainer() {
   const [currentTab, setCurrentTab] = useState("storage-inventory");
 
@@ -21,7 +21,7 @@ function InventoryContainer() {
   return (
     <div>
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Inventario</h1>
-      <StorageMenu />
+      <TableMenu type={currentTab} />
       <Tabs
         defaultActiveKey={currentTab}
         items={items}

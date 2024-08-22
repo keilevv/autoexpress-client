@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Button, Modal } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import AddMaterialModal from "../AddMaterialModal";
-function StorageMenu({ onFinish }) {
+
+function TableMenu({ onFinish, type }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -15,6 +16,7 @@ function StorageMenu({ onFinish }) {
         Agregar producto
       </Button>
       <AddMaterialModal
+        type={type}
         onFinish={onFinish}
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
@@ -23,4 +25,4 @@ function StorageMenu({ onFinish }) {
   );
 }
 
-export default StorageMenu;
+export default TableMenu;

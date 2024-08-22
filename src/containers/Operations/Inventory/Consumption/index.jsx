@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import useMaterials from "../../../../hooks/useInventory";
 
 function ConsumptionInventoryContainer() {
-  const { storageMaterials, getStorageMaterials, loading, count } =
+  const { consumptionMaterials, getConsumptionMaterials, loading, count } =
     useMaterials();
   const user = useSelector((state) => state.auth.user);
   const [pagination, setPagination] = useState({
@@ -14,7 +14,7 @@ function ConsumptionInventoryContainer() {
   });
 
   useEffect(() => {
-    getStorageMaterials(1, 10, "&archived=false");
+    getConsumptionMaterials(1, 10, "&archived=false");
   }, [user]);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function ConsumptionInventoryContainer() {
   }, [count]);
 
   useEffect(() => {
-    getStorageMaterials(
+    getConsumptionMaterials(
       pagination.current,
       pagination.pageSize,
       `&archived=false`
@@ -31,7 +31,7 @@ function ConsumptionInventoryContainer() {
 
   const handleSearch = (value) => {
     setSearchValue(value);
-    getStorageMaterials(
+    getConsumptionMaterials(
       pagination.current,
       pagination.pageSize,
       `&archived=false&plate=${value}`
@@ -39,7 +39,7 @@ function ConsumptionInventoryContainer() {
   };
 
   const handleApplyFilters = (values) => {
-    getStorageMaterials(
+    getConsumptionMaterials(
       pagination.current,
       pagination.pageSize,
       `&archived=false${
@@ -51,8 +51,8 @@ function ConsumptionInventoryContainer() {
   return (
     <div className="bg-gray-100 rounded-lg">
       <MaterialsTable
-        data={storageMaterials}
-        getMaterials={getStorageMaterials}
+        data={consumptionMaterials}
+        getMaterials={getConsumptionMaterials}
         loading={loading}
         setPagination={setPagination}
         pagination={pagination}

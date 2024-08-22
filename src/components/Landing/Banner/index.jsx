@@ -3,20 +3,29 @@ import { Button } from "antd";
 import useViewport from "../../../hooks/useViewport";
 import { useNavigate } from "react-router-dom";
 import { WhatsAppOutlined } from "@ant-design/icons";
+import RegisteredMarkIcon from "../../../assets/icons/svg/RegisteredMarkIcon";
 import "./style.css";
-/**
- * @param {{  appointmentRef: any }} props
- */
+
 function Banner({ appointmentRef }) {
   const navigate = useNavigate();
   const { isMobileScreen } = useViewport();
+
   return (
     <div className="container">
-      <img
-        src={Logo}
-        alt="tenant-logo"
-        className="tenant-logo max-w-90 mx-auto"
-      ></img>
+      <div className="flex justify-center">
+        <div className="relative inline-block">
+          <img
+            src={Logo}
+            alt="tenant-logo"
+            className="tenant-logo max-w-90 mx-auto"
+          />
+          <RegisteredMarkIcon
+            className="absolute right-[10px] top-[10px]"
+            width={isMobileScreen ? "20" : "40"}
+            height={isMobileScreen ? "20" : "40"}
+          />
+        </div>
+      </div>
       <div className={`banner-actions`}>
         <Button
           ghost={true}
@@ -37,7 +46,7 @@ function Banner({ appointmentRef }) {
           className={`banner-actions-button ${isMobileScreen ? "mobile" : ""}`}
           size="large"
           onClick={() => {
-            navigate("/appointment")
+            navigate("/appointment");
           }}
         >
           Agende una cita con nosotros
@@ -57,4 +66,5 @@ function Banner({ appointmentRef }) {
     </div>
   );
 }
+
 export default Banner;

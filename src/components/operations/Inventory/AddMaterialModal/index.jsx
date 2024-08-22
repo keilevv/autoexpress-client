@@ -1,12 +1,14 @@
 import { Modal, Form, Input, Select, notification } from "antd";
 import NumberInput from "../../../Common/NumberInput";
 import useInventory from "../../../../hooks/useInventory";
-import MaterialForm from "../MaterialForm";
+import StorageMaterialForm from "../StrorageMaterialForm";
+import ConsumptionMaterialForm from "../ConsumptionMaterialForm";
 
-function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish }) {
+function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
   const { createStorageMaterial, loading } = useInventory();
   const [form] = Form.useForm();
 
+  console.log("type", type);
   const handleOk = () => {
     form
       .validateFields()
@@ -33,6 +35,17 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish }) {
     form.resetFields();
   };
 
+  function renderModalContent() {
+    switch (type) {
+      case "storage-inventory":
+        return <StorageMaterialForm form={form} />;
+      case "consumption-inventory":
+        return <ConsumptionMaterialForm form={form} />;
+      default:
+        return null;
+    }
+  }
+
   return (
     <Modal
       confirmLoading={loading}
@@ -43,7 +56,7 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish }) {
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
         Agregar producto
       </h1>
-      <MaterialForm form={form} />
+      {renderModalContent()}{" "}
     </Modal>
   );
 }

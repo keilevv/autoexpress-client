@@ -7,13 +7,11 @@ import dayjs from "dayjs";
  * @param {{
  * setIsChanged?: () => void,
  * setForm: () => void,
- * showFullForm?: boolean,
  * storageMaterial: any,
- * isClientDetails?: boolean,
  * isEditing?: boolean
  * }} props
  */
-function MaterialForm({
+function StorageMaterialForm({
   form,
   setForm,
   setIsChanged,
@@ -138,4 +136,4 @@ function MaterialForm({
   return renderContent();
 }
 
-export default MaterialForm;
+export default StorageMaterialForm;
