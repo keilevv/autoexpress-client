@@ -57,26 +57,30 @@ function ClientsContainer() {
       key: "active",
       label: "Activos",
       children: (
-        <ClientsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          clients={clients}
-          getClients={getClients}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <ClientsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            clients={clients}
+            getClients={getClients}
+            loading={loading}
+          />
+        </div>
       ),
     },
     {
       key: "archived",
       label: "Archivados",
       children: (
-        <ClientsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          clients={clients}
-          getClients={getClients}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <ClientsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            clients={clients}
+            getClients={getClients}
+            loading={loading}
+          />
+        </div>
       ),
     },
   ];

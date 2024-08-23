@@ -119,7 +119,9 @@ function SingleMaterial() {
                     ),
                   },
                   {
-                    title: `${storageMaterial.name} - ${storageMaterial.reference}`,
+                    title: (
+                      <p className="text text-red-700 font-semibold">{`${storageMaterial.name} - ${storageMaterial.reference}`}</p>
+                    ),
                   },
                 ]}
               />
@@ -129,7 +131,7 @@ function SingleMaterial() {
                 </Tag>
               )}
               {storageMaterial.created_date && (
-                <p className="single-storageMaterial-date">{`Fecha de creación: ${dayjs(
+                <p className="mt-2 text-sm text-gray-500">{`Fecha de creación: ${dayjs(
                   storageMaterial.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}

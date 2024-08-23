@@ -8,7 +8,6 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
   const { createStorageMaterial, loading } = useInventory();
   const [form] = Form.useForm();
 
-  console.log("type", type);
   const handleOk = () => {
     form
       .validateFields()
@@ -53,8 +52,10 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
-        Agregar producto
+      <h1 className="text-xl text-red-700 font-semibold mb-5 ">
+        {type === "storage-inventory"
+          ? "Agregar material de almacenamiento"
+          : "Agregar material de consumo"}
       </h1>
       {renderModalContent()}{" "}
     </Modal>

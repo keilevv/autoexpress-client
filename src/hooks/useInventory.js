@@ -121,7 +121,7 @@ function useInventory() {
       return materialsService
         .getConsumptionMaterials(auth.user.accessToken, page, limit, filter)
         .then((response) => {
-          setMaterials(response.data.results);
+          setConsumptionMaterials(response.data.results);
           setCount(response.data.count);
           setLoading(false);
           return response;

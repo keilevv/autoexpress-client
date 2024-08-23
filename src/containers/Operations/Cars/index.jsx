@@ -25,26 +25,30 @@ function CarsContainer() {
       key: "active",
       label: "Activos",
       children: (
-        <CarsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          cars={cars}
-          getCars={getCars}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <CarsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            cars={cars}
+            getCars={getCars}
+            loading={loading}
+          />
+        </div>
       ),
     },
     {
       key: "archived",
       label: "Archivados",
       children: (
-        <CarsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          cars={cars}
-          getCars={getCars}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <CarsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            cars={cars}
+            getCars={getCars}
+            loading={loading}
+          />
+        </div>
       ),
     },
   ];
