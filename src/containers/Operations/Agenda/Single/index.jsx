@@ -121,7 +121,15 @@ function SingleAgendaContainer() {
                       </a>
                     ),
                   },
-                  { title: appointment?.client.name },
+                  {
+                    title: (
+                      <p className="text text-red-700 font-semibold">{`${dayjs(
+                        appointment.date
+                      ).format("DD/MM/YYYY")} - ${appointment.time} - ${
+                        appointment.user.username
+                      }`}</p>
+                    ),
+                  },
                 ]}
               />
               {appointment.archived && (
@@ -130,7 +138,7 @@ function SingleAgendaContainer() {
                 </Tag>
               )}
               {appointment.created_date && (
-                <p className="single-appointment-date">{`Fecha de creación: ${dayjs(
+                <p className="mt-5 text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
                   appointment.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}

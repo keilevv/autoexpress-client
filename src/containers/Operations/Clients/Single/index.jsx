@@ -93,7 +93,9 @@ function SingleClient() {
         <div>
           <div className="lg:flex lg:justify-between lg:items-top mb-5">
             <div className="mb-4">
-              <h1 className="text-2xl text-red-700 mb-2 font-semibold">Detalles del cliente</h1>
+              <h1 className="text-2xl text-red-700 mb-2 font-semibold">
+                Detalles del cliente
+              </h1>
               <Breadcrumb
                 items={[
                   {
@@ -109,7 +111,9 @@ function SingleClient() {
                     ),
                   },
                   {
-                    title: `${client.name} ${client.surname} ${client.lastname}`,
+                    title: (
+                      <p className="text text-red-700 font-semibold">{`${client.name} ${client.surname} ${client.lastname}`}</p>
+                    ),
                   },
                 ]}
               />
@@ -119,7 +123,7 @@ function SingleClient() {
                 </Tag>
               )}
               {client.created_date && (
-                <p className="single-client-date">{`Fecha de creación: ${dayjs(
+                <p className="mt-5 text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
                   client.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}
@@ -168,7 +172,11 @@ function SingleClient() {
               </Fragment>
             </div>
           </div>
-          <div className={`container bg-gray-100 rounded-lg ${isEditing ? "outline" : ""} outline-blue-200 p-4 p-4`}>
+          <div
+            className={`container bg-gray-100 rounded-lg ${
+              isEditing ? "outline" : ""
+            } outline-blue-200 p-4 p-4`}
+          >
             <ClientForm
               isEditing={isEditing}
               client={client}

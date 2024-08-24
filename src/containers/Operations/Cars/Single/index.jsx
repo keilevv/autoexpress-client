@@ -94,7 +94,9 @@ function SingleCarContainer() {
         <div>
           <div className="lg:flex lg:justify-between lg:items-top mb-5">
             <div className="mb-4">
-              <h1 className="text-2xl text-red-700 mb-2 font-semibold">Detalles del vehículo</h1>
+              <h1 className="text-2xl text-red-700 mb-2 font-semibold">
+                Detalles del vehículo
+              </h1>
               <Breadcrumb
                 items={[
                   {
@@ -107,7 +109,13 @@ function SingleCarContainer() {
                       <a onClick={() => navitate("/operations/cars")}>Autos</a>
                     ),
                   },
-                  { title: car?.plate },
+                  {
+                    title: (
+                      <p className="text text-red-700 font-semibold">
+                        {car?.plate}
+                      </p>
+                    ),
+                  },
                 ]}
               />
               {car.archived && (
@@ -116,7 +124,7 @@ function SingleCarContainer() {
                 </Tag>
               )}
               {car.created_date && (
-                <p className="single-car-date">{`Fecha de creación: ${dayjs(
+                <p className="mt-5 text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
                   car.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}
@@ -167,9 +175,11 @@ function SingleCarContainer() {
               </Fragment>
             </div>
           </div>
-          <div className={`container bg-gray-100 rounded-lg ${
+          <div
+            className={`container bg-gray-100 rounded-lg ${
               isEditing ? "outline" : ""
-            } outline-blue-200 p-4`}>
+            } outline-blue-200 p-4`}
+          >
             <CarForm
               isEditing={isEditing}
               car={car}
