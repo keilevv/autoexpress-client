@@ -183,7 +183,7 @@ function SingleMaterial() {
             </div>
           </div>
           <div
-            className={`container bg-gray-200 rounded-lg ${
+            className={`container bg-gray-100 rounded-lg ${
               isEditing ? "outline" : ""
             } outline-blue-200 p-4 p-4`}
           >
