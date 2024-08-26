@@ -138,7 +138,7 @@ function useInventory() {
   const getConsumptionMaterial = useCallback((materialId) => {
     setLoading(true);
     return materialsService
-      .getStorageMaterial(auth.user.accessToken, materialId)
+      .getConsumptionMaterial(auth.user.accessToken, materialId)
       .then((response) => {
         setStorageMaterial(response.data.results);
         setLoading(false);

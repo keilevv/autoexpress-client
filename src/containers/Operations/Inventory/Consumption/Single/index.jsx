@@ -2,10 +2,10 @@ import { useEffect, useState, Fragment } from "react";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 /* Hooks*/
-import useInventory from "../../../../hooks/useInventory";
+import useInventory from "../../../../../hooks/useInventory";
 /* Components */
 import { useSelector } from "react-redux";
-import StorageMaterialForm from "../../../../components/operations/Inventory/StrorageMaterialForm";
+import SingleConsumptionMaterialForm from "./SingleMaterialForm";
 import {
   Skeleton,
   Breadcrumb,
@@ -17,32 +17,31 @@ import {
   Form,
 } from "antd";
 
-import "./style.css";
-
-function SingleMaterial() {
+function SingleConsumptionMaterialContainer() {
   const navigate = useNavigate();
+  const [type, setType] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [showSave, setShowSave] = useState(false);
   const [materialId, setClientId] = useState("");
   const [form] = Form.useForm();
-  const user = useSelector((state) => state.auth.user);
   const {
-    storageMaterial,
-    getStorageMaterial,
+    consumptionMaterial,
+    getConsumptionMaterial,
     loading,
-    updateStorageMaterial,
+    updateConsumptionMaterial,
   } = useInventory();
 
   useEffect(() => {
     if (materialId) {
-      getStorageMaterial(materialId);
+      getConsumptionMaterial(materialId);
     }
-  }, [materialId, user]);
+  }, [materialId]);
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
       if (item === "material") {
         setClientId(window.location.pathname.split("/")[index + 2]);
+        setType(window.location.pathname.split("/")[index + 1]);
       }
     });
   }, [window.location.pathname]);
@@ -50,7 +49,7 @@ function SingleMaterial() {
   function handleUpdateMaterial() {
     if (materialId) {
       form.validateFields().then((values) => {
-        updateStorageMaterial(materialId, values)
+        updateConsumptionMaterial(materialId, values)
           .then((response) => {
             notification.success({
               message: "Material actualizado con éxito",
@@ -70,9 +69,9 @@ function SingleMaterial() {
     }
   }
 
-  function handleArchiveClient() {
+  function handleArchiveMaterial() {
     if (materialId) {
-      updateStorageMaterial(materialId, {
+      updateConsumptionMaterial(materialId, {
         archived: material.archived ? false : true,
       })
         .then((response) => {
@@ -95,14 +94,14 @@ function SingleMaterial() {
 
   return (
     <div className="single-material-container">
-      {loading || !storageMaterial ? (
+      {loading || !consumptionMaterial ? (
         <Skeleton />
       ) : (
         <div>
           <div className="lg:flex lg:justify-between lg:items-top mb-5">
             <div className="mb-4">
               <h1 className="text-2xl text-red-700 mb-2 font-semibold">
-                Detalles del material
+                Detalles del material de consumo
               </h1>
               <Breadcrumb
                 items={[
@@ -120,23 +119,26 @@ function SingleMaterial() {
                   },
                   {
                     title: (
-                      <p className="text text-red-700 font-semibold">{`${storageMaterial.name} - ${storageMaterial.reference}`}</p>
+                      <p className="text text-red-700 font-semibold">{`${consumptionMaterial.name} - ${consumptionMaterial.reference}`}</p>
                     ),
                   },
                 ]}
               />
-              {storageMaterial.archived && (
-                <Tag className="single-storageMaterial-status" color={"gray"}>
+              {consumptionMaterial.archived && (
+                <Tag
+                  className="single-consumptionMaterial-status"
+                  color={"gray"}
+                >
                   Archivado
                 </Tag>
               )}
-              {storageMaterial.created_date && (
+              {consumptionMaterial.created_date && (
                 <p className="mt-5 text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
-                  storageMaterial.created_date
+                  consumptionMaterial.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>
-            <div className="single-storageMaterial-buttons flex gap-2">
+            <div className="single-consumptionMaterial-buttons flex gap-2">
               <Fragment>
                 <Tooltip title={isEditing ? "Cancelar" : "Editar"}>
                   <Button
@@ -159,19 +161,19 @@ function SingleMaterial() {
               </Fragment>
               <Fragment>
                 <Tooltip
-                  title={storageMaterial.archived ? "Desarchivar" : "Archivar"}
+                  title={consumptionMaterial.archived ? "Desarchivar" : "Archivar"}
                 >
                   <Popconfirm
                     title={`${
-                      storageMaterial.archived ? "Desarchivar" : "Archivar"
+                      consumptionMaterial.archived ? "Desarchivar" : "Archivar"
                     } material`}
                     description={`¿Está seguro de ${
-                      storageMaterial.archived ? "desarchivar" : "archivar"
+                      consumptionMaterial.archived ? "desarchivar" : "archivar"
                     } este material?`}
-                    onConfirm={handleArchiveClient}
+                    onConfirm={handleArchiveMaterial}
                   >
                     <Button className="edit-button" shape="circle">
-                      {storageMaterial.archived ? (
+                      {consumptionMaterial.archived ? (
                         <i className="fa-solid fa-arrow-up-from-bracket"></i>
                       ) : (
                         <i className="fa-solid fa-box-archive icon"></i>
@@ -187,14 +189,7 @@ function SingleMaterial() {
               isEditing ? "outline" : ""
             } outline-blue-200 p-4 p-4`}
           >
-            <StorageMaterialForm
-              form={form}
-              isEditing={isEditing}
-              storageMaterial={storageMaterial}
-              showFullForm={true}
-              isCarDetails={true}
-              setIsChanged={setShowSave}
-            />
+            <div> Material de consumo</div>
 
             {isEditing && (
               <Button
@@ -203,7 +198,7 @@ function SingleMaterial() {
                   form.resetFields();
                   setShowSave(false);
                 }}
-                className={`storageMaterial-form-cancel-button`}
+                className={`consumptionMaterial-form-cancel-button`}
               >
                 Cancelar
               </Button>
@@ -211,7 +206,7 @@ function SingleMaterial() {
             {showSave && (
               <Button
                 type="primary"
-                className={`storageMaterial-form-save-button ${
+                className={`consumptionMaterial-form-save-button ${
                   !showSave && "disabled"
                 }`}
                 icon={<i className="fa-solid fa-save"></i>}
@@ -226,4 +221,4 @@ function SingleMaterial() {
     </div>
   );
 }
-export default SingleMaterial;
+export default SingleConsumptionMaterialContainer;

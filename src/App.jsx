@@ -20,7 +20,8 @@ import SingleClientContainer from "./containers/Operations/Clients/Single";
 import SingleAgendaContainer from "./containers/Operations/Agenda/Single";
 import AppointmentContainer from "./containers/Appointment";
 import InventoryContainer from "./containers/Operations/Inventory";
-import SingleMaterialContainer from "./containers/Operations/Inventory/Single";
+import SingleStorageMaterialContainer from "./containers/Operations/Inventory/Storage/Single";
+import SingleConsumptionMaterialContainer from "./containers/Operations/Inventory/Consumption/Single";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
@@ -185,7 +186,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <SingleMaterialContainer />
+                  <SingleStorageMaterialContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -195,7 +196,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <SingleMaterialContainer />
+                  <SingleConsumptionMaterialContainer />
                 </MainLayout>
               </ProtectedRoute>
             }

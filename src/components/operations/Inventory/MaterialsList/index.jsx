@@ -11,7 +11,7 @@ function MaterialsList({ materials, setMaterials }) {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    getStorageMaterials();
+    getStorageMaterials(1, 10, "&archived=false");
   }, [user]);
 
   const onQuantityChange = (materialId, value) => {

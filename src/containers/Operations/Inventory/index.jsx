@@ -6,17 +6,17 @@ import ConsumptionInventoryContainer from "./Consumption";
 import TableMenu from "../../../components/operations/Inventory/TableMenu";
 function InventoryContainer() {
   const [currentTab, setCurrentTab] = useState("storage-inventory");
-
+  const [refresh, setRefresh] = useState(0);
   const items = [
     {
       key: "storage-inventory",
       label: <p className="font-semibold text-base">Inventario de almacén</p>,
-      children: <StorageInventoryContainer />,
+      children: <StorageInventoryContainer refresh={refresh} />,
     },
     {
       key: "consumption-inventory",
       label: <p className="font-semibold text-base">Inventario de consumo</p>,
-      children: <ConsumptionInventoryContainer />,
+      children: <ConsumptionInventoryContainer refresh={refresh} />,
     },
   ];
 
@@ -38,7 +38,12 @@ function InventoryContainer() {
   return (
     <div>
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Inventario</h1>
-      <TableMenu type={currentTab} />
+      <TableMenu
+        type={currentTab}
+        onFinish={() => {
+          setRefresh(refresh + 1);
+        }}
+      />
       <Tabs
         activeKey={currentTab}
         defaultActiveKey={currentTab}

@@ -3,12 +3,21 @@ import { useSelector } from "react-redux";
 import { Form, InputNumber, Input } from "antd";
 import MaterialsList from "../MaterialsList";
 
-function ConsumptionMaterialForm({ form }) {
+function ConsumptionMaterialModalContent({
+  form,
+  setDisabledSubmit,
+  materials,
+  setMaterials,
+}) {
   const [filterText, setFilterText] = useState("");
-  const [materials, setMaterials] = useState([]);
 
   useEffect(() => {
     form.setFieldValue("materials", materials);
+    if (materials.length > 0) {
+      setDisabledSubmit(false);
+    } else {
+      setDisabledSubmit(true);
+    }
   }, [materials]);
 
   return (
@@ -26,4 +35,4 @@ function ConsumptionMaterialForm({ form }) {
   );
 }
 
-export default ConsumptionMaterialForm;
+export default ConsumptionMaterialModalContent;

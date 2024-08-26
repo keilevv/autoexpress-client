@@ -1,13 +1,15 @@
-import { Modal, Form, Input, Select, notification } from "antd";
-import NumberInput from "../../../Common/NumberInput";
+import { useEffect, useState } from "react";
+import { Modal, Form, notification } from "antd";
 import useInventory from "../../../../hooks/useInventory";
 import StorageMaterialForm from "../StrorageMaterialForm";
-import ConsumptionMaterialForm from "../ConsumptionMaterialForm";
+import ConsumptionMaterialModalContent from "../ConsumptionMaterialModalContent";
 
 function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
   const { createStorageMaterial, loading, createConsumptionMaterial } =
     useInventory();
   const [form] = Form.useForm();
+  const [disabled, setDisabled] = useState(true);
+  const [materials, setMaterials] = useState([]);
 
   const handleOk = () => {
     switch (type) {
@@ -34,9 +36,22 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
 
       case "consumption-inventory":
         form.validateFields().then((values) => {
-          createConsumptionMaterial(values).then(() => {
-            console.log(values);
-          });
+          createConsumptionMaterial(values)
+            .then(() => {
+              notification.success({
+                message: "Material de consumo agregado",
+              });
+              setIsModalOpen(false);
+              form.resetFields();
+              onFinish();
+              setMaterials([]);
+            })
+            .catch((err) => {
+              notification.error({
+                message: "Error al agregar material",
+                description: err.message,
+              });
+            });
         });
     }
   };
@@ -49,9 +64,18 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
   function renderModalContent() {
     switch (type) {
       case "storage-inventory":
-        return <StorageMaterialForm form={form} />;
+        return (
+          <StorageMaterialForm form={form} setDisabledSubmit={setDisabled} />
+        );
       case "consumption-inventory":
-        return <ConsumptionMaterialForm form={form} />;
+        return (
+          <ConsumptionMaterialModalContent
+            materials={materials}
+            setMaterials={setMaterials}
+            form={form}
+            setDisabledSubmit={setDisabled}
+          />
+        );
       default:
         return null;
     }
@@ -59,6 +83,7 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
 
   return (
     <Modal
+      okButtonProps={{ disabled: disabled }}
       confirmLoading={loading}
       open={isModalOpen}
       onOk={handleOk}

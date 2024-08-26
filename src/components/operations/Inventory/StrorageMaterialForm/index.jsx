@@ -9,6 +9,7 @@ import { unitOptions } from "../../../../helpers/constants";
  * setForm: () => void,
  * storageMaterial: any,
  * isEditing?: boolean
+ * setDisabledSubmit?: () => void
  * }} props
  */
 function StorageMaterialForm({
@@ -17,8 +18,8 @@ function StorageMaterialForm({
   setIsChanged,
   storageMaterial,
   isEditing = true,
+  setDisabledSubmit,
 }) {
-
   useEffect(() => {
     setForm && setForm(form);
   }, [form, setForm]);
@@ -55,8 +56,9 @@ function StorageMaterialForm({
         form={form}
         layout="vertical"
         initialValues={{ unit: "unit" }}
-        name="material"
+        name="storage-material-form"
         onFieldsChange={() => {
+          setDisabledSubmit && setDisabledSubmit(false);
           setIsChanged && setIsChanged(true);
         }}
       >
