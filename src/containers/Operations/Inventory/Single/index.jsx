@@ -42,7 +42,7 @@ function SingleMaterial() {
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
       if (item === "material") {
-        setClientId(window.location.pathname.split("/")[index + 1]);
+        setClientId(window.location.pathname.split("/")[index + 2]);
       }
     });
   }, [window.location.pathname]);

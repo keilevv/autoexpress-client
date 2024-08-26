@@ -51,6 +51,7 @@ function ConsumptionInventoryContainer() {
   return (
     <div className="bg-gray-100 rounded-lg">
       <MaterialsTable
+        type={"consumption"}
         data={consumptionMaterials}
         getMaterials={getConsumptionMaterials}
         loading={loading}

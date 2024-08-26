@@ -55,7 +55,7 @@ function ClientsContainer() {
   const items = [
     {
       key: "active",
-      label: "Activos",
+      label: <p className="font-semibold text-base">Activos</p>,
       children: (
         <div className="bg-gray-100 rounded-lg">
           <ClientsTable
@@ -70,7 +70,7 @@ function ClientsContainer() {
     },
     {
       key: "archived",
-      label: "Archivados",
+      label: <p className="font-semibold text-base">Archivados</p>,
       children: (
         <div className="bg-gray-100 rounded-lg">
           <ClientsTable

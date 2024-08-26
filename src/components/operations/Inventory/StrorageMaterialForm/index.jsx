@@ -1,7 +1,7 @@
 import { Form, Input, Select, InputNumber } from "antd";
 import NumberInput from "../../../Common/NumberInput";
 import { useEffect } from "react";
-import dayjs from "dayjs";
+import { unitOptions } from "../../../../helpers/constants";
 
 /**
  * @param {{
@@ -18,12 +18,6 @@ function StorageMaterialForm({
   storageMaterial,
   isEditing = true,
 }) {
-  const unitOptions = [
-    { value: "unit", label: "Unidad" },
-    { value: "litro", label: "Litro" },
-    { value: "galon", label: "Galón" },
-    { value: "kilo", label: "Kilo" },
-  ];
 
   useEffect(() => {
     setForm && setForm(form);

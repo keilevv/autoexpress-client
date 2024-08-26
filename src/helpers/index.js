@@ -28,3 +28,11 @@ export function getFilterString(filters) {
   });
   return filterString;
 }
+
+export function formatToCurrency(number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(number);
+}

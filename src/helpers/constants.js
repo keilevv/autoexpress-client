@@ -6,6 +6,13 @@ export const operationsMenu = [
   "operators",
   "settings",
 ];
+export const unitOptions = [
+  { value: "unit", label: "Unidad" },
+  { value: "litro", label: "Litro" },
+  { value: "galon", label: "Galón" },
+  { value: "kilo", label: "Kilo" },
+];
+
 export const headerModules = ["operations"];
 // const apiKey = process.env.VITE_API_KEY;
 export const apiUrl =

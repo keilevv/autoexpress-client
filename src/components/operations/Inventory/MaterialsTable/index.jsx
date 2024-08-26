@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { Table, Popover, notification } from "antd";
 import MaterialTableMenu from "./Menu";
 import useInventory from "../../../../hooks/useInventory";
+import { unitOptions } from "../../../../helpers/constants";
+import { formatToCurrency } from "../../../../helpers";
 /**
- * @param {{ data: any[], loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
+ * @param {{ type: string, data: any[], loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
 function MaterialsTable({
   data,
@@ -14,22 +16,55 @@ function MaterialsTable({
   getMaterials,
   type = "storage",
 }) {
-  const [columns, setColumns] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const { updateStorageMaterial } = useInventory();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (type !== "storage") {
-      setColumns(columns.filter((c) => c.dataIndex !== "price"));
-    } else {
-      setColumns(defaultColumns);
+    if (type === "storage") {
+      const storageTableData = data.map((item, index) => {
+        return {
+          key: item._id,
+          name: item.name,
+          reference: item.reference,
+          unit: item.unit,
+          price: item.price,
+          quantity: item.quantity,
+        };
+      });
+      setTableData(storageTableData);
+    } else if (type === "consumption") {
+      const consumptionTableData = data.map((item) => {
+        return {
+          key: item._id,
+          name: item.name,
+          reference: item.material.reference,
+          unit: item.material.unit,
+          name: item.material.name,
+          quantity: item.quantity,
+          price: item.material.price,
+        };
+      });
+      setTableData(consumptionTableData);
     }
-  }, [type]);
-  const defaultColumns = [
+  }, [data, type]);
+
+  const columns = [
     {
-      title: "Nombre",
+      title: "Material",
       dataIndex: "name",
       key: "name",
+      render: (item, { key }) => {
+        return (
+          <a
+            onClick={() =>
+              navigate(`/operations/inventory/material/${type}/${key}`)
+            }
+          >
+            {String(item).toUpperCase()}
+          </a>
+        );
+      },
     },
     {
       title: "Referencia",
@@ -40,11 +75,17 @@ function MaterialsTable({
       title: "Unidad",
       dataIndex: "unit",
       key: "unit",
+      render: (item) => {
+        return unitOptions.find((unit) => unit.value === item).label;
+      },
     },
     {
       title: "Precio",
       dataIndex: "price",
       key: "price",
+      render: (item) => {
+        return formatToCurrency(item);
+      },
     },
     {
       title: "Cantidad",
@@ -55,9 +96,10 @@ function MaterialsTable({
       title: "",
       dataIndex: "",
       key: "",
+      width: "100px",
       render: (item) => {
         const handleOnEdit = () => {
-          navigate(`/operations/inventory/material/${item.key}`);
+          navigate(`/operations/inventory/material/${type}/${item.key}`);
         };
         return (
           <MaterialTableMenu
@@ -68,7 +110,7 @@ function MaterialsTable({
                   if (response) {
                     notification.success({
                       message: "Material archivado exitosamente",
-                      description: `${response.data.results.name} - ${response.data.results.reference}`,
+                      description: `${response.data.results.item} - ${response.data.results.reference}`,
                     });
                     getMaterials();
                   }
@@ -90,23 +132,12 @@ function MaterialsTable({
     setPagination(newPagination);
   };
 
-  const dataSource = data.map((item, index) => {
-    return {
-      key: item._id,
-      name: item.name,
-      reference: item.reference,
-      unit: item.unit,
-      price: item.price,
-      quantity: item.quantity,
-    };
-  });
-
   return (
     <>
       <div className="table-container">
         <Table
           loading={loading}
-          dataSource={dataSource}
+          dataSource={tableData}
           columns={columns}
           pagination={pagination}
           onChange={handleTableChange}

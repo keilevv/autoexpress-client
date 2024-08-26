@@ -51,6 +51,7 @@ function StorageInventoryContainer() {
   return (
     <div className="bg-gray-100 rounded-lg">
       <MaterialsTable
+        type="storage"
         data={storageMaterials}
         getMaterials={getStorageMaterials}
         loading={loading}

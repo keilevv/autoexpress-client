@@ -8,7 +8,7 @@ function MaterialsList({ materials, setMaterials }) {
   const { getStorageMaterials, storageMaterials, loading } = useInventory();
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [quantities, setQuantities] = useState({});
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     getStorageMaterials();

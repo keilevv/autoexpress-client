@@ -5,28 +5,40 @@ import StorageMaterialForm from "../StrorageMaterialForm";
 import ConsumptionMaterialForm from "../ConsumptionMaterialForm";
 
 function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
-  const { createStorageMaterial, loading } = useInventory();
+  const { createStorageMaterial, loading, createConsumptionMaterial } =
+    useInventory();
   const [form] = Form.useForm();
 
   const handleOk = () => {
-    form
-      .validateFields()
-      .then((values) => {
-        createStorageMaterial(values).then(() => {
-          notification.success({
-            message: "Material agregado con exito",
+    switch (type) {
+      case "storage-inventory":
+        form
+          .validateFields()
+          .then((values) => {
+            createStorageMaterial(values).then(() => {
+              notification.success({
+                message: "Material agregado a inventario",
+              });
+              setIsModalOpen(false);
+              form.resetFields();
+              onFinish();
+            });
+          })
+          .catch((err) => {
+            notification.error({
+              message: "Error al agregar material",
+              description: err.message,
+            });
           });
-          setIsModalOpen(false);
-          form.resetFields();
-          onFinish();
+        break;
+
+      case "consumption-inventory":
+        form.validateFields().then((values) => {
+          createConsumptionMaterial(values).then(() => {
+            console.log(values);
+          });
         });
-      })
-      .catch((err) => {
-        notification.error({
-          message: "Error al agregar material",
-          description: err.message,
-        });
-      });
+    }
   };
 
   const handleCancel = () => {
@@ -54,8 +66,8 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
     >
       <h1 className="text-xl text-red-700 font-semibold mb-5 ">
         {type === "storage-inventory"
-          ? "Agregar material de almacenamiento"
-          : "Agregar material de consumo"}
+          ? "Agregar material para almacen"
+          : "Agregar material para consumo"}
       </h1>
       {renderModalContent()}{" "}
     </Modal>
