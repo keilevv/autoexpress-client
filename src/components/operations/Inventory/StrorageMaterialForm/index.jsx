@@ -5,6 +5,7 @@ import { unitOptions } from "../../../../helpers/constants";
 
 /**
  * @param {{
+ * setPayload?: () => void,
  * setIsChanged?: () => void,
  * setForm: () => void,
  * storageMaterial: any,
@@ -19,6 +20,7 @@ function StorageMaterialForm({
   storageMaterial,
   isEditing = true,
   setDisabledSubmit,
+  setPayload,
 }) {
   useEffect(() => {
     setForm && setForm(form);
@@ -57,7 +59,12 @@ function StorageMaterialForm({
         layout="vertical"
         initialValues={{ unit: "unit" }}
         name="storage-material-form"
-        onFieldsChange={() => {
+        onFieldsChange={(field) => {
+          setPayload &&
+            setPayload((prev) => ({
+              ...prev,
+              [`${field[0].name}`]: field[0].value,
+            }));
           setDisabledSubmit && setDisabledSubmit(false);
           setIsChanged && setIsChanged(true);
         }}

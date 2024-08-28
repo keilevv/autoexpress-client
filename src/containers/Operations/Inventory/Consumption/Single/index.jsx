@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 /* Hooks*/
 import useInventory from "../../../../../hooks/useInventory";
 /* Components */
-import { useSelector } from "react-redux";
-import SingleConsumptionMaterialForm from "./SingleMaterialForm";
+import SingleConsumptionMaterialContent from "./Details";
 import {
   Skeleton,
   Breadcrumb,
@@ -24,6 +23,7 @@ function SingleConsumptionMaterialContainer() {
   const [showSave, setShowSave] = useState(false);
   const [materialId, setClientId] = useState("");
   const [form] = Form.useForm();
+
   const {
     consumptionMaterial,
     getConsumptionMaterial,
@@ -50,14 +50,14 @@ function SingleConsumptionMaterialContainer() {
     if (materialId) {
       form.validateFields().then((values) => {
         updateConsumptionMaterial(materialId, values)
-          .then((response) => {
+          .then(() => {
             notification.success({
               message: "Material actualizado con éxito",
-              description: `${response.data.results.name} - ${response.data.results.reference}`,
+              description: `${consumptionMaterial.material.name} Ref. #${consumptionMaterial.material.reference}`,
             });
             setIsEditing(false);
             setShowSave(false);
-            getStorageMaterial(materialId);
+            getConsumptionMaterial(materialId);
           })
           .catch((err) => {
             notification.error({
@@ -72,16 +72,16 @@ function SingleConsumptionMaterialContainer() {
   function handleArchiveMaterial() {
     if (materialId) {
       updateConsumptionMaterial(materialId, {
-        archived: material.archived ? false : true,
+        archived: consumptionMaterial.archived ? false : true,
       })
         .then((response) => {
           notification.success({
-            message: `Material${
-              material.archived ? "desarchivado" : "archivado"
+            message: `Material ${
+              consumptionMaterial.archived ? "desarchivado" : "archivado"
             } con éxito`,
-            description: `${response.data.results.name} - ${response.data.results.reference}`,
+            description: `${consumptionMaterial.material.name} Ref. #${consumptionMaterial.material.reference}`,
           });
-          getStorageMaterial(materialId);
+          getConsumptionMaterial(materialId);
         })
         .catch((err) => {
           notification.error({
@@ -119,7 +119,14 @@ function SingleConsumptionMaterialContainer() {
                   },
                   {
                     title: (
-                      <p className="text text-red-700 font-semibold">{`${consumptionMaterial.name} - ${consumptionMaterial.reference}`}</p>
+                      <a onClick={() => navigate("/operations/inventory/consumption")}>
+                        Consumo
+                      </a>
+                    ),
+                  },
+                  {
+                    title: (
+                      <p className="text text-red-700 font-semibold">{`${consumptionMaterial?.material?.name} Ref. #${consumptionMaterial?.material?.reference}`}</p>
                     ),
                   },
                 ]}
@@ -161,7 +168,9 @@ function SingleConsumptionMaterialContainer() {
               </Fragment>
               <Fragment>
                 <Tooltip
-                  title={consumptionMaterial.archived ? "Desarchivar" : "Archivar"}
+                  title={
+                    consumptionMaterial.archived ? "Desarchivar" : "Archivar"
+                  }
                 >
                   <Popconfirm
                     title={`${
@@ -189,7 +198,12 @@ function SingleConsumptionMaterialContainer() {
               isEditing ? "outline" : ""
             } outline-blue-200 p-4 p-4`}
           >
-            <div> Material de consumo</div>
+            <SingleConsumptionMaterialContent
+              consumptionMaterial={consumptionMaterial}
+              form={form}
+              isEditing={isEditing}
+              setIsChanged={setShowSave}
+            />
 
             {isEditing && (
               <Button
@@ -206,7 +220,7 @@ function SingleConsumptionMaterialContainer() {
             {showSave && (
               <Button
                 type="primary"
-                className={`consumptionMaterial-form-save-button ${
+                className={`consumptionMaterial-form-save-button ml-2 ${
                   !showSave && "disabled"
                 }`}
                 icon={<i className="fa-solid fa-save"></i>}

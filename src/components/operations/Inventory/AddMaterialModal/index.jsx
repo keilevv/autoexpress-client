@@ -14,24 +14,23 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
   const handleOk = () => {
     switch (type) {
       case "storage-inventory":
-        form
-          .validateFields()
-          .then((values) => {
-            createStorageMaterial(values).then(() => {
+        form.validateFields().then((values) => {
+          createStorageMaterial(values)
+            .then((response) => {
               notification.success({
-                message: "Material agregado a inventario",
+                message: "Material agregado a almacén",
               });
               setIsModalOpen(false);
               form.resetFields();
               onFinish();
+            })
+            .catch((err) => {
+              notification.error({
+                message: "Error al agregar material",
+                description: err,
+              });
             });
-          })
-          .catch((err) => {
-            notification.error({
-              message: "Error al agregar material",
-              description: err.message,
-            });
-          });
+        });
         break;
 
       case "consumption-inventory":
@@ -49,7 +48,7 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
             .catch((err) => {
               notification.error({
                 message: "Error al agregar material",
-                description: err.message,
+                description: err,
               });
             });
         });

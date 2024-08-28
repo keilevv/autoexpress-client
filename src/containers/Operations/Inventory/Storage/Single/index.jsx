@@ -26,6 +26,7 @@ function SingleStorageMaterial() {
   const [showSave, setShowSave] = useState(false);
   const [materialId, setClientId] = useState("");
   const [form] = Form.useForm();
+  const [payload, setPayload] = useState({});
   const {
     storageMaterial,
     getStorageMaterial,
@@ -50,38 +51,36 @@ function SingleStorageMaterial() {
 
   function handleUpdateMaterial() {
     if (materialId) {
-      form.validateFields().then((values) => {
-        updateStorageMaterial(materialId, values)
-          .then((response) => {
-            notification.success({
-              message: "Material actualizado con éxito",
-              description: `${response.data.results.name} - ${response.data.results.reference}`,
-            });
-            setIsEditing(false);
-            setShowSave(false);
-            getStorageMaterial(materialId);
-          })
-          .catch((err) => {
-            notification.error({
-              message: "Error actualizando material",
-              description: err.message || err.message._message,
-            });
+      updateStorageMaterial(materialId, payload)
+        .then((response) => {
+          notification.success({
+            message: "Material actualizado con éxito",
+            description: `${response.data.results.name} Ref. #${response.data.results.reference}`,
           });
-      });
+          setIsEditing(false);
+          setShowSave(false);
+          getStorageMaterial(materialId);
+        })
+        .catch((err) => {
+          notification.error({
+            message: "Error actualizando material",
+            description: err.message || err.message._message,
+          });
+        });
     }
   }
 
   function handleArchiveClient() {
     if (materialId) {
       updateStorageMaterial(materialId, {
-        archived: material.archived ? false : true,
+        archived: storageMaterial.archived ? false : true,
       })
         .then((response) => {
           notification.success({
-            message: `Material${
-              material.archived ? "desarchivado" : "archivado"
+            message: `Material ${
+              storageMaterial.archived ? "desarchivado" : "archivado"
             } con éxito`,
-            description: `${response.data.results.name} - ${response.data.results.reference}`,
+            description: `${response.data.results.name} Ref. #${response.data.results.reference}`,
           });
           getStorageMaterial(materialId);
         })
@@ -121,7 +120,18 @@ function SingleStorageMaterial() {
                   },
                   {
                     title: (
-                      <p className="text text-red-700 font-semibold">{`${storageMaterial.name} - ${storageMaterial.reference}`}</p>
+                      <a
+                        onClick={() =>
+                          navigate("/operations/inventory/storage")
+                        }
+                      >
+                        Almacén
+                      </a>
+                    ),
+                  },
+                  {
+                    title: (
+                      <p className="text text-red-700 font-semibold">{`${storageMaterial.name} Ref. #${storageMaterial.reference}`}</p>
                     ),
                   },
                 ]}
@@ -193,8 +203,8 @@ function SingleStorageMaterial() {
               isEditing={isEditing}
               storageMaterial={storageMaterial}
               showFullForm={true}
-              isCarDetails={true}
               setIsChanged={setShowSave}
+              setPayload={setPayload}
             />
             {isEditing && (
               <Button
@@ -211,7 +221,7 @@ function SingleStorageMaterial() {
             {showSave && (
               <Button
                 type="primary"
-                className={`storageMaterial-form-save-button ${
+                className={`storageMaterial-form-save-button ml-2 ${
                   !showSave && "disabled"
                 }`}
                 icon={<i className="fa-solid fa-save"></i>}

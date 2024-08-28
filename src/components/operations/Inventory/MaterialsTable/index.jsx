@@ -17,8 +17,47 @@ function MaterialsTable({
   type = "storage",
 }) {
   const [tableData, setTableData] = useState([]);
-  const { updateStorageMaterial } = useInventory();
+  const { updateStorageMaterial, updateConsumptionMaterial } = useInventory();
   const navigate = useNavigate();
+
+  const handleArchiveMaterial = (item) => {
+    if (type === "storage") {
+      updateStorageMaterial(item.key, { archived: !item.archived })
+        .then((response) => {
+          if (response) {
+            notification.success({
+              message: "Material archivado exitosamente",
+              description: `${response.data.results.item} Ref. #${response.data.results.reference}`,
+            });
+            getMaterials();
+          }
+        })
+        .catch((err) => {
+          notification.error({
+            message: "Error archivando material",
+            description: err.message || err.message._message,
+          });
+        });
+    }
+    if (type === "consumption") {
+      updateConsumptionMaterial(item.key, { archived: !item.archived })
+        .then((response) => {
+          if (response) {
+            notification.success({
+              message: "Material archivado exitosamente",
+              // description: `${response.data.results.item} - ${response.data.results.reference}`,
+            });
+            getMaterials(1, 10, "&archived=false");
+          }
+        })
+        .catch((err) => {
+          notification.error({
+            message: "Error archivando material",
+            description: err.message || err.message._message,
+          });
+        });
+    }
+  };
 
   useEffect(() => {
     if (type === "storage") {
@@ -105,22 +144,7 @@ function MaterialsTable({
           <MaterialTableMenu
             onEdit={handleOnEdit}
             onArchive={() => {
-              updateStorageMaterial(item.key, { archived: !item.archived })
-                .then((response) => {
-                  if (response) {
-                    notification.success({
-                      message: "Material archivado exitosamente",
-                      description: `${response.data.results.item} - ${response.data.results.reference}`,
-                    });
-                    getMaterials();
-                  }
-                })
-                .catch((err) => {
-                  notification.error({
-                    message: "Error archivando material",
-                    description: err.message || err.message._message,
-                  });
-                });
+              handleArchiveMaterial(item);
             }}
           />
         );
