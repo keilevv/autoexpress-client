@@ -34,7 +34,7 @@ function useMenu() {
       },
       {
         key: "inventory",
-        label: "Inventario",
+        label: "Almacén",
         icon: React.createElement(ContainerOutlined),
       },
     ];

@@ -18,7 +18,7 @@ function useInventory() {
     }
   }, [auth]);
 
-  function createStorageMaterial(payload) {
+  const createStorageMaterial = useCallback((payload) => {
     setLoading(true);
     return materialsService
       .createStorageMaterial(auth.user.accessToken, payload)
@@ -28,10 +28,11 @@ function useInventory() {
         return response;
       })
       .catch((err) => {
-        throwError(err.message.message);
         setLoading(false);
+        throwError(err.response.data.message);
+        return err;
       });
-  }
+  }, []);
 
   const getStorageMaterials = useCallback(
     (page = 1, limit = 10, filter = "") => {
@@ -110,8 +111,8 @@ function useInventory() {
         return response;
       })
       .catch((err) => {
-        throwError(err.message.message);
         setLoading(false);
+        throwError(err.response.data.message);
       });
   }
 
@@ -121,7 +122,7 @@ function useInventory() {
       return materialsService
         .getConsumptionMaterials(auth.user.accessToken, page, limit, filter)
         .then((response) => {
-          setMaterials(response.data.results);
+          setConsumptionMaterials(response.data.results);
           setCount(response.data.count);
           setLoading(false);
           return response;
@@ -138,9 +139,9 @@ function useInventory() {
   const getConsumptionMaterial = useCallback((materialId) => {
     setLoading(true);
     return materialsService
-      .getStorageMaterial(auth.user.accessToken, materialId)
+      .getConsumptionMaterial(auth.user.accessToken, materialId)
       .then((response) => {
-        setStorageMaterial(response.data.results);
+        setConsumptionMaterial(response.data.results);
         setLoading(false);
         return response;
       })
@@ -154,10 +155,10 @@ function useInventory() {
   const updateConsumptionMaterial = useCallback((materialId, payload) => {
     setLoading(true);
     return materialsService
-      .updateStorageMaterial(auth.user.accessToken, materialId, payload)
+      .updateConsumptionMaterial(auth.user.accessToken, materialId, payload)
       .then((response) => {
         if (response.data) {
-          setStorageMaterial(response.data);
+          setConsumptionMaterial(response.data);
           setLoading(false);
           return response;
         }

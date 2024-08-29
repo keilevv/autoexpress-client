@@ -20,7 +20,8 @@ import SingleClientContainer from "./containers/Operations/Clients/Single";
 import SingleAgendaContainer from "./containers/Operations/Agenda/Single";
 import AppointmentContainer from "./containers/Appointment";
 import InventoryContainer from "./containers/Operations/Inventory";
-import SingleMaterialContainer from "./containers/Operations/Inventory/Single";
+import SingleStorageMaterialContainer from "./containers/Operations/Inventory/Storage/Single";
+import SingleConsumptionMaterialContainer from "./containers/Operations/Inventory/Consumption/Single";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
@@ -34,7 +35,7 @@ import { useEffect } from "react";
 function App() {
   const { defaultSelectedHeader } = useMenu();
   return (
-    <div className="app mx-0" id="app">
+    <div className="app mx-0 bg-gray-100 h-screen" id="app">
       <ConfigProvider
         locale={esES}
         theme={{
@@ -161,11 +162,41 @@ function App() {
             }
           ></Route>
           <Route
-            path="/operations/inventory/material/:materialId"
+            path="/operations/inventory/storage"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <SingleMaterialContainer />
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/consumption"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/material/storage/:materialId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <SingleStorageMaterialContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/material/consumption/:materialId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <SingleConsumptionMaterialContainer />
                 </MainLayout>
               </ProtectedRoute>
             }

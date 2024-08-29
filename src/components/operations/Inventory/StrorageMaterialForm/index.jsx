@@ -1,14 +1,16 @@
 import { Form, Input, Select, InputNumber } from "antd";
 import NumberInput from "../../../Common/NumberInput";
 import { useEffect } from "react";
-import dayjs from "dayjs";
+import { unitOptions } from "../../../../helpers/constants";
 
 /**
  * @param {{
+ * setPayload?: () => void,
  * setIsChanged?: () => void,
  * setForm: () => void,
  * storageMaterial: any,
  * isEditing?: boolean
+ * setDisabledSubmit?: () => void
  * }} props
  */
 function StorageMaterialForm({
@@ -17,14 +19,9 @@ function StorageMaterialForm({
   setIsChanged,
   storageMaterial,
   isEditing = true,
+  setDisabledSubmit,
+  setPayload,
 }) {
-  const unitOptions = [
-    { value: "unit", label: "Unidad" },
-    { value: "litro", label: "Litro" },
-    { value: "galon", label: "Galón" },
-    { value: "kilo", label: "Kilo" },
-  ];
-
   useEffect(() => {
     setForm && setForm(form);
   }, [form, setForm]);
@@ -61,8 +58,14 @@ function StorageMaterialForm({
         form={form}
         layout="vertical"
         initialValues={{ unit: "unit" }}
-        name="material"
-        onFieldsChange={() => {
+        name="storage-material-form"
+        onFieldsChange={(field) => {
+          setPayload &&
+            setPayload((prev) => ({
+              ...prev,
+              [`${field[0].name}`]: field[0].value,
+            }));
+          setDisabledSubmit && setDisabledSubmit(false);
           setIsChanged && setIsChanged(true);
         }}
       >

@@ -2,10 +2,10 @@ import { useEffect, useState, Fragment } from "react";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 /* Hooks*/
-import useAppointment from "../../../../hooks/useAppointment";
+import useInventory from "../../../../../hooks/useInventory";
 /* Components */
 import { useSelector } from "react-redux";
-import AppointmentForm from "../../../../components/Common/AppointmentForm";
+import StorageMaterialForm from "../../../../../components/operations/Inventory/StrorageMaterialForm";
 import {
   Skeleton,
   Breadcrumb,
@@ -14,82 +14,79 @@ import {
   notification,
   Popconfirm,
   Tag,
+  Form,
 } from "antd";
 
 import "./style.css";
 
-function SingleAgendaContainer() {
-  const navitate = useNavigate();
+function SingleStorageMaterial() {
+  const navigate = useNavigate();
+  const [type, setType] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [showSave, setShowSave] = useState(false);
-  const [appointmentId, setAppointmentId] = useState("");
-  const [form, setForm] = useState(null);
-  const user = useSelector((state) => state.auth.user);
-  const { appointment, getAppointment, loading, updateAppointment } =
-    useAppointment();
+  const [materialId, setClientId] = useState("");
+  const [form] = Form.useForm();
+  const [payload, setPayload] = useState({});
+  const {
+    storageMaterial,
+    getStorageMaterial,
+    loading,
+    updateStorageMaterial,
+  } = useInventory();
 
   useEffect(() => {
-    if (appointmentId) {
-      getAppointment(appointmentId);
+    if (materialId) {
+      getStorageMaterial(materialId);
     }
-  }, [appointmentId, user]);
+  }, [materialId]);
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
-      if (item === "agenda") {
-        setAppointmentId(window.location.pathname.split("/")[index + 1]);
+      if (item === "material") {
+        setClientId(window.location.pathname.split("/")[index + 2]);
+        setType(window.location.pathname.split("/")[index + 1]);
       }
     });
   }, [window.location.pathname]);
 
-  function handleUpdateAppointment() {
-    if (appointmentId) {
-      form.validateFields().then((values) => {
-        if (dayjs(values.date).isValid()) {
-          values.date = dayjs(values.date).format("DD/MM/YYYY");
-        }
-        if (values.time) {
-          values.time = dayjs(values.time).format("HH:mm");
-        }
-
-        updateAppointment(appointmentId, values)
-          .then((response) => {
-            notification.success({
-              message: "Vehiculo actualizado con éxito",
-              description: response.data.results.plate,
-            });
-            setIsEditing(false);
-            setShowSave(false);
-            getAppointment(appointmentId);
-          })
-          .catch((err) => {
-            notification.error({
-              message: "Error actualizando cliente",
-              description: err.message || err.message._message,
-            });
-          });
-      });
-    }
-  }
-
-  function handleArchiveAppointment() {
-    if (appointmentId) {
-      updateAppointment(appointmentId, {
-        archived: appointment.archived ? false : true,
-      })
+  function handleUpdateMaterial() {
+    if (materialId) {
+      updateStorageMaterial(materialId, payload)
         .then((response) => {
           notification.success({
-            message: `Vehiculo ${
-              appointment.archived ? "desarchivado" : "archivado"
-            } con éxito`,
-            description: response.data.results.plate,
+            message: "Material actualizado con éxito",
+            description: `${response.data.results.name} Ref. #${response.data.results.reference}`,
           });
-
-          getAppointment(appointmentId);
+          setIsEditing(false);
+          setShowSave(false);
+          getStorageMaterial(materialId);
         })
         .catch((err) => {
           notification.error({
-            message: "Error archivando auto",
+            message: "Error actualizando material",
+            description: err.message || err.message._message,
+          });
+        });
+    }
+  }
+
+  function handleArchiveClient() {
+    if (materialId) {
+      updateStorageMaterial(materialId, {
+        archived: storageMaterial.archived ? false : true,
+      })
+        .then((response) => {
+          notification.success({
+            message: `Material ${
+              storageMaterial.archived ? "desarchivado" : "archivado"
+            } con éxito`,
+            description: `${response.data.results.name} Ref. #${response.data.results.reference}`,
+          });
+          getStorageMaterial(materialId);
+        })
+        .catch((err) => {
+          notification.error({
+            message: "Error archivando material",
             description: err.message || err.message._message,
           });
         });
@@ -97,53 +94,60 @@ function SingleAgendaContainer() {
   }
 
   return (
-    <div>
-      {loading || !appointment ? (
+    <div className="single-material-container">
+      {loading || !storageMaterial ? (
         <Skeleton />
       ) : (
         <div>
           <div className="lg:flex lg:justify-between lg:items-top mb-5">
             <div className="mb-4">
               <h1 className="text-2xl text-red-700 mb-2 font-semibold">
-                Detalles de la cita
+                Detalles del material
               </h1>
               <Breadcrumb
                 items={[
                   {
                     title: (
-                      <a onClick={() => navitate("/operations")}>Operaciones</a>
+                      <a onClick={() => navigate("/operations")}>Operaciones</a>
                     ),
                   },
                   {
                     title: (
-                      <a onClick={() => navitate("/operations/agenda")}>
-                        Agenda
+                      <a onClick={() => navigate("/operations/inventory")}>
+                        Inventario
                       </a>
                     ),
                   },
                   {
                     title: (
-                      <p className="text text-red-700 font-semibold">{`${dayjs(
-                        appointment.date
-                      ).format("DD/MM/YYYY")} - ${appointment.time} - ${
-                        appointment.user.username
-                      }`}</p>
+                      <a
+                        onClick={() =>
+                          navigate("/operations/inventory/storage")
+                        }
+                      >
+                        Almacén
+                      </a>
+                    ),
+                  },
+                  {
+                    title: (
+                      <p className="text text-red-700 font-semibold">{`${storageMaterial.name} Ref. #${storageMaterial.reference}`}</p>
                     ),
                   },
                 ]}
               />
-              {appointment.archived && (
-                <Tag className="single-appointment-status" color={"gray"}>
+              {storageMaterial.archived && (
+                <Tag className="single-storageMaterial-status" color={"gray"}>
                   Archivado
                 </Tag>
               )}
-              {appointment.created_date && (
+              {storageMaterial.created_date && (
                 <p className="mt-5 text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
-                  appointment.created_date
+                  storageMaterial.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="single-storageMaterial-buttons flex gap-2">
               <Fragment>
                 <Tooltip title={isEditing ? "Cancelar" : "Editar"}>
                   <Button
@@ -166,25 +170,23 @@ function SingleAgendaContainer() {
               </Fragment>
               <Fragment>
                 <Tooltip
-                  title={appointment.archived ? "Desarchivar" : "Archivar"}
+                  title={storageMaterial.archived ? "Desarchivar" : "Archivar"}
                 >
                   <Popconfirm
-                    title={
-                      appointment.archived
-                        ? "Desarchivar cita"
-                        : "Archivar cita"
-                    }
+                    title={`${
+                      storageMaterial.archived ? "Desarchivar" : "Archivar"
+                    } material`}
                     description={`¿Está seguro de ${
-                      appointment.archived ? "desarchivar" : "archivar"
-                    } esta cita?`}
-                    onConfirm={handleArchiveAppointment}
+                      storageMaterial.archived ? "desarchivar" : "archivar"
+                    } este material?`}
+                    onConfirm={handleArchiveClient}
                   >
                     <Button className="edit-button" shape="circle">
-                      {appointment.archived ? (
+                      {storageMaterial.archived ? (
                         <i className="fa-solid fa-arrow-up-from-bracket"></i>
                       ) : (
                         <i className="fa-solid fa-box-archive icon"></i>
-                      )}
+                      )}{" "}
                     </Button>
                   </Popconfirm>
                 </Tooltip>
@@ -194,16 +196,16 @@ function SingleAgendaContainer() {
           <div
             className={`container bg-gray-100 rounded-lg ${
               isEditing ? "outline" : ""
-            } outline-blue-200 p-4`}
+            } outline-blue-200 p-4 p-4`}
           >
-            <AppointmentForm
+            <StorageMaterialForm
+              form={form}
               isEditing={isEditing}
-              appointment={appointment}
-              setForm={setForm}
+              storageMaterial={storageMaterial}
+              showFullForm={true}
               setIsChanged={setShowSave}
-              isAppointmentDetails={true}
+              setPayload={setPayload}
             />
-
             {isEditing && (
               <Button
                 onClick={() => {
@@ -211,7 +213,7 @@ function SingleAgendaContainer() {
                   form.resetFields();
                   setShowSave(false);
                 }}
-                className={`appointment-form-cancel-button`}
+                className={`storageMaterial-form-cancel-button`}
               >
                 Cancelar
               </Button>
@@ -219,11 +221,11 @@ function SingleAgendaContainer() {
             {showSave && (
               <Button
                 type="primary"
-                className={`appointment-form-save-button ${
+                className={`storageMaterial-form-save-button ml-2 ${
                   !showSave && "disabled"
                 }`}
                 icon={<i className="fa-solid fa-save"></i>}
-                onClick={handleUpdateAppointment}
+                onClick={handleUpdateMaterial}
               >
                 Guardar
               </Button>
@@ -234,4 +236,4 @@ function SingleAgendaContainer() {
     </div>
   );
 }
-export default SingleAgendaContainer;
+export default SingleStorageMaterial;

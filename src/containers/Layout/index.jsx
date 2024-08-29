@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import Logo from "../../assets/images/autoexpresslogo.png";
 import { Layout, Menu, theme, Button, Dropdown } from "antd";
 /* Custom hooks*/
 import useMenu from "../../hooks/useMenu";
@@ -97,6 +93,9 @@ function MainLayout({ children }) {
         }}
       >
         <div className="container flex mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
+          <div className="m-auto ">
+            <img src={Logo} className="object-cover h-10" />
+          </div>
           <Menu
             selectedKeys={[selectedSider]}
             mode="horizontal"
@@ -119,8 +118,8 @@ function MainLayout({ children }) {
           </Dropdown>
         </div>
       </Header>
-      <div className="mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
-        <div className="container bg-white rounded-lg p-5">{children}</div>
+      <div className="bg-gray-100 w-full h-screen">
+        <div className="container bg-white rounded-b-lg p-5">{children}</div>
       </div>
     </Layout>
   );

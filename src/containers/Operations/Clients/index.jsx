@@ -55,28 +55,32 @@ function ClientsContainer() {
   const items = [
     {
       key: "active",
-      label: "Activos",
+      label: <p className="font-semibold text-base">Activos</p>,
       children: (
-        <ClientsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          clients={clients}
-          getClients={getClients}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <ClientsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            clients={clients}
+            getClients={getClients}
+            loading={loading}
+          />
+        </div>
       ),
     },
     {
       key: "archived",
-      label: "Archivados",
+      label: <p className="font-semibold text-base">Archivados</p>,
       children: (
-        <ClientsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          clients={clients}
-          getClients={getClients}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <ClientsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            clients={clients}
+            getClients={getClients}
+            loading={loading}
+          />
+        </div>
       ),
     },
   ];

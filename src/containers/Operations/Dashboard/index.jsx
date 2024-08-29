@@ -30,12 +30,14 @@ function DashboardContainer() {
         <DashboardGrid />
       </div>
       <h2 className="text-xl text-red-700 font-semibold mb-5">Mensajes</h2>
-      <MessagesTable
-        loading={loading}
-        messages={messages}
-        pagination={pagination}
-        setPagination={setPagination}
-      />
+      <div className="bg-gray-100 rounded-lg">
+        <MessagesTable
+          loading={loading}
+          messages={messages}
+          pagination={pagination}
+          setPagination={setPagination}
+        />
+      </div>
     </div>
   );
 }

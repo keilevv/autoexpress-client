@@ -33,7 +33,7 @@ function ClientsTable({
         <div className="car-tags-container">
           {cars.map((car) => {
             return (
-              <Tag color={"geekblue"} key={car}>
+              <Tag color={"geekblue"} key={car._id}>
                 <a
                   style={{ color: "#1d79C4" }}
                   onClick={() => navigate(`/operations/cars/${car._id}`)}

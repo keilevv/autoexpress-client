@@ -39,7 +39,7 @@ function AgendaContainer() {
     getAppointments(
       pagination.current,
       pagination.pageSize,
-      "&full_name=" + value
+      `&archived=${currentTab === "archived"}&full_name=${value}`
     );
   };
 
@@ -56,7 +56,7 @@ function AgendaContainer() {
   const items = [
     {
       key: "active",
-      label: "Activas",
+      label: <p className="font-semibold text-base">Activas</p>,
       children: (
         <AgendaTable
           appointments={appointments}
@@ -69,7 +69,7 @@ function AgendaContainer() {
     },
     {
       key: "archived",
-      label: "Archivadas",
+      label: <p className="font-semibold text-base">Archivadas</p>,
       children: (
         <AgendaTable
           appointments={appointments}

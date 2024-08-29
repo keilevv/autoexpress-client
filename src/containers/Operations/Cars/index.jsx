@@ -23,28 +23,32 @@ function CarsContainer() {
   const items = [
     {
       key: "active",
-      label: "Activos",
+      label: <p className="font-semibold text-base">Activos</p>,
       children: (
-        <CarsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          cars={cars}
-          getCars={getCars}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <CarsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            cars={cars}
+            getCars={getCars}
+            loading={loading}
+          />
+        </div>
       ),
     },
     {
       key: "archived",
-      label: "Archivados",
+      label: <p className="font-semibold text-base">Archivados</p>,
       children: (
-        <CarsTable
-          pagination={pagination}
-          setPagination={setPagination}
-          cars={cars}
-          getCars={getCars}
-          loading={loading}
-        />
+        <div className="bg-gray-100 rounded-lg">
+          <CarsTable
+            pagination={pagination}
+            setPagination={setPagination}
+            cars={cars}
+            getCars={getCars}
+            loading={loading}
+          />
+        </div>
       ),
     },
   ];

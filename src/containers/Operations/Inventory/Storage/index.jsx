@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useInventory from "../../../../hooks/useInventory";
 
-function StorageInventoryContainer() {
+function StorageInventoryContainer({ refresh, searchValue }) {
   const { storageMaterials, getStorageMaterials, loading, count } =
     useInventory();
   const user = useSelector((state) => state.auth.user);
@@ -14,8 +14,12 @@ function StorageInventoryContainer() {
   });
 
   useEffect(() => {
-    getStorageMaterials(1, 10, "&archived=false");
-  }, [user]);
+    getStorageMaterials(
+      1,
+      10,
+      `&archived=false${searchValue ? "&name=" + searchValue : ""}`
+    );
+  }, [user, refresh, searchValue]);
 
   useEffect(() => {
     setPagination({ ...pagination, total: count });
@@ -51,6 +55,7 @@ function StorageInventoryContainer() {
   return (
     <div className="bg-gray-100 rounded-lg">
       <MaterialsTable
+        type="storage"
         data={storageMaterials}
         getMaterials={getStorageMaterials}
         loading={loading}

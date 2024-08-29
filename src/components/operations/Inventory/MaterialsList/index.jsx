@@ -1,95 +1,145 @@
-import { useState, useEffect } from "react";
-import { Button, List, Form, Popconfirm } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import NewServiceModal from "./NewServiceModal";
-import useServices from "../../../../../hooks/useServices";
-import { useStore } from "../../../../../store";
-function MaterialsList({ isSelect, setPayload, payload }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { getServices, services, loading } = useServices();
-  const { user } = useStore();
-  const [selectedServiceId, setSelectedServiceId] = useState("");
-  const [data, setData] = useState([]);
-  const [form] = Form.useForm();
+import { useState, useEffect, useCallback } from "react";
+import { InputNumber, Spin, Input, Button } from "antd";
+import useInventory from "../../../../hooks/useInventory";
+import { useSelector } from "react-redux";
+import { DeleteOutlined } from "@ant-design/icons";
+import _debounce from "lodash/debounce";
+import { unitOptions } from "../../../../helpers/constants";
+
+function MaterialsList({ materials, setMaterials }) {
+  const { getStorageMaterials, storageMaterials, loading } = useInventory();
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [quantities, setQuantities] = useState({});
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    getServices();
+    getStorageMaterials(1, 10, "&archived=false");
   }, [user]);
 
-  useEffect(() => {
-    if (services.length) {
-      const data = [];
-      services.map((service) => {
-        data.push({
-          title: service.name,
-          duration: service.duration,
-          color: service.color,
-          _id: service._id,
-        });
-      });
+  const onQuantityChange = (materialId, value) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [materialId]: value,
+    }));
+  };
 
-      setData(data);
+  const toggleMaterial = (materialId) => {
+    const existingMaterial = materials.find(
+      (material) => material.material_id === materialId
+    );
+
+    if (existingMaterial) {
+      // Remove material from the list
+      setMaterials((prevMaterials) =>
+        prevMaterials.filter((material) => material.material_id !== materialId)
+      );
+      setSelectedMaterial(null);
+    } else {
+      // Add material to the list
+      const quantity = quantities[materialId] || 0;
+      if (quantity > 0) {
+        setMaterials((prevMaterials) => [
+          ...prevMaterials,
+          { material_id: materialId, quantity },
+        ]);
+        setSelectedMaterial(null);
+      }
     }
-  }, [services]);
+  };
+
+  function handleDebounceFn(inputValue, brand) {
+    getStorageMaterials(1, 10, `&archived=false&search=${inputValue}`);
+  }
+  const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
 
   return (
     <div>
-      <List
-        loading={loading}
-        className="max-h-[300px] overflow-y-scroll border-2 border-slate-100 rounded-lg"
-        itemLayout="horizontal"
-        dataSource={data}
-        renderItem={(item, index) => (
-          <List.Item
-            className={`hover:bg-slate-100 rounded-lg cursor-pointer ${
-              selectedServiceId === item._id ||
-              (payload && payload.service_id === item._id)
-                ? "bg-slate-100 outline outline-2 outline-slate-300"
-                : ""
-            }`}
-            key={item._id}
-            onClick={(e) => {
-              setSelectedServiceId(item._id);
-              setIsModalOpen(true);
-            }}
-          >
-            <List.Item.Meta
-              avatar={
-                <div
-                  className="w-5 h-5 rounded-full ml-2"
-                  style={{ backgroundColor: item.color }}
-                ></div>
-              }
-              title={<a href="#">{item.title}</a>}
-              description={item.duration + " min"}
-            />
-          </List.Item>
+      <Input
+        placeholder="Buscar por nombre"
+        className="w-full mb-5"
+        onChange={(e) => {
+          debounceFn(e.target.value);
+        }}
+      />
+      <div className="w-full max-h-[300px] overflow-auto bg-gray-100 rounded-lg">
+        {loading ? (
+          <Spin className="m-auto w-full" size="large" />
+        ) : (
+          storageMaterials.map((material) => {
+            const { _id, name, quantity, unit } = material;
+            const isSelected = materials.some((mat) => mat.material_id === _id);
+
+            return (
+              <div
+                key={_id}
+                className={`flex p-4 border-b flex-col md:flex-row cursor-pointer hover:bg-gray-200 transition-colors duration-300 ${
+                  isSelected ? "bg-yellow-100" : ""
+                }`}
+                onClick={() => setSelectedMaterial(_id)}
+              >
+                <div className="flex flex-col">
+                  <p className="font-medium text-base text-gray-700">{name}</p>
+                  <p className="text-sm text-gray-500">
+                    Cant: {quantity} -{" "}
+                    {unitOptions.find((u) => u.value === unit).label}
+                  </p>
+                </div>
+                {selectedMaterial === _id && (
+                  <div className="flex gap-2 md:ml-auto pt-2 transition-opacity duration-300 max-w-[200px]">
+                    <InputNumber
+                      min={0}
+                      max={quantity}
+                      value={quantities[_id] || 0}
+                      onChange={(value) => onQuantityChange(_id, value)}
+                      placeholder="Cantidad"
+                      className="w-full h-8"
+                    />
+                    <Button type="primary" onClick={() => toggleMaterial(_id)}>
+                      {isSelected ? "Borrar" : "Agregar"}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            );
+          })
         )}
-      />
-      {!isSelect && (
-        <div className="flex justify-center mt-10 ">
-          <Button
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setSelectedServiceId(undefined);
-              setIsModalOpen(true);
-              form.resetFields();
-            }}
-          >
-            Agregar
-          </Button>
-        </div>
+      </div>
+      {materials.length > 0 && (
+        <>
+          <p className="text-base text-red-700 mt-5">Seleccionados</p>
+          <div className="w-full max-h-[300px] overflow-auto pr-2">
+            {materials.map((selectedMaterial) => {
+              const { material_id, quantity } = selectedMaterial;
+              const material = storageMaterials.find(
+                (material) => material._id === material_id
+              );
+              if (!material) return null; // Safeguard in case of deleted material
+              const { name, unit } = material;
+              return (
+                <div className="flex border-b" key={material_id}>
+                  <div className="flex py-4 flex-col md:flex-row">
+                    <div className="flex flex-col">
+                      <p className="font-medium text-base text-gray-700">
+                        {name}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Cant: {quantity} -{" "}
+                        {unitOptions.find((u) => u.value === unit).label}
+                      </p>
+                    </div>
+                  </div>
+                  <DeleteOutlined
+                    className="ml-auto p-4"
+                    onClick={() => toggleMaterial(material_id)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
-      <NewServiceModal
-        isSelect={isSelect}
-        form={form}
-        getServices={getServices}
-        serviceId={selectedServiceId}
-        setIsModalOpen={setIsModalOpen}
-        isModalOpen={isModalOpen}
-        setPayload={setPayload}
-      />
     </div>
   );
 }
+
 export default MaterialsList;
