@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useMaterials from "../../../../hooks/useInventory";
 
-function ConsumptionInventoryContainer({ refresh }) {
+function ConsumptionInventoryContainer({ refresh, searchValue }) {
   const { consumptionMaterials, getConsumptionMaterials, loading, count } =
     useMaterials();
   const user = useSelector((state) => state.auth.user);
@@ -14,8 +14,12 @@ function ConsumptionInventoryContainer({ refresh }) {
   });
 
   useEffect(() => {
-    getConsumptionMaterials(1, 10, "&archived=false");
-  }, [user, refresh]);
+    if (searchValue && searchValue.length) {
+      getConsumptionMaterials(1, 10, `&archived=false&name=${searchValue}`);
+    } else {
+      getConsumptionMaterials(1, 10, `&archived=false`);
+    }
+  }, [user, refresh, searchValue]);
 
   useEffect(() => {
     setPagination({ ...pagination, total: count });

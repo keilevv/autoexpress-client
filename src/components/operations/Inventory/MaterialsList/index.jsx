@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { InputNumber, Spin, Input, Button } from "antd";
 import useInventory from "../../../../hooks/useInventory";
 import { useSelector } from "react-redux";
 import { DeleteOutlined } from "@ant-design/icons";
+import _debounce from "lodash/debounce";
+import { unitOptions } from "../../../../helpers/constants";
 
 function MaterialsList({ materials, setMaterials }) {
   const { getStorageMaterials, storageMaterials, loading } = useInventory();
@@ -45,12 +47,19 @@ function MaterialsList({ materials, setMaterials }) {
     }
   };
 
+  function handleDebounceFn(inputValue, brand) {
+    getStorageMaterials(1, 10, `&archived=false&search=${inputValue}`);
+  }
+  const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
+
   return (
     <div>
       <Input
-        placeholder="Buscar por nombre o referencia"
+        placeholder="Buscar por nombre"
         className="w-full mb-5"
-        onChange={(e) => setFilterText(e.target.value)}
+        onChange={(e) => {
+          debounceFn(e.target.value);
+        }}
       />
       <div className="w-full max-h-[300px] overflow-auto bg-gray-100 rounded-lg">
         {loading ? (
@@ -71,7 +80,8 @@ function MaterialsList({ materials, setMaterials }) {
                 <div className="flex flex-col">
                   <p className="font-medium text-base text-gray-700">{name}</p>
                   <p className="text-sm text-gray-500">
-                    Cant: {quantity} - {unit}
+                    Cant: {quantity} -{" "}
+                    {unitOptions.find((u) => u.value === unit).label}
                   </p>
                 </div>
                 {selectedMaterial === _id && (
@@ -113,7 +123,8 @@ function MaterialsList({ materials, setMaterials }) {
                         {name}
                       </p>
                       <p className="text-sm text-gray-500">
-                        Cant: {quantity} - {unit}
+                        Cant: {quantity} -{" "}
+                        {unitOptions.find((u) => u.value === unit).label}
                       </p>
                     </div>
                   </div>

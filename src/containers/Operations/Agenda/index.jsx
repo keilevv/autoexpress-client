@@ -39,7 +39,7 @@ function AgendaContainer() {
     getAppointments(
       pagination.current,
       pagination.pageSize,
-      "&full_name=" + value
+      `&archived=${currentTab === "archived"}&full_name=${value}`
     );
   };
 

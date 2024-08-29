@@ -57,6 +57,7 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
 
   const handleCancel = () => {
     setIsModalOpen(false);
+    setMaterials([]);
     form.resetFields();
   };
 
