@@ -48,7 +48,7 @@ function MaterialsList({ materials, setMaterials }) {
   };
 
   function handleDebounceFn(inputValue, brand) {
-    getStorageMaterials(1, 10, `&archived=false&search=${inputValue}`);
+    getStorageMaterials(1, 10, `&archived=false&name=${inputValue}`);
   }
   const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
 
