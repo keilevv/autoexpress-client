@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Table, Popover, notification } from "antd";
-import MaterialTableMenu from "./Menu";
+import InventoryTableMenu from "../TableMenu";
 import useInventory from "../../../../hooks/useInventory";
 import { unitOptions } from "../../../../helpers/constants";
 import { formatToCurrency } from "../../../../helpers";
@@ -141,7 +141,7 @@ function MaterialsTable({
           navigate(`/operations/inventory/material/${type}/${item.key}`);
         };
         return (
-          <MaterialTableMenu
+          <InventoryTableMenu
             onEdit={handleOnEdit}
             onArchive={() => {
               handleArchiveMaterial(item);

@@ -55,22 +55,24 @@ function TableActions({ type, tab, onApplyFilters, onSearch }) {
             }}
           />
         </div>
-        <div className={`action-buttons ${showFilters ? "highlighted" : ""}`}>
-          <Button
-            icon={<i className="fa-solid fa-filter"></i>}
-            className={`filter-button ${showFilters ? "highlighted" : ""}`}
-            onClick={() =>
-              setShowFilters((prev) => {
-                if (prev) {
-                  form.resetFields();
-                  setShowSubmit(false);
-                }
-                return !prev;
-              })
-            }
-          >
-            Filtros
-          </Button>
+        <div className="flex">
+          <div className={`action-buttons ${showFilters ? "highlighted" : ""}`}>
+            <Button
+              icon={<i className="fa-solid fa-filter"></i>}
+              className={`filter-button ${showFilters ? "highlighted" : ""}`}
+              onClick={() =>
+                setShowFilters((prev) => {
+                  if (prev) {
+                    form.resetFields();
+                    setShowSubmit(false);
+                  }
+                  return !prev;
+                })
+              }
+            >
+              Filtros
+            </Button>
+          </div>
         </div>
         <Form
           name="table-filters"

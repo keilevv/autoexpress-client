@@ -1,42 +1,31 @@
-import { useState, useEffect } from "react";
-import { Button, Modal } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import AddMaterialModal from "../AddMaterialModal";
+import { Tooltip, Button, notification, Popconfirm } from "antd";
 
-function TableMenu({ onFinish, type }) {
-  const [addButtontitle, setAddButtontitle] = useState("Agregar");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    switch (type) {
-      case "storage-inventory":
-        setAddButtontitle("Agregar material a almacén");
-        break;
-      case "consumption-inventory":
-        setAddButtontitle("Agregar material de consumo");
-        break;
-      default:
-        setAddButtontitle("agregar");
-    }
-  }, [type]);
-
+function InventoryTableMenu({ isArchived, onEdit, onArchive }) {
   return (
-    <div className="flex flex-row mb-5  ">
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={() => setIsModalOpen(true)}
-      >
-        {addButtontitle}
-      </Button>
-      <AddMaterialModal
-        type={type}
-        onFinish={onFinish}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      />
+    <div className="flex">
+      <Tooltip title="Editar">
+        <Button
+          type="text"
+          shape="circle"
+          icon={<i className="fa-solid fa-pen"></i>}
+          onClick={onEdit}
+        />
+      </Tooltip>
+      <Tooltip title={isArchived ? "Desarchivar" : "Archivar"}>
+        <Popconfirm
+          title="Archivar material"
+          description={"¿Está seguro de archivar este material?"}
+          onConfirm={onArchive}
+        >
+          <Button
+            type="text"
+            shape="circle"
+            icon={<i className="fa-solid fa-archive"></i>}
+          />
+        </Popconfirm>
+      </Tooltip>{" "}
     </div>
   );
 }
 
-export default TableMenu;
+export default InventoryTableMenu;

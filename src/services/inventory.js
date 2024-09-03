@@ -83,5 +83,45 @@ const materialsService = {
       }
     );
   },
+
+  getSale(token, saleId) {
+    return axios.get(`${apiUrl}/inventory/operations/sales/${saleId}`, {
+      headers: { Authorization: `${token}` },
+    });
+  },
+
+  getSales(token, page, limit, filter) {
+    return axios.get(
+      `${apiUrl}/inventory/operations/sales/?page=${page}&limit=${limit}${filter}`,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
+  },
+
+  createSale(token, payload) {
+    return axios.post(`${apiUrl}/inventory/register-sale`, payload, {
+      headers: { Authorization: `${token}` },
+    });
+  },
+
+  deleteSale(token, saleId) {
+    return axios.delete(
+      `${apiUrl}/inventory/operations/delete/sales/${saleId}`,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
+  },
+
+  updateSale(token, saleId, payload) {
+    return axios.put(
+      `${apiUrl}/inventory/operations/update/sales/${saleId}`,
+      payload,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
+  },
 };
 export default materialsService;
