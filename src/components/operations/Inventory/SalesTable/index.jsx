@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Table, Popover, notification } from "antd";
+import { Table, notification } from "antd";
 import TableMenu from "../TableMenu";
 import useInventory from "../../../../hooks/useInventory";
-import { unitOptions } from "../../../../helpers/constants";
 import { formatToCurrency } from "../../../../helpers";
 import dayjs from "dayjs";
 /**
@@ -18,7 +16,6 @@ function SalesTable({
 }) {
   const [tableData, setTableData] = useState([]);
   const { updateSale } = useInventory();
-  const navigate = useNavigate();
 
   const handleArchiveMaterial = (item) => {
     updateSale(item.key, { archived: !item.archived })

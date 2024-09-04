@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Modal, Form, notification } from "antd";
-import useInventory from "../../../../hooks/useInventory";
-import StorageMaterialForm from "../StrorageMaterialForm";
-import ConsumptionMaterialModalContent from "../ConsumptionMaterialModalContent";
+import useInventory from "../../../../../hooks/useInventory";
+import StorageMaterialForm from "../../StrorageMaterialForm";
+import ConsumptionMaterialModalContent from "./ConsumptionMaterialModalContent";
 
 function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
   const { createStorageMaterial, loading, createConsumptionMaterial } =

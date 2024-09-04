@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Form, InputNumber, Input } from "antd";
-import MaterialsList from "../MaterialsList";
+import MaterialsList from "../../../MaterialsList";
 
 function ConsumptionMaterialModalContent({
   form,
