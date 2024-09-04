@@ -5,16 +5,69 @@ import { useSelector } from "react-redux";
 import { DeleteOutlined } from "@ant-design/icons";
 import _debounce from "lodash/debounce";
 import { unitOptions } from "../../../../helpers/constants";
+import { formatToCurrency } from "../../../../helpers";
 
-function MaterialsList({ materials, setMaterials }) {
-  const { getStorageMaterials, storageMaterials, loading } = useInventory();
+/**
+ * @param {{ materials: any, setMaterials: () => void , type?: string}} props
+ */
+
+function MaterialsList({ materials, setMaterials, type }) {
+  const {
+    getStorageMaterials,
+    storageMaterials,
+    getConsumptionMaterials,
+    consumptionMaterials,
+    loading,
+  } = useInventory();
   const [selectedMaterial, setSelectedMaterial] = useState(null);
   const [quantities, setQuantities] = useState({});
+  const [prices, setPrices] = useState({});
+  const [listData, setListData] = useState([]);
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    getStorageMaterials(1, 10, "&archived=false");
-  }, [user]);
+    switch (type) {
+      case "sales":
+        getConsumptionMaterials(1, 10, "&archived=false");
+        break;
+      default:
+        getStorageMaterials(1, 10, "&archived=false");
+        break;
+    }
+  }, [user, type]);
+
+  useEffect(() => {
+    switch (type) {
+      case "sales":
+        setListData(
+          consumptionMaterials.map((item) => {
+            return {
+              name: item.material.name,
+              _id: item._id,
+              key: item._id,
+              quantity: item.quantity,
+              unit: item.material.unit,
+              price: item.material.price,
+            };
+          })
+        );
+        break;
+      default:
+        setListData(
+          storageMaterials.map((item) => {
+            return {
+              name: item.name,
+              _id: item._id,
+              key: item._id,
+              quantity: item.quantity,
+              unit: item.unit,
+              price: item.price,
+            };
+          })
+        );
+        break;
+    }
+  }, [type, storageMaterials, consumptionMaterials]);
 
   const onQuantityChange = (materialId, value) => {
     setQuantities((prevQuantities) => ({
@@ -22,6 +75,22 @@ function MaterialsList({ materials, setMaterials }) {
       [materialId]: value,
     }));
   };
+  const onPriceChange = (materialId, value) => {
+    setPrices((prevPrices) => ({
+      ...prevPrices,
+      [materialId]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (selectedMaterial && type === "sales") {
+      onPriceChange(
+        selectedMaterial,
+        consumptionMaterials.find((item) => item._id === selectedMaterial)
+          .material.price
+      );
+    }
+  }, [selectedMaterial, type]);
 
   const toggleMaterial = (materialId) => {
     const existingMaterial = materials.find(
@@ -37,10 +106,11 @@ function MaterialsList({ materials, setMaterials }) {
     } else {
       // Add material to the list
       const quantity = quantities[materialId] || 0;
+      const price = prices[materialId] || 0;
       if (quantity > 0) {
         setMaterials((prevMaterials) => [
           ...prevMaterials,
-          { material_id: materialId, quantity },
+          { material_id: materialId, quantity, price },
         ]);
         setSelectedMaterial(null);
       }
@@ -48,14 +118,16 @@ function MaterialsList({ materials, setMaterials }) {
   };
 
   function handleDebounceFn(inputValue, brand) {
-    getStorageMaterials(1, 10, `&archived=false&search=${inputValue}`);
+    getStorageMaterials(1, 10, `&archived=false&name=${inputValue}`);
   }
   const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
 
   return (
     <div>
+      <p className="font-semibold text-base mb-5">Seleccione los materiales</p>
+
       <Input
-        placeholder="Buscar por nombre"
+        placeholder="Buscar material por nombre"
         className="w-full mb-5"
         onChange={(e) => {
           debounceFn(e.target.value);
@@ -65,10 +137,9 @@ function MaterialsList({ materials, setMaterials }) {
         {loading ? (
           <Spin className="m-auto w-full" size="large" />
         ) : (
-          storageMaterials.map((material) => {
-            const { _id, name, quantity, unit } = material;
+          listData.map((material) => {
+            const { _id, name, quantity, unit, price } = material;
             const isSelected = materials.some((mat) => mat.material_id === _id);
-
             return (
               <div
                 key={_id}
@@ -77,26 +148,51 @@ function MaterialsList({ materials, setMaterials }) {
                 }`}
                 onClick={() => setSelectedMaterial(_id)}
               >
-                <div className="flex flex-col">
+                <div className="flex flex-col justify-center">
                   <p className="font-medium text-base text-gray-700">{name}</p>
                   <p className="text-sm text-gray-500">
-                    Cant: {quantity} -{" "}
+                    Cant: {quantity} x{" "}
                     {unitOptions.find((u) => u.value === unit).label}
                   </p>
                 </div>
                 {selectedMaterial === _id && (
                   <div className="flex gap-2 md:ml-auto pt-2 transition-opacity duration-300 max-w-[200px]">
-                    <InputNumber
-                      min={0}
-                      max={quantity}
-                      value={quantities[_id] || 0}
-                      onChange={(value) => onQuantityChange(_id, value)}
-                      placeholder="Cantidad"
-                      className="w-full h-8"
-                    />
-                    <Button type="primary" onClick={() => toggleMaterial(_id)}>
-                      {isSelected ? "Borrar" : "Agregar"}
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                      <p className="text-base text-red-700">
+                        Cant. Seleccionada
+                      </p>
+                      <InputNumber
+                        min={0}
+                        max={quantity}
+                        value={quantities[_id]}
+                        onChange={(value) => onQuantityChange(_id, value)}
+                        placeholder="Cantidad"
+                        className="w-full h-8"
+                      />
+                      {type === "sales" && (
+                        <>
+                          {" "}
+                          <p className="text-base text-red-700">Precio unidad</p>
+                          <InputNumber
+                            min={0}
+                            onChange={(value) => onPriceChange(_id, value)}
+                            placeholder="Precio"
+                            className="w-full h-8"
+                            defaultValue={price}
+                            formatter={(value) =>
+                              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                            }
+                          />
+                        </>
+                      )}
+                      <Button
+                        type="primary"
+                        onClick={() => toggleMaterial(_id)}
+                        className="w-full h-8 max-w-[100px] bg-red-700 hover:bg-red-800 mt-2"
+                      >
+                        {isSelected ? "Borrar" : "Agregar"}
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>
@@ -109,23 +205,42 @@ function MaterialsList({ materials, setMaterials }) {
           <p className="text-base text-red-700 mt-5">Seleccionados</p>
           <div className="w-full max-h-[300px] overflow-auto pr-2">
             {materials.map((selectedMaterial) => {
-              const { material_id, quantity } = selectedMaterial;
-              const material = storageMaterials.find(
-                (material) => material._id === material_id
-              );
+              const { material_id, quantity, price } = selectedMaterial;
+              const material =
+                type === "sales"
+                  ? consumptionMaterials.find((m) => m._id === material_id)
+                  : storageMaterials.find((m) => m._id === material_id);
+
               if (!material) return null; // Safeguard in case of deleted material
-              const { name, unit } = material;
+              const { name, unit, material: storageMaterial } = material;
+
               return (
                 <div className="flex border-b" key={material_id}>
                   <div className="flex py-4 flex-col md:flex-row">
                     <div className="flex flex-col">
                       <p className="font-medium text-base text-gray-700">
-                        {name}
+                        {name || storageMaterial.name}
                       </p>
                       <p className="text-sm text-gray-500">
-                        Cant: {quantity} -{" "}
-                        {unitOptions.find((u) => u.value === unit).label}
+                        Cant: {quantity} x{" "}
+                        {
+                          unitOptions.find((u) => {
+                            if (storageMaterial) {
+                              return u.value === storageMaterial.unit;
+                            } else {
+                              return u.value === unit;
+                            }
+                          }).label
+                        }
                       </p>
+                      {type === "sales" && (
+                        <p className="text-sm text-gray-500">
+                          Precio:{" "}
+                          {formatToCurrency(price) === "$0"
+                            ? formatToCurrency(storageMaterial.price)
+                            : formatToCurrency(price)}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <DeleteOutlined
@@ -135,6 +250,19 @@ function MaterialsList({ materials, setMaterials }) {
                 </div>
               );
             })}
+            {type === "sales" && (
+              <p className="text-base text-red-700 mt-5">Total: </p>
+            )}
+            {type === "sales" && (
+              <p className="text-lg text-red-700">
+                {formatToCurrency(
+                  materials.reduce((acc, mat) => {
+                    const { price, quantity } = mat;
+                    return acc + price * quantity;
+                  }, 0)
+                )}
+              </p>
+            )}
           </div>
         </>
       )}

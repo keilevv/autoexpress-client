@@ -2,7 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { Tabs, Input } from "antd";
 import StorageInventoryContainer from "./Storage";
 import ConsumptionInventoryContainer from "./Consumption";
-import TableMenu from "../../../components/operations/Inventory/TableMenu";
+import SalesInventoryContainer from "./Sales";
+import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
 function InventoryContainer() {
   const [currentTab, setCurrentTab] = useState("storage-inventory");
@@ -28,6 +29,16 @@ function InventoryContainer() {
           searchValue={
             currentTab === "consumption-inventory" ? searchValue : null
           }
+        />
+      ),
+    },
+    {
+      key: "sales",
+      label: <p className="font-semibold text-base">Ventas</p>,
+      children: (
+        <SalesInventoryContainer
+          refresh={refresh}
+          searchValue={currentTab === "sales" ? searchValue : null}
         />
       ),
     },
@@ -59,16 +70,16 @@ function InventoryContainer() {
   return (
     <div>
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Almacén</h1>
-      <div className="flex h-[32px] gap-5 mb-4">
+      <div className="flex flex-col md:flex-row gap-5 mb-4">
         <Input
-          className="w-full max-w-[183px]"
+          className="w-full max-w-[183px] max-h-[32px]"
           placeholder="Buscar por nombre"
           disabled={currentTab !== "storage-inventory"}
           onChange={(e) => {
             debounceFn(e.target.value);
           }}
         />
-        <TableMenu
+        <Options
           type={currentTab}
           onFinish={() => {
             setRefresh(refresh + 1);
