@@ -74,7 +74,6 @@ function InventoryContainer() {
         <Input
           className="w-full max-w-[183px] max-h-[32px]"
           placeholder="Buscar por nombre"
-          disabled={currentTab !== "storage-inventory"}
           onChange={(e) => {
             debounceFn(e.target.value);
           }}

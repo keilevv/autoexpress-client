@@ -93,7 +93,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
 
   const agendaSteps = [
     {
-      title: "Cliente",
+      title: <p className=" font-semibold">Cliente</p>,
       content: (
         <ClientForm
           setForm={setForm}
@@ -104,7 +104,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       ),
     },
     {
-      title: "Auto",
+      title: <p className=" font-semibold">Auto</p>,
       content: (
         <CarForm
           setForm={setForm}
@@ -116,11 +116,11 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
       ),
     },
     {
-      title: "Fecha",
+      title: <p className=" font-semibold">Fecha</p>,
       content: <AppointmentForm setForm={setForm} />,
     },
     {
-      title: "Confirmación",
+      title: <p className=" font-semibold">Confirmación</p>,
       content: <AppointmentConfirm appointment={appointment} />,
     },
   ];
@@ -359,7 +359,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
             <Button
               type="primary"
               onClick={() => {
-                navigate("/home");
+                navigate("/");
               }}
             >
               Terminar
