@@ -1,10 +1,15 @@
 import * as React from "react";
 
-function RegisteredMarkIcon({ width = "1em", height = "1em", ...props }) {
+function RegisteredMarkIcon({
+  width = "1em",
+  height = "1em",
+  fill = "#ffffff",
+  ...props
+}) {
   return (
     <svg
       viewBox="0 0 23 24"
-      fill="#ffffff"
+      fill={fill}
       width={width}
       height={height}
       {...props}

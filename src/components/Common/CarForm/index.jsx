@@ -6,6 +6,7 @@ import Logo from "../../../assets/images/autoexpresslogo.png";
 /* Components */
 import { Form, Input, Row, Popover, DatePicker, Select } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import RegisteredMarkIcon from "../../../assets/icons/svg/RegisteredMarkIcon";
 /* Hooks */
 import useCars from "../../../hooks/useCars";
 import useViewport from "../../../hooks/useViewport";
@@ -348,8 +349,17 @@ function CarForm({
           autoComplete="off"
         >
           <div className="p-4">
-            <div className="max-w-[300px] m-auto">
-              <img className="logo" src={Logo} />
+            <div className="m-auto flex justify-center">
+              <img
+                className="max-w-[200px] transform translate-x-[15px] "
+                src={Logo}
+              />
+              <RegisteredMarkIcon
+                className=" mt-4 transform translate-x-[-15px] "
+                width={"20"}
+                height={"20"}
+                fill="black"
+              />
             </div>
             <p className="text text-2xl text-red-700 font-semibold mb-4">{`¡Bienvenido${
               client ? ` ${client.name}` : ""

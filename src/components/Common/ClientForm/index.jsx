@@ -3,7 +3,8 @@ import { Form, Input, Row, Col, DatePicker } from "antd";
 import dayjs from "dayjs";
 import NumberInput from "../../Common/NumberInput";
 import Logo from "../../../assets/images/autoexpresslogo.png";
-
+import RegisteredMarkIcon from "../../../assets/icons/svg/RegisteredMarkIcon";
+import useViewport from "../../../hooks/useViewport";
 /**
  * @param {{
  * setIsChanged?: () => void,
@@ -22,6 +23,7 @@ function ClientForm({
   isClientDetails = false,
   isEditing = true,
 }) {
+  const { isMobileScreen } = useViewport();
   const [form] = Form.useForm();
 
   const validatePhoneNumber = async (rule, value) => {
@@ -271,8 +273,17 @@ function ClientForm({
           autoComplete="off"
         >
           <div className="p-4">
-            <div className="max-w-[300px] m-auto">
-              <img className="logo" src={Logo} />
+            <div className="m-auto flex justify-center">
+              <img
+                className="max-w-[200px] transform translate-x-[15px] "
+                src={Logo}
+              />
+              <RegisteredMarkIcon
+                className=" mt-4 transform translate-x-[-15px] "
+                width={"20"}
+                height={"20"}
+                fill="black"
+              />
             </div>
             <p className="text text-2xl text-red-700 font-semibold mb-4">
               ¡Bienvenido!
