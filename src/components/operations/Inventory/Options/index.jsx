@@ -25,7 +25,7 @@ function InventoryOptions({ onFinish, type }) {
   }, [type]);
 
   return (
-    <div className="flex flex-row mb-5  ">
+    <div className="flex flex-row">
       <Button
         type="primary"
         icon={<PlusOutlined />}

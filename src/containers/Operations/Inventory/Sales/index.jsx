@@ -14,7 +14,7 @@ function SalesInventoryContainer({ refresh, searchValue }) {
 
   useEffect(() => {
     if (searchValue && searchValue.length) {
-      getSales(1, 10, `&archived=false&name=${searchValue}`);
+      getSales(1, 10, `&archived=false&customer_name=${searchValue}`);
     } else {
       getSales(1, 10, `&archived=false`);
     }

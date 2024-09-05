@@ -118,7 +118,11 @@ function MaterialsList({ materials, setMaterials, type }) {
   };
 
   function handleDebounceFn(inputValue, brand) {
-    getStorageMaterials(1, 10, `&archived=false&name=${inputValue}`);
+    if (type === "sales") {
+      getConsumptionMaterials(1, 10, `&archived=false&name=${inputValue}`);
+    } else {
+      getStorageMaterials(1, 10, `&archived=false&name=${inputValue}`);
+    }
   }
   const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
 
@@ -172,7 +176,9 @@ function MaterialsList({ materials, setMaterials, type }) {
                       {type === "sales" && (
                         <>
                           {" "}
-                          <p className="text-base text-red-700">Precio unidad</p>
+                          <p className="text-base text-red-700">
+                            Precio unidad
+                          </p>
                           <InputNumber
                             min={0}
                             onChange={(value) => onPriceChange(_id, value)}

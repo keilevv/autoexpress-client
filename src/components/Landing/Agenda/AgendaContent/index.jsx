@@ -359,7 +359,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
             <Button
               type="primary"
               onClick={() => {
-                navigate("/home");
+                navigate("/");
               }}
             >
               Terminar
