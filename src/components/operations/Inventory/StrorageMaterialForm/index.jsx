@@ -93,7 +93,7 @@ function StorageMaterialForm({
             },
           ]}
         >
-          <NumberInput disabled={!isEditing} />
+          <Input disabled={!isEditing} />
         </Form.Item>
         <Form.Item
           name={"unit"}
