@@ -2,11 +2,9 @@ import {
   TeamOutlined,
   HomeOutlined,
   CarOutlined,
-  ScheduleOutlined,
-  SettingOutlined,
   CalendarOutlined,
-  DollarCircleOutlined,
   ContainerOutlined,
+  ControlOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
@@ -36,6 +34,11 @@ function useMenu() {
         key: "inventory",
         label: "Almacén",
         icon: React.createElement(ContainerOutlined),
+      },
+      {
+        key: "production",
+        label: "Producción",
+        icon: React.createElement(ControlOutlined),
       },
     ];
     setDefaultSelectedHeader("operations");
