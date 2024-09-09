@@ -11,7 +11,7 @@ function JobCard({ job }) {
       title={
         <div className="flex gap-2">
           <FileOutlined className="text-xl" />
-          <p className="text-xl font-semibold">O.T {job.work_order}</p>
+          <p className="text-xl font-semibold"> {job.work_order}</p>
         </div>
       }
     >

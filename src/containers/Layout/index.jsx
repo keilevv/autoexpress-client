@@ -3,6 +3,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Logo from "../../assets/images/autoexpresslogo.png";
 import { Layout, Menu, theme, Button, Dropdown } from "antd";
+import {
+  LogoutOutlined,
+  UserOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
+
 /* Custom hooks*/
 import useMenu from "../../hooks/useMenu";
 import useAuth from "../../hooks/useAuth";
@@ -37,6 +43,15 @@ function MainLayout({ children }) {
 
   const userItems = [
     {
+      key: "settings",
+      label: (
+        <Link to={"/operations/settings"}>
+          <SettingOutlined className="mr-2" />
+          Configuración
+        </Link>
+      ),
+    },
+    {
       key: "logout",
       label: (
         <Link
@@ -45,7 +60,8 @@ function MainLayout({ children }) {
           }}
           to={"/login"}
         >
-          Cerrar sesion
+          <LogoutOutlined className="mr-2" />
+          Cerrar sesión
         </Link>
       ),
     },
@@ -93,7 +109,7 @@ function MainLayout({ children }) {
         }}
       >
         <div className="container flex mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
-          <div className="m-auto ">
+          <div className="m-auto px-4">
             <img src={Logo} className="object-cover h-10" />
           </div>
           <Menu
@@ -112,8 +128,13 @@ function MainLayout({ children }) {
             }}
           />
           <Dropdown menu={userMenuProps} trigger={"click"} className="m-auto">
-            <Button shape="circle" ghost size="large">
-              <i className="fa-solid fa-user"></i>
+            <Button
+              shape="circle"
+              ghost
+              size="large"
+              className="flex items-center justify-center "
+            >
+              <UserOutlined />
             </Button>
           </Dropdown>
         </div>

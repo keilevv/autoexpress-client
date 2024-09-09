@@ -34,7 +34,7 @@ function Banner({ appointmentRef }) {
           icon={<WhatsAppOutlined />}
           onClick={() => {
             window.open(
-              "https://api.whatsapp.com/send?phone=3157414153",
+              "https://api.whatsapp.com/send?phone=3182066879",
               "_blank"
             );
           }}

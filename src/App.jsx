@@ -23,10 +23,11 @@ import InventoryContainer from "./containers/Operations/Inventory";
 import SingleStorageMaterialContainer from "./containers/Operations/Inventory/Storage/Single";
 import SingleConsumptionMaterialContainer from "./containers/Operations/Inventory/Consumption/Single";
 import ProductionContainer from "./containers/Operations/Production";
+import OperationSettingsContainer from "./containers/Operations/Settings";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
-import Settings from "./components/operations/Settings";
+import Settings from "./components/operations/Settings/SettingsMenu";
 
 /* Styling */
 import "./App.css";
@@ -126,7 +127,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <Settings />
+                  <OperationSettingsContainer />
                 </MainLayout>
               </ProtectedRoute>
             }

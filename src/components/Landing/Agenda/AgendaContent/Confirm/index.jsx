@@ -1,4 +1,5 @@
 import { Result } from "antd";
+import dayjs from "dayjs";
 import "./style.css";
 /**
  * @param {{ setForm: () => void, appointment: any }} props
@@ -9,7 +10,9 @@ function AppointmentConfirm({ setForm, appointment }) {
       <Result
         status={"success"}
         title="¡Cita creada!"
-        subTitle={`Dia: ${appointment.date} - Hora: ${appointment.time}`}
+        subTitle={`Dia: ${dayjs(appointment.date).format(
+          "DD/MM/YYYY"
+        )} - Hora: ${appointment.time}`}
         className="appointment-confirm-result"
       />
       <p className="appointment-confirm-description">

@@ -5,6 +5,7 @@ import {
   CalendarOutlined,
   ContainerOutlined,
   ControlOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 
@@ -24,12 +25,6 @@ function useMenu() {
         label: "Agenda",
         icon: React.createElement(CalendarOutlined),
       },
-      { key: "cars", label: "Autos", icon: React.createElement(CarOutlined) },
-      {
-        key: "clients",
-        label: "Clientes",
-        icon: React.createElement(TeamOutlined),
-      },
       {
         key: "inventory",
         label: "Almacén",
@@ -39,6 +34,23 @@ function useMenu() {
         key: "production",
         label: "Producción",
         icon: React.createElement(ControlOutlined),
+      },
+      {
+        key: "database",
+        label: "Base de datos",
+        icon: React.createElement(DatabaseOutlined),
+        children: [
+          {
+            key: "cars",
+            label: "Autos",
+            icon: React.createElement(CarOutlined),
+          },
+          {
+            key: "clients",
+            label: "Clientes",
+            icon: React.createElement(TeamOutlined),
+          },
+        ],
       },
     ];
     setDefaultSelectedHeader("operations");
