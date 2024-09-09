@@ -1,40 +1,136 @@
-import { Modal, Form, Input, Select, notification } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Select,
+  notification,
+  Button,
+  Popconfirm,
+} from "antd";
+import { SaveOutlined, RestOutlined } from "@ant-design/icons";
+import { useEffect } from "react";
 import useEmployees from "../../../../../../hooks/useEmployee";
 import { employeeRolesOptions } from "../../../../../../helpers/constants";
 
-function NewEmployeeModal({ isModalOpen, setModalOpen, form, onFinish }) {
-  const { createEmployee } = useEmployees();
+function NewEmployeeModal({
+  isModalOpen,
+  setModalOpen,
+  form,
+  onFinish,
+  employeeId,
+}) {
+  const { createEmployee, getEmployee, employee, setEmployee, updateEmployee } =
+    useEmployees();
 
-  const handleCreateEmployee = () => {
+  const handleOk = () => {
     form.validateFields().then((values) => {
-      createEmployee(values)
-        .then((response) => {
-          notification.success({
-            message: "Empleado creado con exito",
-            description: `${response.data.results.name}`,
+      if (employee) {
+        updateEmployee(employeeId, values)
+          .then((response) => {
+            notification.success({
+              message: "Empleado editado con exito",
+              description: `${response.data.results.name}`,
+            });
+            form.resetFields();
+            setModalOpen(false);
+            onFinish();
+          })
+          .catch((err) => {
+            notification.error({
+              message: "Error editando empleado",
+            });
           });
-          form.resetFields();
-          setModalOpen(false);
-          onFinish();
-        })
-        .catch((err) => {
-          notification.error({
-            message: "Error creando empleado",
-            description: err.message || err.message._message,
+      } else {
+        createEmployee(values)
+          .then((response) => {
+            notification.success({
+              message: "Empleado creado con exito",
+              description: `${response.data.results.name}`,
+            });
+            form.resetFields();
+            setModalOpen(false);
+            onFinish();
+          })
+          .catch((err) => {
+            notification.error({
+              message: "Error creando empleado",
+            });
           });
-        });
+      }
     });
   };
+
+  const handleArchiveEmployee = () => {
+    updateEmployee(employeeId, { archived: !employee.archived })
+      .then((response) => {
+        notification.success({
+          message: `Empleado ${
+            employee.archived ? "desarchivado" : "archivado"
+          }`,
+          description: `${response.data.results.name}`,
+        });
+        setModalOpen(false);
+        onFinish();
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error al editar el empleado",
+        });
+      });
+  };
+
+  useEffect(() => {
+    if (employeeId) {
+      getEmployee(employeeId);
+    }
+  }, [employeeId]);
+
+  useEffect(() => {
+    if (employee) {
+      form.setFieldsValue(employee);
+    }
+  }, [employee]);
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      form.resetFields();
+      setEmployee(null);
+    }
+  }, [isModalOpen]);
   return (
     <Modal
-      okText="Guardar"
-      cancelText="Cancelar"
+      open={isModalOpen}
       onCancel={() => {
         form.resetFields();
         setModalOpen(false);
       }}
-      onOk={() => handleCreateEmployee()}
-      open={isModalOpen}
+      footer={
+        <div className="flex flex-wrap-reverse gap-2 justify-end">
+          {employee && (
+            <Popconfirm
+              onConfirm={handleArchiveEmployee}
+              title={`¿Seguro desea ${
+                employee.archived ? "desarchivar" : "archivar"
+              } este empleado?`}
+            >
+              <Button icon={<RestOutlined />}>
+                {employee.archived ? "Desarchivar" : "Archivar"}
+              </Button>
+            </Popconfirm>
+          )}
+          <Button
+            onClick={() => {
+              form.resetFields();
+              setModalOpen(false);
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button type="primary" onClick={handleOk} icon={<SaveOutlined />}>
+            Guardar
+          </Button>
+        </div>
+      }
     >
       <h1 className="text-xl text-red-700 font-semibold mb-5 ">
         Nuevo Empleado

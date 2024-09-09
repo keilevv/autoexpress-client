@@ -25,7 +25,7 @@ const employeesService = {
 
   updateEmployee(employee, payload) {
     return axios.put(
-      `${apiUrl}/settings/update/operations/employees/${employee}`,
+      `${apiUrl}/settings/operations/update/employees/${employee}`,
       payload
     );
   },

@@ -40,9 +40,11 @@ function useEmployees() {
       .then((response) => {
         setLoading(false);
         setEmployee(response.data.results);
+        return response;
       })
       .catch((err) => {
         setLoading(false);
+        return err;
       });
   }, []);
 
@@ -80,6 +82,7 @@ function useEmployees() {
     createEmployee,
     updateEmployee,
     getEmployee,
+    setEmployee,
     employee,
     employees,
     loading,

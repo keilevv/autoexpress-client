@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, List, Form } from "antd";
+import { Button, List, Form, Tag } from "antd";
 import { useSelector } from "react-redux";
 import { PlusOutlined } from "@ant-design/icons";
 import useEmployee from "../../../../../hooks/useEmployee";
@@ -14,7 +14,7 @@ function EmployeesList({ isSelect, setPayload, payload }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    getEmployees();
+    getEmployees(1, 100, "");
   }, [user]);
 
   return (
@@ -26,7 +26,7 @@ function EmployeesList({ isSelect, setPayload, payload }) {
         dataSource={employees}
         renderItem={(item, index) => (
           <List.Item
-            className={`hover:bg-gray-100 cursor-pointer${
+            className={`hover:bg-gray-100 ${
               selectedEmployeeId === item._id ||
               (payload && payload.service_id === item._id)
                 ? "bg-gray-100 "
@@ -39,11 +39,26 @@ function EmployeesList({ isSelect, setPayload, payload }) {
             }}
           >
             <List.Item.Meta
-              className="pl-4"
-              title={<a href="#">{item.name}</a>}
-              description={employeeRolesOptions.find(
-                (role) => role.value === item.roles
-              ).label}
+              className="pl-4 cursor-pointer "
+              title={
+                <div className="flex gap-4 justify-between ">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-base font-semibold">{item.name}</p>
+                    <p className="text-sm text-gray-500">
+                      {
+                        employeeRolesOptions.find(
+                          (role) => role.value === item.roles
+                        ).label
+                      }
+                    </p>
+                  </div>
+                  {item.archived && (
+                    <Tag color="grey" className="h-6 m-auto mr-10">
+                      Archivado
+                    </Tag>
+                  )}
+                </div>
+              }
             />
           </List.Item>
         )}
@@ -68,6 +83,7 @@ function EmployeesList({ isSelect, setPayload, payload }) {
           getEmployees();
           setIsModalOpen(false);
         }}
+        employeeId={selectedEmployeeId}
         isModalOpen={isModalOpen}
         setModalOpen={setIsModalOpen}
         form={form}

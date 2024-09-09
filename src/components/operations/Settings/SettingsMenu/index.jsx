@@ -4,7 +4,7 @@ import { Menu } from "antd";
 const items = [
   {
     key: "company-settings",
-    label: "Compañía",
+    label: <p className="text-base font-semibold">Compañía</p>,
     icon: <SettingOutlined />,
     children: [
       {
@@ -16,7 +16,7 @@ const items = [
   },
   {
     key: "user",
-    label: "Usuario",
+    label: <p className="text-base font-semibold">Usuario</p>,
     icon: <UserOutlined />,
     disabled: true,
   },

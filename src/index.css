@@ -29,9 +29,9 @@ a:hover {
 
 
 body {
-  --sb-track-color: #232E33;
-  --sb-thumb-color: #737570;
-  --sb-size: 8px;
+  --sb-track-color: #656565;
+  --sb-thumb-color: #9a9797;
+  --sb-size: 4px;
 }
 
 body::-webkit-scrollbar {
