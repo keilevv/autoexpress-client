@@ -5,48 +5,38 @@ import JobsContainer from "./Jobs";
 import ProductionOptions from "../../../components/operations/Production/Options";
 import _debounce from "lodash/debounce";
 function ProductionContainer() {
-  const [currentTab, setCurrentTab] = useState("all");
+  const [currentTab, setCurrentTab] = useState("job-orders");
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
   const items = [
     {
-      key: "all",
-      label: <p className="font-semibold text-base">Todas las O.T.</p>,
+      key: "job-orders",
+      label: <p className="font-semibold text-base"> Órdenes de trabajo</p>,
       children: (
         <JobsContainer
           refresh={refresh}
-          searchValue={currentTab === "storage-inventory" ? searchValue : null}
+          searchValue={currentTab === "job-orders" ? searchValue : null}
         />
       ),
     },
-    {
-      key: "actives",
-      label: <p className="font-semibold text-base">O.T. activas</p>,
-      children: (
-        <JobsContainer
-          refresh={refresh}
-          searchValue={currentTab === "storage-inventory" ? searchValue : null}
-        />
-      ),
-    },
-    {
-      key: "finished",
-      label: <p className="font-semibold text-base">O.T. terminadas</p>,
-      children: (
-        <JobsContainer
-          refresh={refresh}
-          searchValue={currentTab === "storage-inventory" ? searchValue : null}
-        />
-      ),
-    },
+    // {
+    //   key: "quality-control",
+    //   label: <p className="font-semibold text-base"> Control de calidad</p>,
+    //   children: (
+    //     <JobsContainer
+    //       refresh={refresh}
+    //       searchValue={currentTab === "storage-inventory" ? searchValue : null}
+    //     />
+    //   ),
+    // },
   ];
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
       if (item === "production") {
         switch (window.location.pathname.split("/")[index + 1]) {
-          case "all":
-            setCurrentTab("all");
+          case "job-orders":
+            setCurrentTab("job-orders");
             break;
         }
       }

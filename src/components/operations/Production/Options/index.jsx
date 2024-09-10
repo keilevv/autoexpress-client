@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { Button, Modal } from "antd";
+import { Button, Form } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
+import NewJobOrderModal from "./NewJobOrderModal";
 
 function ProductionOptions({ onFinish, type }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [form] = Form.useForm();
 
   return (
     <div className="flex flex-row">
@@ -13,8 +15,14 @@ function ProductionOptions({ onFinish, type }) {
         icon={<PlusOutlined />}
         onClick={() => setIsModalOpen(true)}
       >
-        Agregar orden de servicio
+        Agregar orden de trabajo
       </Button>
+      <NewJobOrderModal
+        onFinish={onFinish}
+        form={form}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div>
   );
 }

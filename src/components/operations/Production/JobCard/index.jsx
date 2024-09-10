@@ -5,28 +5,29 @@ import {
   CarOutlined,
 } from "@ant-design/icons";
 import { Card } from "antd";
+import dayjs from "dayjs";
 function JobCard({ job }) {
   return (
     <Card
       title={
         <div className="flex gap-2">
           <FileOutlined className="text-xl" />
-          <p className="text-xl font-semibold"> {job.work_order}</p>
+          <p className="text-xl font-semibold"> {job.number}</p>
         </div>
       }
     >
       <div className="flex flex-col gap-2">
         <div className="flex gap-2 ">
           <CalendarOutlined className="text-base" />
-          <p className="text-base">{job.due_date}</p>
+          <p className="text-base">{dayjs(job.date).format("DD/MM/YYYY")}</p>
         </div>
         <div className="flex gap-2 ">
           <UserOutlined className="text-base" />
-          <p className="text-base">{job.operator}</p>
+          <p className="text-base">{job.employee.name}</p>
         </div>
         <div className="flex gap-2  ">
           <CarOutlined className="text-base" />
-          <p className="text-base">{job.car_plate}</p>
+          <p className="text-base">{job.car_plate.toUpperCase()}</p>
         </div>
         <div className="flex flex-col mt-2">
           <p className="text-base font-semibold text-red-700 ">Estado:</p>
