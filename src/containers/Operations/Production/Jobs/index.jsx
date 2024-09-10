@@ -6,7 +6,11 @@ function JobsContainer({ refresh, searchValue }) {
   const { getJobOrders, jobOrders } = useJobOrder();
 
   useEffect(() => {
-    getJobOrders(1, 10, "&archived=false");
+    if (searchValue && searchValue.length) {
+      getJobOrders(1, 10, `&archived=false&search=${searchValue}`);
+    } else {
+      getJobOrders(1, 10, "&archived=false");
+    }
   }, [refresh, searchValue]);
 
   return (

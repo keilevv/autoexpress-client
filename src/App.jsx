@@ -37,7 +37,7 @@ import { useEffect } from "react";
 function App() {
   const { defaultSelectedHeader } = useMenu();
   return (
-    <div className="app mx-0 bg-gray-100 h-screen" id="app">
+    <div className="app  bg-gray-100 h-[100vh] overflow-y-scroll" id="app">
       <ConfigProvider
         locale={esES}
         theme={{

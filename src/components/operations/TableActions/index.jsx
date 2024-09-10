@@ -1,7 +1,11 @@
 import { Button, Input, DatePicker, Form } from "antd";
 import _debounce from "lodash/debounce";
-import "./style.css";
 import { useEffect, useState } from "react";
+import {
+  FilterOutlined,
+  SearchOutlined,
+  RestOutlined,
+} from "@ant-design/icons";
 /**
  * @param {{ onSearch?: () => string, type?: string, onApplyFilters?: () => any, tab?: string }} props
  */
@@ -13,13 +17,13 @@ function TableActions({ type, tab, onApplyFilters, onSearch }) {
   const { RangePicker } = DatePicker;
   function getSearchPlaceholder() {
     if (type === "clients") {
-      return "Buscar por nombre...";
+      return "Nombre...";
     }
     if (type === "cars") {
-      return "Buscar por placa...";
+      return "Placa...";
     }
     if (type === "appointments") {
-      return "Buscar por cliente...";
+      return "Cliente...";
     }
     return "Buscar...";
   }
@@ -45,60 +49,62 @@ function TableActions({ type, tab, onApplyFilters, onSearch }) {
   }, [tab]);
 
   return (
-    <div className="table-actions">
-      <div className={`filters ${showFilters ? "show" : ""}`}>
-        <div className="search-input">
-          <Input
-            placeholder={searchPlaceholder}
-            onChange={(e) => {
-              handleSearch(e.target.value);
-            }}
-          />
-        </div>
-        <div className="flex">
-          <div className={`action-buttons ${showFilters ? "highlighted" : ""}`}>
-            <Button
-              icon={<i className="fa-solid fa-filter"></i>}
-              className={`filter-button ${showFilters ? "highlighted" : ""}`}
-              onClick={() =>
-                setShowFilters((prev) => {
-                  if (prev) {
-                    form.resetFields();
-                    setShowSubmit(false);
-                  }
-                  return !prev;
-                })
-              }
-            >
-              Filtros
-            </Button>
-          </div>
-        </div>
+    <div className="flex flex-col gap-4 mb-4">
+      <Input
+        className="md:max-w-[80%]"
+        placeholder={searchPlaceholder}
+        onChange={(e) => {
+          handleSearch(e.target.value);
+        }}
+        prefix={<SearchOutlined className="text-gray-500 mx-[6px]" />}
+      />
+      <Button
+        icon={<FilterOutlined />}
+        className={`max-w-[100px] text-gray-500 font-semibold ${
+          showFilters ? "outline " : ""
+        }`}
+        onClick={() =>
+          setShowFilters((prev) => {
+            if (prev) {
+              form.resetFields();
+              setShowSubmit(false);
+            }
+            return !prev;
+          })
+        }
+      >
+        Filtros
+      </Button>
+      <div
+        className={`flex flex-col md:flex-row gap-4 ${
+          showFilters ? "show" : "hidden"
+        }`}
+      >
         <Form
-          name="table-filters"
+          name={`table-filters`}
           autoComplete="off"
           onFieldsChange={() => setShowSubmit(true)}
           form={form}
-          className={`table-filters ${showFilters ? "show" : ""}`}
+          layout="vertical"
         >
+          <p className="text-gray-500 mb-4 font-semibold text-sm">{`Fecha de ${
+            type === "appointments" ? "servicio" : "creación"
+          }`}</p>
           <Form.Item
             name={"date-range"}
             style={{ width: "100%", margin: "0px" }}
-            label={`Fecha de ${
-              type === "appointments" ? "servicio" : "creación"
-            }`}
-            className={`form-item ${showFilters ? "show" : ""}`}
           >
             <RangePicker
               className={`date-picker ${showFilters ? "show" : ""}`}
             />
           </Form.Item>
         </Form>
-        <div className={`filter-actions ${showSubmit ? "show" : ""}`}>
+        <div className={"flex gap-2 items-end"}>
           <Button
             type="primary"
             onClick={() => onApplyFilters && handleApplyFilters()}
-            className={`submit-button ${showSubmit ? "show" : ""}`}
+            icon={<FilterOutlined />}
+            className="font-semibold"
           >
             Aplicar
           </Button>
@@ -108,7 +114,7 @@ function TableActions({ type, tab, onApplyFilters, onSearch }) {
               setShowSubmit(false);
               onApplyFilters({});
             }}
-            className={`submit-button ${showSubmit ? "show" : ""}`}
+            className="font-semibold text-gray-500"
           >
             Limpiar
           </Button>

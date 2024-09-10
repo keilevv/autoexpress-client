@@ -72,8 +72,8 @@ function InventoryContainer() {
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Almacén</h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
         <Input
-          className="w-full max-w-[183px] max-h-[32px]"
-          placeholder="Buscar por nombre"
+          className="w-full max-h-[32px] "
+          placeholder="Nombre del material"
           onChange={(e) => {
             debounceFn(e.target.value);
           }}
