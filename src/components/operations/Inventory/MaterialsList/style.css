@@ -1,0 +1,21 @@
+/* Add custom scrollbar styling for the specific list container */
+.max-h-\[300px\]::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.max-h-\[300px\]::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+.max-h-\[300px\]::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 3px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .max-h-\[300px\] {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+    scrollbar-width: var(--sb-size);
+  }
+}

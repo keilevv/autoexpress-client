@@ -23,9 +23,10 @@ function AddSaleModalContent({
   return (
     <div>
       <Form name="sale-material-form" form={form}>
-        <Form.Item name={"customer_name"} className="mb-5">
-          <p className="font-semibold text-base mb-5">Nombre del cliente</p>
+        <Form.Item name={"customer_name"}>
+          <p className="font-semibold text-base mb-4">Nombre del cliente</p>
           <Input
+          className="mb-4"
             placeholder="Nombre del cliente"
             defaultValue={""}
             onChange={(e) => {
@@ -36,7 +37,7 @@ function AddSaleModalContent({
             }}
           />
         </Form.Item>
-        <Form.Item name={"sales"} className="mb-5">
+        <Form.Item name={"sales"} className="mb-4">
           <MaterialsList
             filterText={filterText}
             materials={materials}

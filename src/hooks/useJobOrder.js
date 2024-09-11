@@ -64,7 +64,7 @@ function useJobOrder() {
   const updateJobOrder = useCallback((jobOrderId, payload) => {
     setLoading(true);
     return productionService
-      .updateJobOrder(auth.user.accessToken,jobOrderId, payload)
+      .updateJobOrder(auth.user.accessToken, jobOrderId, payload)
       .then((response) => {
         setJobOrder(response.data.results);
         setLoading(false);
@@ -79,7 +79,11 @@ function useJobOrder() {
   const addMaterialToJobOrder = useCallback((jobOrderId, payload) => {
     setLoading(true);
     return productionService
-      .addConsumedMaterialsToJobOrder(jobOrderId, payload)
+      .addConsumedMaterialsToJobOrder(
+        auth.user.accessToken,
+        jobOrderId,
+        payload
+      )
       .then((response) => {
         setJobOrder(response.data.results);
         setLoading(false);

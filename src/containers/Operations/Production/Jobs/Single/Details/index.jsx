@@ -24,7 +24,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
       form={form}
       initialValues={initialValues}
       layout="vertical"
-      className="flex flex-col gap-4"
+      className="flex flex-col gap-4 "
       onFieldsChange={() => {
         setIsChanged && setIsChanged(true);
       }}

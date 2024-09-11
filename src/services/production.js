@@ -33,7 +33,7 @@ const productionService = {
       }
     );
   },
-  addConsumedMaterialsToJobOrder(jobOrderId, payload) {
+  addConsumedMaterialsToJobOrder(token, jobOrderId, payload) {
     return axios.put(
       `${apiUrl}/production/operations/job-orders/${jobOrderId}/add-materials`,
       payload,
