@@ -280,9 +280,12 @@ function JobOrdersSingleContainer() {
             <MaterialsList
               type="job-order-materials"
               isEditing={isEditingMaterials}
-              materials={!isEditingMaterials ? jobOrder?.consumed_materials : materials}
+              materials={
+                !isEditingMaterials ? jobOrder?.consumed_materials : materials
+              }
               setMaterials={setMaterials}
               isReadOnly={true && !isEditingMaterials}
+              isProduction={true}
             />
             <div className="mt-8">
               {isEditingMaterials && (
