@@ -32,10 +32,10 @@ function useJobOrder() {
       });
   }, []);
 
-  const getJobOrder = useCallback((clientId) => {
+  const getJobOrder = useCallback((jobOrderId) => {
     setLoading(true);
     productionService
-      .getJobOrder(auth.user.accessToken, clientId)
+      .getJobOrder(auth.user.accessToken, jobOrderId)
       .then((response) => {
         setLoading(false);
         setJobOrder(response.data.results);
@@ -61,10 +61,10 @@ function useJobOrder() {
       });
   }, []);
 
-  const updateJobOrder = useCallback((clientId, payload) => {
+  const updateJobOrder = useCallback((jobOrderId, payload) => {
     setLoading(true);
     return productionService
-      .updateJobOrder(clientId, payload)
+      .updateJobOrder(auth.user.accessToken,jobOrderId, payload)
       .then((response) => {
         setJobOrder(response.data.results);
         setLoading(false);
@@ -76,10 +76,10 @@ function useJobOrder() {
       });
   }, []);
 
-  const addMaterialToJobOrder = useCallback((clientId, payload) => {
+  const addMaterialToJobOrder = useCallback((jobOrderId, payload) => {
     setLoading(true);
     return productionService
-      .addConsumedMaterialsToJobOrder(clientId, payload)
+      .addConsumedMaterialsToJobOrder(jobOrderId, payload)
       .then((response) => {
         setJobOrder(response.data.results);
         setLoading(false);

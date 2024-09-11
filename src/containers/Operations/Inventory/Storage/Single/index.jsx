@@ -99,11 +99,8 @@ function SingleStorageMaterial() {
         <Skeleton />
       ) : (
         <div>
-          <div className="lg:flex lg:justify-between lg:items-top mb-5">
-            <div className="mb-4">
-              <h1 className="text-2xl text-red-700 mb-2 font-semibold">
-                Detalles del material
-              </h1>
+          <div className="lg:flex lg:justify-between lg:items-top">
+            <div className="flex flex-col gap-4 mb-4">
               <Breadcrumb
                 items={[
                   {
@@ -137,17 +134,17 @@ function SingleStorageMaterial() {
                 ]}
               />
               {storageMaterial.archived && (
-                <Tag className="single-storageMaterial-status" color={"gray"}>
+                <Tag className="max-w-[70px]" color={"gray"}>
                   Archivado
                 </Tag>
               )}
               {storageMaterial.created_date && (
-                <p className="mt-5 text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
+                <p className="text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
                   storageMaterial.created_date
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>
-            <div className="single-storageMaterial-buttons flex gap-2">
+            <div className="single-storageMaterial-buttons flex gap-2 mb-4 md:mb-0">
               <Fragment>
                 <Tooltip title={isEditing ? "Cancelar" : "Editar"}>
                   <Button
@@ -193,6 +190,9 @@ function SingleStorageMaterial() {
               </Fragment>
             </div>
           </div>
+          <h1 className="text-2xl text-red-700 mb-4 font-semibold">
+            Detalles del material
+          </h1>
           <div
             className={`container bg-gray-100 rounded-lg ${
               isEditing ? "outline" : ""
@@ -206,30 +206,32 @@ function SingleStorageMaterial() {
               setIsChanged={setShowSave}
               setPayload={setPayload}
             />
-            {isEditing && (
-              <Button
-                onClick={() => {
-                  setIsEditing(false);
-                  form.resetFields();
-                  setShowSave(false);
-                }}
-                className={`storageMaterial-form-cancel-button`}
-              >
-                Cancelar
-              </Button>
-            )}
-            {showSave && (
-              <Button
-                type="primary"
-                className={`storageMaterial-form-save-button ml-2 ${
-                  !showSave && "disabled"
-                }`}
-                icon={<i className="fa-solid fa-save"></i>}
-                onClick={handleUpdateMaterial}
-              >
-                Guardar
-              </Button>
-            )}
+            <div className="mt-8">
+              {isEditing && (
+                <Button
+                  onClick={() => {
+                    setIsEditing(false);
+                    form.resetFields();
+                    setShowSave(false);
+                  }}
+                  className={`storageMaterial-form-cancel-button`}
+                >
+                  Cancelar
+                </Button>
+              )}
+              {showSave && (
+                <Button
+                  type="primary"
+                  className={`storageMaterial-form-save-button ml-2 ${
+                    !showSave && "disabled"
+                  }`}
+                  icon={<i className="fa-solid fa-save"></i>}
+                  onClick={handleUpdateMaterial}
+                >
+                  Guardar
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       )}

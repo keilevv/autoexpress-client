@@ -23,6 +23,7 @@ import InventoryContainer from "./containers/Operations/Inventory";
 import SingleStorageMaterialContainer from "./containers/Operations/Inventory/Storage/Single";
 import SingleConsumptionMaterialContainer from "./containers/Operations/Inventory/Consumption/Single";
 import ProductionContainer from "./containers/Operations/Production";
+import JobOrdersSingleContainer from "./containers/Operations/Production/Jobs/Single";
 import OperationSettingsContainer from "./containers/Operations/Settings";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
@@ -213,6 +214,17 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
+          <Route
+            path="/operations/production/jobs/:jobId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <JobOrdersSingleContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+
           <Route path="/login" element={<LoginContainer />} />
           <Route path="/landing" element={<LandingContainer />} />
           <Route path="/appointment" element={<AppointmentContainer />} />

@@ -6,7 +6,9 @@ import {
 } from "@ant-design/icons";
 import { Card } from "antd";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 function JobCard({ job }) {
+  const navigate = useNavigate();
   return (
     <Card
       title={
@@ -34,7 +36,12 @@ function JobCard({ job }) {
           <div className="bg-gray-200 p-2 rounded-lg mt-2">
             <p className="text-base font-semibold">{job.status}</p>
           </div>
-          <p className="text-base  text-red-700 mt-2 hover:underline cursor-pointer">
+          <p
+            className="text-base  text-red-700 mt-2 hover:underline cursor-pointer"
+            onClick={() => {
+              navigate(`/operations/production/jobs/${job._id}`);
+            }}
+          >
             Ver detalles
           </p>
         </div>
