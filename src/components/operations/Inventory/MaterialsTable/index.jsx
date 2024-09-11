@@ -76,7 +76,6 @@ function MaterialsTable({
       const consumptionTableData = data.map((item) => {
         return {
           key: item._id,
-          name: item.name,
           reference: item.material.reference,
           unit: item.material.unit,
           name: item.material.name,

@@ -4,6 +4,7 @@ import TableMenu from "../TableMenu";
 import useInventory from "../../../../hooks/useInventory";
 import { formatToCurrency } from "../../../../helpers";
 import dayjs from "dayjs";
+import "./style.css";
 /**
  * @param {{ data: any[], loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
@@ -74,7 +75,7 @@ function SalesTable({
       key: "materials",
       render: (item) => {
         return (
-          <div className="flex flex-col gap-1 overflow-y-scroll h-[100px] border border-gray-300 p-2 rounded">
+          <div className="flex flex-col gap-1 overflow-y-scroll max-h-[100px] p-2 rounded">
             {item.map((item) => {
               return (
                 <div

@@ -27,15 +27,14 @@ a:hover {
   text-decoration: underline;
 }
 
-
 body {
-  --sb-track-color: #232E33;
-  --sb-thumb-color: #737570;
-  --sb-size: 8px;
+  --sb-track-color: #656565;
+  --sb-thumb-color: #9a9797;
+  --sb-size: 4px;
 }
 
 body::-webkit-scrollbar {
-  width: var(--sb-size)
+  width: var(--sb-size);
 }
 
 body::-webkit-scrollbar-track {
@@ -46,13 +45,11 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
   border-radius: 3px;
-  
 }
 
 @supports not selector(::-webkit-scrollbar) {
   body {
-    scrollbar-color: var(--sb-thumb-color)
-                     var(--sb-track-color);
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
 
@@ -92,3 +89,5 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+

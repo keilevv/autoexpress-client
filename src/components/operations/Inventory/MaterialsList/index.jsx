@@ -6,12 +6,19 @@ import { DeleteOutlined } from "@ant-design/icons";
 import _debounce from "lodash/debounce";
 import { unitOptions } from "../../../../helpers/constants";
 import { formatToCurrency } from "../../../../helpers";
+import "./style.css";
 
 /**
- * @param {{ materials: any, setMaterials: () => void , type?: string}} props
+ * @param {{ materials: any[], setMaterials: () => void , type?: string}} props
  */
 
-function MaterialsList({ materials, setMaterials, type }) {
+function MaterialsList({
+  materials = [],
+  setMaterials,
+  type,
+  isReadOnly = false,
+  isEditing = true,
+}) {
   const {
     getStorageMaterials,
     storageMaterials,
@@ -27,6 +34,7 @@ function MaterialsList({ materials, setMaterials, type }) {
 
   useEffect(() => {
     switch (type) {
+      case "job-order-materials":
       case "sales":
         getConsumptionMaterials(1, 10, "&archived=false");
         break;
@@ -34,10 +42,42 @@ function MaterialsList({ materials, setMaterials, type }) {
         getStorageMaterials(1, 10, "&archived=false");
         break;
     }
-  }, [user, type]);
+  }, [user, type, isEditing]);
 
   useEffect(() => {
     switch (type) {
+      case "job-order-materials":
+        if (isEditing) {
+          setListData(
+            consumptionMaterials.map((item, index) => {
+              return {
+                name: item.material.name,
+                _id: item._id,
+                key: index,
+                quantity: item.quantity,
+                unit: item.material.unit,
+                price: item.material.price,
+              };
+            })
+          );
+        } else {
+          const newListData = [];
+          materials.map((material, index) => {
+            if (material.storage_material) {
+              newListData.push({
+                name: material.storage_material.name,
+                _id: material.consumption_material,
+                key: index,
+                quantity: material.quantity,
+                unit: material.storage_material.unit,
+                price: material.storage_material.price,
+              });
+            }
+          });
+
+          setListData(newListData);
+        }
+        break;
       case "sales":
         setListData(
           consumptionMaterials.map((item) => {
@@ -52,6 +92,7 @@ function MaterialsList({ materials, setMaterials, type }) {
           })
         );
         break;
+
       default:
         setListData(
           storageMaterials.map((item) => {
@@ -67,7 +108,7 @@ function MaterialsList({ materials, setMaterials, type }) {
         );
         break;
     }
-  }, [type, storageMaterials, consumptionMaterials]);
+  }, [storageMaterials, consumptionMaterials]);
 
   const onQuantityChange = (materialId, value) => {
     setQuantities((prevQuantities) => ({
@@ -93,14 +134,16 @@ function MaterialsList({ materials, setMaterials, type }) {
   }, [selectedMaterial, type]);
 
   const toggleMaterial = (materialId) => {
-    const existingMaterial = materials.find(
-      (material) => material.material_id === materialId
-    );
-
+    const existingMaterial = materials.find((material) => {
+      return material.consumption_material === materialId;
+    });
+    setSelectedMaterial(null);
     if (existingMaterial) {
       // Remove material from the list
       setMaterials((prevMaterials) =>
-        prevMaterials.filter((material) => material.material_id !== materialId)
+        prevMaterials.filter(
+          (material) => material.consumption_material !== materialId
+        )
       );
       setSelectedMaterial(null);
     } else {
@@ -110,7 +153,7 @@ function MaterialsList({ materials, setMaterials, type }) {
       if (quantity > 0) {
         setMaterials((prevMaterials) => [
           ...prevMaterials,
-          { material_id: materialId, quantity, price },
+          { consumption_material: materialId, quantity, price },
         ]);
         setSelectedMaterial(null);
       }
@@ -118,7 +161,7 @@ function MaterialsList({ materials, setMaterials, type }) {
   };
 
   function handleDebounceFn(inputValue, brand) {
-    if (type === "sales") {
+    if (type === "sales" || type === "job-order-materials") {
       getConsumptionMaterials(1, 10, `&archived=false&name=${inputValue}`);
     } else {
       getStorageMaterials(1, 10, `&archived=false&name=${inputValue}`);
@@ -126,102 +169,145 @@ function MaterialsList({ materials, setMaterials, type }) {
   }
   const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
 
+  useEffect(() => {
+    setSelectedMaterial(null);
+  }, [isEditing]);
+
   return (
     <div>
-      <p className="font-semibold text-base mb-5">Seleccione los materiales</p>
-
-      <Input
-        placeholder="Buscar material por nombre"
-        className="w-full mb-5"
-        onChange={(e) => {
-          debounceFn(e.target.value);
-        }}
-      />
+      {!isReadOnly && (
+        <>
+          <p className="font-semibold text-base mb-4">
+            Seleccione los materiales
+          </p>
+          <Input
+            placeholder="Buscar material por nombre"
+            className="w-full mb-4"
+            onChange={(e) => {
+              debounceFn(e.target.value);
+            }}
+          />
+        </>
+      )}
       <div className="w-full max-h-[300px] overflow-auto bg-gray-100 rounded-lg">
         {loading ? (
           <Spin className="m-auto w-full" size="large" />
         ) : (
-          listData.map((material) => {
-            const { _id, name, quantity, unit, price } = material;
-            const isSelected = materials.some((mat) => mat.material_id === _id);
-            return (
-              <div
-                key={_id}
-                className={`flex p-4 border-b flex-col md:flex-row cursor-pointer hover:bg-gray-200 transition-colors duration-300 ${
-                  isSelected ? "bg-yellow-100" : ""
-                }`}
-                onClick={() => setSelectedMaterial(_id)}
-              >
-                <div className="flex flex-col justify-center">
-                  <p className="font-medium text-base text-gray-700">{name}</p>
-                  <p className="text-sm text-gray-500">
-                    Cant: {quantity} x{" "}
-                    {unitOptions.find((u) => u.value === unit).label}
-                  </p>
-                </div>
-                {selectedMaterial === _id && (
-                  <div className="flex gap-2 md:ml-auto pt-2 transition-opacity duration-300 max-w-[200px]">
-                    <div className="flex flex-col gap-2">
-                      <p className="text-base text-red-700">
-                        Cant. Seleccionada
-                      </p>
-                      <InputNumber
-                        min={0}
-                        max={quantity}
-                        value={quantities[_id]}
-                        onChange={(value) => onQuantityChange(_id, value)}
-                        placeholder="Cantidad"
-                        className="w-full h-8"
-                      />
-                      {type === "sales" && (
-                        <>
-                          {" "}
-                          <p className="text-base text-red-700">
-                            Precio unidad
-                          </p>
-                          <InputNumber
-                            min={0}
-                            onChange={(value) => onPriceChange(_id, value)}
-                            placeholder="Precio"
-                            className="w-full h-8"
-                            defaultValue={price}
-                            formatter={(value) =>
-                              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            }
-                          />
-                        </>
+          <>
+            {listData.length > 0 ? (
+              <>
+                {listData.map((material, index) => {
+                  if (material === null) return null;
+                  const { _id, name, quantity, unit, price } = material;
+
+                  const isSelected = materials.some(
+                    (mat) => mat.material_id === _id
+                  );
+                  return (
+                    <div
+                      key={index}
+                      className={`flex p-4 border-b flex-col md:flex-row cursor-pointer hover:bg-gray-200 transition-colors duration-300 ${
+                        isSelected ? "bg-yellow-100" : ""
+                      }`}
+                      onClick={(e) => {
+                        if (isEditing) {
+                          setSelectedMaterial(_id);
+                        }
+                      }}
+                    >
+                      <div className="flex flex-col justify-center">
+                        <p className="font-medium text-base text-gray-700">
+                          {name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {isEditing ? "Cant. Disponible" : "Cant. Consumida"}{" "}
+                          {quantity} -{" "}
+                          {unitOptions.find((u) => u.value === unit).label}
+                        </p>
+                      </div>
+                      {selectedMaterial === _id && isEditing && (
+                        <div className="flex gap-2 md:ml-auto pt-2 transition-opacity duration-300 max-w-[200px]">
+                          <div className="flex flex-col gap-2">
+                            <p className="text-base text-red-700">
+                              Cant. Seleccionada
+                            </p>
+                            <InputNumber
+                              min={0}
+                              max={quantity}
+                              value={quantities[_id]}
+                              onChange={(value) => onQuantityChange(_id, value)}
+                              placeholder="Cantidad"
+                              className="w-full h-8"
+                            />
+                            {type === "sales" && (
+                              <>
+                                {" "}
+                                <p className="text-base text-red-700">
+                                  Precio unidad
+                                </p>
+                                <InputNumber
+                                  min={0}
+                                  onChange={(value) =>
+                                    onPriceChange(_id, value)
+                                  }
+                                  placeholder="Precio"
+                                  className="w-full h-8"
+                                  defaultValue={price}
+                                  formatter={(value) =>
+                                    `$ ${value}`.replace(
+                                      /\B(?=(\d{3})+(?!\d))/g,
+                                      ","
+                                    )
+                                  }
+                                />
+                              </>
+                            )}
+                            <Button
+                              type="primary"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                toggleMaterial(_id);
+                              }}
+                              className="w-full h-8 max-w-[100px] bg-red-700 hover:bg-red-800 mt-2"
+                            >
+                              {isSelected ? "Borrar" : "Agregar"}
+                            </Button>
+                          </div>
+                        </div>
                       )}
-                      <Button
-                        type="primary"
-                        onClick={() => toggleMaterial(_id)}
-                        className="w-full h-8 max-w-[100px] bg-red-700 hover:bg-red-800 mt-2"
-                      >
-                        {isSelected ? "Borrar" : "Agregar"}
-                      </Button>
                     </div>
-                  </div>
-                )}
-              </div>
-            );
-          })
+                  );
+                })}
+              </>
+            ) : (
+              <span className="text-sm text-gray-500 font-medium">
+                No hay materiales consumidos
+              </span>
+            )}
+          </>
         )}
       </div>
-      {materials.length > 0 && (
+      {materials.length > 0 && isEditing && (
         <>
           <p className="text-base text-red-700 mt-5">Seleccionados</p>
           <div className="w-full max-h-[300px] overflow-auto pr-2">
-            {materials.map((selectedMaterial) => {
-              const { material_id, quantity, price } = selectedMaterial;
+            {materials.map((selectedMaterial, index) => {
+              const { consumption_material, quantity, price } =
+                selectedMaterial;
               const material =
-                type === "sales"
-                  ? consumptionMaterials.find((m) => m._id === material_id)
-                  : storageMaterials.find((m) => m._id === material_id);
+                type === "sales" || type === "job-order-materials"
+                  ? consumptionMaterials.find(
+                      (m) => m._id === consumption_material
+                    )
+                  : storageMaterials.find(
+                      (m) => m._id === consumption_material
+                    );
 
               if (!material) return null; // Safeguard in case of deleted material
               const { name, unit, material: storageMaterial } = material;
 
               return (
-                <div className="flex border-b" key={material_id}>
+                <div className="flex border-b" key={index}>
                   <div className="flex py-4 flex-col md:flex-row">
                     <div className="flex flex-col">
                       <p className="font-medium text-base text-gray-700">
@@ -251,7 +337,7 @@ function MaterialsList({ materials, setMaterials, type }) {
                   </div>
                   <DeleteOutlined
                     className="ml-auto p-4"
-                    onClick={() => toggleMaterial(material_id)}
+                    onClick={() => toggleMaterial(consumption_material)}
                   />
                 </div>
               );

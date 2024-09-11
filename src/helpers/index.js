@@ -36,3 +36,15 @@ export function formatToCurrency(number) {
     maximumFractionDigits: 0,
   }).format(number);
 }
+
+export const validateCarPlate = async (rule, value) => {
+  const carPlateRegex = /^[a-zA-Z]{3}\d{3}$/;
+
+  if (!value || carPlateRegex.test(value)) {
+    return Promise.resolve();
+  }
+
+  return Promise.reject(
+    "Please enter a string with 3 letters followed by 3 numbers."
+  );
+};

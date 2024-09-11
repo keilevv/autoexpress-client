@@ -22,10 +22,13 @@ import AppointmentContainer from "./containers/Appointment";
 import InventoryContainer from "./containers/Operations/Inventory";
 import SingleStorageMaterialContainer from "./containers/Operations/Inventory/Storage/Single";
 import SingleConsumptionMaterialContainer from "./containers/Operations/Inventory/Consumption/Single";
+import ProductionContainer from "./containers/Operations/Production";
+import JobOrdersSingleContainer from "./containers/Operations/Production/Jobs/Single";
+import OperationSettingsContainer from "./containers/Operations/Settings";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
-import Settings from "./components/operations/Settings";
+import Settings from "./components/operations/Settings/SettingsMenu";
 
 /* Styling */
 import "./App.css";
@@ -35,7 +38,7 @@ import { useEffect } from "react";
 function App() {
   const { defaultSelectedHeader } = useMenu();
   return (
-    <div className="app mx-0 bg-gray-100 h-screen" id="app">
+    <div className="app  bg-gray-100 h-[100vh] overflow-y-scroll" id="app">
       <ConfigProvider
         locale={esES}
         theme={{
@@ -125,7 +128,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <Settings />
+                  <OperationSettingsContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -201,6 +204,27 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
+          <Route
+            path="/operations/production"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <ProductionContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/production/jobs/:jobId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <JobOrdersSingleContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+
           <Route path="/login" element={<LoginContainer />} />
           <Route path="/landing" element={<LandingContainer />} />
           <Route path="/appointment" element={<AppointmentContainer />} />
