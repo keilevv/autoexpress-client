@@ -66,7 +66,7 @@ function MaterialsList({
             if (material.storage_material) {
               newListData.push({
                 name: material.storage_material.name,
-                _id: material.consumption_material._id,
+                _id: material.consumption_material,
                 key: index,
                 quantity: material.quantity,
                 unit: material.storage_material.unit,
@@ -134,15 +134,16 @@ function MaterialsList({
   }, [selectedMaterial, type]);
 
   const toggleMaterial = (materialId) => {
-    const existingMaterial = materials.find(
-      (material) => material.material_id === materialId
-    );
+    const existingMaterial = materials.find((material) => {
+      return material.consumption_material === materialId;
+    });
     setSelectedMaterial(null);
-
     if (existingMaterial) {
       // Remove material from the list
       setMaterials((prevMaterials) =>
-        prevMaterials.filter((material) => material.material_id !== materialId)
+        prevMaterials.filter(
+          (material) => material.consumption_material !== materialId
+        )
       );
       setSelectedMaterial(null);
     } else {
@@ -152,7 +153,7 @@ function MaterialsList({
       if (quantity > 0) {
         setMaterials((prevMaterials) => [
           ...prevMaterials,
-          { material_id: materialId, quantity, price },
+          { consumption_material: materialId, quantity, price },
         ]);
         setSelectedMaterial(null);
       }
@@ -291,11 +292,16 @@ function MaterialsList({
           <p className="text-base text-red-700 mt-5">Seleccionados</p>
           <div className="w-full max-h-[300px] overflow-auto pr-2">
             {materials.map((selectedMaterial, index) => {
-              const { material_id, quantity, price } = selectedMaterial;
+              const { consumption_material, quantity, price } =
+                selectedMaterial;
               const material =
                 type === "sales" || type === "job-order-materials"
-                  ? consumptionMaterials.find((m) => m._id === material_id)
-                  : storageMaterials.find((m) => m._id === material_id);
+                  ? consumptionMaterials.find(
+                      (m) => m._id === consumption_material
+                    )
+                  : storageMaterials.find(
+                      (m) => m._id === consumption_material
+                    );
 
               if (!material) return null; // Safeguard in case of deleted material
               const { name, unit, material: storageMaterial } = material;
@@ -331,7 +337,7 @@ function MaterialsList({
                   </div>
                   <DeleteOutlined
                     className="ml-auto p-4"
-                    onClick={() => toggleMaterial(material_id)}
+                    onClick={() => toggleMaterial(consumption_material)}
                   />
                 </div>
               );
