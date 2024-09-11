@@ -18,6 +18,7 @@ function MaterialsList({
   type,
   isReadOnly = false,
   isEditing = true,
+  isProduction = false,
 }) {
   const {
     getStorageMaterials,
@@ -150,11 +151,20 @@ function MaterialsList({
       // Add material to the list
       const quantity = quantities[materialId] || 0;
       const price = prices[materialId] || 0;
-      if (quantity > 0) {
-        setMaterials((prevMaterials) => [
-          ...prevMaterials,
-          { consumption_material: materialId, quantity, price },
-        ]);
+      if (quantity >= 0) {
+        setMaterials((prevMaterials) => {
+          if (isProduction) {
+            return [
+              ...prevMaterials,
+              { consumption_material: materialId, quantity, price },
+            ];
+          } else {
+            return [
+              ...prevMaterials,
+              { material_id: materialId, quantity, price },
+            ];
+          }
+        });
         setSelectedMaterial(null);
       }
     }
@@ -232,8 +242,8 @@ function MaterialsList({
                               Cant. Seleccionada
                             </p>
                             <InputNumber
-                              min={0}
                               max={quantity}
+                              min={0}
                               value={quantities[_id]}
                               onChange={(value) => onQuantityChange(_id, value)}
                               placeholder="Cantidad"
@@ -292,16 +302,18 @@ function MaterialsList({
           <p className="text-base text-red-700 mt-5">Seleccionados</p>
           <div className="w-full max-h-[300px] overflow-auto pr-2">
             {materials.map((selectedMaterial, index) => {
-              const { consumption_material, quantity, price } =
-                selectedMaterial;
+              const { quantity, price } = selectedMaterial;
+
+              const selectedMaterialId = isProduction
+                ? selectedMaterial.consumption_material
+                : selectedMaterial.material_id;
+
               const material =
                 type === "sales" || type === "job-order-materials"
                   ? consumptionMaterials.find(
-                      (m) => m._id === consumption_material
+                      (m) => m._id === selectedMaterialId
                     )
-                  : storageMaterials.find(
-                      (m) => m._id === consumption_material
-                    );
+                  : storageMaterials.find((m) => m._id === selectedMaterialId);
 
               if (!material) return null; // Safeguard in case of deleted material
               const { name, unit, material: storageMaterial } = material;
@@ -337,7 +349,7 @@ function MaterialsList({
                   </div>
                   <DeleteOutlined
                     className="ml-auto p-4"
-                    onClick={() => toggleMaterial(consumption_material)}
+                    onClick={() => toggleMaterial(selectedMaterialId)}
                   />
                 </div>
               );
