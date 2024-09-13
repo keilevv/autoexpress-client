@@ -20,14 +20,16 @@ function Login() {
     loginUser(values.username, values.password)
       .then(() => {
         setLoading(false);
-        notification.success({ message: "Solicitud realizada con exito" });
+        notification.success({
+          message: "Bienvenido",
+          description: values.username,
+        });
         navigate("/operations");
       })
       .catch((err) => {
         setLoading(false);
         notification.error({
-          message: "Solicitud fallida",
-          description: err.message,
+          message: "Error al iniciar sesion",
         });
       });
   };
@@ -35,55 +37,52 @@ function Login() {
   return (
     <div>
       <Form name="login-form" onFinish={onFinish}>
+        <Form.Item
+          name="username"
+          rules={[
+            {
+              required: true,
+              message: "Por favor ingrese su usuario!",
+            },
+          ]}
+        >
+          <Input className="login-input" placeholder="Usuario" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Por favor ingrese su contrasena!",
+            },
+          ]}
+        >
+          <Input.Password className="login-input" placeholder="Contrasena" />
+        </Form.Item>
+        {isRegisterForm && (
           <Form.Item
-            name="username"
+            name="email"
             rules={[
               {
                 required: true,
-                message: "Por favor ingrese su usuario!",
+                message: "Por favor ingrese un email valido!",
               },
             ]}
           >
-            <Input className="login-input" placeholder="Usuario" />
+            <Input className="login-input" placeholder="Email" />
           </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Por favor ingrese su contrasena!",
-              },
-            ]}
+        )}
+        <Form.Item>
+          <Button
+            className="login-submit-button"
+            type="primary"
+            htmlType="submit"
+            loading={loading}
           >
-            <Input.Password
-              className="login-input"
-              placeholder="Contrasena"
-            />
-          </Form.Item>
-          {isRegisterForm && (
-            <Form.Item
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor ingrese un email valido!",
-                },
-              ]}
-            >
-              <Input className="login-input" placeholder="Email" />
-            </Form.Item>
-          )}
-          <Form.Item>
-            <Button
-              className="login-submit-button"
-              type="primary"
-              htmlType="submit"
-              loading={loading}
-            >
-              Ingresar
-            </Button>
-          </Form.Item>
-        </Form>
+            Ingresar
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }

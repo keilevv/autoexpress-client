@@ -33,6 +33,7 @@ function MaterialsList({
   const [listData, setListData] = useState([]);
   const user = useSelector((state) => state.auth.user);
 
+
   useEffect(() => {
     switch (type) {
       case "job-order-materials":
@@ -58,6 +59,7 @@ function MaterialsList({
                 quantity: item.quantity,
                 unit: item.material.unit,
                 price: item.material.price,
+                reference: item.material.reference,
               };
             })
           );
@@ -72,6 +74,7 @@ function MaterialsList({
                 quantity: material.quantity,
                 unit: material.storage_material.unit,
                 price: material.storage_material.price,
+                reference: material.storage_material.reference,
               });
             }
           });
@@ -89,6 +92,7 @@ function MaterialsList({
               quantity: item.quantity,
               unit: item.material.unit,
               price: item.material.price,
+              reference: item.material.reference,
             };
           })
         );
@@ -104,6 +108,7 @@ function MaterialsList({
               quantity: item.quantity,
               unit: item.unit,
               price: item.price,
+              reference: item.reference,
             };
           })
         );
@@ -208,8 +213,8 @@ function MaterialsList({
               <>
                 {listData.map((material, index) => {
                   if (material === null) return null;
-                  const { _id, name, quantity, unit, price } = material;
-
+                  const { _id, name, quantity, unit, price, reference } =
+                    material;
                   const isSelected = materials.some(
                     (mat) => mat.material_id === _id
                   );
@@ -227,7 +232,7 @@ function MaterialsList({
                     >
                       <div className="flex flex-col justify-center">
                         <p className="font-medium text-base text-gray-700">
-                          {name}
+                          {name} {reference ? `(${reference})` : ""}
                         </p>
                         <p className="text-sm text-gray-500">
                           {isEditing ? "Cant. Disponible" : "Cant. Consumida"}{" "}
