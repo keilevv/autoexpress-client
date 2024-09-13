@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Tabs, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import StorageInventoryContainer from "./Storage";
 import ConsumptionInventoryContainer from "./Consumption";
 import SalesInventoryContainer from "./Sales";
@@ -72,8 +73,9 @@ function InventoryContainer() {
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Almacén</h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
         <Input
+          prefix={<SearchOutlined className="text-gray-500 mx-[6px]" />}
           className="w-full max-h-[32px] "
-          placeholder="Nombre del material"
+          placeholder={currentTab === "sales" ? "Cliente..." : "Material..."}
           onChange={(e) => {
             debounceFn(e.target.value);
           }}

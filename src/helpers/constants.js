@@ -11,6 +11,7 @@ export const unitOptions = [
   { value: "litro", label: "Litro" },
   { value: "galon", label: "Galón" },
   { value: "kilo", label: "Kilo" },
+  { value: "gram", label: "Gramo" },
 ];
 
 export const headerModules = ["operations"];

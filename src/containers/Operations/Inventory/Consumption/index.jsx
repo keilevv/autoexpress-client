@@ -15,7 +15,7 @@ function ConsumptionInventoryContainer({ refresh, searchValue }) {
 
   useEffect(() => {
     if (searchValue && searchValue.length) {
-      getConsumptionMaterials(1, 10, `&archived=false&name=${searchValue}`);
+      getConsumptionMaterials(1, 10, `&archived=false&search=${searchValue}`);
     } else {
       getConsumptionMaterials(1, 10, `&archived=false`);
     }
