@@ -17,7 +17,7 @@ function StorageInventoryContainer({ refresh, searchValue }) {
     getStorageMaterials(
       1,
       10,
-      `&archived=false${searchValue ? "&name=" + searchValue : ""}`
+      `&archived=false${searchValue ? "&search=" + searchValue : ""}`
     );
   }, [user, refresh, searchValue]);
 
