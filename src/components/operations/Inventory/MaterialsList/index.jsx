@@ -177,9 +177,9 @@ function MaterialsList({
 
   function handleDebounceFn(inputValue, brand) {
     if (type === "sales" || type === "job-order-materials") {
-      getConsumptionMaterials(1, 10, `&archived=false&name=${inputValue}`);
+      getConsumptionMaterials(1, 10, `&archived=false&search=${inputValue}`);
     } else {
-      getStorageMaterials(1, 10, `&archived=false&name=${inputValue}`);
+      getStorageMaterials(1, 10, `&archived=false&search=${inputValue}`);
     }
   }
   const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);
