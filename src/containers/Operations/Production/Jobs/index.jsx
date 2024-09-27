@@ -19,7 +19,7 @@ function JobsContainer({ refresh, searchValue }) {
       {loading ? (
         <Spin size="large" className="my-10 w-full" />
       ) : (
-        <div className="flex flex-col md:grid md:grid-cols-4 gap-4">
+        <div className="flex flex-col md:grid md:grid-cols-4 gap-4 max-h-screen overflow-y-auto">
           {jobOrders.map((job, index) => (
             <JobCard job={job} key={index} />
           ))}
