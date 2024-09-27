@@ -15,6 +15,8 @@ import JobOrderDetails from "./Details";
 import MaterialsList from "../../../../../components/operations/Inventory/MaterialsList";
 import dayjs from "dayjs";
 import useJobOrder from "../../../../../hooks/useJobOrder";
+import ConsumedMaterials from "./ConsumedMaterials";
+
 function JobOrdersSingleContainer() {
   const navigate = useNavigate();
   const {
@@ -24,7 +26,8 @@ function JobOrdersSingleContainer() {
     updateJobOrder,
     addMaterialToJobOrder,
   } = useJobOrder();
-  const [materials, setMaterials] = useState([]);
+  const [consumedMaterials, setConsumedMaterials] = useState([]);
+  const [consumedColors, setConsumedColors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isEditingMaterials, setIsEditingMaterials] = useState(false);
   const [showSave, setShowSave] = useState(false);
@@ -45,10 +48,32 @@ function JobOrdersSingleContainer() {
   }, [jobOrderId]);
 
   useEffect(() => {
-    if (materials.length > 0) {
-      setShowSaveMaterials(true);
+    if (
+      jobOrder?.consumed_colors?.length !== consumedColors.length ||
+      jobOrder?.consumed_materials?.length !== consumedMaterials.length
+    ) {
+      if (jobOrder) {
+        setShowSaveMaterials(true);
+      }
     }
-  }, [materials]);
+  }, [consumedMaterials, jobOrder, consumedColors]);
+
+  useEffect(() => {
+    if (jobOrder?.consumed_materials?.length > 0) {
+      setConsumedMaterials(
+        jobOrder.consumed_materials.map((item) => {
+          return {
+            consumption_material: item.consumption_material,
+            quantity: item.quantity,
+            storage_material: item.storage_material,
+          };
+        })
+      );
+    }
+    if (jobOrder?.consumed_colors?.length > 0) {
+      setConsumedColors(jobOrder.consumed_colors);
+    }
+  }, [jobOrder]);
 
   const handleArchiveJobOrder = () => {
     updateJobOrder(jobOrderId, { archived: !jobOrder?.archived })
@@ -92,7 +117,15 @@ function JobOrdersSingleContainer() {
   };
   const handleAddMaterialsToJobOrder = () => {
     if (jobOrderId) {
-      addMaterialToJobOrder(jobOrderId, { consumed_materials: materials })
+      addMaterialToJobOrder(jobOrderId, {
+        consumed_materials: consumedMaterials.map((item) => {
+          return {
+            consumption_material: item.consumption_material._id,
+            quantity: item.quantity,
+          };
+        }),
+        consumed_colors: consumedColors,
+      })
         .then((response) => {
           notification.success({
             message: "O.T. actualizada con exito",
@@ -130,8 +163,10 @@ function JobOrdersSingleContainer() {
             switch (type) {
               case "materials":
                 setIsEditingMaterials(!isEditingMaterials);
-                setMaterials([]);
                 setShowSaveMaterials(false);
+                setConsumedColors(jobOrder?.consumed_colors);
+                setConsumedMaterials(jobOrder?.consumed_materials);
+
                 break;
               default:
                 setIsEditing(!isEditing);
@@ -272,20 +307,17 @@ function JobOrdersSingleContainer() {
             } outline-blue-200 p-4 p-4 `}
           >
             <div className="flex justify-between">
-              <h1 className="text-xl font-semibold ">Materiales consumidos</h1>
+              <h1 className="text-xl font-semibold ">Materiales utilizados</h1>
               <EditButton type="materials" />
             </div>
 
             <Divider className="bg-gray-300 my-4 h-[2px]" />
-            <MaterialsList
-              type="job-order-materials"
+            <ConsumedMaterials
+              consumedMaterials={consumedMaterials}
               isEditing={isEditingMaterials}
-              materials={
-                !isEditingMaterials ? jobOrder?.consumed_materials : materials
-              }
-              setMaterials={setMaterials}
-              isReadOnly={true && !isEditingMaterials}
-              isProduction={true}
+              setConsumedMaterials={setConsumedMaterials}
+              consumedColors={consumedColors}
+              setConsumedColors={setConsumedColors}
             />
             <div className="mt-8">
               {isEditingMaterials && (
@@ -294,7 +326,8 @@ function JobOrdersSingleContainer() {
                     setIsEditingMaterials(false);
                     form.resetFields();
                     setShowSaveMaterials(false);
-                    setMaterials([]);
+                    setConsumedColors(jobOrder?.consumed_colors);
+                    setConsumedMaterials(jobOrder?.consumed_materials);
                   }}
                   className={`storageMaterial-form-cancel-button`}
                 >
