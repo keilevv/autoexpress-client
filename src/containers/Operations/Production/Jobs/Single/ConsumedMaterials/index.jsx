@@ -176,7 +176,7 @@ function ConsumedMaterials({
             />
             <div className="flex items-center gap-4">
               <div className="flex flex-col">
-                <p className="text-sm font-medium mb-2"> Cantidad (Gr)</p>
+                <p className="text-sm font-medium mb-2"> Cantidad (gr)</p>
                 <InputNumber
                   value={colorQuantity}
                   min={0}
@@ -224,9 +224,7 @@ function ConsumedMaterials({
               <div className="flex items-baseline " key={index}>
                 <div>
                   <p className="text-gray-700 text-sm font-medium">{`${item?.name}`}</p>
-                  <p>{`${formatToCurrency(item?.price)} x ${
-                    item?.quantity
-                  }`}</p>
+                  <p>{`${item?.quantity} (gr)`}</p>
                 </div>
                 <div className="flex-grow border-b-2 border-red-700 border-dotted h-5 mx-2" />
                 <p className="text-base ">{`${formatToCurrency(
