@@ -312,13 +312,17 @@ function JobOrdersSingleContainer() {
             </div>
 
             <Divider className="bg-gray-300 my-4 h-[2px]" />
-            <ConsumedMaterials
-              consumedMaterials={consumedMaterials}
-              isEditing={isEditingMaterials}
-              setConsumedMaterials={setConsumedMaterials}
-              consumedColors={consumedColors}
-              setConsumedColors={setConsumedColors}
-            />
+            {loading ? (
+              <Spin size="large" className="my-10 w-full" />
+            ) : (
+              <ConsumedMaterials
+                consumedMaterials={consumedMaterials}
+                isEditing={isEditingMaterials}
+                setConsumedMaterials={setConsumedMaterials}
+                consumedColors={consumedColors}
+                setConsumedColors={setConsumedColors}
+              />
+            )}
             <div className="mt-8">
               {isEditingMaterials && (
                 <Button
