@@ -56,7 +56,11 @@ function ProductionContainer() {
   }, [currentTab]);
 
   function onApplyFilters(values) {
-    setFilterString(getFilterString(values));
+    if (Object.values(values).length > 0) {
+      setFilterString(getFilterString(values));
+    } else {
+      setFilterString("");
+    }
   }
 
   return (

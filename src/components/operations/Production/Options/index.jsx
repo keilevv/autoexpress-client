@@ -123,7 +123,6 @@ function ProductionOptions({
           <Button
             onClick={() => {
               form.resetFields();
-              setShowSubmit(false);
               onApplyFilters({});
             }}
             className="font-semibold text-gray-500"

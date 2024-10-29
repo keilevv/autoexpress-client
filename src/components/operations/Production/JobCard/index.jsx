@@ -25,7 +25,6 @@ function JobCard({ jobOrder }) {
       .reduce((a, b) => a + b, 0);
     materialsPrice = isNaN(materialsPrice) ? 0 : materialsPrice;
     colorsPrice = isNaN(colorsPrice) ? 0 : colorsPrice;
-    console.log("materialsPrice", materialsPrice, "colorsPrice", colorsPrice);
     return formatToCurrency(materialsPrice + colorsPrice);
   }
 
@@ -88,12 +87,9 @@ function JobCard({ jobOrder }) {
           <DollarOutlined className="text-base" />
           <div className="flex flex-col">
             <p className="text-sm font-semibold text-red-700">Costo</p>
-
-            <p className="text-base text-gray-700">
-              <p className="ml-auto text- font-medium">
-                {getJobOrderPrice()}
-              </p>{" "}
-            </p>
+            <p className="ml-auto text- font-medium">
+              {getJobOrderPrice()}
+            </p>{" "}
           </div>
         </div>
         <div className="flex flex-col mt-2 gap-4">
