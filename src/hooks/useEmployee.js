@@ -1,9 +1,11 @@
 import { useCallback, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import employeesService from "../services/employees";
 import { throwError } from "../helpers";
+import { setEmployeeList } from "../redux/reducers/employeesSlice";
 
 function useEmployees() {
+  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ function useEmployees() {
       .then((response) => {
         setCount(response.data.count);
         setEmployees(response.data.results);
-
+        dispatch(setEmployeeList(response.data.results));
         setLoading(false);
       })
       .catch((err) => {

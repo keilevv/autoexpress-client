@@ -33,7 +33,6 @@ function ConsumedMaterials({
         (item) => item.consumption_material._id === addedMaterial
       );
       setConsumptionMaterialFromList(materialFound);
-      console.log("amterailFound", materialFound);
     }
   }, [addedMaterial, consumedMaterials]);
 

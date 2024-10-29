@@ -24,7 +24,9 @@ export function isOverflown(element) {
 export function getFilterString(filters) {
   let filterString = "";
   Object.keys(filters).forEach((key) => {
-    filterString += `&${key}=${filters[key]}`;
+    if (filters[key]) {
+      filterString += `&${key}=${filters[key]}`;
+    }
   });
   return filterString;
 }
