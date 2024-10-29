@@ -95,18 +95,19 @@ function ProductionOptions({
               ]}
             >
               <Select className="md:min-w-[300px]">
-                {employees.map((item) => {
-                  return (
-                    <Select.Option key={item._id} value={item._id}>
-                      {item.name} -{" "}
-                      {
-                        employeeRolesOptions.find(
-                          (role) => role.value === item.roles
-                        ).label
-                      }
-                    </Select.Option>
-                  );
-                })}
+                {employees &&
+                  employees.map((item) => {
+                    return (
+                      <Select.Option key={item._id} value={item._id}>
+                        {item.name} -{" "}
+                        {
+                          employeeRolesOptions.find(
+                            (role) => role.value === item.roles
+                          ).label
+                        }
+                      </Select.Option>
+                    );
+                  })}
               </Select>
             </Form.Item>
           </div>
