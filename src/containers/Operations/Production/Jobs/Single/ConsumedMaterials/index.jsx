@@ -296,16 +296,12 @@ function ConsumedMaterials({
       </div>
       <div className="flex mt-4">
         <p className="text-gray-700 text-lg font-medium">Total:</p>
-        {consumedMaterials.length > 0 && (
-          <p className="ml-auto text-lg text-red-700 font-medium">{`${formatToCurrency(
-            consumedMaterials
-              .map((item) => item?.storage_material?.price * item?.quantity)
-              .reduce((a, b) => a + b, 0) +
-              consumedColors
-                .map((item) => item?.price)
-                .reduce((a, b) => a + b, 0)
-          )}`}</p>
-        )}
+        <p className="ml-auto text-lg text-red-700 font-medium">{`${formatToCurrency(
+          consumedMaterials
+            .map((item) => item?.storage_material?.price * item?.quantity)
+            .reduce((a, b) => a + b, 0) +
+            consumedColors.map((item) => item?.price).reduce((a, b) => a + b, 0)
+        )}`}</p>
       </div>
     </>
   );

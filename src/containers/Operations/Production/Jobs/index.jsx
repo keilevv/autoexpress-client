@@ -41,10 +41,11 @@ function JobsContainer({ refresh, searchValue, filterString = "" }) {
         <div className="flex flex-col gap-4">
           <div className="flex flex-col md:grid md:grid-cols-4 gap-4 max-h-">
             {jobOrders.map((job, index) => (
-              <JobCard job={job} key={index} />
+              <JobCard jobOrder={job} key={index} />
             ))}
           </div>
           <Pagination
+            responsive
             showTotal={(total) => (
               <p className="text-red-700 text-lg">{`Total: ${total}`}</p>
             )}
