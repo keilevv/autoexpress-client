@@ -34,6 +34,7 @@ function JobOrdersSingleContainer() {
   const [showSaveMaterials, setShowSaveMaterials] = useState(false);
   const [form] = Form.useForm();
   const [jobOrderId, setJobOrderId] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
@@ -46,17 +47,6 @@ function JobOrdersSingleContainer() {
   useEffect(() => {
     jobOrderId && getJobOrder(jobOrderId);
   }, [jobOrderId]);
-
-  useEffect(() => {
-    if (
-      jobOrder?.consumed_colors?.length !== consumedColors.length ||
-      jobOrder?.consumed_materials?.length !== consumedMaterials.length
-    ) {
-      if (jobOrder) {
-        setShowSaveMaterials(true);
-      }
-    }
-  }, [consumedMaterials, jobOrder, consumedColors]);
 
   useEffect(() => {
     if (jobOrder?.consumed_materials?.length > 0) {
@@ -134,6 +124,8 @@ function JobOrdersSingleContainer() {
           getJobOrder(jobOrderId);
           setIsEditingMaterials(false);
           setShowSaveMaterials(false);
+          setIsSaved(true);
+
           form.resetFields();
         })
         .catch((err) => {
@@ -144,7 +136,7 @@ function JobOrdersSingleContainer() {
     }
   };
 
-  function EditButton({ type = "information" }) {
+  function EditButton({ type = "information", setIsSaved = () => {} }) {
     return (
       <Tooltip
         title={() => {
@@ -160,6 +152,7 @@ function JobOrdersSingleContainer() {
           className="edit-button"
           shape="circle"
           onClick={() => {
+            setIsSaved(false);
             switch (type) {
               case "materials":
                 setIsEditingMaterials(!isEditingMaterials);
@@ -308,7 +301,7 @@ function JobOrdersSingleContainer() {
           >
             <div className="flex justify-between">
               <h1 className="text-xl font-semibold ">Materiales utilizados</h1>
-              <EditButton type="materials" />
+              <EditButton setIsSaved={setIsSaved} type="materials" />
             </div>
 
             <Divider className="bg-gray-300 my-4 h-[2px]" />
@@ -321,6 +314,9 @@ function JobOrdersSingleContainer() {
                 setConsumedMaterials={setConsumedMaterials}
                 consumedColors={consumedColors}
                 setConsumedColors={setConsumedColors}
+                setShowSaveMaterials={setShowSaveMaterials}
+                setIsSaved={setIsSaved}
+                isSaved={isSaved}
               />
             )}
             <div className="mt-8">

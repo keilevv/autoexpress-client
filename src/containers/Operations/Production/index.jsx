@@ -1,13 +1,15 @@
 import { useEffect, useState, useCallback } from "react";
 import { Tabs, Input } from "antd";
 import JobsContainer from "./Jobs";
-
 import ProductionOptions from "../../../components/operations/Production/Options";
 import _debounce from "lodash/debounce";
+import { getFilterString } from "../../../helpers";
+
 function ProductionContainer() {
   const [currentTab, setCurrentTab] = useState("job-orders");
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
+  const [filterString, setFilterString] = useState("");
   const items = [
     {
       key: "job-orders",
@@ -16,6 +18,7 @@ function ProductionContainer() {
         <JobsContainer
           refresh={refresh}
           searchValue={currentTab === "job-orders" ? searchValue : null}
+          filterString={currentTab === "job-orders" ? filterString : null}
         />
       ),
     },
@@ -51,18 +54,24 @@ function ProductionContainer() {
   useEffect(() => {
     setSearchValue(null);
   }, [currentTab]);
+
+  function onApplyFilters(values) {
+    if (Object.values(values).length > 0) {
+      setFilterString(getFilterString(values));
+    } else {
+      setFilterString("");
+    }
+  }
+
   return (
     <div>
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Producción</h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
-        <Input
-          className="w-full"
-          placeholder="Número o placa..."
-          onChange={(e) => {
-            debounceFn(e.target.value);
-          }}
-        />
         <ProductionOptions
+          onSearch={(value) => {
+            debounceFn(value);
+          }}
+          onApplyFilters={onApplyFilters}
           type={currentTab}
           onFinish={() => {
             setRefresh(refresh + 1);

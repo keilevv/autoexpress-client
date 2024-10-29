@@ -12,6 +12,9 @@ function ConsumedMaterials({
   isEditing = false,
   consumedColors = [],
   setConsumedColors,
+  setShowSaveMaterials = () => {},
+  isSaved = false,
+  setIsSaved = () => {},
 }) {
   const { getConsumptionMaterials, consumptionMaterials, loading } =
     useInventory();
@@ -21,6 +24,17 @@ function ConsumedMaterials({
   const [colorPrice, setColorPrice] = useState(null);
   const [materialQuantity, setMaterialQuantity] = useState(null);
   const [existingQuantity, setExistingQuantity] = useState(0);
+  const [consumptionMaterialFromList, setConsumptionMaterialFromList] =
+    useState(null);
+
+  useEffect(() => {
+    if (consumedMaterials.length && addedMaterial) {
+      const materialFound = consumedMaterials.find(
+        (item) => item.consumption_material._id === addedMaterial
+      );
+      setConsumptionMaterialFromList(materialFound);
+    }
+  }, [addedMaterial, consumedMaterials]);
 
   useEffect(() => {
     if (isEditing) {
@@ -94,7 +108,12 @@ function ConsumedMaterials({
                 />
                 <p className="ml-5 text-red-70">
                   {" "}
-                  Restante: {existingQuantity - materialQuantity}
+                  Restante:{" "}
+                  {isSaved || !consumptionMaterialFromList
+                    ? existingQuantity - materialQuantity
+                    : existingQuantity -
+                      consumptionMaterialFromList?.quantity -
+                      materialQuantity}
                 </p>
               </div>
             </div>
@@ -113,13 +132,28 @@ function ConsumedMaterials({
                   storage_material: { ...newConsumedMaterial.material },
                 };
 
-                setConsumedMaterials((prev) => {
-                  return prev
-                    .filter(
-                      (item) => item.consumption_material._id !== addedMaterial
-                    )
-                    .concat(newConsumedMaterial);
-                });
+                let newMaterials = [...consumedMaterials, newConsumedMaterial];
+
+                const combinedMaterials = newMaterials.reduce((acc, item) => {
+                  const existing = acc.find(
+                    (entry) =>
+                      entry.consumption_material._id ===
+                      item.consumption_material._id
+                  );
+
+                  if (existing) {
+                    existing.quantity += item.quantity;
+                  } else {
+                    acc.push({ ...item });
+                  }
+
+                  return acc;
+                }, []);
+
+                setConsumedMaterials(combinedMaterials);
+                setShowSaveMaterials(true);
+                setIsSaved(false);
+                setMaterialQuantity(null);
               }}
               disabled={!addedMaterial || !materialQuantity}
             >
@@ -147,14 +181,23 @@ function ConsumedMaterials({
                   <DeleteOutlined
                     className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-red-700 "
                     onClick={() => {
-                      setMaterialQuantity(-1 * item.quantity);
-                      setConsumedMaterials(
-                        consumedMaterials.filter(
-                          (i) =>
-                            i.consumption_material._id !==
-                            item.consumption_material._id
-                        )
+                      setShowSaveMaterials(true);
+                      // Remove the material from the consumedMaterials list
+                      const updatedMaterials = consumedMaterials.filter(
+                        (i) =>
+                          i.consumption_material._id !==
+                          item.consumption_material._id
                       );
+
+                      // Update the consumed materials
+                      setConsumedMaterials(updatedMaterials);
+
+                      // Reset material quantity and the corresponding consumption material for accurate 'Restante'
+                      setMaterialQuantity(null);
+                      setConsumptionMaterialFromList(null);
+
+                      // Set the remaining quantity to the original existing quantity
+                      setExistingQuantity(existingQuantity);
                     }}
                   />
                 )}
@@ -209,6 +252,7 @@ function ConsumedMaterials({
                       price: colorPrice,
                     });
                 });
+                setShowSaveMaterials(true);
               }}
               disabled={!addedColor || !colorQuantity || !colorPrice}
             >
@@ -234,6 +278,7 @@ function ConsumedMaterials({
                   <DeleteOutlined
                     className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-red-700 "
                     onClick={() => {
+                      setShowSaveMaterials(true);
                       setConsumedColors(
                         consumedColors.filter((i) => i.name !== item.name)
                       );
@@ -251,16 +296,12 @@ function ConsumedMaterials({
       </div>
       <div className="flex mt-4">
         <p className="text-gray-700 text-lg font-medium">Total:</p>
-        {consumedMaterials.length > 0 && (
-          <p className="ml-auto text-lg text-red-700 font-medium">{`${formatToCurrency(
-            consumedMaterials
-              .map((item) => item?.storage_material?.price * item?.quantity)
-              .reduce((a, b) => a + b, 0) +
-              consumedColors
-                .map((item) => item?.price)
-                .reduce((a, b) => a + b, 0)
-          )}`}</p>
-        )}
+        <p className="ml-auto text-lg text-red-700 font-medium">{`${formatToCurrency(
+          consumedMaterials
+            .map((item) => item?.storage_material?.price * item?.quantity)
+            .reduce((a, b) => a + b, 0) +
+            consumedColors.map((item) => item?.price).reduce((a, b) => a + b, 0)
+        )}`}</p>
       </div>
     </>
   );

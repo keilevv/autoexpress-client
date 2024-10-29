@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { login, logout } from "../redux/reducers/authSlice";
 import { throwError } from "../helpers/index";
 import userService from "../services/user";
