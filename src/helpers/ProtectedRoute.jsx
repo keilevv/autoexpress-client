@@ -1,15 +1,38 @@
-// ProtectedRoute.js
-import React from "react";
-import { Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 import { useSelector } from "react-redux";
+import Logo from "../assets/images/autoexpresslogo.png";
+import LoginLayout from "../containers/Login";
 
-const ProtectedRoute = ({ children, ...rest }) => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+const ProtectedRoute = ({ children }) => {
+  const [isValidSession, setIsValidSession] = useState(false);
+  const user = useSelector((state) => state.auth.user);
+  const [loading, setLoading] = useState(true);
+  const { getUser } = useAuth();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-  return children;
+  useEffect(() => {
+    getUser(user.id ? user.id : "invalid-user-id")
+      .then((response) => {
+        if (response.data.results) {
+          setIsValidSession(true);
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        setIsValidSession(false);
+        setLoading(false);
+      });
+  }, [user]);
+
+  if (loading)
+    return (
+      <div className="w-full flex justify-center items-center h-screen">
+        <img src={Logo} alt="logo" className="object-contain h-[200px]" />
+      </div>
+    );
+  if (!isValidSession) return <LoginLayout />;
+
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
