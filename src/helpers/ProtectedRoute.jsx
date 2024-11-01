@@ -11,17 +11,22 @@ const ProtectedRoute = ({ children }) => {
   const { getUser } = useAuth();
 
   useEffect(() => {
-    getUser(user.id ? user.id : "invalid-user-id")
-      .then((response) => {
-        if (response.data.results) {
-          setIsValidSession(true);
+    if (user) {
+      getUser(user.id ? user.id : "invalid-user-id")
+        .then((response) => {
+          if (response.data.results) {
+            setIsValidSession(true);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          setIsValidSession(false);
           setLoading(false);
-        }
-      })
-      .catch((err) => {
-        setIsValidSession(false);
-        setLoading(false);
-      });
+        });
+    } else {
+      setIsValidSession(false);
+      setLoading(false);
+    }
   }, [user]);
 
   if (loading)
