@@ -24,7 +24,7 @@ function useAuth() {
       .catch((err) => {
         navigate("/login");
       });
-  }, []);
+  }, [auth]);
 
   const loginUser = useCallback((username, password) => {
     setLoading(true);
