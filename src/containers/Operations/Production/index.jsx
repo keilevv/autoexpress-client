@@ -5,7 +5,7 @@ import ProductionOptions from "../../../components/operations/Production/Options
 import _debounce from "lodash/debounce";
 import { getFilterString } from "../../../helpers";
 
-function ProductionContainer() {
+function ProductionContainer({ owner = "autoexpress" }) {
   const [currentTab, setCurrentTab] = useState("job-orders");
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
@@ -16,6 +16,7 @@ function ProductionContainer() {
       label: <p className="font-semibold text-base"> Órdenes de trabajo</p>,
       children: (
         <JobsContainer
+          owner={owner}
           refresh={refresh}
           searchValue={currentTab === "job-orders" ? searchValue : null}
           filterString={currentTab === "job-orders" ? filterString : null}
@@ -68,6 +69,7 @@ function ProductionContainer() {
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Producción</h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
         <ProductionOptions
+          owner={owner}
           onSearch={(value) => {
             debounceFn(value);
           }}

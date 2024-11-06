@@ -5,11 +5,18 @@ import useJobOrder from "../../../../../hooks/useJobOrder";
 import { employeeRolesOptions } from "../../../../../helpers/constants";
 import { validateCarPlate } from "../../../../../helpers";
 import dayjs from "dayjs";
-function NewJobOrderModal({ onFinish, isModalOpen, setIsModalOpen, form }) {
+function NewJobOrderModal({
+  onFinish,
+  isModalOpen,
+  setIsModalOpen,
+  form,
+  owner = "autoexpress",
+}) {
   const { getEmployees, employees } = useEmployee();
   const { createJobOrder } = useJobOrder();
   const handleCreateJobOrder = () => {
     form.validateFields().then((values) => {
+      values.owner = owner;
       values.due_date = dayjs(values.due_date).toISOString();
       createJobOrder(values)
         .then((response) => {

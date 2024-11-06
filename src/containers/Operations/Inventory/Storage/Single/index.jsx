@@ -27,6 +27,7 @@ function SingleStorageMaterial() {
   const [materialId, setClientId] = useState("");
   const [form] = Form.useForm();
   const [payload, setPayload] = useState({});
+  const [owner, setOwner] = useState("autoexpress");
   const {
     storageMaterial,
     getStorageMaterial,
@@ -48,6 +49,10 @@ function SingleStorageMaterial() {
       }
     });
   }, [window.location.pathname]);
+
+  useEffect(() => {
+    setOwner(storageMaterial?.owner ? storageMaterial.owner : "autoexpress");
+  }, [storageMaterial]);
 
   function handleUpdateMaterial() {
     if (materialId) {
@@ -110,7 +115,11 @@ function SingleStorageMaterial() {
                   },
                   {
                     title: (
-                      <a onClick={() => navigate("/operations/inventory")}>
+                      <a
+                        onClick={() =>
+                          navigate(`/operations/inventory/${owner}`)
+                        }
+                      >
                         Inventario
                       </a>
                     ),
@@ -119,7 +128,7 @@ function SingleStorageMaterial() {
                     title: (
                       <a
                         onClick={() =>
-                          navigate("/operations/inventory/storage")
+                          navigate(`/operations/inventory/${owner}/storage`)
                         }
                       >
                         Almacén

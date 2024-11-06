@@ -58,14 +58,25 @@ function useMenu() {
     setDefaultSelectedHeader("operations");
     let items = allItems;
     if (roles && roles.includes("autodetailing-admin")) {
-      items = items.filter((item) => item.key !== "inventory");
+      items = items.filter(
+        (item) => item.key !== "inventory" && item.key !== "production"
+      );
       items.push({
         key: "inventory",
         label: "Almacén",
         icon: React.createElement(ContainerOutlined),
         children: [
-          { key: "autoexpress", label: "Autoexpress" },
-          { key: "autodetailing", label: "Autodetailing" },
+          { key: "inventory-autoexpress", label: "Autoexpress" },
+          { key: "inventory-autodetailing", label: "Autodetailing" },
+        ],
+      });
+      items.push({
+        key: "production",
+        label: "Producción",
+        icon: React.createElement(ControlOutlined),
+        children: [
+          { key: "production-autoexpress", label: "Autoexpress" },
+          { key: "production-autodetailing", label: "Autodetailing" },
         ],
       });
     }

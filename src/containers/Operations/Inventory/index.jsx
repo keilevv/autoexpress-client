@@ -103,6 +103,7 @@ function InventoryContainer() {
           }}
         />
         <Options
+          owner={owner}
           type={currentTab}
           onFinish={() => {
             setRefresh(refresh + 1);

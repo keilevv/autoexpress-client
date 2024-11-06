@@ -4,7 +4,7 @@ import JobCard from "../../../../components/operations/Production/JobCard";
 import useJobOrder from "../../../../hooks/useJobOrder";
 import { formatToCurrency } from "../../../../helpers";
 
-function JobsContainer({ refresh, searchValue, filterString = "" }) {
+function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
   const { getJobOrders, jobOrders, loading, count, total } = useJobOrder();
   const [pagination, setPagination] = useState({
     current: 1,
@@ -16,10 +16,8 @@ function JobsContainer({ refresh, searchValue, filterString = "" }) {
     getJobOrders(
       pagination.current,
       pagination.pageSize,
-      `&archived=false${
-        searchValue && searchValue.length
-          ? "&search=" + searchValue
-          : searchValue
+      `&archived=false&owner=${owner}${
+        searchValue && searchValue.length ? "&search=" + searchValue : ""
       }${filterString ? filterString : ""}`
     );
   }, [
@@ -28,6 +26,7 @@ function JobsContainer({ refresh, searchValue, filterString = "" }) {
     filterString,
     pagination.current,
     pagination.pageSize,
+    owner,
   ]);
 
   useEffect(() => {

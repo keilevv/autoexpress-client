@@ -275,11 +275,51 @@ function App() {
             }
           ></Route>
           <Route
+            path="/operations/production/autoexpress"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <ProductionContainer owner={"autoexpress"} />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/production/autodetailing"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <ProductionContainer owner={"autodetailing"} />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
             path="/operations/production/jobs/:jobId"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <JobOrdersSingleContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/production/autoexpress/jobs/:jobId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <JobOrdersSingleContainer owner={"autoexpress"} />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/production/autodetailing/jobs/:jobId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <JobOrdersSingleContainer owner={"autodetailing"} />
                 </MainLayout>
               </ProtectedRoute>
             }

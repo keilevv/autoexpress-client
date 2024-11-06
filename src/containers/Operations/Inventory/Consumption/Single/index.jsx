@@ -23,6 +23,7 @@ function SingleConsumptionMaterialContainer() {
   const [showSave, setShowSave] = useState(false);
   const [materialId, setClientId] = useState("");
   const [form] = Form.useForm();
+  const [owner, setOwner] = useState("autoexpress");
 
   const {
     consumptionMaterial,
@@ -45,6 +46,14 @@ function SingleConsumptionMaterialContainer() {
       }
     });
   }, [window.location.pathname]);
+
+  useEffect(() => {
+    setOwner(
+      consumptionMaterial?.material?.owner
+        ? consumptionMaterial.material.owner
+        : "autoexpress"
+    );
+  }, [consumptionMaterial]);
 
   function handleUpdateMaterial() {
     if (materialId) {
@@ -109,7 +118,11 @@ function SingleConsumptionMaterialContainer() {
                   },
                   {
                     title: (
-                      <a onClick={() => navigate("/operations/inventory")}>
+                      <a
+                        onClick={() =>
+                          navigate(`/operations/inventory/${owner}`)
+                        }
+                      >
                         Inventario
                       </a>
                     ),
@@ -118,7 +131,7 @@ function SingleConsumptionMaterialContainer() {
                     title: (
                       <a
                         onClick={() =>
-                          navigate("/operations/inventory/consumption")
+                          navigate(`/operations/inventory/${owner}/consumption`)
                         }
                       >
                         Consumo

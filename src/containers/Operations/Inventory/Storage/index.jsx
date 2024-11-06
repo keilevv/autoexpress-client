@@ -22,7 +22,9 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
       getStorageMaterials(
         pagination.current,
         pagination.pageSize,
-        `&archived=false&owner=${owner}&search=${searchValue}`
+        `&archived=false&owner=${owner}${
+          searchValue ? "&search=" + searchValue : ""
+        }`
       );
     }
   }, [

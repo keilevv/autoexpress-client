@@ -1,7 +1,7 @@
 import { Form, Input, Select, InputNumber } from "antd";
-import NumberInput from "../../../Common/NumberInput";
 import { useEffect } from "react";
 import { unitOptions } from "../../../../helpers/constants";
+import { formatToCurrency } from "../../../../helpers";
 
 /**
  * @param {{
@@ -26,9 +26,10 @@ function StorageMaterialForm({
     setForm && setForm(form);
   }, [form, setForm]);
 
-  const handlePrefill = (client) => {
+  const handlePrefill = () => {
     if (storageMaterial) {
-      const { name, reference, unit, quantity, price } = storageMaterial;
+      const { name, reference, unit, quantity, price, caution_quantity } =
+        storageMaterial;
 
       form.setFieldsValue({
         name: name,
@@ -36,6 +37,7 @@ function StorageMaterialForm({
         unit,
         quantity,
         price,
+        caution_quantity,
       });
     } else {
       form.setFieldsValue({
@@ -43,6 +45,7 @@ function StorageMaterialForm({
         reference: "",
         unit: "unit",
         quantity: "",
+        caution_quantity: "",
         price: "",
       });
     }
@@ -55,6 +58,7 @@ function StorageMaterialForm({
   const renderContent = () => {
     return (
       <Form
+        className="flex flex-col gap-4"
         form={form}
         layout="vertical"
         initialValues={{ unit: "unit" }}
@@ -69,69 +73,115 @@ function StorageMaterialForm({
           setIsChanged && setIsChanged(true);
         }}
       >
-        <Form.Item
-          name={"name"}
-          label="Nombre"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese el nombre del producto",
-            },
-          ]}
-        >
-          <Input disabled={!isEditing} />
-        </Form.Item>
-        <Form.Item
-          name={"reference"}
-          label="Referencia"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese el numero de referencia",
-            },
-          ]}
-        >
-          <Input disabled={!isEditing} />
-        </Form.Item>
-        <Form.Item
-          name={"unit"}
-          label="Unidad de medida"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese la unidad de medida",
-            },
-          ]}
-        >
-          <Select options={unitOptions} disabled={!isEditing} />
-        </Form.Item>
-        <Form.Item name={"price"} label="Precio unidad">
-          <InputNumber
-            min={0}
-            className="w-full"
-            disabled={!isEditing}
-            formatter={(value) =>
-              `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-          />
-        </Form.Item>
-
-        <Form.Item
-          name={"quantity"}
-          label="Cantidad"
-          required
-          rules={[
-            {
-              required: true,
-              message: "Por favor ingrese la cantidad",
-            },
-          ]}
-        >
-          <InputNumber min={0} className="w-full" disabled={!isEditing} />
-        </Form.Item>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">Nombre</label>
+          {isEditing ? (
+            <Form.Item
+              name={"name"}
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese el nombre del producto",
+                },
+              ]}
+              className="mt-1"
+            >
+              <Input disabled={!isEditing} />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${storageMaterial?.name}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">Referencia</label>
+          {isEditing ? (
+            <Form.Item
+              name={"reference"}
+              required
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese el numero de referencia",
+                },
+              ]}
+            >
+              <Input disabled={!isEditing} />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${storageMaterial?.reference}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">Unidad de medida</label>
+          {isEditing ? (
+            <Form.Item
+              name={"unit"}
+              required
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese la unidad de medida",
+                },
+              ]}
+            >
+              <Select options={unitOptions} disabled={!isEditing} />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${
+              unitOptions.filter(
+                (item) => item.value === storageMaterial?.unit
+              )[0]?.label
+            }`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">Precio unidad</label>
+          {isEditing ? (
+            <Form.Item name={"price"}>
+              <InputNumber
+                min={0}
+                className="w-full"
+                disabled={!isEditing}
+                formatter={(value) =>
+                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+              />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${formatToCurrency(
+              storageMaterial?.price
+            )}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">Cantidad</label>
+          {isEditing ? (
+            <Form.Item
+              name={"quantity"}
+              required
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor ingrese la cantidad",
+                },
+              ]}
+            >
+              <InputNumber min={0} className="w-full" disabled={!isEditing} />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${storageMaterial?.quantity}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">Cantidad de alarma</label>
+          {isEditing ? (
+            <Form.Item name={"caution_quantity"} required>
+              <InputNumber min={0} className="w-full" disabled={!isEditing} />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${storageMaterial?.caution_quantity}`}</p>
+          )}
+        </div>
       </Form>
     );
   };

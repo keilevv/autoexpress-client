@@ -124,12 +124,31 @@ function MainLayout({ children }) {
                 setSelectedSider(value.key);
               } else {
                 if (
-                  value.key === "autoexpress" ||
-                  value.key === "autodetailing"
+                  value.key === "inventory-autoexpress" ||
+                  value.key === "inventory-autodetailing"
                 ) {
-                  navigate(`/operations/inventory/${value.key}`);
+                  navigate(
+                    `/operations/inventory/${value.key.replace(
+                      "inventory-",
+                      ""
+                    )}`,
+                    { replace: true }
+                  );
                 } else {
-                  navigate(`/operations/${value.key}`);
+                  if (
+                    value.key === "production-autoexpress" ||
+                    value.key === "production-autodetailing"
+                  ) {
+                    navigate(
+                      `/operations/production/${value.key.replace(
+                        "production-",
+                        ""
+                      )}`,
+                      { replace: true }
+                    );
+                  } else {
+                    navigate(`/operations/${value.key}`);
+                  }
                 }
               }
             }}

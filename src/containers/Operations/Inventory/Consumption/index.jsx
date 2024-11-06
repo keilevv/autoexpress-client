@@ -22,7 +22,9 @@ function ConsumptionInventoryContainer({ refresh, searchValue, owner }) {
       getConsumptionMaterials(
         pagination.current,
         pagination.pageSize,
-        `&archived=false&owner=${owner}&search=${searchValue}`
+        `&archived=false&owner=${owner}${
+          searchValue ? "&search=" + searchValue : ""
+        }`
       );
     }
   }, [
