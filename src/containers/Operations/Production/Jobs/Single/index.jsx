@@ -26,6 +26,7 @@ function JobOrdersSingleContainer() {
     updateJobOrder,
     addMaterialToJobOrder,
   } = useJobOrder();
+  const [owner, setOwner] = useState("autoexpress");
   const [consumedMaterials, setConsumedMaterials] = useState([]);
   const [consumedColors, setConsumedColors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -63,6 +64,7 @@ function JobOrdersSingleContainer() {
     if (jobOrder?.consumed_colors?.length > 0) {
       setConsumedColors(jobOrder.consumed_colors);
     }
+    setOwner(jobOrder?.owner ? jobOrder.owner : "autoexpress");
   }, [jobOrder]);
 
   const handleArchiveJobOrder = () => {
@@ -188,7 +190,9 @@ function JobOrdersSingleContainer() {
               },
               {
                 title: (
-                  <a onClick={() => navigate("/operations/production")}>
+                  <a
+                    onClick={() => navigate(`/operations/production/${owner}`)}
+                  >
                     Producción
                   </a>
                 ),
@@ -309,6 +313,7 @@ function JobOrdersSingleContainer() {
               <Spin size="large" className="my-10 w-full" />
             ) : (
               <ConsumedMaterials
+                owner={jobOrder?.owner}
                 consumedMaterials={consumedMaterials}
                 isEditing={isEditingMaterials}
                 setConsumedMaterials={setConsumedMaterials}

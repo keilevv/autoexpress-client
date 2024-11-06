@@ -10,6 +10,7 @@ function ProductionOptions({
   type,
   onSearch = () => {},
   onApplyFilters = () => {},
+  owner = "autoexpress",
 }) {
   const employees = useSelector((state) => state.auth.employeeList);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,6 +44,7 @@ function ProductionOptions({
           Agregar orden de trabajo
         </Button>
         <NewJobOrderModal
+          owner={owner}
           onFinish={onFinish}
           form={form}
           isModalOpen={isModalOpen}

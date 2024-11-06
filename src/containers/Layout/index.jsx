@@ -119,11 +119,37 @@ function MainLayout({ children }) {
             items={items}
             style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
             onClick={(value) => {
-              setSelectedSider(value.key);
               if (value.key === "operations") {
                 navigate(`/operations`, { replace: true });
+                setSelectedSider(value.key);
               } else {
-                navigate(`/operations/${value.key}`);
+                if (
+                  value.key === "inventory-autoexpress" ||
+                  value.key === "inventory-autodetailing"
+                ) {
+                  navigate(
+                    `/operations/inventory/${value.key.replace(
+                      "inventory-",
+                      ""
+                    )}`,
+                    { replace: true }
+                  );
+                } else {
+                  if (
+                    value.key === "production-autoexpress" ||
+                    value.key === "production-autodetailing"
+                  ) {
+                    navigate(
+                      `/operations/production/${value.key.replace(
+                        "production-",
+                        ""
+                      )}`,
+                      { replace: true }
+                    );
+                  } else {
+                    navigate(`/operations/${value.key}`);
+                  }
+                }
               }
             }}
           />

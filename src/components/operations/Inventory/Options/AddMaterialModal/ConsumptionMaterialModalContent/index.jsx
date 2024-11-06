@@ -8,6 +8,7 @@ function ConsumptionMaterialModalContent({
   setDisabledSubmit,
   materials,
   setMaterials,
+  owner,
 }) {
   const [filterText, setFilterText] = useState("");
 
@@ -25,6 +26,7 @@ function ConsumptionMaterialModalContent({
       <Form name="consumption-material-form" form={form}>
         <Form.Item name={"materials"}>
           <MaterialsList
+            owner={owner}
             filterText={filterText}
             materials={materials}
             setMaterials={setMaterials}

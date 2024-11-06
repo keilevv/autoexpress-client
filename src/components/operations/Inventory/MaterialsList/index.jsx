@@ -19,6 +19,7 @@ function MaterialsList({
   isReadOnly = false,
   isEditing = true,
   isProduction = false,
+  owner = "autoexpress",
 }) {
   const {
     getStorageMaterials,
@@ -33,18 +34,17 @@ function MaterialsList({
   const [listData, setListData] = useState([]);
   const user = useSelector((state) => state.auth.user);
 
-
   useEffect(() => {
     switch (type) {
       case "job-order-materials":
       case "sales":
-        getConsumptionMaterials(1, 10, "&archived=false");
+        getConsumptionMaterials(1, 10, `&archived=false&owner=${owner}`);
         break;
       default:
-        getStorageMaterials(1, 10, "&archived=false");
+        getStorageMaterials(1, 10, `&archived=false&owner=${owner}`);
         break;
     }
-  }, [user, type, isEditing]);
+  }, [user, type, isEditing, owner]);
 
   useEffect(() => {
     switch (type) {
@@ -177,9 +177,17 @@ function MaterialsList({
 
   function handleDebounceFn(inputValue, brand) {
     if (type === "sales" || type === "job-order-materials") {
-      getConsumptionMaterials(1, 10, `&archived=false&search=${inputValue}`);
+      getConsumptionMaterials(
+        1,
+        10,
+        `&archived=false&search=${inputValue}&owner=${owner}`
+      );
     } else {
-      getStorageMaterials(1, 10, `&archived=false&search=${inputValue}`);
+      getStorageMaterials(
+        1,
+        10,
+        `&archived=false&search=${inputValue}&owner=${owner}`
+      );
     }
   }
   const debounceFn = useCallback(_debounce(handleDebounceFn, 300), []);

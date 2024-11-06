@@ -4,7 +4,13 @@ import useInventory from "../../../../../hooks/useInventory";
 import StorageMaterialForm from "../../StrorageMaterialForm";
 import ConsumptionMaterialModalContent from "./ConsumptionMaterialModalContent";
 
-function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
+function AddMaterialModal({
+  isModalOpen,
+  setIsModalOpen,
+  onFinish,
+  type,
+  owner,
+}) {
   const { createStorageMaterial, loading, createConsumptionMaterial } =
     useInventory();
   const [form] = Form.useForm();
@@ -15,6 +21,7 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
     switch (type) {
       case "storage-inventory":
         form.validateFields().then((values) => {
+          values.owner = owner;
           createStorageMaterial(values)
             .then((response) => {
               notification.success({
@@ -70,6 +77,7 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
       case "consumption-inventory":
         return (
           <ConsumptionMaterialModalContent
+            owner={owner}
             materials={materials}
             setMaterials={setMaterials}
             form={form}
@@ -91,8 +99,8 @@ function AddMaterialModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
     >
       <h1 className="text-xl text-red-700 font-semibold mb-5 ">
         {type === "storage-inventory"
-          ? "Agregar material para almacen"
-          : "Agregar material para consumo"}
+          ? "Agregar material a almacen"
+          : "Agregar material de consumo"}
       </h1>
       {renderModalContent()}{" "}
     </Modal>

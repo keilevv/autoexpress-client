@@ -4,7 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import AddMaterialModal from "./AddMaterialModal";
 import AddSaleModal from "./AddSaleModal";
 
-function InventoryOptions({ onFinish, type }) {
+function InventoryOptions({ onFinish, type, owner }) {
   const [addButtontitle, setAddButtontitle] = useState("Agregar");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,6 +34,7 @@ function InventoryOptions({ onFinish, type }) {
         {addButtontitle}
       </Button>
       <AddMaterialModal
+        owner={owner}
         type={type}
         onFinish={onFinish}
         isModalOpen={type === "sales" ? false : isModalOpen}

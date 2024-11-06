@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useInventory from "../../../../hooks/useInventory";
 
-function StorageInventoryContainer({ refresh, searchValue }) {
+function StorageInventoryContainer({ refresh, searchValue, owner }) {
   const { storageMaterials, getStorageMaterials, loading, count } =
     useInventory();
   const user = useSelector((state) => state.auth.user);
@@ -14,33 +14,27 @@ function StorageInventoryContainer({ refresh, searchValue }) {
   });
 
   useEffect(() => {
-    getStorageMaterials(
-      1,
-      10,
-      `&archived=false${searchValue ? "&search=" + searchValue : ""}`
-    );
-  }, [user, refresh, searchValue]);
-
-  useEffect(() => {
     setPagination({ ...pagination, total: count });
   }, [count]);
 
   useEffect(() => {
-    getStorageMaterials(
-      pagination.current,
-      pagination.pageSize,
-      `&archived=false`
-    );
-  }, [pagination.current, pagination.pageSize, user]);
-
-  const handleSearch = (value) => {
-    setSearchValue(value);
-    getStorageMaterials(
-      pagination.current,
-      pagination.pageSize,
-      `&archived=false&plate=${value}`
-    );
-  };
+    if (user && owner) {
+      getStorageMaterials(
+        pagination.current,
+        pagination.pageSize,
+        `&archived=false&owner=${owner}${
+          searchValue ? "&search=" + searchValue : ""
+        }`
+      );
+    }
+  }, [
+    pagination.current,
+    pagination.pageSize,
+    user,
+    owner,
+    searchValue,
+    refresh,
+  ]);
 
   const handleApplyFilters = (values) => {
     getStorageMaterials(
