@@ -119,11 +119,18 @@ function MainLayout({ children }) {
             items={items}
             style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
             onClick={(value) => {
-              setSelectedSider(value.key);
               if (value.key === "operations") {
                 navigate(`/operations`, { replace: true });
+                setSelectedSider(value.key);
               } else {
-                navigate(`/operations/${value.key}`);
+                if (
+                  value.key === "autoexpress" ||
+                  value.key === "autodetailing"
+                ) {
+                  navigate(`/operations/inventory/${value.key}`);
+                } else {
+                  navigate(`/operations/${value.key}`);
+                }
               }
             }}
           />

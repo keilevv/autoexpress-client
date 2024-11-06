@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   TeamOutlined,
   HomeOutlined,
@@ -7,59 +9,72 @@ import {
   ControlOutlined,
   DatabaseOutlined,
 } from "@ant-design/icons";
-import React, { useEffect, useState } from "react";
 
 function useMenu() {
+  const roles = useSelector((state) => state?.auth?.user?.roles);
   const [items, setItems] = useState([]);
   const [defaultSelectedHeader, setDefaultSelectedHeader] = useState("");
+  const allItems = [
+    {
+      key: "operations",
+      label: "Inicio",
+      icon: React.createElement(HomeOutlined),
+    },
+    {
+      key: "agenda",
+      label: "Agenda",
+      icon: React.createElement(CalendarOutlined),
+    },
+    {
+      key: "inventory",
+      label: "Almacén",
+      icon: React.createElement(ContainerOutlined),
+    },
+    {
+      key: "production",
+      label: "Producción",
+      icon: React.createElement(ControlOutlined),
+    },
+    {
+      key: "database",
+      label: "Base de datos",
+      icon: React.createElement(DatabaseOutlined),
+      children: [
+        {
+          key: "cars",
+          label: "Autos",
+          icon: React.createElement(CarOutlined),
+        },
+        {
+          key: "clients",
+          label: "Clientes",
+          icon: React.createElement(TeamOutlined),
+        },
+      ],
+    },
+  ];
 
   function getMenuProps() {
-    const currentItems = [
-      {
-        key: "operations",
-        label: "Inicio",
-        icon: React.createElement(HomeOutlined),
-      },
-      {
-        key: "agenda",
-        label: "Agenda",
-        icon: React.createElement(CalendarOutlined),
-      },
-      {
+    setDefaultSelectedHeader("operations");
+    let items = allItems;
+    if (roles && roles.includes("autodetailing-admin")) {
+      items = items.filter((item) => item.key !== "inventory");
+      items.push({
         key: "inventory",
         label: "Almacén",
         icon: React.createElement(ContainerOutlined),
-      },
-      {
-        key: "production",
-        label: "Producción",
-        icon: React.createElement(ControlOutlined),
-      },
-      {
-        key: "database",
-        label: "Base de datos",
-        icon: React.createElement(DatabaseOutlined),
         children: [
-          {
-            key: "cars",
-            label: "Autos",
-            icon: React.createElement(CarOutlined),
-          },
-          {
-            key: "clients",
-            label: "Clientes",
-            icon: React.createElement(TeamOutlined),
-          },
+          { key: "autoexpress", label: "Autoexpress" },
+          { key: "autodetailing", label: "Autodetailing" },
         ],
-      },
-    ];
-    setDefaultSelectedHeader("operations");
-    setItems(currentItems);
+      });
+    }
+    setItems(items);
   }
 
   useEffect(() => {
     getMenuProps();
-  }, [window.location.pathname]);
+  }, [window.location.pathname, roles]);
 
   return { items, defaultSelectedHeader };
 }

@@ -17,5 +17,10 @@ const userService = {
       headers: { Authorization: `${token}` },
     });
   },
+  updateUser(token, userId, payload) {
+    return axios.put(`${apiUrl}/users/${userId}`, payload, {
+      headers: { Authorization: `${token}` },
+    });
+  },
 };
 export default userService;

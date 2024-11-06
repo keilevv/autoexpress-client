@@ -12,19 +12,22 @@ function useAuth() {
   const auth = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const getUser = useCallback((userId) => {
-    setLoading(true);
-    return userService
-      .getUser(auth.user.accessToken, userId)
-      .then((response) => {
-        setUser(response.data);
-        setLoading(false);
-        return response;
-      })
-      .catch((err) => {
-        navigate("/login");
-      });
-  }, [auth]);
+  const getUser = useCallback(
+    (userId) => {
+      setLoading(true);
+      return userService
+        .getUser(auth.user.accessToken, userId)
+        .then((response) => {
+          setUser(response.data);
+          setLoading(false);
+          return response;
+        })
+        .catch((err) => {
+          navigate("/login");
+        });
+    },
+    [auth]
+  );
 
   const loginUser = useCallback((username, password) => {
     setLoading(true);
@@ -45,6 +48,20 @@ function useAuth() {
     setUser(null);
     dispatch(logout());
   }
-  return { user, loading, loginUser, logoutUser, getUser };
+
+  function updateUser(userId, payload) {
+    setLoading(true);
+    return userService
+      .updateUser(auth.user.accessToken, userId, payload)
+      .then((response) => {
+        setUser(response.data);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        throwError(err.message.message);
+      });
+  }
+  return { user, loading, loginUser, logoutUser, getUser, updateUser };
 }
 export default useAuth;

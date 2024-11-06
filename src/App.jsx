@@ -165,6 +165,46 @@ function App() {
             }
           ></Route>
           <Route
+            path="/operations/inventory/autoexpress"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autodetailing"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autoexpress/storage"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autodetailing/storage"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
             path="/operations/inventory/storage"
             element={
               <ProtectedRoute>
@@ -176,6 +216,26 @@ function App() {
           ></Route>
           <Route
             path="/operations/inventory/consumption"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autoexpress/consumption"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autodetailing/consumption"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>

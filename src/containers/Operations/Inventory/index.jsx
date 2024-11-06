@@ -8,6 +8,7 @@ import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
 function InventoryContainer() {
   const [currentTab, setCurrentTab] = useState("storage-inventory");
+  const [owner, setOwner] = useState("autoexpress");
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
   const items = [
@@ -16,6 +17,7 @@ function InventoryContainer() {
       label: <p className="font-semibold text-base">Inventario de almacén</p>,
       children: (
         <StorageInventoryContainer
+          owner={owner}
           refresh={refresh}
           searchValue={currentTab === "storage-inventory" ? searchValue : null}
         />
@@ -26,6 +28,7 @@ function InventoryContainer() {
       label: <p className="font-semibold text-base">Inventario de consumo</p>,
       children: (
         <ConsumptionInventoryContainer
+          owner={owner}
           refresh={refresh}
           searchValue={
             currentTab === "consumption-inventory" ? searchValue : null
@@ -68,9 +71,28 @@ function InventoryContainer() {
   useEffect(() => {
     setSearchValue(null);
   }, [currentTab]);
+
+  useEffect(() => {
+    getInventoryOwner();
+  }, [window.location.pathname]);
+
+  function getInventoryOwner() {
+    const splitItems = window.location.pathname
+      .split("/")
+      .filter((item) => item !== "");
+
+    splitItems.forEach((item, index) => {
+      if (item === "inventory" && index + 1 < splitItems.length) {
+        setOwner(splitItems[index + 1]);
+      }
+    });
+  }
+
   return (
     <div>
-      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Almacén</h1>
+      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
+        Almacén {owner.charAt(0).toUpperCase() + owner.slice(1)}
+      </h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
         <Input
           prefix={<SearchOutlined className="text-gray-500 mx-[6px]" />}
