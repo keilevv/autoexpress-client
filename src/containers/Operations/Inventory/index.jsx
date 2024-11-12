@@ -8,7 +8,7 @@ import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
 function InventoryContainer() {
   const [currentTab, setCurrentTab] = useState("storage-inventory");
-  const [owner, setOwner] = useState("autoexpress");
+  const [owner, setOwner] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
   const items = [

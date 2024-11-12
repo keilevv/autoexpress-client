@@ -5,7 +5,7 @@ import ProductionOptions from "../../../components/operations/Production/Options
 import _debounce from "lodash/debounce";
 import { getFilterString } from "../../../helpers";
 
-function ProductionContainer({ owner = "autoexpress" }) {
+function ProductionContainer({ owner }) {
   const [currentTab, setCurrentTab] = useState("job-orders");
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
