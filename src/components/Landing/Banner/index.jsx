@@ -53,7 +53,7 @@ function Banner({ appointmentRef }) {
         </Button>
       </div>
       <div className="banner-socials">
-        <a href="https://www.instagram.com/autoexpress_ctg/" target="_blank">
+        <a href="https://www.instagram.com/autoexpress_._/" target="_blank">
           <i className="fa-brands fa-instagram"></i>
         </a>
         <a href="https://www.facebook.com/ADSANAUTOS" target="_blank">

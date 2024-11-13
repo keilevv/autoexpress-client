@@ -3,6 +3,7 @@ import PaintBodyworkIcon from "../../../../assets/icons/spray-gun-white.png";
 import DiagnosticIcon from "../../../../assets/icons/magnifier-white.png";
 import ElectromecanicIcon from "../../../../assets/icons/tools-white.png";
 import SpecialServicesIcon from "../../../../assets/icons/star-white.png";
+import SoatIcon from "../../../../assets/icons/soat-icon.png";
 
 function useCardsConfig() {
   const bodyworkDescription = (
@@ -36,6 +37,13 @@ function useCardsConfig() {
       <li>Servicios correctivos</li>
     </ul>
   );
+
+  const soatDescription = (
+    <p>
+      Le ofrecemos la venta de SOAT para su vehículo de manera segura y
+      confiable por medio de nosotros.
+    </p>
+  );
   const ServicesCardConfig = [
     {
       key: "paint-bodywork",
@@ -55,7 +63,7 @@ function useCardsConfig() {
       title: "Diagnóstico y peritaje",
       // content: <ServiceModalContent type={"diagnostic"} />,
       description: diagnosticDescription,
-      color: "#06823D",
+      color: "#13c2c2",
     },
     {
       type: "electromecanic",
@@ -66,6 +74,17 @@ function useCardsConfig() {
       // content: <ServiceModalContent type={"electromecanic"} />,
       description: electromecanicDescription,
       color: "#126398",
+    },
+    {
+      type: "soat",
+      key: "soat",
+      placement: "bottom",
+      icon: SoatIcon,
+      title: "Venta de SOAT",
+      content: <ServiceModalContent type={"soat"} />,
+      description: soatDescription,
+      color: "#7cb305",
+      showMore: true,
     },
     {
       type: "special-services",
