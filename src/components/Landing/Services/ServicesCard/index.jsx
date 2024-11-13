@@ -17,7 +17,7 @@ function ServicesCard(props) {
           className="max-w-[100px] max-h-[100px] rounded-full flex justify-center items-center"
           style={{ background: props.color }}
         >
-          <img src={props.icon} className="p-4" />
+          <img src={props.icon} className={`${type === "soat" ? "p-1" : "p-4"}`} />
         </div>
       </div>
       <h2 className="text-xl text-red-700 my-4 text-center">{props.title}</h2>
