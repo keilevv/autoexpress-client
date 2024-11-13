@@ -12,6 +12,7 @@ import { Layout, Menu } from "antd";
 import "./style.css";
 import AgendaContainer from "./Agenda";
 import ContactContainer from "./Contact";
+import GlaringText from "../../components/Common/GlaringText";
 
 const { Header, Footer, Content } = Layout;
 
@@ -67,7 +68,11 @@ function LandingContainer() {
         />
       </Header>
       <Content>
-        <BannerContainer bannerRef={bannerRef} appointmentRef={appointmentRef} />
+        <GlaringText text={"Compre su SOAT con nosotros"} />{" "}
+        <BannerContainer
+          bannerRef={bannerRef}
+          appointmentRef={appointmentRef}
+        />
         <ServicesContainer servicesRef={servicesRef} />
         <AgendaContainer appointmentRef={appointmentRef} />
         <LocationContainer locationRef={locationRef} />
