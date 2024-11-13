@@ -20,7 +20,7 @@ const GlaringText = ({ text }) => {
         }}
       >
         <a
-          className={`glaring-text text-xl text-white ${open ? "" : "hidden"} 
+          className={` text-xl text-white ${open ? "" : "hidden"} 
           } hover:text-white underline-offset-4`}
         >
           {text}
