@@ -67,7 +67,8 @@ function ProductionContainer({ owner }) {
   return (
     <div>
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
-        Producción {owner.charAt(0).toUpperCase() + owner.slice(1)}
+        Producción{" "}
+        {owner ? owner.charAt(0).toUpperCase() + owner.slice(1) : null}
       </h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
         <ProductionOptions
