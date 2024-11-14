@@ -16,17 +16,17 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
     getJobOrders(
       pagination.current,
       pagination.pageSize,
-      `&archived=false&owner=${owner}${
+      `&archived=false&owner=${owner ? owner : "autoexpress"}${
         searchValue && searchValue.length ? "&search=" + searchValue : ""
       }${filterString ? filterString : ""}`
     );
   }, [
+    owner,
     refresh,
     searchValue,
     filterString,
     pagination.current,
     pagination.pageSize,
-    owner,
   ]);
 
   useEffect(() => {
