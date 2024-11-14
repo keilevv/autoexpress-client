@@ -18,11 +18,11 @@ function ConsumptionInventoryContainer({ refresh, searchValue, owner }) {
   }, [count]);
 
   useEffect(() => {
-    if (user && owner) {
+    if (user) {
       getConsumptionMaterials(
         pagination.current,
         pagination.pageSize,
-        `&archived=false&owner=${owner}${
+        `&archived=false&owner=${owner ? owner : "autoexpress"}${
           searchValue ? "&search=" + searchValue : ""
         }`
       );
