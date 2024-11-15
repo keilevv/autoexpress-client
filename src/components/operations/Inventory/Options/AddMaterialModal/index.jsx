@@ -19,7 +19,7 @@ function AddMaterialModal({
 
   const handleOk = () => {
     switch (type) {
-      case "storage-inventory":
+      case "storage":
         form.validateFields().then((values) => {
           values.owner = owner;
           createStorageMaterial(values)
@@ -40,7 +40,7 @@ function AddMaterialModal({
         });
         break;
 
-      case "consumption-inventory":
+      case "consumption":
         form.validateFields().then((values) => {
           createConsumptionMaterial(values)
             .then(() => {
@@ -70,11 +70,11 @@ function AddMaterialModal({
 
   function renderModalContent() {
     switch (type) {
-      case "storage-inventory":
+      case "storage":
         return (
           <StorageMaterialForm form={form} setDisabledSubmit={setDisabled} />
         );
-      case "consumption-inventory":
+      case "consumption":
         return (
           <ConsumptionMaterialModalContent
             owner={owner}
@@ -98,7 +98,7 @@ function AddMaterialModal({
       onCancel={handleCancel}
     >
       <h1 className="text-xl text-red-700 font-semibold mb-5 ">
-        {type === "storage-inventory"
+        {type === "storage"
           ? "Agregar material a almacen"
           : "Agregar material de consumo"}
       </h1>

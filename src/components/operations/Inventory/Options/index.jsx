@@ -10,10 +10,10 @@ function InventoryOptions({ onFinish, type, owner }) {
 
   useEffect(() => {
     switch (type) {
-      case "storage-inventory":
+      case "storage":
         setAddButtontitle("Agregar material a almacén");
         break;
-      case "consumption-inventory":
+      case "consumption":
         setAddButtontitle("Agregar material de consumo");
         break;
       case "sales":

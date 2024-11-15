@@ -1,10 +1,11 @@
 import { Tooltip, Button, notification, Popconfirm } from "antd";
 
-function InventoryTableMenu({ isArchived, onEdit, onArchive }) {
+function InventoryTableMenu({ isArchived, onEdit, onArchive, loading }) {
   return (
     <div className="flex">
       <Tooltip title="Editar">
         <Button
+          disabled={loading}
           type="text"
           shape="circle"
           icon={<i className="fa-solid fa-pen"></i>}
@@ -18,6 +19,7 @@ function InventoryTableMenu({ isArchived, onEdit, onArchive }) {
           onConfirm={onArchive}
         >
           <Button
+            disabled={loading}
             type="text"
             shape="circle"
             icon={<i className="fa-solid fa-archive"></i>}
