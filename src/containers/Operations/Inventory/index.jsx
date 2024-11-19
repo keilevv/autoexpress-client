@@ -4,10 +4,8 @@ import { Tabs, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StorageInventoryContainer from "./Storage";
 import ConsumptionInventoryContainer from "./Consumption";
-import SalesInventoryContainer from "./Sales";
 import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
-import { replace } from "lodash";
 
 function InventoryContainer({ owner }) {
   const [currentTab, setCurrentTab] = useState("storage");
@@ -25,7 +23,7 @@ function InventoryContainer({ owner }) {
         setTabs(items);
         break;
     }
-  }, [owner]);
+  }, [owner, refresh]);
 
   const items = [
     {

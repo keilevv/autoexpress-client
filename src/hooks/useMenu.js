@@ -80,6 +80,17 @@ function useMenu() {
         ],
       });
     }
+    if (roles && roles.includes("autodetailing-operator")) {
+      setDefaultSelectedHeader("production");
+      setItems([
+        {
+          key: "production-autodetailing",
+          label: "Producción",
+          icon: React.createElement(ControlOutlined),
+        },
+      ]);
+      return;
+    }
     setItems(items);
   }
 

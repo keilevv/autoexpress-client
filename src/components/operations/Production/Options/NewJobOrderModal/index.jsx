@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Modal, Form, Input, DatePicker, Select, notification } from "antd";
 import useEmployee from "../../../../../hooks/useEmployee";
 import useJobOrder from "../../../../../hooks/useJobOrder";
 import { employeeRolesOptions } from "../../../../../helpers/constants";
 import { validateCarPlate } from "../../../../../helpers";
+import _debounce from "lodash/debounce";
 import dayjs from "dayjs";
 function NewJobOrderModal({
   onFinish,
@@ -12,7 +13,7 @@ function NewJobOrderModal({
   form,
   owner = "autoexpress",
 }) {
-  const { getEmployees, employees } = useEmployee();
+  const { getEmployees, employees, loading } = useEmployee();
   const { createJobOrder } = useJobOrder();
   const handleCreateJobOrder = () => {
     form.validateFields().then((values) => {
@@ -40,6 +41,13 @@ function NewJobOrderModal({
     getEmployees(1, 100, "&archived=false");
   }, []);
 
+  const handleSearchEmployee = (value) => {
+    getEmployees(1, 100, `&full_name=${value}`);
+  };
+
+  const debounceFn = useCallback(_debounce(handleSearchEmployee, 300), []);
+  useEffect(() => {}, [employees]);
+
   return (
     <Modal
       open={isModalOpen}
@@ -49,56 +57,81 @@ function NewJobOrderModal({
       <h1 className="text-2xl font-semibold mb-5 text-red-700">
         Nueva orden de trabajo
       </h1>
-      <Form layout="vertical" form={form}>
-        <Form.Item
-          name="number"
-          label="Número"
-          rules={[{ required: true, message: "Por favor ingrese el número" }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="employee"
-          label="Trabajador"
-          rules={[
-            { required: true, message: "Por favor escoja el trabajador" },
-          ]}
-        >
-          <Select>
-            {employees.map((employee) => (
-              <Select.Option key={employee._id} value={employee._id}>
-                {employee.name} -{" "}
-                {
-                  employeeRolesOptions.find(
-                    (role) => role.value === employee.roles
-                  ).label
-                }
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-        <Form.Item
-          name="car_plate"
-          label="Placa"
-          rules={[
-            { required: true, message: "Por favor ingrese la placa " },
-            {
-              validator: validateCarPlate,
-              message: "Por favor ingrese una placa valida",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="due_date"
-          label="Fecha de entrega"
-          rules={[
-            { required: true, message: "Por favor ingrese la descripción" },
-          ]}
-        >
-          <DatePicker format={"DD/MM/YYYY"} />
-        </Form.Item>
+      <Form layout="vertical" form={form} className="flex flex-col gap-4">
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Número</label>
+          <Form.Item
+            name="number"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingrese el número de la orden de trabajo",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </div>
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Descripción</label>
+          <Form.Item name="description">
+            <Input />
+          </Form.Item>
+        </div>
+
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Trabajador </label>
+          <Form.Item
+            name="employee"
+            rules={[
+              { required: true, message: "Por favor escoja el trabajador" },
+            ]}
+          >
+            <Select
+              loading={loading}
+              showSearch
+              onSearch={(value) => debounceFn(value)}
+              filterOption={false}
+            >
+              {employees.map((employee) => (
+                <Select.Option key={employee._id} value={employee._id}>
+                  {employee.name} -{"  "}
+                  {
+                    employeeRolesOptions.find(
+                      (role) => role.value === employee.roles
+                    ).label
+                  }
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </div>
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Placa</label>
+          <Form.Item
+            name="car_plate"
+            rules={[
+              { required: true, message: "Por favor ingrese la placa " },
+              {
+                validator: validateCarPlate,
+                message: "Por favor ingrese una placa valida",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        </div>
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Fecha de entrega</label>
+          <Form.Item
+            name="due_date"
+            rules={[
+              { required: true, message: "Por favor ingrese la descripción" },
+            ]}
+          >
+            <DatePicker format={"DD/MM/YYYY"} />
+          </Form.Item>
+        </div>
       </Form>
     </Modal>
   );

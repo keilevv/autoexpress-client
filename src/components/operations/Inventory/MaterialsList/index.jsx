@@ -196,8 +196,6 @@ function MaterialsList({
     setSelectedMaterial(null);
   }, [isEditing]);
 
-  console.log("quantities", quantities);
-
   return (
     <div>
       {!isReadOnly && (

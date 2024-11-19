@@ -12,6 +12,7 @@ function ProductionOptions({
   onApplyFilters = () => {},
   owner = "autoexpress",
 }) {
+  const user = useSelector((state) => state?.auth?.user);
   const employees = useSelector((state) => state.auth.employeeList);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -36,13 +37,15 @@ function ProductionOptions({
           placeholder="Número o placa..."
           onChange={(e) => onSearch(e.target.value)}
         />
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Agregar orden de trabajo
-        </Button>
+        {!user?.roles?.includes("autodetailing-operator") && (
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Agregar orden de trabajo
+          </Button>
+        )}
         <NewJobOrderModal
           owner={owner}
           onFinish={onFinish}
