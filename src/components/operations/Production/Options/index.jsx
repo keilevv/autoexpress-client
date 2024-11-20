@@ -125,15 +125,7 @@ function ProductionOptions({
           </div>
           <div className="flex flex-col">
             <p className="text-gray-500 mb-4 font-semibold text-sm">{`Situación`}</p>
-            <Form.Item
-              name={"status"}
-              rules={[
-                {
-                  required: true,
-                  message: "Por favor, seleccione un trabajador",
-                },
-              ]}
-            >
+            <Form.Item name={"status"}>
               <Select className="md:min-w-[300px]">
                 {statusTypes.map((item) => {
                   return (
