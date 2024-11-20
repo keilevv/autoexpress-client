@@ -29,6 +29,8 @@ function MainLayout({ children }) {
   const auth = useSelector((state) => state.auth);
   const [owner, setOwner] = useState("autoexpress");
 
+  console.log("selectedSider", selectedSider);
+
   useEffect(() => {
     getUser(auth.user.id);
   }, []);
@@ -105,7 +107,12 @@ function MainLayout({ children }) {
             }
             return;
           }
-          setSelectedSider(splitItems[index + 1] + "-" + owner);
+          console.log("owner", owner);
+          if (auth.user.roles.includes("autoexpress")) {
+            setSelectedSider(splitItems[index + 1] + "-" + owner);
+          } else {
+            setSelectedSider(splitItems[index + 1]);
+          }
           return;
         }
       });
@@ -114,7 +121,7 @@ function MainLayout({ children }) {
 
   useEffect(() => {
     getSelectedSider();
-  }, [window.location.pathname, owner]);
+  }, [window.location.pathname, owner, auth]);
   return (
     <Layout className="max-w-none bg-inherit">
       <Header
