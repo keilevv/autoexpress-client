@@ -29,7 +29,6 @@ function MainLayout({ children }) {
   const auth = useSelector((state) => state.auth);
   const [owner, setOwner] = useState("autoexpress");
 
-  console.log("selectedSider", selectedSider);
 
   useEffect(() => {
     getUser(auth.user.id);
@@ -107,7 +106,6 @@ function MainLayout({ children }) {
             }
             return;
           }
-          console.log("owner", owner);
           if (auth.user.roles.includes("autoexpress")) {
             setSelectedSider(splitItems[index + 1] + "-" + owner);
           } else {
