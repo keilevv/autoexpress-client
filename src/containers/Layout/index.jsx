@@ -27,10 +27,22 @@ function MainLayout({ children }) {
   const [userHeaderProps, setUserHeaderProps] = useState({});
   const [selectedSider, setSelectedSider] = useState("");
   const auth = useSelector((state) => state.auth);
+  const [owner, setOwner] = useState("autoexpress");
+
 
   useEffect(() => {
     getUser(auth.user.id);
   }, []);
+
+  useEffect(() => {
+    if (auth?.user && auth?.user?.roles) {
+      if (auth.user.roles.includes("autodetailing-operator")) {
+        setOwner("autodetailing");
+      } else {
+        setOwner("autoexpress");
+      }
+    }
+  }, [auth]);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -87,10 +99,18 @@ function MainLayout({ children }) {
       splitItems.forEach((item, index) => {
         if (module === item) {
           if (splitItems.length <= 1) {
-            setSelectedSider(module);
+            if (owner === "autodetailing") {
+              setSelectedSider("production-autodetailing");
+            } else {
+              setSelectedSider(module);
+            }
             return;
           }
-          setSelectedSider(splitItems[index + 1]);
+          if (auth.user.roles.includes("autoexpress")) {
+            setSelectedSider(splitItems[index + 1] + "-" + owner);
+          } else {
+            setSelectedSider(splitItems[index + 1]);
+          }
           return;
         }
       });
@@ -99,7 +119,7 @@ function MainLayout({ children }) {
 
   useEffect(() => {
     getSelectedSider();
-  }, [window.location.pathname]);
+  }, [window.location.pathname, owner, auth]);
   return (
     <Layout className="max-w-none bg-inherit">
       <Header
@@ -119,14 +139,13 @@ function MainLayout({ children }) {
             items={items}
             style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
             onClick={(value) => {
-              if (value.key === "operations") {
-                navigate(`/operations`, { replace: true });
-                setSelectedSider(value.key);
-              } else {
-                if (
-                  value.key === "inventory-autoexpress" ||
-                  value.key === "inventory-autodetailing"
-                ) {
+              switch (value.key) {
+                case "operations":
+                  navigate(`/operations`, { replace: true });
+                  setSelectedSider(value.key);
+                  break;
+                case "inventory-autoexpress":
+                case "inventory-autodetailing":
                   navigate(
                     `/operations/inventory/${value.key.replace(
                       "inventory-",
@@ -134,22 +153,19 @@ function MainLayout({ children }) {
                     )}`,
                     { replace: true }
                   );
-                } else {
-                  if (
-                    value.key === "production-autoexpress" ||
-                    value.key === "production-autodetailing"
-                  ) {
-                    navigate(
-                      `/operations/production/${value.key.replace(
-                        "production-",
-                        ""
-                      )}`,
-                      { replace: true }
-                    );
-                  } else {
-                    navigate(`/operations/${value.key}`);
-                  }
-                }
+                  break;
+                case "production-autoexpress":
+                case "production-autodetailing":
+                  navigate(
+                    `/operations/production/${value.key.replace(
+                      "production-",
+                      ""
+                    )}`,
+                    { replace: true }
+                  );
+                  break;
+                default:
+                  navigate(`/operations/${value.key}`, { replace: true });
               }
             }}
           />

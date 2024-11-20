@@ -1,12 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import { Input, Form, DatePicker, Select } from "antd";
 import dayjs from "dayjs";
-import "./style.css";
+import StatusLabel from "../../../../../../components/operations/Production/StatusLabel";
 import useEmployees from "../../../../../../hooks/useEmployee";
 import { employeeRolesOptions } from "../../../../../../helpers/constants";
 import { validateCarPlate } from "../../../../../../helpers";
+import _debounce from "lodash/debounce";
+import "./style.css";
+
 function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
-  const { getEmployees, employees } = useEmployees();
+  const { getEmployees, employees, loading } = useEmployees();
+  const user = useSelector((state) => state.auth.user);
+  const userIsADOperator = user.roles.includes("autodetailing-operator");
 
   useEffect(() => {
     getEmployees(1, 100, "&archived=false");
@@ -18,6 +24,18 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
     employee: jobOrder?.employee?._id,
   };
 
+  const handleSearchEmployee = (value) => {
+    getEmployees(1, 100, `&full_name=${value}`);
+  };
+
+  const debounceFn = useCallback(_debounce(handleSearchEmployee, 300), []);
+  useEffect(() => {}, [employees]);
+
+  const statusTypes = [
+    { value: "pending", label: "Pendiente", color: "orange-300" },
+    { value: "in-progress", label: "En progreso", color: "blue-300" },
+    { value: "completed", label: "Completado", color: "green-300" },
+  ];
   return (
     <Form
       name="job-order-details"
@@ -31,7 +49,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
     >
       <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">Número de orden</label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"number"}
             rules={[
@@ -48,10 +66,28 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
         )}
       </div>
       <div className="gap-2 flex flex-col">
+        <label className="font-semibold text-base">Descripción</label>
+        {isEditing && !userIsADOperator ? (
+          <Form.Item
+            name={"description"}
+            rules={[
+              {
+                required: true,
+                message: "Por favor, ingrese un numero de orden",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+        ) : (
+          <p className="text-gray-500 ">{`${jobOrder?.description}`}</p>
+        )}
+      </div>
+      <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">
           Trabajador responsable
         </label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"employee"}
             initialValue={jobOrder?.employee?._id}
@@ -62,7 +98,12 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
               },
             ]}
           >
-            <Select>
+            <Select
+              showSearch
+              onSearch={(value) => debounceFn(value)}
+              filterOption={false}
+              loading={loading}
+            >
               {employees.map((item) => {
                 return (
                   <Select.Option key={item._id} value={item._id}>
@@ -83,7 +124,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
       </div>
       <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">Placa del vehículo</label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"car_plate"}
             rules={[
@@ -107,7 +148,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
       </div>
       <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">Fecha de entrega</label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"due_date"}
             rules={[
@@ -123,6 +164,24 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
           <p className="text-gray-500 ">{`${dayjs(jobOrder?.due_date).format(
             "DD/MM/YYYY"
           )}`}</p>
+        )}
+      </div>
+      <div className="gap-2 flex flex-col">
+        <label className="font-semibold text-base">Situación</label>
+        {isEditing ? (
+          <Form.Item name={"status"}>
+            <Select showSearch>
+              {statusTypes.map((item) => {
+                return (
+                  <Select.Option key={item.value} value={item.value}>
+                    {item.label}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+        ) : (
+          <StatusLabel status={jobOrder?.status[0]} />
         )}
       </div>
     </Form>

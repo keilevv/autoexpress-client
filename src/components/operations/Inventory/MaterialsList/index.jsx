@@ -244,8 +244,10 @@ function MaterialsList({
                         </p>
                         <p className="text-sm text-gray-500">
                           {isEditing ? "Cant. Disponible" : "Cant. Consumida"}{" "}
-                          {quantity} -{" "}
-                          {unitOptions.find((u) => u.value === unit).label}
+                          {quantities[_id]
+                            ? quantity - quantities[_id]
+                            : quantity}{" "}
+                          - {unitOptions.find((u) => u.value === unit).label}
                         </p>
                       </div>
                       {selectedMaterial === _id && isEditing && (

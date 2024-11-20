@@ -25,3 +25,9 @@ export const employeeRolesOptions = [
   { value: "body-worker", label: "Latonero" },
   { value: "detailer", label: "Detailing" },
 ];
+
+export const statusTypes = [
+  { value: "pending", label: "Pendiente", color: "orange-300" },
+  { value: "in-progress", label: "En progreso", color: "blue-300" },
+  { value: "completed", label: "Completada", color: "green-300" },
+];

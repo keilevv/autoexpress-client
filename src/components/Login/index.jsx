@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Input, Button, Form, notification } from "antd";
 import logo from "../../assets/images/autoexpresslogo.png";
 /* Reducers */
@@ -9,6 +10,7 @@ import useViewport from "../../hooks/useViewport";
 import "./style.css";
 
 function Login() {
+  const user = useSelector((state) => state?.auth?.user);
   const [loading, setLoading] = useState(false);
   const [isRegisterForm, setIsRegisterForm] = useState(false);
   const { loginUser } = useAuth();
@@ -18,13 +20,17 @@ function Login() {
   const onFinish = async (values) => {
     setLoading(true);
     loginUser(values.username, values.password)
-      .then(() => {
+      .then((response) => {
         setLoading(false);
         notification.success({
           message: "Bienvenido",
           description: values.username,
         });
-        navigate("/operations");
+        if (response?.data.roles?.includes("autodetailing-operator")) {
+          navigate("/operations/production/autodetailing");
+        } else {
+          navigate("/operations");
+        }
       })
       .catch((err) => {
         setLoading(false);

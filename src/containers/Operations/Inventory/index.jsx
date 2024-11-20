@@ -1,51 +1,63 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StorageInventoryContainer from "./Storage";
 import ConsumptionInventoryContainer from "./Consumption";
-import SalesInventoryContainer from "./Sales";
 import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
-function InventoryContainer() {
-  const [currentTab, setCurrentTab] = useState("storage-inventory");
-  const [owner, setOwner] = useState("");
+
+function InventoryContainer({ owner }) {
+  const [currentTab, setCurrentTab] = useState("storage");
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
+  const [tabs, setTabs] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    switch (owner) {
+      case "autodetailing":
+        setTabs(items.filter((item) => item.key !== "sales"));
+        break;
+      default:
+        setTabs(items);
+        break;
+    }
+  }, [owner, refresh, searchValue]);
+
   const items = [
     {
-      key: "storage-inventory",
+      key: "storage",
       label: <p className="font-semibold text-base">Inventario de almacén</p>,
       children: (
         <StorageInventoryContainer
           owner={owner}
           refresh={refresh}
-          searchValue={currentTab === "storage-inventory" ? searchValue : null}
+          searchValue={currentTab === "storage" ? searchValue : null}
         />
       ),
     },
     {
-      key: "consumption-inventory",
+      key: "consumption",
       label: <p className="font-semibold text-base">Inventario de consumo</p>,
       children: (
         <ConsumptionInventoryContainer
           owner={owner}
           refresh={refresh}
-          searchValue={
-            currentTab === "consumption-inventory" ? searchValue : null
-          }
+          searchValue={currentTab === "consumption" ? searchValue : null}
         />
       ),
     },
-    {
-      key: "sales",
-      label: <p className="font-semibold text-base">Ventas</p>,
-      children: (
-        <SalesInventoryContainer
-          refresh={refresh}
-          searchValue={currentTab === "sales" ? searchValue : null}
-        />
-      ),
-    },
+    // {
+    //   key: "sales",
+    //   label: <p className="font-semibold text-base">Ventas</p>,
+    //   children: (
+    //     <SalesInventoryContainer
+    //       refresh={refresh}
+    //       searchValue={currentTab === "sales" ? searchValue : null}
+    //     />
+    //   ),
+    // },
   ];
 
   useEffect(() => {
@@ -53,10 +65,10 @@ function InventoryContainer() {
       if (item === "inventory") {
         switch (window.location.pathname.split("/")[index + 1]) {
           case "storage":
-            setCurrentTab("storage-inventory");
+            setCurrentTab("storage");
             break;
           case "consumption":
-            setCurrentTab("consumption-inventory");
+            setCurrentTab("consumption");
             break;
         }
       }
@@ -73,19 +85,21 @@ function InventoryContainer() {
   }, [currentTab]);
 
   useEffect(() => {
-    getInventoryOwner();
+    getCurrentTab();
   }, [window.location.pathname]);
 
-  function getInventoryOwner() {
+  function getCurrentTab() {
     const splitItems = window.location.pathname
       .split("/")
       .filter((item) => item !== "");
 
-    splitItems.forEach((item, index) => {
-      if (item === "inventory" && index + 1 < splitItems.length) {
-        setOwner(splitItems[index + 1]);
-      }
-    });
+    if (splitItems.includes("consumption")) {
+      setCurrentTab("consumption");
+    }
+
+    if (splitItems.includes("storage")) {
+      setCurrentTab("storage");
+    }
   }
 
   return (
@@ -113,9 +127,12 @@ function InventoryContainer() {
       <Tabs
         activeKey={currentTab}
         defaultActiveKey={currentTab}
-        items={items}
+        items={tabs}
         onChange={(key) => {
           setCurrentTab(key);
+          navigate(`/operations/inventory${owner ? `/${owner}/${key}` : ``}`, {
+            replace: true,
+          });
         }}
       />
     </div>

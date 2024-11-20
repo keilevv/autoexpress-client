@@ -15,9 +15,14 @@ function MaterialsTable({
   setPagination,
   getMaterials,
   type = "storage",
+  owner,
 }) {
   const [tableData, setTableData] = useState([]);
-  const { updateStorageMaterial, updateConsumptionMaterial } = useInventory();
+  const {
+    updateStorageMaterial,
+    updateConsumptionMaterial,
+    loading: loadingUpdate,
+  } = useInventory();
   const navigate = useNavigate();
 
   const handleArchiveMaterial = (item) => {
@@ -29,7 +34,7 @@ function MaterialsTable({
               message: "Material archivado exitosamente",
               description: `${response.data.results.item} Ref. #${response.data.results.reference}`,
             });
-            getMaterials();
+            getMaterials(1, 10, `&archived=false&owner=${owner}`);
           }
         })
         .catch((err) => {
@@ -47,7 +52,7 @@ function MaterialsTable({
               message: "Material archivado exitosamente",
               // description: `${response.data.results.item} - ${response.data.results.reference}`,
             });
-            getMaterials(1, 10, "&archived=false");
+            getMaterials(1, 10, `&archived=false&owner=${owner}`);
           }
         })
         .catch((err) => {
@@ -141,6 +146,7 @@ function MaterialsTable({
         };
         return (
           <InventoryTableMenu
+            loading={loadingUpdate}
             onEdit={handleOnEdit}
             onArchive={() => {
               handleArchiveMaterial(item);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   Breadcrumb,
@@ -12,12 +13,12 @@ import {
   Divider,
 } from "antd";
 import JobOrderDetails from "./Details";
-import MaterialsList from "../../../../../components/operations/Inventory/MaterialsList";
 import dayjs from "dayjs";
 import useJobOrder from "../../../../../hooks/useJobOrder";
 import ConsumedMaterials from "./ConsumedMaterials";
 
 function JobOrdersSingleContainer() {
+  const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
   const {
     getJobOrder,
@@ -184,8 +185,26 @@ function JobOrdersSingleContainer() {
           <Breadcrumb
             items={[
               {
-                title: (
-                  <a onClick={() => navigate("/operations")}>Operaciones</a>
+                title: user.roles.includes("autodetailing-operator") ? (
+                  <p
+                    onClick={() => {
+                      if (!user.roles.includes("autodetailing-operator")) {
+                        navigate("/operations");
+                      }
+                    }}
+                  >
+                    Operaciones
+                  </p>
+                ) : (
+                  <a
+                    onClick={() => {
+                      if (!user.roles.includes("autodetailing-operator")) {
+                        navigate("/operations");
+                      }
+                    }}
+                  >
+                    Operaciones
+                  </a>
                 ),
               },
               {
@@ -200,7 +219,7 @@ function JobOrdersSingleContainer() {
               {
                 title: (
                   <p className="text text-red-700 font-semibold">
-                    #{jobOrder?.number}
+                    {jobOrder?.number}
                   </p>
                 ),
               },
@@ -219,27 +238,29 @@ function JobOrdersSingleContainer() {
         </div>
 
         <div className="single-jobOrder-buttons flex gap-2">
-          <div className="flex gap-2 mb-4 md:mb-0">
-            <Tooltip title={jobOrder?.archived ? "Desarchivar" : "Archivar"}>
-              <Popconfirm
-                title={`${
-                  jobOrder?.archived ? "Desarchivar" : "Archivar"
-                } orden de trabajo`}
-                description={`¿Está seguro de ${
-                  jobOrder?.archived ? "desarchivar" : "archivar"
-                } esta orden de trabajo?`}
-                onConfirm={handleArchiveJobOrder}
-              >
-                <Button className="edit-button" shape="circle">
-                  {jobOrder?.archived ? (
-                    <i className="fa-solid fa-arrow-up-from-bracket"></i>
-                  ) : (
-                    <i className="fa-solid fa-box-archive icon"></i>
-                  )}{" "}
-                </Button>
-              </Popconfirm>
-            </Tooltip>
-          </div>
+          {!user.roles.includes("autodetailing-operator") && (
+            <div className="flex gap-2 mb-4 md:mb-0">
+              <Tooltip title={jobOrder?.archived ? "Desarchivar" : "Archivar"}>
+                <Popconfirm
+                  title={`${
+                    jobOrder?.archived ? "Desarchivar" : "Archivar"
+                  } orden de trabajo`}
+                  description={`¿Está seguro de ${
+                    jobOrder?.archived ? "desarchivar" : "archivar"
+                  } esta orden de trabajo?`}
+                  onConfirm={handleArchiveJobOrder}
+                >
+                  <Button className="edit-button" shape="circle">
+                    {jobOrder?.archived ? (
+                      <i className="fa-solid fa-arrow-up-from-bracket"></i>
+                    ) : (
+                      <i className="fa-solid fa-box-archive icon"></i>
+                    )}{" "}
+                  </Button>
+                </Popconfirm>
+              </Tooltip>
+            </div>
+          )}
         </div>
       </div>
       <h1 className="text-2xl text-red-700 mb-4  font-semibold">
@@ -255,7 +276,7 @@ function JobOrdersSingleContainer() {
           >
             <div className="flex justify-between">
               <h1 className="text-xl font-semibold">Información</h1>
-              <EditButton />
+              <EditButton />{" "}
             </div>
 
             <Divider className="bg-gray-300 my-4 h-[2px]" />

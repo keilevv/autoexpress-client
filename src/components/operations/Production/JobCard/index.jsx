@@ -5,8 +5,10 @@ import {
   UserOutlined,
   CarOutlined,
   DollarOutlined,
+  ProjectOutlined,
 } from "@ant-design/icons";
 import { Card, Button } from "antd";
+import StatusLabel from "../StatusLabel";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { formatToCurrency } from "../../../../helpers";
@@ -90,6 +92,13 @@ function JobCard({ jobOrder }) {
             <p className="ml-auto text- font-medium">
               {getJobOrderPrice()}
             </p>{" "}
+          </div>
+        </div>
+        <div className="flex gap-4  ">
+          <ProjectOutlined className="text-base" />
+          <div className="flex flex-col">
+            <p className="text-sm font-semibold text-red-700">Situación</p>
+            <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
           </div>
         </div>
         <div className="flex flex-col mt-2 gap-4">

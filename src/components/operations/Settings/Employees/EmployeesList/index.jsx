@@ -12,9 +12,10 @@ function EmployeesList({ isSelect, setPayload, payload }) {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const userIsADOperator = user.roles.includes("autodetailing-operator");
 
   useEffect(() => {
-    getEmployees(1, 100, "");
+    getEmployees(1, 100, userIsADOperator ? `&owner=autodetailing` : "");
   }, [user]);
 
   return (
@@ -34,8 +35,10 @@ function EmployeesList({ isSelect, setPayload, payload }) {
             }`}
             key={item._id}
             onClick={(e) => {
-              setSelectedEmployeeId(item._id);
-              setIsModalOpen(true);
+              if (!userIsADOperator) {
+                setSelectedEmployeeId(item._id);
+                setIsModalOpen(true);
+              }
             }}
           >
             <List.Item.Meta
@@ -63,17 +66,9 @@ function EmployeesList({ isSelect, setPayload, payload }) {
           </List.Item>
         )}
       />
-      {!isSelect && (
+      {!isSelect && !userIsADOperator && (
         <div className="flex justify-center mt-10 ">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setSelectedEmployeeId(undefined);
-              setIsModalOpen(true);
-              form.resetFields();
-            }}
-          >
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => {}}>
             Agregar
           </Button>
         </div>

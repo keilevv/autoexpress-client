@@ -49,6 +49,7 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
   return (
     <div className="bg-gray-100 rounded-lg">
       <MaterialsTable
+        owner={owner}
         type="storage"
         data={storageMaterials}
         getMaterials={getStorageMaterials}

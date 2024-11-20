@@ -49,6 +49,7 @@ function ConsumptionInventoryContainer({ refresh, searchValue, owner }) {
   return (
     <div className="bg-gray-100 rounded-lg">
       <MaterialsTable
+        owner={owner}
         type={"consumption"}
         data={consumptionMaterials}
         getMaterials={getConsumptionMaterials}
