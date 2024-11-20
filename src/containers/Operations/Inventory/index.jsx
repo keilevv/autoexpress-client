@@ -23,7 +23,7 @@ function InventoryContainer({ owner }) {
         setTabs(items);
         break;
     }
-  }, [owner, refresh]);
+  }, [owner, refresh, searchValue]);
 
   const items = [
     {

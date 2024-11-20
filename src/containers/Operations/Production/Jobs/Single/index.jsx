@@ -276,7 +276,7 @@ function JobOrdersSingleContainer() {
           >
             <div className="flex justify-between">
               <h1 className="text-xl font-semibold">Información</h1>
-              {!user.roles.includes("autodetailing-operator") && <EditButton />}
+              <EditButton />{" "}
             </div>
 
             <Divider className="bg-gray-300 my-4 h-[2px]" />

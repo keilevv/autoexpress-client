@@ -1,4 +1,5 @@
 import { useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import { Input, Form, DatePicker, Select } from "antd";
 import dayjs from "dayjs";
 import StatusLabel from "../../../../../../components/operations/Production/StatusLabel";
@@ -10,6 +11,8 @@ import "./style.css";
 
 function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
   const { getEmployees, employees, loading } = useEmployees();
+  const user = useSelector((state) => state.auth.user);
+  const userIsADOperator = user.roles.includes("autodetailing-operator");
 
   useEffect(() => {
     getEmployees(1, 100, "&archived=false");
@@ -46,7 +49,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
     >
       <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">Número de orden</label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"number"}
             rules={[
@@ -64,7 +67,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
       </div>
       <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">Descripción</label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"description"}
             rules={[
@@ -84,7 +87,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
         <label className="font-semibold text-base">
           Trabajador responsable
         </label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"employee"}
             initialValue={jobOrder?.employee?._id}
@@ -121,7 +124,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
       </div>
       <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">Placa del vehículo</label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"car_plate"}
             rules={[
@@ -145,7 +148,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
       </div>
       <div className="gap-2 flex flex-col">
         <label className="font-semibold text-base">Fecha de entrega</label>
-        {isEditing ? (
+        {isEditing && !userIsADOperator ? (
           <Form.Item
             name={"due_date"}
             rules={[

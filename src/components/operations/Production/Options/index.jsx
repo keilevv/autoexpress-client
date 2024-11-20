@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import { Button, Form, Input, DatePicker, Select } from "antd";
 import { PlusOutlined, FilterOutlined } from "@ant-design/icons";
 import NewJobOrderModal from "./NewJobOrderModal";
-import { employeeRolesOptions } from "../../../../helpers/constants";
+import {
+  employeeRolesOptions,
+  statusTypes,
+} from "../../../../helpers/constants";
+import useViewport from "../../../../hooks/useViewport";
 
 function ProductionOptions({
   onFinish,
@@ -12,6 +16,7 @@ function ProductionOptions({
   onApplyFilters = () => {},
   owner = "autoexpress",
 }) {
+  const { isMobileScreen } = useViewport();
   const user = useSelector((state) => state?.auth?.user);
   const employees = useSelector((state) => state.auth.employeeList);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,7 +79,9 @@ function ProductionOptions({
           name={`table-filters`}
           autoComplete="off"
           form={form}
-          className="flex flex-col md:flex-row w-full gap-2"
+          className={`flex ${
+            isMobileScreen ? "flex-col" : "flex-wrap"
+          } w-full gap-2`}
         >
           <div className="flex flex-col">
             <p className="text-gray-500 mb-4 font-semibold text-sm">{`Fecha de creación`}</p>
@@ -113,6 +120,28 @@ function ProductionOptions({
                       </Select.Option>
                     );
                   })}
+              </Select>
+            </Form.Item>
+          </div>
+          <div className="flex flex-col">
+            <p className="text-gray-500 mb-4 font-semibold text-sm">{`Situación`}</p>
+            <Form.Item
+              name={"status"}
+              rules={[
+                {
+                  required: true,
+                  message: "Por favor, seleccione un trabajador",
+                },
+              ]}
+            >
+              <Select className="md:min-w-[300px]">
+                {statusTypes.map((item) => {
+                  return (
+                    <Select.Option key={item.value} value={item.value}>
+                      {item.label}
+                    </Select.Option>
+                  );
+                })}
               </Select>
             </Form.Item>
           </div>
