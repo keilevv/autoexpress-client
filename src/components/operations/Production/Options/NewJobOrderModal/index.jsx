@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Modal, Form, Input, DatePicker, Select, notification } from "antd";
 import useEmployee from "../../../../../hooks/useEmployee";
+import useCars from "../../../../../hooks/useCars";
 import useJobOrder from "../../../../../hooks/useJobOrder";
 import { employeeRolesOptions } from "../../../../../helpers/constants";
 import { validateCarPlate } from "../../../../../helpers";
@@ -14,7 +15,11 @@ function NewJobOrderModal({
   owner = "autoexpress",
 }) {
   const { getEmployees, employees, loading } = useEmployee();
+  const { getCarsApi, carBrands, loading: loadingCars, carModels } = useCars();
+  const [disableModels, setDisableModels] = useState(false);
   const { createJobOrder } = useJobOrder();
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
 
   const handleCreateJobOrder = () => {
     form.validateFields().then((values) => {
@@ -38,16 +43,35 @@ function NewJobOrderModal({
     });
   };
 
-  useEffect(() => {
-    getEmployees(1, 100, "&archived=false");
-  }, []);
-
   const handleSearchEmployee = (value) => {
     getEmployees(1, 100, `&full_name=${value}`);
   };
 
   const debounceFn = useCallback(_debounce(handleSearchEmployee, 300), []);
   useEffect(() => {}, [employees]);
+
+  function handleGetCarBrands(inputValue, brand) {
+    getCarsApi(inputValue, brand);
+  }
+  const debounceFnCarBrands = useCallback(
+    _debounce(handleGetCarBrands, 300),
+    []
+  );
+  useEffect(() => {
+    if (isModalOpen) {
+      getEmployees(1, 100, "&archived=false");
+      getCarsApi();
+    }
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    getCarsApi("", brand);
+    if (brand.length) {
+      setDisableModels(false);
+    } else {
+      setDisableModels(true);
+    }
+  }, [brand]);
 
   return (
     <Modal
@@ -76,7 +100,80 @@ function NewJobOrderModal({
         <div className={"flex flex-col gap-2"}>
           <label className={"font-semibold"}>Descripción</label>
           <Form.Item name="description">
-            <Input />
+            <Input.TextArea />
+          </Form.Item>
+        </div>
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Marca</label>
+          <Form.Item
+            name="car_brand"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingrese la marca",
+              },
+            ]}
+          >
+            <Select
+              value={brand}
+              allowClear
+              loading={loadingCars}
+              showSearch
+              options={carBrands}
+              onSearch={(value) => {
+                debounceFnCarBrands(value);
+                if (value) {
+                  setBrand(value);
+                  form.resetFields(["car_model"]);
+                }
+              }}
+              onChange={(value) => {
+                if (value.length) {
+                  setBrand(value);
+                  form.resetFields(["car_model"]);
+                }
+              }}
+              onDeselect={() => {
+                setBrand("");
+                form.resetFields(["car_model"]);
+              }}
+            />
+          </Form.Item>
+        </div>
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Modelo</label>
+          <Form.Item
+            name="car_model"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingrese el modelo",
+              },
+            ]}
+          >
+            <Select
+              disabled={disableModels}
+              value={model}
+              allowClear
+              loading={loading}
+              showSearch
+              options={carModels}
+              onSearch={(value) => {
+                if (value) {
+                  setModel(value);
+                  debounceFnCarBrands(value, brand);
+                }
+              }}
+              onChange={(value) => {
+                if (value.length) {
+                  setModel(value);
+                }
+              }}
+              onDeselect={() => {
+                setModel("");
+                form.resetFields(["car_model"]);
+              }}
+            />
           </Form.Item>
         </div>
 

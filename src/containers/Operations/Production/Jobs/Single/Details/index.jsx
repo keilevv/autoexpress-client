@@ -1,9 +1,10 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import { useSelector } from "react-redux";
 import { Input, Form, DatePicker, Select } from "antd";
 import dayjs from "dayjs";
 import StatusLabel from "../../../../../../components/operations/Production/StatusLabel";
 import useEmployees from "../../../../../../hooks/useEmployee";
+import useCars from "../../../../../../hooks/useCars";
 import { employeeRolesOptions } from "../../../../../../helpers/constants";
 import { validateCarPlate } from "../../../../../../helpers";
 import _debounce from "lodash/debounce";
@@ -13,6 +14,10 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
   const { getEmployees, employees, loading } = useEmployees();
   const user = useSelector((state) => state.auth.user);
   const userIsADOperator = user.roles.includes("autodetailing-operator");
+  const { getCarsApi, carBrands, loading: loadingCars, carModels } = useCars();
+  const [disableModels, setDisableModels] = useState(false);
+  const [brand, setBrand] = useState("");
+  const [model, setModel] = useState("");
 
   useEffect(() => {
     getEmployees(1, 100, "&archived=false");
@@ -36,6 +41,30 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
     { value: "in-progress", label: "En progreso", color: "blue-300" },
     { value: "completed", label: "Completado", color: "green-300" },
   ];
+
+  function handleGetCarBrands(inputValue, brand) {
+    getCarsApi(inputValue, brand);
+  }
+  const debounceFnCarBrands = useCallback(
+    _debounce(handleGetCarBrands, 300),
+    []
+  );
+  useEffect(() => {
+    if (isEditing) {
+      getEmployees(1, 100, "&archived=false");
+      getCarsApi();
+    }
+  }, [isEditing]);
+
+  useEffect(() => {
+    getCarsApi("", brand);
+    if (brand.length) {
+      setDisableModels(false);
+    } else {
+      setDisableModels(true);
+    }
+  }, [brand]);
+
   return (
     <Form
       name="job-order-details"
@@ -77,10 +106,96 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
               },
             ]}
           >
-            <Input />
+            <Input.TextArea />
           </Form.Item>
         ) : (
-          <p className="text-gray-500 ">{`${jobOrder?.description}`}</p>
+          <p className="text-gray-500 ">{`${
+            jobOrder?.description ? jobOrder?.description : "Sin descripción"
+          }`}</p>
+        )}
+      </div>
+      <div className="gap-2 flex flex-col">
+        <label className="font-semibold text-base">Marca</label>
+        {isEditing && !userIsADOperator ? (
+          <Form.Item
+            name="car_brand"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingrese la marca",
+              },
+            ]}
+          >
+            <Select
+              value={brand}
+              allowClear
+              loading={loadingCars}
+              showSearch
+              options={carBrands}
+              onSearch={(value) => {
+                debounceFnCarBrands(value);
+                if (value) {
+                  setBrand(value);
+                  form.resetFields(["car_model"]);
+                }
+              }}
+              onChange={(value) => {
+                if (value.length) {
+                  setBrand(value);
+                  form.resetFields(["car_model"]);
+                }
+              }}
+              onDeselect={() => {
+                setBrand("");
+                form.resetFields(["car_model"]);
+              }}
+            />
+          </Form.Item>
+        ) : (
+          <p className="text-gray-500 uppercase">{`${
+            jobOrder?.car_brand ? jobOrder?.car_brand : "Sin marca"
+          }`}</p>
+        )}
+      </div>
+      <div className="gap-2 flex flex-col">
+        <label className="font-semibold text-base">Modelo</label>
+        {isEditing && !userIsADOperator ? (
+          <Form.Item
+            name="car_model"
+            rules={[
+              {
+                required: true,
+                message: "Por favor ingrese la marca",
+              },
+            ]}
+          >
+            <Select
+              value={model}
+              allowClear
+              loading={loading}
+              showSearch
+              options={carModels}
+              onSearch={(value) => {
+                if (value) {
+                  setModel(value);
+                  debounceFn(value, brand);
+                }
+              }}
+              onChange={(value) => {
+                if (value.length) {
+                  setModel(value);
+                }
+              }}
+              onDeselect={() => {
+                setModel("");
+                form.resetFields(["model"]);
+              }}
+            />
+          </Form.Item>
+        ) : (
+          <p className="text-gray-500 uppercase">{`${
+            jobOrder?.car_model ? jobOrder?.car_model : "Sin modelo"
+          }`}</p>
         )}
       </div>
       <div className="gap-2 flex flex-col">

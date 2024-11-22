@@ -74,6 +74,7 @@ function MaterialsTable({
           unit: item.unit,
           price: item.price,
           quantity: item.quantity,
+          caution_quantity: item.caution_quantity,
         };
       });
       setTableData(storageTableData);
@@ -86,6 +87,7 @@ function MaterialsTable({
           name: item.material.name,
           quantity: item.quantity,
           price: item.material.price,
+          caution_quantity: item.material.caution_quantity,
         };
       });
       setTableData(consumptionTableData);
@@ -165,6 +167,11 @@ function MaterialsTable({
     <>
       <div className="table-container">
         <Table
+          rowClassName={(item) => { if(item.caution_quantity){
+            if(item.quantity <= item.caution_quantity){
+              return "bg-yellow-50"
+            }
+          }}}
           loading={loading}
           dataSource={tableData}
           columns={columns}
