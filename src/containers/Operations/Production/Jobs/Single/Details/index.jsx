@@ -65,6 +65,16 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
     }
   }, [brand]);
 
+  useEffect(() => {
+    if (brand && brand.length) {
+      form.setFieldValue("car_brand", brand);
+    }
+    if (model && model.length) {
+      form.setFieldValue("car_model", model);
+    }
+  }, [brand, model]);
+
+
   return (
     <Form
       name="job-order-details"

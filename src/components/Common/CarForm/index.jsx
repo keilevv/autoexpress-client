@@ -231,7 +231,6 @@ function CarForm({
                     showSearch
                     options={carBrands}
                     onSearch={(value) => {
-                      debounceFn(value);
                       if (value) {
                         setBrand(value);
                       }
