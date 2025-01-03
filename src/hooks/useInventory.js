@@ -13,6 +13,8 @@ function useInventory() {
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const auth = useSelector((state) => state.auth);
+  const [totalPriceStorage, setTotalPriceStorage] = useState(0);
+  const [totalPriceConsumption, setTotalPriceConsumption] = useState(0);
 
   useEffect(() => {
     if (auth.user && auth.user.accessToken) {
@@ -42,6 +44,7 @@ function useInventory() {
       return inventoryService
         .getStorageMaterials(auth.user.accessToken, page, limit, filter)
         .then((response) => {
+          setTotalPriceStorage(response.data.total_price);
           setStorageMaterials(response.data.results);
           setCount(response.data.count);
           setLoading(false);
@@ -124,6 +127,7 @@ function useInventory() {
       return inventoryService
         .getConsumptionMaterials(auth.user.accessToken, page, limit, filter)
         .then((response) => {
+          setTotalPriceConsumption(response.data.total_price);
           setConsumptionMaterials(response.data.results);
           setCount(response.data.count);
           setLoading(false);
@@ -289,6 +293,8 @@ function useInventory() {
     sale,
     count,
     loading,
+    totalPriceConsumption,
+    totalPriceStorage,
   };
 }
 
