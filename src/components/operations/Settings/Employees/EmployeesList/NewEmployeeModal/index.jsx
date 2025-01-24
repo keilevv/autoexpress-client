@@ -7,7 +7,7 @@ import {
   Button,
   Popconfirm,
 } from "antd";
-import { SaveOutlined, RestOutlined } from "@ant-design/icons";
+import { SaveOutlined, RestOutlined, ToTopOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 import useEmployees from "../../../../../../hooks/useEmployee";
 import { employeeRolesOptions } from "../../../../../../helpers/constants";
@@ -19,8 +19,15 @@ function NewEmployeeModal({
   onFinish,
   employeeId,
 }) {
-  const { createEmployee, getEmployee, employee, setEmployee, updateEmployee } =
-    useEmployees();
+  const {
+    createEmployee,
+    getEmployee,
+    employee,
+    setEmployee,
+    updateEmployee,
+    loading,
+    deleteEmployee,
+  } = useEmployees();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
@@ -79,6 +86,22 @@ function NewEmployeeModal({
       });
   };
 
+  const handleDeleteEmployee = () => {
+    deleteEmployee(employeeId)
+      .then(() => {
+        notification.success({
+          message: `Empleado eliminado`,
+        });
+        setModalOpen(false);
+        onFinish();
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error al eliminar el empleado",
+        });
+      });
+  };
+
   useEffect(() => {
     if (employeeId) {
       getEmployee(employeeId);
@@ -106,14 +129,32 @@ function NewEmployeeModal({
       }}
       footer={
         <div className="flex flex-wrap-reverse gap-2 justify-end">
+          {employee && employee.archived && (
+            <Popconfirm
+              onConfirm={handleDeleteEmployee}
+              title="¿Esta seguro de borrar el empleado?"
+            >
+              <Button
+                danger
+                type="text"
+                icon={<RestOutlined />}
+                disabled={loading}
+              >
+                Borrar
+              </Button>
+            </Popconfirm>
+          )}
           {employee && (
             <Popconfirm
               onConfirm={handleArchiveEmployee}
-              title={`¿Seguro desea ${
+              title={`¿Esta seguro de ${
                 employee.archived ? "desarchivar" : "archivar"
               } este empleado?`}
             >
-              <Button icon={<RestOutlined />}>
+              <Button
+                icon={employee.archived ? <ToTopOutlined /> : <RestOutlined />}
+                disabled={loading}
+              >
                 {employee.archived ? "Desarchivar" : "Archivar"}
               </Button>
             </Popconfirm>
@@ -126,7 +167,12 @@ function NewEmployeeModal({
           >
             Cancelar
           </Button>
-          <Button type="primary" onClick={handleOk} icon={<SaveOutlined />}>
+          <Button
+            type="primary"
+            onClick={handleOk}
+            icon={<SaveOutlined />}
+            disabled={loading}
+          >
             Guardar
           </Button>
         </div>
@@ -146,7 +192,11 @@ function NewEmployeeModal({
           label="Nombre"
           rules={[{ required: true, message: "Por favor ingrese el nombre" }]}
         >
-          <Input />
+          {loading ? (
+            <div className="bg-gray-200 width-full h-8 rounded-md animate-pulse" />
+          ) : (
+            <Input />
+          )}
         </Form.Item>
         <Form.Item
           name="roles"
@@ -158,13 +208,17 @@ function NewEmployeeModal({
             },
           ]}
         >
-          <Select>
-            {employeeRolesOptions.map((role) => (
-              <Select.Option key={role.value} value={role.value}>
-                {role.label}
-              </Select.Option>
-            ))}
-          </Select>
+          {loading ? (
+            <div className="bg-gray-200 width-full h-8 rounded-md animate-pulse" />
+          ) : (
+            <Select>
+              {employeeRolesOptions.map((role) => (
+                <Select.Option key={role.value} value={role.value}>
+                  {role.label}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
         </Form.Item>
       </Form>
     </Modal>

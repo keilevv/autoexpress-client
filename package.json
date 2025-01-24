@@ -45,5 +45,6 @@
   },
   "eslintConfig": {
     "extends": "./node_modules/standard/eslintrc.json"
-  }
+  },
+  "proxy": "http://192.160.68.101:5000"
 }

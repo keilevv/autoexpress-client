@@ -35,10 +35,10 @@ function useEmployees() {
       });
   }, []);
 
-  const getEmployee = useCallback((clientId) => {
+  const getEmployee = useCallback((employeeId) => {
     setLoading(true);
     employeesService
-      .getEmployee(auth.user.accessToken, clientId)
+      .getEmployee(auth.user.accessToken, employeeId)
       .then((response) => {
         setLoading(false);
         setEmployee(response.data.results);
@@ -53,7 +53,7 @@ function useEmployees() {
   const createEmployee = useCallback((payload) => {
     setLoading(true);
     return employeesService
-      .createEmployee(payload)
+      .createEmployee(auth.user.accessToken, payload)
       .then((response) => {
         setLoading(false);
         return response;
@@ -64,10 +64,10 @@ function useEmployees() {
       });
   }, []);
 
-  const updateEmployee = useCallback((clientId, payload) => {
+  const updateEmployee = useCallback((employeeId, payload) => {
     setLoading(true);
     return employeesService
-      .updateEmployee(clientId, payload)
+      .updateEmployee(auth.user.accessToken, employeeId, payload)
       .then((response) => {
         setEmployee(response.data.results);
         setLoading(false);
@@ -79,12 +79,28 @@ function useEmployees() {
       });
   }, []);
 
+  const deleteEmployee = useCallback((employeeId, payload) => {
+    setLoading(true);
+    return employeesService
+      .deleteEmployee(auth.user.accessToken, employeeId)
+      .then((response) => {
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+        return err;
+      });
+  }, []);
+
   return {
     getEmployees,
     createEmployee,
     updateEmployee,
     getEmployee,
     setEmployee,
+    deleteEmployee,
     employee,
     employees,
     loading,

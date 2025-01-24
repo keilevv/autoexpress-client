@@ -31,8 +31,9 @@ const ProtectedRoute = ({ children }) => {
 
   if (loading)
     return (
-      <div className="w-full flex justify-center items-center h-screen">
-        <img src={Logo} alt="logo" className="object-contain h-[200px]" />
+      <div className="w-full flex justify-center items-center h-screen flex-col text-blue-800 font-bold ">
+        <h1 className="italic leading-none text-gray-500">M&L</h1>
+        <h1 className="italic leading-none">Autocheck</h1>
       </div>
     );
   if (!isValidSession) return <LoginLayout />;

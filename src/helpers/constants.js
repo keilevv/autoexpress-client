@@ -23,7 +23,7 @@ export const googleApiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 export const employeeRolesOptions = [
   { value: "painter", label: "Pintor" },
   { value: "body-worker", label: "Latonero" },
-  { value: "detailer", label: "Detailing" },
+  { value: "mechanic", label: "Mecánico" },
 ];
 
 export const statusTypes = [

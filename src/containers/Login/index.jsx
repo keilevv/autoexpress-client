@@ -6,7 +6,7 @@ function loginContainer() {
     <div className="login-container">
       <div className="p-4 container bg-gray-100 py-20 rounded-lg flex flex-col md:flex-row justify-center items-center">
         <div className="flex flex-col text-right text-blue-800 font-bold font-sans">
-          <h1 className="">M&L</h1>
+          <h1 className="italic text-gray-500">M&L</h1>
           <h1 className="">Autocheck</h1>
         </div>
         <div className="w-full md:w-1/2 md:ml-10 my-auto text-center md:text-left">

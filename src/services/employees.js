@@ -16,17 +16,31 @@ const employeesService = {
     );
   },
 
-  createEmployee(payload) {
+  createEmployee(token, payload) {
     return axios.post(
       `${apiUrl}/settings/operations/register-employee`,
-      payload
+      payload,
+      {
+        headers: { Authorization: `${token}` },
+      }
     );
   },
 
-  updateEmployee(employee, payload) {
+  updateEmployee(token, employee, payload) {
     return axios.put(
       `${apiUrl}/settings/operations/update/employees/${employee}`,
-      payload
+      payload,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
+  },
+  deleteEmployee(token, employeeId) {
+    return axios.delete(
+      `${apiUrl}/settings/operations/employee/${employeeId}`,
+      {
+        headers: { Authorization: `${token}` },
+      }
     );
   },
 };
