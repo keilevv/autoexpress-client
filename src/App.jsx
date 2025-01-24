@@ -133,7 +133,16 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<LandingContainer />}></Route>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <DashboardContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
           <Route
             path="/operations/agenda"
             element={
