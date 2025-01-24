@@ -56,7 +56,7 @@ function AddSaleModal({ isModalOpen, setIsModalOpen, onFinish, type }) {
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <h1 className="text-xl text-red-700 font-semibold mb-5 ">
+      <h1 className="text-xl text-blue-800 font-semibold mb-5 ">
         Agregar venta nueva
       </h1>
       <AddSaleModalContent

@@ -253,7 +253,7 @@ function MaterialsList({
                       {selectedMaterial === _id && isEditing && (
                         <div className="flex gap-2 md:ml-auto pt-2 transition-opacity duration-300 max-w-[200px]">
                           <div className="flex flex-col gap-2">
-                            <p className="text-base text-red-700">
+                            <p className="text-base text-blue-800">
                               Cant. Seleccionada
                             </p>
                             <InputNumber
@@ -267,7 +267,7 @@ function MaterialsList({
                             {type === "sales" && (
                               <>
                                 {" "}
-                                <p className="text-base text-red-700">
+                                <p className="text-base text-blue-800">
                                   Precio unidad
                                 </p>
                                 <InputNumber
@@ -293,7 +293,7 @@ function MaterialsList({
                                 e.stopPropagation();
                                 toggleMaterial(_id);
                               }}
-                              className="w-full h-8 max-w-[100px] bg-red-700 hover:bg-red-800 mt-2"
+                              className="w-full h-8 max-w-[100px] bg-blue-800 hover:bg-red-800 mt-2"
                             >
                               {isSelected ? "Borrar" : "Agregar"}
                             </Button>
@@ -314,7 +314,7 @@ function MaterialsList({
       </div>
       {materials.length > 0 && isEditing && (
         <>
-          <p className="text-base text-red-700 mt-5">Seleccionados</p>
+          <p className="text-base text-blue-800 mt-5">Seleccionados</p>
           <div className="w-full max-h-[300px] overflow-auto pr-2">
             {materials.map((selectedMaterial, index) => {
               const { quantity, price } = selectedMaterial;
@@ -370,10 +370,10 @@ function MaterialsList({
               );
             })}
             {type === "sales" && (
-              <p className="text-base text-red-700 mt-5">Total: </p>
+              <p className="text-base text-blue-800 mt-5">Total: </p>
             )}
             {type === "sales" && (
-              <p className="text-lg text-red-700">
+              <p className="text-lg text-blue-800">
                 {formatToCurrency(
                   materials.reduce((acc, mat) => {
                     const { price, quantity } = mat;

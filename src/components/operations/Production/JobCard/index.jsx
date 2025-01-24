@@ -63,7 +63,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <FormOutlined className="text-base mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Description</p>
+              <p className="text-sm font-semibold text-blue-800">Description</p>
               <p className="text-base  text-gray-700">
                 {jobOrder?.description
                   ? jobOrder?.description
@@ -74,7 +74,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <CalendarOutlined className="text-base mt-1 mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">
+              <p className="text-sm font-semibold text-blue-800">
                 Fecha de entrega
               </p>
               <p className="text-base mt-1 text-gray-700">
@@ -85,7 +85,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <UserOutlined className="text-base mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Trabajador</p>
+              <p className="text-sm font-semibold text-blue-800">Trabajador</p>
               <p className="text-base mt-1 text-gray-700">
                 {jobOrder.employee.name}
               </p>
@@ -94,7 +94,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <CarOutlined className="text-base mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Placa</p>
+              <p className="text-sm font-semibold text-blue-800">Placa</p>
 
               <p className="text-base mt-1 text-gray-700">
                 {jobOrder.car_plate.toUpperCase()}
@@ -104,7 +104,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <CarOutlined className="text-base mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Marca</p>
+              <p className="text-sm font-semibold text-blue-800">Marca</p>
 
               <p className="text-base mt-1 text-gray-700">
                 {jobOrder?.car_brand
@@ -116,7 +116,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <CarOutlined className="text-base mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Modelo</p>
+              <p className="text-sm font-semibold text-blue-800">Modelo</p>
 
               <p className="text-base mt-1 text-gray-700">
                 {jobOrder?.car_model
@@ -128,7 +128,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <DollarOutlined className="text-base mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Costo</p>
+              <p className="text-sm font-semibold text-blue-800">Costo</p>
               <p className="ml-auto text- font-medium">
                 {getJobOrderPrice()}
               </p>{" "}
@@ -137,7 +137,7 @@ function JobCard({ jobOrder }) {
           <div className="flex gap-4 items-start">
             <ProjectOutlined className="text-base mt-1" />
             <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Situación</p>
+              <p className="text-sm font-semibold text-blue-800">Situación</p>
               <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
             </div>
           </div>

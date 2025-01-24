@@ -109,7 +109,7 @@ function ClientForm({
           autoComplete="off"
         >
           <div className="p-4">
-            <p className="text text-xl text-red-700 mb-4">
+            <p className="text text-xl text-blue-800 mb-4">
               {client
                 ? "Información personal"
                 : "Ingrese su información personal"}
@@ -203,7 +203,7 @@ function ClientForm({
                 </Form.Item>
               </Row>
             </div>
-            <p className="text text-xl text-red-700 my-4">
+            <p className="text text-xl text-blue-800 my-4">
               {client
                 ? "Información de contacto"
                 : "Ingrese su información de contacto"}
@@ -285,7 +285,7 @@ function ClientForm({
                 fill="black"
               />
             </div>
-            <p className="text text-2xl text-red-700 font-semibold mb-4">
+            <p className="text text-2xl text-blue-800 font-semibold mb-4">
               ¡Bienvenido!
             </p>
             <p className="text text-lg font-medium mb-4">

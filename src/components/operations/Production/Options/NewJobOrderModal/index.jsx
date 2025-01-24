@@ -89,7 +89,7 @@ function NewJobOrderModal({
       onCancel={() => setIsModalOpen(false)}
       onOk={handleCreateJobOrder}
     >
-      <h1 className="text-2xl font-semibold mb-5 text-red-700">
+      <h1 className="text-2xl font-semibold mb-5 text-blue-800">
         Nueva orden de trabajo
       </h1>
       <Form layout="vertical" form={form} className="flex flex-col gap-4">

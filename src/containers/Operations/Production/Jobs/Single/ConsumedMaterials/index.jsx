@@ -58,7 +58,7 @@ function ConsumedMaterials({
   const debounceFn = useCallback(_debounce(handleSearchMaterial, 300), []);
   return (
     <>
-      <p className="text-lg font-medium mb-4 text-red-700">Materiales</p>
+      <p className="text-lg font-medium mb-4 text-blue-800">Materiales</p>
       {isEditing && (
         <div className="mt-4 mb-8">
           <div className="flex flex-col gap-4">
@@ -178,13 +178,13 @@ function ConsumedMaterials({
                     item?.quantity
                   }`}</p>
                 </div>
-                <div className="flex-grow border-b-2 border-red-700 border-dotted h-5 mx-2" />
+                <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2" />
                 <p className="text-base ">{`${formatToCurrency(
                   item?.storage_material?.price * item?.quantity
                 )}`}</p>
                 {isEditing && (
                   <DeleteOutlined
-                    className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-red-700 "
+                    className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-blue-800 "
                     onClick={() => {
                       setShowSaveMaterials(true);
                       // Remove the material from the consumedMaterials list
@@ -215,7 +215,7 @@ function ConsumedMaterials({
       </div>
       {owner === "autoexpress" && (
         <div>
-          <p className="text-base font-medium mb-4 text-red-700 mt-4">
+          <p className="text-base font-medium mb-4 text-blue-800 mt-4">
             Colores
           </p>
           {isEditing && (
@@ -279,13 +279,13 @@ function ConsumedMaterials({
                       <p className="text-gray-700 text-sm font-medium">{`${item?.name}`}</p>
                       <p>{`${item?.quantity} (gr)`}</p>
                     </div>
-                    <div className="flex-grow border-b-2 border-red-700 border-dotted h-5 mx-2" />
+                    <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2" />
                     <p className="text-base ">{`${formatToCurrency(
                       item?.price
                     )}`}</p>
                     {isEditing && (
                       <DeleteOutlined
-                        className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-red-700 "
+                        className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-blue-800 "
                         onClick={() => {
                           setShowSaveMaterials(true);
                           setConsumedColors(
@@ -307,7 +307,7 @@ function ConsumedMaterials({
       )}
       <div className="flex mt-4">
         <p className="text-gray-700 text-lg font-medium">Total:</p>
-        <p className="ml-auto text-lg text-red-700 font-medium">{`${formatToCurrency(
+        <p className="ml-auto text-lg text-blue-800 font-medium">{`${formatToCurrency(
           consumedMaterials
             .map((item) => item?.storage_material?.price * item?.quantity)
             .reduce((a, b) => a + b, 0) +

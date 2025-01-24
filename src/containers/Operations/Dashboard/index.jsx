@@ -25,11 +25,11 @@ function DashboardContainer() {
 
   return (
     <div>
-      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Operaciones</h1>
+      <h1 className="text-2xl text-blue-800 font-semibold mb-5 ">Operaciones</h1>
       <div className="dashboard-grid-container">
         <DashboardGrid />
       </div>
-      <h2 className="text-xl text-red-700 font-semibold mb-5">Mensajes</h2>
+      <h2 className="text-xl text-blue-800 font-semibold mb-5">Mensajes</h2>
       <div className="bg-gray-100 rounded-lg">
         <MessagesTable
           loading={loading}

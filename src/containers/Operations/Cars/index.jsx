@@ -86,7 +86,7 @@ function CarsContainer() {
 
   return (
     <div className="cars-container">
-      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Autos</h1>
+      <h1 className="text-2xl text-blue-800 font-semibold mb-5 ">Autos</h1>
       <TableActions
         tab={currentTab}
         onSearch={handleSearch}

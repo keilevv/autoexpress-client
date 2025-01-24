@@ -6,7 +6,7 @@ import "./style.css";
  */
 function AgendaContainer({ appointmentRef }) {
   return (
-    <section key="appointment" ref={appointmentRef} className="bg-red-700">
+    <section key="appointment" ref={appointmentRef} className="bg-blue-800">
       <div className="agenda-banner-container">
         <i className="fa-solid fa-calendar-days agenda-logo"></i>
         <h1 className="text-4xl text-white font-semibold my-4">Agende una cita.</h1>

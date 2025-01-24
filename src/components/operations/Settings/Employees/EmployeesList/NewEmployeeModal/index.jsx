@@ -132,7 +132,7 @@ function NewEmployeeModal({
         </div>
       }
     >
-      <h1 className="text-xl text-red-700 font-semibold mb-5 ">
+      <h1 className="text-xl text-blue-800 font-semibold mb-5 ">
         Nuevo Empleado
       </h1>
       <Form

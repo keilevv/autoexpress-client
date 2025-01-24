@@ -15,16 +15,16 @@ function useMenu() {
   const [items, setItems] = useState([]);
   const [defaultSelectedHeader, setDefaultSelectedHeader] = useState("");
   const allItems = [
-    {
-      key: "operations",
-      label: "Inicio",
-      icon: React.createElement(HomeOutlined),
-    },
-    {
-      key: "agenda",
-      label: "Agenda",
-      icon: React.createElement(CalendarOutlined),
-    },
+    // {
+    //   key: "operations",
+    //   label: "Inicio",
+    //   icon: React.createElement(HomeOutlined),
+    // },
+    // {
+    //   key: "agenda",
+    //   label: "Agenda",
+    //   icon: React.createElement(CalendarOutlined),
+    // },
     {
       key: "inventory",
       label: "Almacén",
@@ -35,23 +35,23 @@ function useMenu() {
       label: "Producción",
       icon: React.createElement(ControlOutlined),
     },
-    {
-      key: "database",
-      label: "Base de datos",
-      icon: React.createElement(DatabaseOutlined),
-      children: [
-        {
-          key: "cars",
-          label: "Autos",
-          icon: React.createElement(CarOutlined),
-        },
-        {
-          key: "clients",
-          label: "Clientes",
-          icon: React.createElement(TeamOutlined),
-        },
-      ],
-    },
+    // {
+    //   key: "database",
+    //   label: "Base de datos",
+    //   icon: React.createElement(DatabaseOutlined),
+    //   children: [
+    //     {
+    //       key: "cars",
+    //       label: "Autos",
+    //       icon: React.createElement(CarOutlined),
+    //     },
+    //     {
+    //       key: "clients",
+    //       label: "Clientes",
+    //       icon: React.createElement(TeamOutlined),
+    //     },
+    //   ],
+    // },
   ];
 
   function getMenuProps() {

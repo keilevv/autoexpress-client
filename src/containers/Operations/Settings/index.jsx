@@ -5,7 +5,7 @@ function OperationSettingsContainer() {
   const [title, setTitle] = useState("Lista de empleados");
   return (
     <>
-      <h1 className="text-3xl font-semibold mb-5 text-red-700">
+      <h1 className="text-3xl font-semibold mb-5 text-blue-800">
         Configuración
       </h1>
       <div className="flex flex-col md:flex-row gap-4">
@@ -23,7 +23,7 @@ function OperationSettingsContainer() {
 
         <div className="w-full ">
           <div className="w-full">
-            <h1 className="text-2xl font-semibold mb-5 text-red-700">
+            <h1 className="text-2xl font-semibold mb-5 text-blue-800">
               {title}
             </h1>
             <EmployeesList />

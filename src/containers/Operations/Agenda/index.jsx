@@ -84,7 +84,7 @@ function AgendaContainer() {
 
   return (
     <div>
-      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Agenda</h1>
+      <h1 className="text-2xl text-blue-800 font-semibold mb-5 ">Agenda</h1>
       <TableActions
         onSearch={handleSearch}
         type="appointments"

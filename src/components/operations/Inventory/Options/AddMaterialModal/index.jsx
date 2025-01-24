@@ -97,7 +97,7 @@ function AddMaterialModal({
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <h1 className="text-xl text-red-700 font-semibold mb-5 ">
+      <h1 className="text-xl text-blue-800 font-semibold mb-5 ">
         {type === "storage"
           ? "Agregar material a almacen"
           : "Agregar material de consumo"}

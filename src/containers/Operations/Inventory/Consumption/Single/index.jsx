@@ -140,7 +140,7 @@ function SingleConsumptionMaterialContainer() {
                   },
                   {
                     title: (
-                      <p className="text text-red-700 font-semibold">{`${consumptionMaterial?.material?.name} Ref. #${consumptionMaterial?.material?.reference}`}</p>
+                      <p className="text text-blue-800 font-semibold">{`${consumptionMaterial?.material?.name} Ref. #${consumptionMaterial?.material?.reference}`}</p>
                     ),
                   },
                 ]}
@@ -204,7 +204,7 @@ function SingleConsumptionMaterialContainer() {
               </Fragment>
             </div>
           </div>
-          <h1 className="text-2xl text-red-700 mb-4 font-semibold">
+          <h1 className="text-2xl text-blue-800 mb-4 font-semibold">
             Detalles del material de consumo
           </h1>
           <div

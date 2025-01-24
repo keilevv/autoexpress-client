@@ -218,7 +218,7 @@ function JobOrdersSingleContainer() {
               },
               {
                 title: (
-                  <p className="text text-red-700 font-semibold">
+                  <p className="text text-blue-800 font-semibold">
                     {jobOrder?.number}
                   </p>
                 ),
@@ -263,7 +263,7 @@ function JobOrdersSingleContainer() {
           )}
         </div>
       </div>
-      <h1 className="text-2xl text-red-700 mb-4  font-semibold">
+      <h1 className="text-2xl text-blue-800 mb-4  font-semibold">
         Detalles de la orden de trabajo
       </h1>
 

@@ -104,7 +104,7 @@ function SingleAgendaContainer() {
         <div>
           <div className="lg:flex lg:justify-between lg:items-top mb-5">
             <div className="mb-4">
-              <h1 className="text-2xl text-red-700 mb-2 font-semibold">
+              <h1 className="text-2xl text-blue-800 mb-2 font-semibold">
                 Detalles de la cita
               </h1>
               <Breadcrumb
@@ -123,7 +123,7 @@ function SingleAgendaContainer() {
                   },
                   {
                     title: (
-                      <p className="text text-red-700 font-semibold">{`${dayjs(
+                      <p className="text text-blue-800 font-semibold">{`${dayjs(
                         appointment.date
                       ).format("DD/MM/YYYY")} - ${appointment.time} - ${
                         appointment.user.username

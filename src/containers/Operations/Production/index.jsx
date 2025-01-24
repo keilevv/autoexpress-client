@@ -66,7 +66,7 @@ function ProductionContainer({ owner }) {
 
   return (
     <div>
-      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
+      <h1 className="text-2xl text-blue-800 font-bold mb-5 ">
         Producción{" "}
         {owner ? owner.charAt(0).toUpperCase() + owner.slice(1) : null}
       </h1>

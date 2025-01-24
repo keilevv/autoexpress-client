@@ -147,7 +147,7 @@ function CarForm({
           autoComplete="off"
         >
           <div className="p-4">
-            <p className="ext text-xl text-red-700 mb-4">
+            <p className="ext text-xl text-blue-800 mb-4">
               {!isCarDetails
                 ? "Ingrese la información de su vehículo"
                 : "Información del vehículo"}
@@ -360,7 +360,7 @@ function CarForm({
                 fill="black"
               />
             </div>
-            <p className="text text-2xl text-red-700 font-semibold mb-4">{`¡Bienvenido${
+            <p className="text text-2xl text-blue-800 font-semibold mb-4">{`¡Bienvenido${
               client ? ` ${client.name}` : ""
             }!`}</p>
             <p className="text text-lg font-medium mb-4">

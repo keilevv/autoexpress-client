@@ -29,7 +29,6 @@ function MainLayout({ children }) {
   const auth = useSelector((state) => state.auth);
   const [owner, setOwner] = useState("autoexpress");
 
-
   useEffect(() => {
     getUser(auth.user.id);
   }, []);
@@ -123,14 +122,15 @@ function MainLayout({ children }) {
   return (
     <Layout className="max-w-none bg-inherit">
       <Header
-        className="flex px-4 md:px-8 lg:px-12"
+        className="flex px-4 md:px-8 lg:px-12 font-semibold"
         style={{
           background: "#242424",
         }}
       >
         <div className="container flex mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
           <div className="m-auto px-4">
-            <img src={Logo} className="object-cover h-10" />
+            <h2 className="text-gray-100 text-xl font-bold leading-none">M&L</h2>
+            <h2 className="text-blue-500 text-xl font-bold leading-none">Autocheck</h2>
           </div>
           <Menu
             selectedKeys={[selectedSider]}
@@ -172,11 +172,10 @@ function MainLayout({ children }) {
           <Dropdown menu={userMenuProps} trigger={"click"} className="m-auto">
             <Button
               shape="circle"
-              ghost
               size="large"
               className="flex items-center justify-center "
             >
-              <UserOutlined />
+              <UserOutlined style={{ stroke: 3 }} />
             </Button>
           </Dropdown>
         </div>

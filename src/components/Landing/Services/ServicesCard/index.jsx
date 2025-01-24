@@ -20,7 +20,7 @@ function ServicesCard(props) {
           <img src={props.icon} className={`${type === "soat" ? "p-1" : "p-4"}`} />
         </div>
       </div>
-      <h2 className="text-xl text-red-700 my-4 text-center">{props.title}</h2>
+      <h2 className="text-xl text-blue-800 my-4 text-center">{props.title}</h2>
       <div
         className={`flex justify-center transition-opacity duration-300 ${
           open ? "opacity-100" : "opacity-0 h-0"

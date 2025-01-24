@@ -137,7 +137,7 @@ function SingleStorageMaterial() {
                   },
                   {
                     title: (
-                      <p className="text text-red-700 font-semibold">{`${storageMaterial.name} Ref. #${storageMaterial.reference}`}</p>
+                      <p className="text text-blue-800 font-semibold">{`${storageMaterial.name} Ref. #${storageMaterial.reference}`}</p>
                     ),
                   },
                 ]}
@@ -199,7 +199,7 @@ function SingleStorageMaterial() {
               </Fragment>
             </div>
           </div>
-          <h1 className="text-2xl text-red-700 mb-4 font-semibold">
+          <h1 className="text-2xl text-blue-800 mb-4 font-semibold">
             Detalles del material
           </h1>
           <div
