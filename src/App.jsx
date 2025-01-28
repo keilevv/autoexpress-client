@@ -59,7 +59,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer  />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -69,7 +69,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer  />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -79,7 +79,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer  />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -145,6 +145,16 @@ function App() {
             }
           />
 
+          <Route
+            path="/operations/production/jobs/:jobId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <JobOrdersSingleContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
           {/* <Route
             path="/operations/jobs"
             element={
@@ -306,16 +316,7 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
-          <Route
-            path="/operations/production/jobs/:jobId"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <JobOrdersSingleContainer />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
+
           <Route
             path="/operations/production/autoexpress/jobs/:jobId"
             element={
@@ -335,8 +336,8 @@ function App() {
                 </MainLayout>
               </ProtectedRoute>
             }
-          ></Route> */}
-          {/* 
+          ></Route>
+
           <Route path="/landing" element={<LandingContainer />} />
           <Route path="/appointment" element={<AppointmentContainer />} /> */}
         </Routes>
