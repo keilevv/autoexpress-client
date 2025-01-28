@@ -82,7 +82,6 @@ function NewJobOrderModal({
     }
   }, [brand, model]);
 
-
   return (
     <Modal
       open={isModalOpen}
@@ -206,7 +205,9 @@ function NewJobOrderModal({
                   {employee.name} -{"  "}
                   {
                     employeeRolesOptions.find(
-                      (role) => role.value === employee.roles
+                      (role) =>
+                        role.value === employee.roles ||
+                        role.value === "unkwown"
                     ).label
                   }
                 </Select.Option>

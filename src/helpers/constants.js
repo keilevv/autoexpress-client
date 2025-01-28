@@ -24,6 +24,7 @@ export const employeeRolesOptions = [
   { value: "painter", label: "Pintor" },
   { value: "body-worker", label: "Latonero" },
   { value: "mechanic", label: "Mecánico" },
+  { value: "unknown", label: "Desconocido" },
 ];
 
 export const statusTypes = [

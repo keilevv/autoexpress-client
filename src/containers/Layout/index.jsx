@@ -128,7 +128,13 @@ function MainLayout({ children }) {
         }}
       >
         <div className="container flex mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
-          <div className="m-auto px-4">
+          <div
+            className="m-auto px-4 cursor-pointer"
+            onClick={() => {
+              navigate("/", { replace: true });
+              setSelectedSider("inventory");
+            }}
+          >
             <h2 className="text-gray-500 italic text-xl font-bold leading-none">
               M&L
             </h2>

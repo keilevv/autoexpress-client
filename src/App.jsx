@@ -53,17 +53,99 @@ function App() {
         }}
       >
         <Routes>
+          <Route path="/login" element={<LoginContainer />} />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer  />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
           <Route
             path="/operations"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <DashboardContainer />
+                  <InventoryContainer  />
                 </MainLayout>
               </ProtectedRoute>
             }
           />
           <Route
+            path="/operations/inventory"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer  />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/storage"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/consumption"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/material/storage/:materialId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <SingleStorageMaterialContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/material/consumption/:materialId"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <SingleConsumptionMaterialContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/production"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <ProductionContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/settings"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <OperationSettingsContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* <Route
             path="/operations/jobs"
             element={
               <ProtectedRoute>
@@ -124,26 +206,6 @@ function App() {
             }
           />
           <Route
-            path="/operations/settings"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <OperationSettingsContainer />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <DashboardContainer />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
             path="/operations/agenda"
             element={
               <ProtectedRoute>
@@ -159,16 +221,6 @@ function App() {
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <SingleAgendaContainer />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner="autoexpress" />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -213,26 +265,7 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
-          <Route
-            path="/operations/inventory/storage"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/consumption"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
+
           <Route
             path="/operations/inventory/autoexpress/consumption"
             element={
@@ -249,36 +282,6 @@ function App() {
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <InventoryContainer owner={"autodetailing"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/material/storage/:materialId"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <SingleStorageMaterialContainer />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/material/consumption/:materialId"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <SingleConsumptionMaterialContainer />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/production"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <ProductionContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -332,11 +335,10 @@ function App() {
                 </MainLayout>
               </ProtectedRoute>
             }
-          ></Route>
-
-          <Route path="/login" element={<LoginContainer />} />
+          ></Route> */}
+          {/* 
           <Route path="/landing" element={<LandingContainer />} />
-          <Route path="/appointment" element={<AppointmentContainer />} />
+          <Route path="/appointment" element={<AppointmentContainer />} /> */}
         </Routes>
       </ConfigProvider>
     </div>
