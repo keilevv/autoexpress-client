@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { statusTypes } from "../../../../helpers/constants";
 
 function StatusLabel({ status }) {
   const [statusState, setStatusState] = useState({
@@ -6,11 +7,6 @@ function StatusLabel({ status }) {
     label: "Pendiente",
     color: "orange",
   });
-  const statusTypes = [
-    { value: "pending", label: "Pendiente", color: "bg-orange-300" },
-    { value: "in-progress", label: "En progreso", color: "bg-blue-300" },
-    { value: "completed", label: "Completada", color: "bg-green-300" },
-  ];
 
   useEffect(() => {
     if (status) {
@@ -21,7 +17,6 @@ function StatusLabel({ status }) {
       });
     }
   }, [status]);
-  
 
   return (
     <div className="flex">

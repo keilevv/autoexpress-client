@@ -52,7 +52,7 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
           <Spin size="large" className="my-10 w-full" />
         ) : (
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col md:grid md:grid-cols-4 gap-4">
+            <div className="flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
               {jobOrders.map((job, index) => (
                 <JobCard jobOrder={job} key={index} />
               ))}
