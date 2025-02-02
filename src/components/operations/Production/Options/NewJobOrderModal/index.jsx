@@ -82,7 +82,6 @@ function NewJobOrderModal({
     }
   }, [brand, model]);
 
-
   return (
     <Modal
       open={isModalOpen}
@@ -204,11 +203,13 @@ function NewJobOrderModal({
               {employees.map((employee) => (
                 <Select.Option key={employee._id} value={employee._id}>
                   {employee.name} -{"  "}
-                  {
-                    employeeRolesOptions.find(
-                      (role) => role.value === employee.roles
-                    ).label
-                  }
+                  {employeeRolesOptions.find(
+                    (role) => role.value === employee.roles
+                  )
+                    ? employeeRolesOptions.find(
+                        (role) => role.value === employee.roles
+                      ).label
+                    : "Desconocido "}
                 </Select.Option>
               ))}
             </Select>

@@ -112,11 +112,13 @@ function ProductionOptions({
                     return (
                       <Select.Option key={item._id} value={item._id}>
                         {item.name} -{" "}
-                        {
-                          employeeRolesOptions.find(
-                            (role) => role.value === item.roles
-                          ).label
-                        }
+                        {employeeRolesOptions.find(
+                          (role) => role.value === item.roles
+                        )
+                          ? employeeRolesOptions.find(
+                              (role) => role.value === item.roles
+                            ).label
+                          : "Desconocido"}
                       </Select.Option>
                     );
                   })}

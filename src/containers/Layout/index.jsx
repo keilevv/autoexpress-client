@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Logo from "../../assets/images/autoexpresslogo.png";
+import Logo from "../../assets/images/favicon.png";
 import { Layout, Menu, theme, Button, Dropdown } from "antd";
 import {
   LogoutOutlined,
@@ -130,7 +130,7 @@ function MainLayout({ children }) {
       >
         <div className="container flex mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
           <div className="m-auto px-4">
-            <img src={Logo} className="object-cover h-10" />
+            <img src={Logo} className="object-cover h-10 rounded lg" />
           </div>
           <Menu
             selectedKeys={[selectedSider]}

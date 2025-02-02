@@ -1,21 +1,19 @@
 import { useState, useEffect } from "react";
+import { Card, Button, Divider } from "antd";
 import {
   FileOutlined,
   CalendarOutlined,
   UserOutlined,
   CarOutlined,
   DollarOutlined,
-  ProjectOutlined,
-  FormOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
-import { Card, Button } from "antd";
 import StatusLabel from "../StatusLabel";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { formatToCurrency } from "../../../../helpers";
-import "./style.css";
 
-function JobCard({ jobOrder }) {
+export default function JobCard({ jobOrder }) {
   const navigate = useNavigate();
   const [consumedMaterials, setConsumedMaterials] = useState([]);
   const [consumedColors, setConsumedColors] = useState([]);
@@ -35,13 +33,11 @@ function JobCard({ jobOrder }) {
   useEffect(() => {
     if (jobOrder?.consumed_materials?.length > 0) {
       setConsumedMaterials(
-        jobOrder.consumed_materials.map((item) => {
-          return {
-            consumption_material: item.consumption_material,
-            quantity: item.quantity,
-            storage_material: item.storage_material,
-          };
-        })
+        jobOrder.consumed_materials.map((item) => ({
+          consumption_material: item.consumption_material,
+          quantity: item.quantity,
+          storage_material: item.storage_material,
+        }))
       );
     }
     if (jobOrder?.consumed_colors?.length > 0) {
@@ -50,111 +46,91 @@ function JobCard({ jobOrder }) {
   }, [jobOrder]);
 
   return (
-    <Card
-      title={
-        <div className="flex gap-4">
-          <FileOutlined className="text-xl" />
-          <p className="text-xl font-semibold"> O.T. {jobOrder.number}</p>
+    <Card className="w-full max-w-md">
+      <div className="p-2">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <FileOutlined className="h-4 w-4 text-muted-foreground" />
+            <span className="font-semibold">O.T. {jobOrder.number}</span>
+          </div>
         </div>
-      }
-    >
-      <div className="flex flex-col h-full gap-4">
-        <div className="flex flex-col gap-4 max-h-[300px] overflow-y-auto">
-          <div className="flex gap-4 items-start">
-            <FormOutlined className="text-base mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Description</p>
-              <p className="text-base  text-gray-700">
-                {jobOrder?.description
-                  ? jobOrder?.description
-                  : "Sin descripción"}
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4 items-start">
-            <CalendarOutlined className="text-base mt-1 mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">
-                Fecha de entrega
-              </p>
-              <p className="text-base mt-1 text-gray-700">
+        <div className="mt-2">
+          <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
+        </div>
+
+        <Divider className="my-2" />
+
+        {/* Main Content */}
+        <div className="grid gap-3">
+          {jobOrder?.description && (
+            <p className="text-sm text-muted-foreground">
+              {jobOrder.description}
+            </p>
+          )}
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-2">
+              <CalendarOutlined className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-semibold">
                 {dayjs(jobOrder.date).format("DD/MM/YYYY")}
-              </p>
+              </span>
             </div>
-          </div>
-          <div className="flex gap-4 items-start">
-            <UserOutlined className="text-base mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Trabajador</p>
-              <p className="text-base mt-1 text-gray-700">
+
+            <div className="flex items-center gap-2">
+              <UserOutlined className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-semibold">
                 {jobOrder.employee.name}
-              </p>
+              </span>
             </div>
           </div>
-          <div className="flex gap-4 items-start">
-            <CarOutlined className="text-base mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Placa</p>
 
-              <p className="text-base mt-1 text-gray-700">
+          {/* Vehicle Information */}
+          <div className="bg-muted/50 rounded-lg space-y-2 p-3 bg-gray-200">
+            <div className="flex items-center gap-2">
+              <CarOutlined className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium">
                 {jobOrder.car_plate.toUpperCase()}
-              </p>
+              </span>
             </div>
-          </div>
-          <div className="flex gap-4 items-start">
-            <CarOutlined className="text-base mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Marca</p>
 
-              <p className="text-base mt-1 text-gray-700">
+            <div className="grid grid-cols-2 gap-2 ">
+              <div className="flex-col">
+                <p className="font-semibold">Marca</p>
                 {jobOrder?.car_brand
                   ? jobOrder.car_brand.toUpperCase()
                   : "Sin definir"}
-              </p>
-            </div>
-          </div>
-          <div className="flex gap-4 items-start">
-            <CarOutlined className="text-base mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Modelo</p>
-
-              <p className="text-base mt-1 text-gray-700">
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold">Modelo</p>
                 {jobOrder?.car_model
                   ? jobOrder.car_model.toUpperCase()
                   : "Sin definir"}
-              </p>
+              </div>
             </div>
           </div>
-          <div className="flex gap-4 items-start">
-            <DollarOutlined className="text-base mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Costo</p>
-              <p className="ml-auto text- font-medium">
-                {getJobOrderPrice()}
-              </p>{" "}
+
+          {/* Cost */}
+          <div className="flex items-center justify-between bg-primary/5 rounded-lg p-3">
+            <div className="flex items-center gap-2">
+              <DollarOutlined className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium">Costo Total</span>
             </div>
-          </div>
-          <div className="flex gap-4 items-start">
-            <ProjectOutlined className="text-base mt-1" />
-            <div className="flex flex-col">
-              <p className="text-sm font-semibold text-red-700">Situación</p>
-              <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
-            </div>
+            <span className="font-semibold">{getJobOrderPrice()}</span>
           </div>
         </div>
-        <div className="flex flex-col mt-2 gap-4">
-          <Button
-            className="text-base mt-1 font-semibold  hover:underline cursor-pointer"
-            onClick={() => {
-              navigate(`/operations/production/jobs/${jobOrder._id}`);
-            }}
-          >
-            Ver detalles
-          </Button>
-        </div>
+
+        {/* Action Button */}
+        <Button
+          className="w-full items-center justify-center flex font-semibold text-red-700"
+          onClick={() =>
+            navigate(`/operations/production/jobs/${jobOrder._id}`)
+          }
+        >
+          Ver detalles
+          <ArrowRightOutlined className="h-4 w-4 text-muted-foreground" />
+        </Button>
       </div>
     </Card>
   );
 }
-
-export default JobCard;

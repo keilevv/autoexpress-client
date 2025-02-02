@@ -24,10 +24,11 @@ export const employeeRolesOptions = [
   { value: "painter", label: "Pintor" },
   { value: "body-worker", label: "Latonero" },
   { value: "detailer", label: "Detailing" },
+  { value: "unknown", label: "Desconocido" },
 ];
 
 export const statusTypes = [
-  { value: "pending", label: "Pendiente", color: "orange-300" },
-  { value: "in-progress", label: "En progreso", color: "blue-300" },
-  { value: "completed", label: "Completada", color: "green-300" },
+  { value: "pending", label: "Pendiente", color: "bg-orange-300" },
+  { value: "in-progress", label: "En progreso", color: "bg-blue-300" },
+  { value: "completed", label: "Completada", color: "bg-green-300" },
 ];
