@@ -66,7 +66,7 @@ function useMenu() {
         label: "Almacén",
         icon: React.createElement(ContainerOutlined),
         children: [
-          { key: "inventory-autoexpress", label: "Autoexpress" },
+          { key: "inventory-autoexpress", label: "autocheck" },
           { key: "inventory-autodetailing", label: "Autodetailing" },
         ],
       });
@@ -75,7 +75,7 @@ function useMenu() {
         label: "Producción",
         icon: React.createElement(ControlOutlined),
         children: [
-          { key: "production-autoexpress", label: "Autoexpress" },
+          { key: "production-autoexpress", label: "autocheck" },
           { key: "production-autodetailing", label: "Autodetailing" },
         ],
       });

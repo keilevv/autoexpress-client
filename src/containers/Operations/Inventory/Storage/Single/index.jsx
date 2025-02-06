@@ -27,7 +27,7 @@ function SingleStorageMaterial() {
   const [materialId, setClientId] = useState("");
   const [form] = Form.useForm();
   const [payload, setPayload] = useState({});
-  const [owner, setOwner] = useState("autoexpress");
+  const [owner, setOwner] = useState("autocheck");
   const {
     storageMaterial,
     getStorageMaterial,
@@ -51,7 +51,7 @@ function SingleStorageMaterial() {
   }, [window.location.pathname]);
 
   useEffect(() => {
-    setOwner(storageMaterial?.owner ? storageMaterial.owner : "autoexpress");
+    setOwner(storageMaterial?.owner ? storageMaterial.owner : "autocheck");
   }, [storageMaterial]);
 
   function handleUpdateMaterial() {

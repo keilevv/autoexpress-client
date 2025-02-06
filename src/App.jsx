@@ -240,7 +240,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
+                  <InventoryContainer owner={"autocheck"} />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -260,7 +260,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
+                  <InventoryContainer owner={"autocheck"} />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -281,7 +281,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
+                  <InventoryContainer owner={"autocheck"} />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -301,7 +301,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <ProductionContainer owner={"autoexpress"} />
+                  <ProductionContainer owner={"autocheck"} />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -322,7 +322,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <JobOrdersSingleContainer owner={"autoexpress"} />
+                  <JobOrdersSingleContainer owner={"autocheck"} />
                 </MainLayout>
               </ProtectedRoute>
             }

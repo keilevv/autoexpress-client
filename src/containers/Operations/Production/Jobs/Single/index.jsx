@@ -27,7 +27,7 @@ function JobOrdersSingleContainer() {
     updateJobOrder,
     addMaterialToJobOrder,
   } = useJobOrder();
-  const [owner, setOwner] = useState("autoexpress");
+  const [owner, setOwner] = useState("autocheck");
   const [consumedMaterials, setConsumedMaterials] = useState([]);
   const [consumedColors, setConsumedColors] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -65,7 +65,7 @@ function JobOrdersSingleContainer() {
     if (jobOrder?.consumed_colors?.length > 0) {
       setConsumedColors(jobOrder.consumed_colors);
     }
-    setOwner(jobOrder?.owner ? jobOrder.owner : "autoexpress");
+    setOwner(jobOrder?.owner ? jobOrder.owner : "autocheck");
   }, [jobOrder]);
 
   const handleArchiveJobOrder = () => {

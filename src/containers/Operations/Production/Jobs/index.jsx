@@ -16,7 +16,7 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
     getJobOrders(
       pagination.current,
       pagination.pageSize,
-      `&archived=false&owner=${owner ? owner : "autoexpress"}${
+      `&archived=false&owner=${owner ? owner : "autocheck"}${
         searchValue && searchValue.length ? "&search=" + searchValue : ""
       }${filterString ? filterString : ""}`
     );

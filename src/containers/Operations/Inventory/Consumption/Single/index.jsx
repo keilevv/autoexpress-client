@@ -23,7 +23,7 @@ function SingleConsumptionMaterialContainer() {
   const [showSave, setShowSave] = useState(false);
   const [materialId, setClientId] = useState("");
   const [form] = Form.useForm();
-  const [owner, setOwner] = useState("autoexpress");
+  const [owner, setOwner] = useState("autocheck");
 
   const {
     consumptionMaterial,
@@ -51,7 +51,7 @@ function SingleConsumptionMaterialContainer() {
     setOwner(
       consumptionMaterial?.material?.owner
         ? consumptionMaterial.material.owner
-        : "autoexpress"
+        : "autocheck"
     );
   }, [consumptionMaterial]);
 

@@ -29,7 +29,7 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
       getStorageMaterials(
         pagination.current,
         pagination.pageSize,
-        `&archived=false&owner=${owner ? owner : "autoexpress"}${
+        `&archived=false&owner=${owner ? owner : "autocheck"}${
           searchValue ? "&search=" + searchValue : ""
         }`
       );

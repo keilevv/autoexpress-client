@@ -15,7 +15,7 @@ function ConsumedMaterials({
   setShowSaveMaterials = () => {},
   isSaved = false,
   setIsSaved = () => {},
-  owner = "autoexpress",
+  owner = "autocheck",
 }) {
   const { getConsumptionMaterials, consumptionMaterials, loading } =
     useInventory();
@@ -213,7 +213,7 @@ function ConsumedMaterials({
           <p>Sin materiales</p>
         )}
       </div>
-      {owner === "autoexpress" && (
+      {owner === "autocheck" && (
         <div>
           <p className="text-base font-medium mb-4 text-blue-800 mt-4">
             Colores

@@ -27,7 +27,7 @@ function MainLayout({ children }) {
   const [userHeaderProps, setUserHeaderProps] = useState({});
   const [selectedSider, setSelectedSider] = useState("");
   const auth = useSelector((state) => state.auth);
-  const [owner, setOwner] = useState("autoexpress");
+  const [owner, setOwner] = useState("autocheck");
 
   useEffect(() => {
     getUser(auth.user.id);
@@ -38,7 +38,7 @@ function MainLayout({ children }) {
       if (auth.user.roles.includes("autodetailing-operator")) {
         setOwner("autodetailing");
       } else {
-        setOwner("autoexpress");
+        setOwner("autocheck");
       }
     }
   }, [auth]);
@@ -105,7 +105,7 @@ function MainLayout({ children }) {
             }
             return;
           }
-          if (auth.user.roles.includes("autoexpress")) {
+          if (auth.user.roles.includes("autocheck")) {
             setSelectedSider(splitItems[index + 1] + "-" + owner);
           } else {
             setSelectedSider(splitItems[index + 1]);

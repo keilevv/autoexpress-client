@@ -8,7 +8,7 @@ export const operationsMenu = [
 ];
 export const unitOptions = [
   { value: "unit", label: "Unidad" },
-  { value: "litro", label: "Litro" },
+  { value: "litre", label: "Litro" },
   { value: "galon", label: "Galón" },
   { value: "kilo", label: "Kilo" },
   { value: "gram", label: "Gramo" },
