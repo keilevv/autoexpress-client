@@ -155,6 +155,36 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
+          <Route
+            path="/operations/inventory/autocheck"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer owner={"autocheck"} />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autocheck/consumption"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer owner={"autocheck"} />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autocheck/storage"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer owner={"autocheck"} />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
           {/* <Route
             path="/operations/jobs"
             element={
@@ -236,31 +266,11 @@ function App() {
             }
           ></Route>
           <Route
-            path="/operations/inventory/autoexpress"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autocheck"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
             path="/operations/inventory/autodetailing"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <InventoryContainer owner={"autodetailing"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/autoexpress/storage"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autocheck"} />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -275,9 +285,8 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
-
           <Route
-            path="/operations/inventory/autoexpress/consumption"
+            path="/operations/inventory/autocheck/consumption"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
@@ -297,7 +306,7 @@ function App() {
             }
           ></Route>
           <Route
-            path="/operations/production/autoexpress"
+            path="/operations/production/autocheck"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
@@ -318,7 +327,7 @@ function App() {
           ></Route>
 
           <Route
-            path="/operations/production/autoexpress/jobs/:jobId"
+            path="/operations/production/autocheck/jobs/:jobId"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
