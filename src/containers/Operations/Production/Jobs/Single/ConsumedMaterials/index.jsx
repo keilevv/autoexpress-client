@@ -17,7 +17,7 @@ function ConsumedMaterials({
   setIsSaved = () => {},
   owner = "autocheck",
 }) {
-  const { getConsumptionMaterials, consumptionMaterials, loading } =
+  const { getStorageMaterials, storageMaterials, loading } =
     useInventory();
   const [addedMaterial, setAddedMaterial] = useState(null);
   const [addedColor, setAddedColor] = useState(null);
@@ -31,7 +31,7 @@ function ConsumedMaterials({
   useEffect(() => {
     if (consumedMaterials.length && addedMaterial) {
       const materialFound = consumedMaterials.find(
-        (item) => item.consumption_material._id === addedMaterial
+        (item) => item._id === addedMaterial
       );
       setConsumptionMaterialFromList(materialFound);
     }
@@ -39,12 +39,12 @@ function ConsumedMaterials({
 
   useEffect(() => {
     if (isEditing) {
-      getConsumptionMaterials(1, 10, `&archived=false&owner=${owner}`);
+      getStorageMaterials(1, 10, `&archived=false&owner=${owner}`);
     }
   }, [isEditing]);
 
   const handleSearchMaterial = (value) => {
-    getConsumptionMaterials(
+    getStorageMaterials(
       1,
       10,
       `&archived=false&owner=${owner}&search=${value}`
@@ -74,7 +74,7 @@ function ConsumedMaterials({
                 onSearch={(value) => debounceFn(value)}
                 onSelect={(value) => {
                   setExistingQuantity(
-                    consumptionMaterials.find((item) => item._id === value)
+                    storageMaterials.find((item) => item._id === value)
                       .quantity
                   );
                   setAddedMaterial(value);
@@ -82,16 +82,16 @@ function ConsumedMaterials({
                 allowClear
                 onClear={() => setAddedMaterial(null)}
               >
-                {consumptionMaterials.map((item) => {
+                {storageMaterials.map((item) => {
                   return (
                     <Select.Option
                       key={item._id}
                       value={item._id}
-                      label={item.material.name}
+                      label={item.name}
                     >
-                      {`${item.material.name}  (${item.material.reference}) - ${
+                      {`${item.name}  (${item.reference}) - ${
                         unitOptions.find(
-                          (unit) => unit.value === item.material.unit
+                          (unit) => unit.value === item.unit
                         ).label
                       }`}
                     </Select.Option>
@@ -125,16 +125,16 @@ function ConsumedMaterials({
             <Button
               type="primary"
               onClick={() => {
-                let newConsumedMaterial = consumptionMaterials.find((item) => {
+                let newConsumedMaterial = storageMaterials.find((item) => {
                   return item._id === addedMaterial;
                 });
                 newConsumedMaterial = {
                   consumption_material: {
                     ...newConsumedMaterial,
-                    material: newConsumedMaterial.material._id,
+                    material: newConsumedMaterial._id,
                   },
                   quantity: materialQuantity,
-                  storage_material: { ...newConsumedMaterial.material },
+                  storage_material: { ...newConsumedMaterial },
                 };
 
                 let newMaterials = [...consumedMaterials, newConsumedMaterial];
@@ -228,7 +228,7 @@ function ConsumedMaterials({
                 />
                 <div className="flex items-center gap-4">
                   <div className="flex flex-col">
-                    <p className="text-sm font-medium mb-2"> Cantidad (gr)</p>
+                    <p className="text-sm font-medium mb-2"> Cantidad (gl)</p>
                     <InputNumber
                       value={colorQuantity}
                       min={0}
@@ -277,7 +277,7 @@ function ConsumedMaterials({
                   <div className="flex items-baseline " key={index}>
                     <div>
                       <p className="text-gray-700 text-sm font-medium">{`${item?.name}`}</p>
-                      <p>{`${item?.quantity} (gr)`}</p>
+                      <p>{`${item?.quantity} (gl)`}</p>
                     </div>
                     <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2" />
                     <p className="text-base ">{`${formatToCurrency(

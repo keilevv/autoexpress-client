@@ -37,17 +37,17 @@ function InventoryContainer({ owner }) {
         />
       ),
     },
-    {
-      key: "consumption",
-      label: <p className="font-semibold text-base">Inventario de consumo</p>,
-      children: (
-        <ConsumptionInventoryContainer
-          owner={owner}
-          refresh={refresh}
-          searchValue={currentTab === "consumption" ? searchValue : null}
-        />
-      ),
-    },
+    // {
+    //   key: "consumption",
+    //   label: <p className="font-semibold text-base">Inventario de consumo</p>,
+    //   children: (
+    //     <ConsumptionInventoryContainer
+    //       owner={owner}
+    //       refresh={refresh}
+    //       searchValue={currentTab === "consumption" ? searchValue : null}
+    //     />
+    //   ),
+    // },
     // {
     //   key: "sales",
     //   label: <p className="font-semibold text-base">Ventas</p>,

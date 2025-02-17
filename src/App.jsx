@@ -185,6 +185,16 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
+          <Route
+            path="/operations/production/autocheck"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <ProductionContainer owner={"autocheck"} />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
           {/* <Route
             path="/operations/jobs"
             element={
@@ -301,16 +311,6 @@ function App() {
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <InventoryContainer owner={"autodetailing"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/production/autocheck"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <ProductionContainer owner={"autocheck"} />
                 </MainLayout>
               </ProtectedRoute>
             }
