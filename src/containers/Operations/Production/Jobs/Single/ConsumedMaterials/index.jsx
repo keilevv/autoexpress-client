@@ -28,6 +28,8 @@ function ConsumedMaterials({
   const [consumptionMaterialFromList, setConsumptionMaterialFromList] =
     useState(null);
 
+    console.log("consumedMaterials", consumedMaterials);
+
   useEffect(() => {
     if (consumedMaterials.length && addedMaterial) {
       const materialFound = consumedMaterials.find(
@@ -125,25 +127,21 @@ function ConsumedMaterials({
             <Button
               type="primary"
               onClick={() => {
-                let newConsumedMaterial = storageMaterials.find((item) => {
+                let newStorageMaterial = storageMaterials.find((item) => {
                   return item._id === addedMaterial;
                 });
-                newConsumedMaterial = {
-                  consumption_material: {
-                    ...newConsumedMaterial,
-                    material: newConsumedMaterial._id,
-                  },
+                newStorageMaterial = {
                   quantity: materialQuantity,
-                  storage_material: { ...newConsumedMaterial },
+                  storage_material: { ...newStorageMaterial },
                 };
 
-                let newMaterials = [...consumedMaterials, newConsumedMaterial];
+                let newMaterials = [...consumedMaterials, newStorageMaterial];
 
                 const combinedMaterials = newMaterials.reduce((acc, item) => {
                   const existing = acc.find(
                     (entry) =>
-                      entry.consumption_material._id ===
-                      item.consumption_material._id
+                      entry.storage_material._id ===
+                      item.storage_material._id
                   );
 
                   if (existing) {
@@ -190,8 +188,8 @@ function ConsumedMaterials({
                       // Remove the material from the consumedMaterials list
                       const updatedMaterials = consumedMaterials.filter(
                         (i) =>
-                          i.consumption_material._id !==
-                          item.consumption_material._id
+                          i.storage_material._id !==
+                          item.storage_material._id
                       );
 
                       // Update the consumed materials

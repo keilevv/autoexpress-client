@@ -34,9 +34,8 @@ export default function JobCard({ jobOrder }) {
     if (jobOrder?.consumed_materials?.length > 0) {
       setConsumedMaterials(
         jobOrder.consumed_materials.map((item) => ({
-          consumption_material: item.consumption_material,
-          quantity: item.quantity,
           storage_material: item.storage_material,
+          quantity: item.quantity,
         }))
       );
     }

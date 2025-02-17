@@ -55,7 +55,6 @@ function JobOrdersSingleContainer() {
       setConsumedMaterials(
         jobOrder.consumed_materials.map((item) => {
           return {
-            consumption_material: item.consumption_material,
             quantity: item.quantity,
             storage_material: item.storage_material,
           };
@@ -113,7 +112,7 @@ function JobOrdersSingleContainer() {
       addMaterialToJobOrder(jobOrderId, {
         consumed_materials: consumedMaterials.map((item) => {
           return {
-            consumption_material: item.consumption_material._id,
+            storage_material: item.storage_material._id,
             quantity: item.quantity,
           };
         }),
