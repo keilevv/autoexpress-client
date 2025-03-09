@@ -38,6 +38,7 @@ function NewJobOrderModal({
         .catch((err) => {
           notification.error({
             message: "Error al crear orden de trabajo",
+            description: err || err.message,
           });
         });
     });

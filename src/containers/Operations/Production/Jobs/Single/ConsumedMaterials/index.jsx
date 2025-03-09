@@ -28,7 +28,6 @@ function ConsumedMaterials({
   const [consumptionMaterialFromList, setConsumptionMaterialFromList] =
     useState(null);
 
-    console.log("consumedMaterials", consumedMaterials);
 
   useEffect(() => {
     if (consumedMaterials.length && addedMaterial) {

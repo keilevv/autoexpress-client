@@ -31,6 +31,30 @@ export function getFilterString(filters) {
   return filterString;
 }
 
+export function updateFilterString(filterString, newFilters) {
+  const urlParams = new URLSearchParams(
+    filterString.startsWith("?") ? filterString.slice(1) : filterString
+  );
+
+  // Update or add new filters
+  Object.entries(newFilters).forEach(([key, value]) => {
+    if (value === null || value === undefined) {
+      urlParams.delete(key); // Remove filter if value is null or undefined
+    } else {
+      urlParams.set(key, value); // Update or add the filter
+    }
+  });
+
+  return `&${urlParams.toString()}`;
+}
+
+export function getFilterValue(filterString, key) {
+  const urlParams = new URLSearchParams(
+    filterString.startsWith("?") ? filterString.slice(1) : filterString
+  );
+  return urlParams.get(key); // Returns the value or null if key doesn't exist
+}
+
 export function formatToCurrency(number) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",

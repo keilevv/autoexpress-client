@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Modal, Form, notification } from "antd";
+import { Modal, Form, notification, Switch } from "antd";
 import useInventory from "../../../../../hooks/useInventory";
 import StorageMaterialForm from "../../StrorageMaterialForm";
 import ConsumptionMaterialModalContent from "./ConsumptionMaterialModalContent";
+import AddExistingMaterial from "./AddExistingMaterial";
 
 function AddMaterialModal({
   isModalOpen,
@@ -16,6 +17,7 @@ function AddMaterialModal({
   const [form] = Form.useForm();
   const [disabled, setDisabled] = useState(true);
   const [materials, setMaterials] = useState([]);
+  const [existingMaterial, setExistingMaterial] = useState(false);
 
   const handleOk = () => {
     switch (type) {
@@ -72,7 +74,29 @@ function AddMaterialModal({
     switch (type) {
       case "storage":
         return (
-          <StorageMaterialForm form={form} setDisabledSubmit={setDisabled} />
+          <>
+            <div className="flex mb-4">
+              <Switch onChange={() => setExistingMaterial(!existingMaterial)} />
+              <p className="ml-2 font-semibold">
+                {existingMaterial ? "Material existente" : "Nuevo material"}
+              </p>
+            </div>
+            {existingMaterial ? (
+              <AddExistingMaterial
+                owner={owner}
+                materials={materials}
+                setMaterials={setMaterials}
+                form={form}
+                setDisabledSubmit={setDisabled}
+              />
+            ) : (
+              <StorageMaterialForm
+                form={form}
+                setDisabledSubmit={setDisabled}
+                existingMaterial={existingMaterial}
+              />
+            )}
+          </>
         );
       case "consumption":
         return (

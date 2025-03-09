@@ -1,25 +1,40 @@
 import { useEffect, useState } from "react";
-import { Spin, Pagination, Skeleton } from "antd";
+import { Spin, Pagination, Skeleton, Tabs } from "antd";
 import JobCard from "../../../../components/operations/Production/JobCard";
 import useJobOrder from "../../../../hooks/useJobOrder";
-import { formatToCurrency } from "../../../../helpers";
+import {
+  formatToCurrency,
+  updateFilterString,
+  getFilterValue,
+} from "../../../../helpers";
+import { setProductionSubTab } from "../../../../redux/reducers/uiSlice";
+import { useDispatch } from "react-redux";
 
 function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
+  const dispatch = useDispatch();
   const { getJobOrders, jobOrders, loading, count, total } = useJobOrder();
+  const [currentTab, setCurrentTab] = useState("current");
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 8,
     total: 0,
   });
 
+  console.log("current", currentTab);
+
   useEffect(() => {
-    getJobOrders(
-      pagination.current,
-      pagination.pageSize,
-      `&archived=false&owner=${owner ? owner : "autocheck"}${
-        searchValue && searchValue.length ? "&search=" + searchValue : ""
-      }${filterString ? filterString : ""}`
-    );
+    const filterOptions = {
+      archived: currentTab === "archived",
+      owner: owner ? owner : "autocheck",
+      search: searchValue,
+      status:
+        currentTab === "completed"
+          ? currentTab
+          : getFilterValue(filterString, "status"),
+    };
+    const newFilterString = updateFilterString(filterString, filterOptions);
+
+    getJobOrders(pagination.current, pagination.pageSize, newFilterString);
   }, [
     owner,
     refresh,
@@ -27,12 +42,27 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
     filterString,
     pagination.current,
     pagination.pageSize,
+    currentTab,
   ]);
 
   useEffect(() => {
     setPagination({ ...pagination, total: count });
   }, [count]);
 
+  const items = [
+    {
+      key: "current",
+      label: <p className="font-semibold text-base">Actuales</p>,
+    },
+    {
+      key: "completed",
+      label: <p className="font-semibold text-base">Completadas</p>,
+    },
+    {
+      key: "archived",
+      label: <p className="font-semibold text-base">Archivadas</p>,
+    },
+  ];
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -48,6 +78,15 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
             <p className="font-semibold">Total de O.T: {count}</p>
           </div>
         )}
+        <Tabs
+          activeKey={currentTab}
+          defaultActiveKey={currentTab}
+          items={items}
+          onChange={(key) => {
+            setCurrentTab(key);
+            dispatch(setProductionSubTab(key));
+          }}
+        />
         {loading ? (
           <Spin size="large" className="my-10 w-full" />
         ) : (

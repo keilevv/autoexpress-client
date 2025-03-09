@@ -59,7 +59,7 @@ function useJobOrder() {
       })
       .catch((err) => {
         setLoading(false);
-        throwError(err.response.data.error);
+        throwError(err.response.data.message);
       });
   }, []);
 

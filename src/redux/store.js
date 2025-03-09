@@ -7,6 +7,7 @@ import { thunk } from "redux-thunk";
 // reducers
 import authSlice from "./reducers/authSlice";
 import employeesSlice from "./reducers/employeesSlice";
+import uiSlice from "./reducers/uiSlice";
 
 const persistConfig = {
   key: "root",
@@ -15,9 +16,10 @@ const persistConfig = {
 
 const authReducer = persistReducer(persistConfig, authSlice);
 const employeesReducer = persistReducer(persistConfig, employeesSlice);
+const uiReducer = persistReducer(persistConfig, uiSlice);
 
 export const store = configureStore({
-  reducer: { auth: authReducer, employees: employeesReducer },
+  reducer: { auth: authReducer, employees: employeesReducer, ui: uiReducer },
   devTools: process.env.NODE_ENV !== "production",
   middleware: () => {
     return [thunk];
