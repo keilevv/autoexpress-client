@@ -9,3 +9,11 @@ body {
 .app {
   color: #333333;
 }
+
+.dateRangePicker .ant-picker-panel:nth-child(2){
+    display: none;
+  }
+
+  .dateRangePicker .ant-picker-panel:nth-child(1) button{
+    visibility: visible !important;
+  }

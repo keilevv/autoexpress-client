@@ -19,6 +19,7 @@ function ProductionOptions({
   const { isMobileScreen } = useViewport();
   const user = useSelector((state) => state?.auth?.user);
   const employees = useSelector((state) => state.auth.employeeList);
+  const productionSubTab = useSelector((state) => state.ui.production.subTab);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [form] = Form.useForm();
@@ -30,6 +31,11 @@ function ProductionOptions({
       values.start_date = values["date-range"][0].toISOString();
       values.end_date = values["date-range"][1].toISOString();
       delete values["date-range"];
+    }
+    if (values["due-date-range"]) {
+      values.due_start_date = values["due-date-range"][0].toISOString();
+      values.due_end_date = values["due-date-range"][1].toISOString();
+      delete values["due-date-range"];
     }
     onApplyFilters(values);
   }
@@ -91,6 +97,7 @@ function ProductionOptions({
             >
               <RangePicker
                 className={`date-picker ${showFilters ? "show" : ""}`}
+                popupClassName={isMobileScreen ? "dateRangePicker" : ""}
               />
             </Form.Item>
           </div>
@@ -125,18 +132,32 @@ function ProductionOptions({
               </Select>
             </Form.Item>
           </div>
+          {productionSubTab !== "completed" && (
+            <div className="flex flex-col">
+              <p className="text-gray-500 mb-4 font-semibold text-sm">{`Situación`}</p>
+              <Form.Item name={"status"}>
+                <Select className="md:min-w-[300px]">
+                  {statusTypes.map((item) => {
+                    return (
+                      <Select.Option key={item.value} value={item.value}>
+                        {item.label}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
+              </Form.Item>
+            </div>
+          )}
           <div className="flex flex-col">
-            <p className="text-gray-500 mb-4 font-semibold text-sm">{`Situación`}</p>
-            <Form.Item name={"status"}>
-              <Select className="md:min-w-[300px]">
-                {statusTypes.map((item) => {
-                  return (
-                    <Select.Option key={item.value} value={item.value}>
-                      {item.label}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
+            <p className="text-gray-500 mb-4 font-semibold text-sm">{`Fecha de entrega`}</p>
+            <Form.Item
+              name={"due-date-range"}
+              style={{ width: "100%", margin: "0px" }}
+            >
+              <RangePicker
+                popupClassName={isMobileScreen ? "dateRangePicker" : ""}
+                className={`date-picker ${showFilters ? "show" : ""}`}
+              />
             </Form.Item>
           </div>
         </Form>

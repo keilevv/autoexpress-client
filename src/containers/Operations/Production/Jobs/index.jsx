@@ -8,7 +8,7 @@ import {
   getFilterValue,
 } from "../../../../helpers";
 import { setProductionSubTab } from "../../../../redux/reducers/uiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
   const dispatch = useDispatch();
@@ -19,8 +19,6 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
     pageSize: 8,
     total: 0,
   });
-
-  console.log("current", currentTab);
 
   useEffect(() => {
     const filterOptions = {

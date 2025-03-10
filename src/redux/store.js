@@ -16,14 +16,16 @@ const persistConfig = {
 
 const authReducer = persistReducer(persistConfig, authSlice);
 const employeesReducer = persistReducer(persistConfig, employeesSlice);
-const uiReducer = persistReducer(persistConfig, uiSlice);
 
 export const store = configureStore({
-  reducer: { auth: authReducer, employees: employeesReducer, ui: uiReducer },
+  reducer: {
+    auth: authReducer,
+    employees: employeesReducer,
+    ui: uiSlice, // <-- Remove persistReducer here
+  },
   devTools: process.env.NODE_ENV !== "production",
   middleware: () => {
     return [thunk];
   },
 });
-
 export const persistor = persistStore(store);

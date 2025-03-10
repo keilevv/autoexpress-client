@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Card, Button, Divider } from "antd";
+import { Card, Button, Divider, Tag } from "antd";
 import {
   FileOutlined,
   CalendarOutlined,
@@ -48,14 +48,25 @@ export default function JobCard({ jobOrder }) {
     <Card className="w-full max-w-md">
       <div className="p-2">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <FileOutlined className="h-4 w-4 text-muted-foreground" />
-            <span className="font-semibold">O.T. {jobOrder.number}</span>
+        <div className="flex flex-row justify-between">
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <FileOutlined className="h-4 w-4 text-muted-foreground" />
+                <span className="font-semibold">O.T. {jobOrder.number}</span>
+              </div>
+            </div>
+            <div className="mt-2">
+              <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
+            </div>
           </div>
-        </div>
-        <div className="mt-2">
-          <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
+          {jobOrder.archived && (
+            <div className="">
+              <Tag className={"max-w-[70px]"} color={"gray"}>
+                Archivada
+              </Tag>
+            </div>
+          )}
         </div>
 
         <Divider className="my-2" />

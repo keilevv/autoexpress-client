@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Tabs, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StorageInventoryContainer from "./Storage";
-import ConsumptionInventoryContainer from "./Consumption";
+import SalesInventoryContainer from "./Sales";
 import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
 
@@ -48,16 +48,16 @@ function InventoryContainer({ owner }) {
     //     />
     //   ),
     // },
-    // {
-    //   key: "sales",
-    //   label: <p className="font-semibold text-base">Ventas</p>,
-    //   children: (
-    //     <SalesInventoryContainer
-    //       refresh={refresh}
-    //       searchValue={currentTab === "sales" ? searchValue : null}
-    //     />
-    //   ),
-    // },
+    {
+      key: "sales",
+      label: <p className="font-semibold text-base">Ventas</p>,
+      children: (
+        <SalesInventoryContainer
+          refresh={refresh}
+          searchValue={currentTab === "sales" ? searchValue : null}
+        />
+      ),
+    },
   ];
 
   useEffect(() => {
@@ -104,9 +104,7 @@ function InventoryContainer({ owner }) {
 
   return (
     <div>
-      <h1 className="text-2xl text-blue-800 font-bold mb-5 ">
-        Almacén
-      </h1>
+      <h1 className="text-2xl text-blue-800 font-bold mb-5 ">Almacén</h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
         <Input
           prefix={<SearchOutlined className="text-gray-500 mx-[6px]" />}
