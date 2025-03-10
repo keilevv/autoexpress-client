@@ -20,14 +20,23 @@ export default function JobCard({ jobOrder }) {
 
   function getJobOrderPrice() {
     let materialsPrice = consumedMaterials
-      .map((item) => item?.storage_material?.price * item?.quantity)
+      .map((item) => item?.sell_price * item?.quantity)
       .reduce((a, b) => a + b, 0);
     let colorsPrice = consumedColors
       .map((item) => item?.price)
       .reduce((a, b) => a + b, 0);
     materialsPrice = isNaN(materialsPrice) ? 0 : materialsPrice;
     colorsPrice = isNaN(colorsPrice) ? 0 : colorsPrice;
-    return formatToCurrency(materialsPrice + colorsPrice);
+    let marginPrice = formatToCurrency(
+      consumedMaterials
+        .map((item) => Math.abs(item.sell_price - item.price) * item?.quantity)
+        .reduce((a, b) => a + b, 0) +
+        consumedColors.map((item) => item?.price).reduce((a, b) => a + b, 0)
+    );
+    return {
+      total: formatToCurrency(materialsPrice + colorsPrice),
+      margin: marginPrice,
+    };
   }
 
   useEffect(() => {
@@ -36,6 +45,8 @@ export default function JobCard({ jobOrder }) {
         jobOrder.consumed_materials.map((item) => ({
           storage_material: item.storage_material,
           quantity: item.quantity,
+          sell_price: item.sell_price,
+          price: item.price,
         }))
       );
     }
@@ -121,12 +132,19 @@ export default function JobCard({ jobOrder }) {
           </div>
 
           {/* Cost */}
-          <div className="flex items-center justify-between bg-primary/5 rounded-lg p-3">
+          <div className="flex items-center justify-between bg-primary/5 rounded-lg pt-3">
             <div className="flex items-center gap-2">
               <DollarOutlined className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium">Costo Total</span>
             </div>
-            <span className="font-semibold">{getJobOrderPrice()}</span>
+            <span className="font-semibold">{getJobOrderPrice().total}</span>
+          </div>
+          <div className="flex items-center justify-between bg-primary/5 rounded-lg pb-3">
+            <div className="flex items-center gap-2">
+              <DollarOutlined className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-medium">Margen</span>
+            </div>
+            <span className="font-semibold">{getJobOrderPrice().margin}</span>
           </div>
         </div>
 

@@ -75,12 +75,12 @@ function AddMaterialModal({
       case "storage":
         return (
           <>
-            <div className="flex mb-4">
+            {/* <div className="flex mb-4">
               <Switch onChange={() => setExistingMaterial(!existingMaterial)} />
               <p className="ml-2 font-semibold">
                 {existingMaterial ? "Material existente" : "Nuevo material"}
               </p>
-            </div>
+            </div> */}
             {existingMaterial ? (
               <AddExistingMaterial
                 owner={owner}

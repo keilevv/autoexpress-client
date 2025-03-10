@@ -57,6 +57,8 @@ function JobOrdersSingleContainer() {
           return {
             quantity: item.quantity,
             storage_material: item.storage_material,
+            sell_price: item.sell_price,
+            price: item.price,
           };
         })
       );
@@ -107,6 +109,7 @@ function JobOrdersSingleContainer() {
         });
     }
   };
+
   const handleAddMaterialsToJobOrder = () => {
     if (jobOrderId) {
       addMaterialToJobOrder(jobOrderId, {
@@ -114,6 +117,8 @@ function JobOrdersSingleContainer() {
           return {
             storage_material: item.storage_material._id,
             quantity: item.quantity,
+            price: item.storage_material.price,
+            sell_price: item.sell_price,
           };
         }),
         consumed_colors: consumedColors,
@@ -344,7 +349,7 @@ function JobOrdersSingleContainer() {
                 isSaved={isSaved}
               />
             )}
-            <div className="mt-8">
+            <div className="mt-2">
               {isEditingMaterials && (
                 <Button
                   onClick={() => {
