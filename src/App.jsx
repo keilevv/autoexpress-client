@@ -11,14 +11,14 @@ dayjs.locale("es-mx");
 /* Hooks */
 import useMenu from "./hooks/useMenu";
 /* Containers */
-// import DashboardContainer from "./containers/Operations/Dashboard";
-// import CarsContainer from "./containers/Operations/Cars";
+import DashboardContainer from "./containers/Operations/Dashboard";
+import CarsContainer from "./containers/Operations/Cars";
 import LandingContainer from "./containers/Landing";
-// import ClientsContainer from "./containers/Operations/Clients";
-// import SingleCarContainer from "./containers/Operations/Cars/Single";
-// import SingleClientContainer from "./containers/Operations/Clients/Single";
-// import SingleAgendaContainer from "./containers/Operations/Agenda/Single";
-// import AppointmentContainer from "./containers/Appointment";
+import ClientsContainer from "./containers/Operations/Clients";
+import SingleCarContainer from "./containers/Operations/Cars/Single";
+import SingleClientContainer from "./containers/Operations/Clients/Single";
+import SingleAgendaContainer from "./containers/Operations/Agenda/Single";
+import AppointmentContainer from "./containers/Appointment";
 import InventoryContainer from "./containers/Operations/Inventory";
 import SingleStorageMaterialContainer from "./containers/Operations/Inventory/Storage/Single";
 import SingleConsumptionMaterialContainer from "./containers/Operations/Inventory/Consumption/Single";
@@ -26,14 +26,14 @@ import ProductionContainer from "./containers/Operations/Production";
 import JobOrdersSingleContainer from "./containers/Operations/Production/Jobs/Single";
 import OperationSettingsContainer from "./containers/Operations/Settings";
 /* Components*/
-// import Jobs from "./components/operations/Jobs";
-// import Operators from "./components/operations/Operators";
-// import Settings from "./components/operations/Settings/SettingsMenu";
+import Jobs from "./components/operations/Jobs";
+import Operators from "./components/operations/Operators";
+import Settings from "./components/operations/Settings/SettingsMenu";
 
 /* Styling */
 import "./App.css";
-// import AgendaContainer from "./containers/Operations/Agenda";
-// import { useEffect } from "react";
+import AgendaContainer from "./containers/Operations/Agenda";
+import { useEffect } from "react";
 
 function App() {
   const { defaultSelectedHeader } = useMenu();
