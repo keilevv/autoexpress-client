@@ -48,16 +48,16 @@ function InventoryContainer({ owner }) {
     //     />
     //   ),
     // },
-    {
-      key: "sales",
-      label: <p className="font-semibold text-base">Ventas</p>,
-      children: (
-        <SalesInventoryContainer
-          refresh={refresh}
-          searchValue={currentTab === "sales" ? searchValue : null}
-        />
-      ),
-    },
+    // {
+    //   key: "sales",
+    //   label: <p className="font-semibold text-base">Ventas</p>,
+    //   children: (
+    //     <SalesInventoryContainer
+    //       refresh={refresh}
+    //       searchValue={currentTab === "sales" ? searchValue : null}
+    //     />
+    //   ),
+    // },
   ];
 
   useEffect(() => {
