@@ -60,7 +60,6 @@ function ConsumedMaterials({
     setSellPrice(price);
   }, [price]);
 
-  console.log("consumedMaterials", consumedMaterials);
 
   return (
     <>
