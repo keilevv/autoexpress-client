@@ -74,3 +74,7 @@ export const validateCarPlate = async (rule, value) => {
     "Please enter a string with 3 letters followed by 3 numbers."
   );
 };
+
+export function formatNumber(num) {
+  return Number.isInteger(num) ? num.toString() : num.toFixed(2);
+}

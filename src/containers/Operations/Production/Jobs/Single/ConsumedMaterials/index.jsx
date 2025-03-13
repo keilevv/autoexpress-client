@@ -56,11 +56,6 @@ function ConsumedMaterials({
 
   const debounceFn = useCallback(_debounce(handleSearchMaterial, 300), []);
 
-  useEffect(() => {
-    setSellPrice(price);
-  }, [price]);
-
-
   return (
     <>
       <p className="text-lg font-medium mb-4 text-blue-800">Materiales</p>
@@ -78,6 +73,9 @@ function ConsumedMaterials({
                 optionFilterProp="children"
                 onSearch={(value) => debounceFn(value)}
                 onSelect={(value) => {
+                  const selectedMaterial = storageMaterials.find(
+                    (item) => item._id === value
+                  );
                   setExistingQuantity(
                     storageMaterials.find((item) => item._id === value).quantity
                   );
@@ -85,7 +83,7 @@ function ConsumedMaterials({
                     storageMaterials.find((item) => item._id === value).price
                   );
                   setSellPrice(
-                    storageMaterials.find((item) => item._id === value).price
+                    selectedMaterial.price * (selectedMaterial.margin / 100) + selectedMaterial.price
                   );
                   setAddedMaterial(value);
                 }}

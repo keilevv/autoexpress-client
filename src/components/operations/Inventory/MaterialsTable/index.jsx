@@ -4,7 +4,7 @@ import { Table, Popover, notification } from "antd";
 import InventoryTableMenu from "../TableMenu";
 import useInventory from "../../../../hooks/useInventory";
 import { unitOptions } from "../../../../helpers/constants";
-import { formatToCurrency } from "../../../../helpers";
+import { formatToCurrency, formatNumber } from "../../../../helpers";
 /**
  * @param {{ type: string, data: any[], loading: boolean, pagination: any, setPagination: () => void, setPagination: () => void , handleGetClients: () => void }} props
  */
@@ -136,6 +136,9 @@ function MaterialsTable({
       title: "Cantidad",
       dataIndex: "quantity",
       key: "quantity",
+      render: (quantity) => {
+        return <p>{formatNumber(quantity)}</p>
+      },
     },
     {
       title: "",

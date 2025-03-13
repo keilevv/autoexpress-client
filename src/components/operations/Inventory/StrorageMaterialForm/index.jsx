@@ -28,7 +28,7 @@ function StorageMaterialForm({
 
   const handlePrefill = () => {
     if (storageMaterial) {
-      const { name, reference, unit, quantity, price, caution_quantity } =
+      const { name, reference, unit, quantity, price, caution_quantity, margin } =
         storageMaterial;
 
       form.setFieldsValue({
@@ -38,6 +38,7 @@ function StorageMaterialForm({
         quantity,
         price,
         caution_quantity,
+        margin,
       });
     } else {
       form.setFieldsValue({
@@ -47,6 +48,7 @@ function StorageMaterialForm({
         quantity: "",
         caution_quantity: "",
         price: "",
+        margin: "",
       });
     }
   };
@@ -151,6 +153,21 @@ function StorageMaterialForm({
             <p className="text-gray-500 ">{`${formatToCurrency(
               storageMaterial?.price
             )}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">Margen</label>
+          {isEditing ? (
+            <Form.Item name={"margin"}>
+              <InputNumber
+                min={0}
+                className="w-full"
+                disabled={!isEditing}
+                formatter={(value) => `% ${value}`}
+              />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`% ${storageMaterial?.margin}`}</p>
           )}
         </div>
         <div className="flex flex-col gap-2">
