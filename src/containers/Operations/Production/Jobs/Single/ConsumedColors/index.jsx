@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input, InputNumber, Button } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import { formatToCurrency } from "../../../../../../helpers";
 
 function ConsumedColors({
   isEditing = false,
@@ -16,7 +17,7 @@ function ConsumedColors({
     <>
       {owner === "autocheck" && (
         <div>
-          <p className="text-base font-medium mb-4 text-blue-800 mt-4">
+          <p className="text-lg font-medium mb-4 text-blue-800 mt-4">
             Colores
           </p>
           {isEditing && (
@@ -110,3 +111,5 @@ function ConsumedColors({
     </>
   );
 }
+
+export default ConsumedColors;

@@ -5,6 +5,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { Select, InputNumber, Button, Input, Divider } from "antd";
 import useInventory from "../../../../../../hooks/useInventory";
 import { unitOptions } from "../../../../../../helpers/constants";
+import ConsumedColors from "../ConsumedColors";
 
 function ConsumedMaterials({
   consumedMaterials = [],
@@ -83,7 +84,8 @@ function ConsumedMaterials({
                     storageMaterials.find((item) => item._id === value).price
                   );
                   setSellPrice(
-                    selectedMaterial.price * (selectedMaterial.margin / 100) + selectedMaterial.price
+                    selectedMaterial.price * (selectedMaterial.margin / 100) +
+                      selectedMaterial.price
                   );
                   setAddedMaterial(value);
                 }}
@@ -121,11 +123,13 @@ function ConsumedMaterials({
                 <p className="ml-5 text-red-70">
                   {" "}
                   Restante:{" "}
-                  {isSaved || !consumptionMaterialFromList
-                    ? existingQuantity - materialQuantity
-                    : existingQuantity -
-                      consumptionMaterialFromList?.quantity -
-                      materialQuantity}
+                  {Number(
+                    isSaved || !consumptionMaterialFromList
+                      ? existingQuantity - materialQuantity
+                      : existingQuantity -
+                          consumptionMaterialFromList?.quantity -
+                          materialQuantity
+                  ).toFixed(2)}
                 </p>
               </div>
             </div>
@@ -198,7 +202,8 @@ function ConsumedMaterials({
                       item?.storage_material?.price
                     )}`}</p>
                     <p className="text-green-600 ">
-                      +{Math.abs(item.price - item.sell_price)}
+                      +
+                      {formatToCurrency(Math.abs(item.price - item.sell_price))}
                     </p>
                     <p className="font-medium ">x{item?.quantity}</p>
                   </div>
@@ -238,13 +243,22 @@ function ConsumedMaterials({
           <p>Sin materiales</p>
         )}
       </div>
-
-      <div className="flex mt-4 flex-col">
+      <ConsumedColors
+        isEditing={isEditing}
+        consumedColors={consumedColors}
+        setConsumedColors={setConsumedColors}
+        setShowSaveMaterials={setShowSaveMaterials}
+        owner={owner}
+      />
+      <div className="flex mt-4 flex-col gap-2">
         <div className="flex flex-row">
-          <p className="text-gray-700 text-lg font-medium">Total:</p>
-          <p className="ml-auto text-lg text-blue-800 font-medium">{`${formatToCurrency(
+          <p className="text-gray-700 text-md font-medium">Costo:</p>
+          <p className="ml-auto text-md font-medium">{`${formatToCurrency(
             consumedMaterials
-              .map((item) => item?.sell_price * item?.quantity)
+              .map(
+                (item) =>
+                  Math.abs(item.price) * item?.quantity
+              )
               .reduce((a, b) => a + b, 0) +
               consumedColors
                 .map((item) => item?.price)
@@ -259,6 +273,17 @@ function ConsumedMaterials({
                 (item) =>
                   Math.abs(item.sell_price - item.price) * item?.quantity
               )
+              .reduce((a, b) => a + b, 0) +
+              consumedColors
+                .map((item) => item?.price)
+                .reduce((a, b) => a + b, 0)
+          )}`}</p>
+        </div>
+        <div className="flex flex-row">
+          <p className="text-gray-700 text-lg font-medium">Total:</p>
+          <p className="ml-auto text-lg text-blue-800 font-medium">{`${formatToCurrency(
+            consumedMaterials
+              .map((item) => item?.sell_price * item?.quantity)
               .reduce((a, b) => a + b, 0) +
               consumedColors
                 .map((item) => item?.price)

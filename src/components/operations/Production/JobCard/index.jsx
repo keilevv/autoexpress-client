@@ -19,6 +19,9 @@ export default function JobCard({ jobOrder }) {
   const [consumedColors, setConsumedColors] = useState([]);
 
   function getJobOrderPrice() {
+    let materialsCost = consumedMaterials
+      .map((item) => item?.price * item?.quantity)
+      .reduce((a, b) => a + b, 0);
     let materialsPrice = consumedMaterials
       .map((item) => item?.sell_price * item?.quantity)
       .reduce((a, b) => a + b, 0);
@@ -34,6 +37,7 @@ export default function JobCard({ jobOrder }) {
         consumedColors.map((item) => item?.price).reduce((a, b) => a + b, 0)
     );
     return {
+      cost: formatToCurrency(materialsCost),
       total: formatToCurrency(materialsPrice + colorsPrice),
       margin: marginPrice,
     };
@@ -94,7 +98,7 @@ export default function JobCard({ jobOrder }) {
             <div className="flex items-center gap-2">
               <CalendarOutlined className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-semibold">
-                {dayjs(jobOrder.date).format("DD/MM/YYYY")}
+                {dayjs(jobOrder.due_date).format("DD/MM/YYYY")}
               </span>
             </div>
 
@@ -134,17 +138,22 @@ export default function JobCard({ jobOrder }) {
           {/* Cost */}
           <div className="flex items-center justify-between bg-primary/5 rounded-lg pt-3">
             <div className="flex items-center gap-2">
-              <DollarOutlined className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Costo Total</span>
+              <span className="text-sm font-medium">Costo</span>
             </div>
-            <span className="font-semibold">{getJobOrderPrice().total}</span>
+            <span className="font-semibold">{getJobOrderPrice().cost}</span>
+          </div>
+          <div className="flex items-center justify-between bg-primary/5 rounded-lg">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">Margen</span>
+            </div>
+            <span className="font-semibold text-green-600">{getJobOrderPrice().margin}</span>
           </div>
           <div className="flex items-center justify-between bg-primary/5 rounded-lg pb-3">
             <div className="flex items-center gap-2">
               <DollarOutlined className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Margen</span>
+              <span className="text-base font-medium">Total</span>
             </div>
-            <span className="font-semibold">{getJobOrderPrice().margin}</span>
+            <span className="font-semibold text-base text-blue-800">{getJobOrderPrice().total}</span>
           </div>
         </div>
 

@@ -47,6 +47,11 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
     setPagination({ ...pagination, total: count });
   }, [count]);
 
+  useEffect(() => {
+    dispatch(setProductionSubTab("jobs"));
+    setPagination({ ...pagination, current: 1 });
+  }, [currentTab]);
+
   const items = [
     {
       key: "current",
