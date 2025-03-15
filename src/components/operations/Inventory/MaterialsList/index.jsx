@@ -5,10 +5,8 @@ import { useSelector } from "react-redux";
 import { DeleteOutlined } from "@ant-design/icons";
 import _debounce from "lodash/debounce";
 import { unitOptions } from "../../../../helpers/constants";
-import { formatToCurrency } from "../../../../helpers";
+import { formatToCurrency, formatNumber } from "../../../../helpers";
 import "./style.css";
-import { set } from "lodash";
-
 /**
  * @param {{ materials: any[], setMaterials: () => void , type?: string}} props
  */
@@ -290,8 +288,10 @@ function MaterialsList({
                         </p>
                         <p className="text-sm text-gray-500">
                           {isEditing ? "Cant. Disponible" : "Cant. Consumida"}{" "}
-                          {calculateRemainingQuantity(_id, quantity)} -{" "}
-                          {unitOptions.find((u) => u.value === unit).label}
+                          {formatNumber(
+                            calculateRemainingQuantity(_id, quantity)
+                          )}{" "}
+                          - {unitOptions.find((u) => u.value === unit).label}
                         </p>
                       </div>
                       {selectedMaterial === _id && isEditing && (
