@@ -16,7 +16,7 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
   const [currentTab, setCurrentTab] = useState("current");
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 6,
+    pageSize: 8,
     total: 0,
   });
 
