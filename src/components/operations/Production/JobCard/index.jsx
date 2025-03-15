@@ -98,7 +98,7 @@ export default function JobCard({ jobOrder }) {
             <div className="flex items-center gap-2">
               <CalendarOutlined className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-semibold">
-                {dayjs(jobOrder.due_date).format("DD/MM/YYYY")}
+                {dayjs(jobOrder.created_date).format("DD/MM/YYYY")}
               </span>
             </div>
 

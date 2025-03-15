@@ -38,6 +38,22 @@ function useInventory() {
       });
   }, []);
 
+  const restockStorageMaterials = useCallback((payload) => {
+    setLoading(true);
+    return inventoryService
+      .restockStorageMaterials(auth.user.accessToken, payload)
+      .then((response) => {
+        if (response.data) {
+          setLoading(false);
+          return response;
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
+
   const getStorageMaterials = useCallback(
     (page = 1, limit = 10, filter = "") => {
       setLoading(true);
@@ -285,6 +301,7 @@ function useInventory() {
     getSale,
     updateSale,
     deleteSale,
+    restockStorageMaterials,
     consumptionMaterial,
     consumptionMaterials,
     storageMaterial,

@@ -7,6 +7,7 @@ import _debounce from "lodash/debounce";
 import { unitOptions } from "../../../../helpers/constants";
 import { formatToCurrency } from "../../../../helpers";
 import "./style.css";
+import { set } from "lodash";
 
 /**
  * @param {{ materials: any[], setMaterials: () => void , type?: string}} props
@@ -33,6 +34,7 @@ function MaterialsList({
   const [prices, setPrices] = useState({});
   const [listData, setListData] = useState([]);
   const user = useSelector((state) => state.auth.user);
+  const [selectedList, setSelectedList] = useState([]);
 
   useEffect(() => {
     switch (type) {
@@ -40,6 +42,7 @@ function MaterialsList({
       case "sales":
         getConsumptionMaterials(1, 10, `&archived=false&owner=${owner}`);
         break;
+      case "existing":
       default:
         getStorageMaterials(1, 10, `&archived=false&owner=${owner}`);
         break;
@@ -97,7 +100,7 @@ function MaterialsList({
           })
         );
         break;
-
+      case "existing":
       default:
         setListData(
           storageMaterials.map((item) => {
@@ -140,38 +143,49 @@ function MaterialsList({
   }, [selectedMaterial, type]);
 
   const toggleMaterial = (materialId) => {
-    const existingMaterial = materials.find((material) => {
-      return material.consumption_material === materialId;
-    });
-    setSelectedMaterial(null);
-    if (existingMaterial) {
-      // Remove material from the list
-      setMaterials((prevMaterials) =>
-        prevMaterials.filter(
-          (material) => material.consumption_material !== materialId
-        )
+    setMaterials((prevMaterials) => {
+      const existingMaterialIndex = prevMaterials.findIndex(
+        (material) =>
+          material.consumption_material === materialId ||
+          material.material_id === materialId
       );
-      setSelectedMaterial(null);
-    } else {
-      // Add material to the list
-      const quantity = quantities[materialId] || 0;
-      const price = prices[materialId] || 0;
-      if (quantity >= 0) {
-        setMaterials((prevMaterials) => {
-          if (isProduction) {
-            return [
-              ...prevMaterials,
-              { consumption_material: materialId, quantity, price },
-            ];
-          } else {
-            return [
-              ...prevMaterials,
-              { material_id: materialId, quantity, price },
-            ];
-          }
-        });
-        setSelectedMaterial(null);
+
+      if (existingMaterialIndex !== -1) {
+        // If material exists, remove it and restore the quantity
+        setQuantities((prevQuantities) => ({
+          ...prevQuantities,
+          [materialId]: 0,
+        }));
+        return prevMaterials.filter(
+          (material) =>
+            material.consumption_material !== materialId &&
+            material.material_id !== materialId
+        );
+      } else {
+        // If material does not exist, add it with a default quantity of 1
+        const newMaterial = isProduction
+          ? {
+              consumption_material: materialId,
+              quantity: 1,
+              price: prices[materialId] || 0,
+            }
+          : {
+              material_id: materialId,
+              quantity: 1,
+              price: prices[materialId] || 0,
+            };
+
+        return [...prevMaterials, newMaterial];
       }
+    });
+  };
+
+  const calculateRemainingQuantity = (materialId, quantity) => {
+    if (!quantities[materialId]) return quantity;
+    if (type === "existing") {
+      return quantity + quantities[materialId];
+    } else {
+      return quantity - quantities[materialId];
     }
   };
 
@@ -195,6 +209,38 @@ function MaterialsList({
   useEffect(() => {
     setSelectedMaterial(null);
   }, [isEditing]);
+
+  const getSelectedMaterialsList = () => {
+    materials.map((selectedMaterial, index) => {
+      const { quantity, price, material_id } = selectedMaterial;
+
+      const selectedMaterialId = isProduction
+        ? selectedMaterial.consumption_material
+        : selectedMaterial.material_id;
+
+      const material =
+        type === "sales" || type === "job-order-materials"
+          ? consumptionMaterials.find((m) => m._id === selectedMaterialId)
+          : storageMaterials.find((m) => m._id === selectedMaterialId);
+
+      if (!material) return null; // Safeguard in case of deleted material
+      const { name, unit, material: storageMaterial } = material;
+      setSelectedList((prevSelectedList) => {
+        const updatedSelectedList = [...prevSelectedList];
+        updatedSelectedList[index] = {
+          name,
+          quantity,
+          unit,
+          price,
+          material_id,
+        };
+        return updatedSelectedList;
+      });
+    });
+  };
+  useEffect(() => {
+    getSelectedMaterialsList();
+  }, [materials]);
 
   return (
     <div>
@@ -244,10 +290,8 @@ function MaterialsList({
                         </p>
                         <p className="text-sm text-gray-500">
                           {isEditing ? "Cant. Disponible" : "Cant. Consumida"}{" "}
-                          {quantities[_id]
-                            ? quantity - quantities[_id]
-                            : quantity}{" "}
-                          - {unitOptions.find((u) => u.value === unit).label}
+                          {calculateRemainingQuantity(_id, quantity)} -{" "}
+                          {unitOptions.find((u) => u.value === unit).label}
                         </p>
                       </div>
                       {selectedMaterial === _id && isEditing && (
@@ -316,23 +360,15 @@ function MaterialsList({
         <>
           <p className="text-base text-blue-800 mt-5">Seleccionados</p>
           <div className="w-full max-h-[300px] overflow-auto pr-2">
-            {materials.map((selectedMaterial, index) => {
-              const { quantity, price } = selectedMaterial;
-
-              const selectedMaterialId = isProduction
-                ? selectedMaterial.consumption_material
-                : selectedMaterial.material_id;
-
-              const material =
-                type === "sales" || type === "job-order-materials"
-                  ? consumptionMaterials.find(
-                      (m) => m._id === selectedMaterialId
-                    )
-                  : storageMaterials.find((m) => m._id === selectedMaterialId);
-
-              if (!material) return null; // Safeguard in case of deleted material
-              const { name, unit, material: storageMaterial } = material;
-
+            {selectedList.map((material, index) => {
+              const {
+                name,
+                quantity,
+                unit,
+                price,
+                material: storageMaterial,
+                material_id,
+              } = material;
               return (
                 <div className="flex border-b" key={index}>
                   <div className="flex py-4 flex-col md:flex-row">
@@ -364,7 +400,9 @@ function MaterialsList({
                   </div>
                   <DeleteOutlined
                     className="ml-auto p-4"
-                    onClick={() => toggleMaterial(selectedMaterialId)}
+                    onClick={() => {
+                      toggleMaterial(material_id);
+                    }}
                   />
                 </div>
               );

@@ -26,6 +26,7 @@ function AddExistingMaterial({
       <Form name="consumption-material-form" form={form}>
         <Form.Item name={"materials"}>
           <MaterialsList
+            type="existing"
             owner={owner}
             filterText={filterText}
             materials={materials}

@@ -12,55 +12,79 @@ function AddMaterialModal({
   type,
   owner,
 }) {
-  const { createStorageMaterial, loading, createConsumptionMaterial } =
-    useInventory();
+  const {
+    createStorageMaterial,
+    loading,
+    createConsumptionMaterial,
+    restockStorageMaterials,
+  } = useInventory();
   const [form] = Form.useForm();
   const [disabled, setDisabled] = useState(true);
   const [materials, setMaterials] = useState([]);
   const [existingMaterial, setExistingMaterial] = useState(false);
 
   const handleOk = () => {
-    switch (type) {
-      case "storage":
-        form.validateFields().then((values) => {
-          values.owner = owner;
-          createStorageMaterial(values)
-            .then((response) => {
-              notification.success({
-                message: "Material agregado a almacén",
-              });
-              setIsModalOpen(false);
-              form.resetFields();
-              onFinish();
-            })
-            .catch((err) => {
-              notification.error({
-                message: "Error al agregar material",
-                description: err,
-              });
+    if (existingMaterial) {
+      form.validateFields().then((values) => {
+        restockStorageMaterials(values)
+          .then(() => {
+            notification.success({
+              message: "Materiales agregados a almacén",
             });
-        });
-        break;
+            setIsModalOpen(false);
+            form.resetFields();
+            onFinish();
+          })
+          .catch((err) => {
+            notification.error({
+              message: "Error al agregar material",
+              description: err,
+            });
+          });
+      });
+    } else {
+      switch (type) {
+        case "storage":
+          form.validateFields().then((values) => {
+            values.owner = owner;
+            createStorageMaterial(values)
+              .then((response) => {
+                notification.success({
+                  message: "Material agregado a almacén",
+                });
+                setIsModalOpen(false);
+                form.resetFields();
+                onFinish();
+              })
+              .catch((err) => {
+                notification.error({
+                  message: "Error al agregar material",
+                  description: err,
+                });
+              });
+          });
+          break;
 
-      case "consumption":
-        form.validateFields().then((values) => {
-          createConsumptionMaterial(values)
-            .then(() => {
-              notification.success({
-                message: "Material de consumo agregado",
+        case "consumption":
+          form.validateFields().then((values) => {
+            createConsumptionMaterial(values)
+              .then(() => {
+                notification.success({
+                  message: "Material de consumo agregado",
+                });
+                setIsModalOpen(false);
+                form.resetFields();
+                onFinish();
+                setMaterials([]);
+              })
+              .catch((err) => {
+                notification.error({
+                  message: "Error al agregar material",
+                  description: err,
+                });
               });
-              setIsModalOpen(false);
-              form.resetFields();
-              onFinish();
-              setMaterials([]);
-            })
-            .catch((err) => {
-              notification.error({
-                message: "Error al agregar material",
-                description: err,
-              });
-            });
-        });
+          });
+      }
     }
   };
 
@@ -75,12 +99,12 @@ function AddMaterialModal({
       case "storage":
         return (
           <>
-            {/* <div className="flex mb-4">
-              <Switch onChange={() => setExistingMaterial(!existingMaterial)} />
-              <p className="ml-2 font-semibold">
+            <div className="flex mb-4 justify-between">
+              <p className=" font-semibold text-blue-800">
                 {existingMaterial ? "Material existente" : "Nuevo material"}
               </p>
-            </div> */}
+              <Switch onChange={() => setExistingMaterial(!existingMaterial)} />
+            </div>
             {existingMaterial ? (
               <AddExistingMaterial
                 owner={owner}

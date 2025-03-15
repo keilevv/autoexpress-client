@@ -121,7 +121,7 @@ function MaterialsTable({
       dataIndex: "unit",
       key: "unit",
       render: (item) => {
-        return unitOptions.find((unit) => unit.value === item).label;
+        return unitOptions.find((unit) => unit.value === item)?.label;
       },
     },
     {
@@ -137,7 +137,7 @@ function MaterialsTable({
       dataIndex: "quantity",
       key: "quantity",
       render: (quantity) => {
-        return <p>{formatNumber(quantity)}</p>
+        return <p>{formatNumber(quantity ?? 0)}</p>;
       },
     },
     {
@@ -165,16 +165,19 @@ function MaterialsTable({
   const handleTableChange = (newPagination) => {
     setPagination(newPagination);
   };
+  
 
   return (
     <>
       <div className="table-container">
         <Table
-          rowClassName={(item) => { if(item.caution_quantity){
-            if(item.quantity <= item.caution_quantity){
-              return "bg-yellow-50"
+          rowClassName={(item) => {
+            if (item.caution_quantity) {
+              if (item.quantity <= item.caution_quantity) {
+                return "bg-yellow-50";
+              }
             }
-          }}}
+          }}
           loading={loading}
           dataSource={tableData}
           columns={columns}

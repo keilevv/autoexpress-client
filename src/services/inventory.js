@@ -22,6 +22,12 @@ const materialsService = {
     });
   },
 
+  restockStorageMaterials(token, payload) {
+    return axios.post(`${apiUrl}/inventory/operations/storage/restock`, payload, {
+      headers: { Authorization: `${token}` },
+    });
+  },
+
   deleteStorageMaterial(token, materialId) {
     return axios.delete(
       `${apiUrl}/inventory/operations/delete/storage/${materialId}`,
