@@ -32,7 +32,6 @@ function MaterialsList({
   const [prices, setPrices] = useState({});
   const [listData, setListData] = useState([]);
   const user = useSelector((state) => state.auth.user);
-  const [selectedList, setSelectedList] = useState([]);
 
   useEffect(() => {
     switch (type) {
@@ -120,9 +119,10 @@ function MaterialsList({
   const onQuantityChange = (materialId, value) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [materialId]: value,
+      [materialId]: value || 0,
     }));
   };
+
   const onPriceChange = (materialId, value) => {
     setPrices((prevPrices) => ({
       ...prevPrices,
@@ -141,6 +141,7 @@ function MaterialsList({
   }, [selectedMaterial, type]);
 
   const toggleMaterial = (materialId) => {
+    const storageMaterial = storageMaterials.find((m) => m._id === materialId);
     setMaterials((prevMaterials) => {
       const existingMaterialIndex = prevMaterials.findIndex(
         (material) =>
@@ -164,13 +165,17 @@ function MaterialsList({
         const newMaterial = isProduction
           ? {
               consumption_material: materialId,
-              quantity: 1,
+              quantity: quantities[materialId] || 1,
               price: prices[materialId] || 0,
+              name: storageMaterial?.name || "",
+              unit: storageMaterial?.unit || "",
             }
           : {
               material_id: materialId,
-              quantity: 1,
+              quantity: quantities[materialId] || 1,
               price: prices[materialId] || 0,
+              name: storageMaterial?.name || "",
+              unit: storageMaterial?.unit || "",
             };
 
         return [...prevMaterials, newMaterial];
@@ -207,38 +212,6 @@ function MaterialsList({
   useEffect(() => {
     setSelectedMaterial(null);
   }, [isEditing]);
-
-  const getSelectedMaterialsList = () => {
-    materials.map((selectedMaterial, index) => {
-      const { quantity, price, material_id } = selectedMaterial;
-
-      const selectedMaterialId = isProduction
-        ? selectedMaterial.consumption_material
-        : selectedMaterial.material_id;
-
-      const material =
-        type === "sales" || type === "job-order-materials"
-          ? consumptionMaterials.find((m) => m._id === selectedMaterialId)
-          : storageMaterials.find((m) => m._id === selectedMaterialId);
-
-      if (!material) return null; // Safeguard in case of deleted material
-      const { name, unit, material: storageMaterial } = material;
-      setSelectedList((prevSelectedList) => {
-        const updatedSelectedList = [...prevSelectedList];
-        updatedSelectedList[index] = {
-          name,
-          quantity,
-          unit,
-          price,
-          material_id,
-        };
-        return updatedSelectedList;
-      });
-    });
-  };
-  useEffect(() => {
-    getSelectedMaterialsList();
-  }, [materials]);
 
   return (
     <div>
@@ -301,10 +274,12 @@ function MaterialsList({
                               Cant. Seleccionada
                             </p>
                             <InputNumber
-                              max={quantity}
+                              // max={quantity}
                               min={0}
                               value={quantities[_id]}
-                              onChange={(value) => onQuantityChange(_id, value)}
+                              onChange={(value) => {
+                                onQuantityChange(_id, value);
+                              }}
                               placeholder="Cantidad"
                               className="w-full h-8"
                             />
@@ -360,7 +335,7 @@ function MaterialsList({
         <>
           <p className="text-base text-blue-800 mt-5">Seleccionados</p>
           <div className="w-full max-h-[300px] overflow-auto pr-2">
-            {selectedList.map((material, index) => {
+            {materials.map((material, index) => {
               const {
                 name,
                 quantity,
@@ -377,7 +352,7 @@ function MaterialsList({
                         {name || storageMaterial.name}
                       </p>
                       <p className="text-sm text-gray-500">
-                        Cant: {quantity} x{" "}
+                        Cant: {quantities[material_id]} x{" "}
                         {
                           unitOptions.find((u) => {
                             if (storageMaterial) {

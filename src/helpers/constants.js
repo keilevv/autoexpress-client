@@ -12,6 +12,7 @@ export const unitOptions = [
   { value: "galon", label: "Galón" },
   { value: "kilo", label: "Kilo" },
   { value: "gram", label: "Gramo" },
+  { value: "Unidad", label: "Unidad" },
 ];
 
 export const headerModules = ["operations"];

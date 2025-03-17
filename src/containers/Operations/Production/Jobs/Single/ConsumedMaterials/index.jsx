@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState } from "react";
 import _debounce from "lodash/debounce";
-import { formatToCurrency } from "../../../../../../helpers";
+import { formatNumber, formatToCurrency } from "../../../../../../helpers";
 import { DeleteOutlined } from "@ant-design/icons";
 import { Select, InputNumber, Button, Input, Divider } from "antd";
 import useInventory from "../../../../../../hooks/useInventory";
@@ -123,13 +123,15 @@ function ConsumedMaterials({
                 <p className="ml-5 text-red-70">
                   {" "}
                   Restante:{" "}
-                  {Number(
-                    isSaved || !consumptionMaterialFromList
-                      ? existingQuantity - materialQuantity
-                      : existingQuantity -
-                          consumptionMaterialFromList?.quantity -
-                          materialQuantity
-                  ).toFixed(2)}
+                  {formatNumber(
+                    Number(
+                      isSaved || !consumptionMaterialFromList
+                        ? existingQuantity - materialQuantity
+                        : existingQuantity -
+                            consumptionMaterialFromList?.quantity -
+                            materialQuantity
+                    )
+                  )}
                 </p>
               </div>
             </div>
@@ -139,9 +141,7 @@ function ConsumedMaterials({
                 <InputNumber
                   value={sellPrice}
                   placeholder="Precio"
-                  formatter={(value) =>
-                    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
+                  formatter={(value) => `${formatToCurrency(value)}`}
                   onChange={(value) => setSellPrice(value)}
                   className="w-full max-w-[200px]"
                   min={0}
@@ -194,7 +194,7 @@ function ConsumedMaterials({
         {consumedMaterials.length > 0 ? (
           consumedMaterials.map((item, index) => {
             return (
-              <div className="flex flex-col">
+              <div className="flex flex-col" key={index}>
                 <div className="flex items-baseline" key={index}>
                   <div className="flex flex-col">
                     <p className="text-gray-700 text-sm font-medium">{`${item?.storage_material?.name} (${item?.storage_material?.reference})`}</p>{" "}
@@ -255,10 +255,7 @@ function ConsumedMaterials({
           <p className="text-gray-700 text-md font-medium">Costo:</p>
           <p className="ml-auto text-md font-medium">{`${formatToCurrency(
             consumedMaterials
-              .map(
-                (item) =>
-                  Math.abs(item.price) * item?.quantity
-              )
+              .map((item) => Math.abs(item.price) * item?.quantity)
               .reduce((a, b) => a + b, 0) +
               consumedColors
                 .map((item) => item?.price)

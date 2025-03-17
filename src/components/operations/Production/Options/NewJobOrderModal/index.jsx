@@ -1,5 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
-import { Modal, Form, Input, DatePicker, Select, notification } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  notification,
+  InputNumber,
+} from "antd";
 import useEmployee from "../../../../../hooks/useEmployee";
 import useCars from "../../../../../hooks/useCars";
 import useJobOrder from "../../../../../hooks/useJobOrder";
@@ -240,6 +248,18 @@ function NewJobOrderModal({
             ]}
           >
             <DatePicker format={"DD/MM/YYYY"} />
+          </Form.Item>
+        </div>
+        <div className={"flex flex-col gap-2"}>
+          <label className={"font-semibold"}>Precio de venta</label>
+          <Form.Item name="sell_price">
+            <InputNumber
+              min={0}
+              className="w-full"
+              formatter={(value) =>
+                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+            />
           </Form.Item>
         </div>
       </Form>

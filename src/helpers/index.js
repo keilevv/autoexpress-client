@@ -76,5 +76,7 @@ export const validateCarPlate = async (rule, value) => {
 };
 
 export function formatNumber(num) {
-  return Number.isInteger(num) ? num.toString() : num.toFixed(2);
+  if (num) {
+    return Number.isInteger(num) ? num.toString() : num.toFixed(2);
+  } else return 0;
 }

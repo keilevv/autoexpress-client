@@ -28,6 +28,7 @@ function AddMaterialModal({
       form.validateFields().then((values) => {
         restockStorageMaterials(values)
           .then(() => {
+            setMaterials([]);
             notification.success({
               message: "Materiales agregados a almacén",
             });
