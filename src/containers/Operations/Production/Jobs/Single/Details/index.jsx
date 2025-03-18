@@ -74,7 +74,6 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
     }
   }, [brand, model]);
 
-
   return (
     <Form
       name="job-order-details"
@@ -83,7 +82,10 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
       layout="vertical"
       className="flex flex-col gap-4 "
       onFieldsChange={() => {
-        setIsChanged && setIsChanged(true);
+        setIsChanged &&
+          setIsChanged((prev) => {
+            return { ...prev, details: true };
+          });
       }}
     >
       <div className="gap-2 flex flex-col">

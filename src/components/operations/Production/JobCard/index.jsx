@@ -22,9 +22,7 @@ export default function JobCard({ jobOrder }) {
     let materialsCost = consumedMaterials
       .map((item) => item?.price * item?.quantity)
       .reduce((a, b) => a + b, 0);
-    let materialsPrice = consumedMaterials
-      .map((item) => item?.sell_price * item?.quantity)
-      .reduce((a, b) => a + b, 0);
+    let materialsPrice = jobOrder?.sell_price;
     let colorsPrice = consumedColors
       .map((item) => item?.price)
       .reduce((a, b) => a + b, 0);
@@ -38,7 +36,7 @@ export default function JobCard({ jobOrder }) {
     );
     return {
       cost: formatToCurrency(materialsCost),
-      total: formatToCurrency(materialsPrice + colorsPrice),
+      sell_price: formatToCurrency(materialsPrice + colorsPrice),
       margin: marginPrice,
     };
   }
@@ -151,9 +149,9 @@ export default function JobCard({ jobOrder }) {
           <div className="flex items-center justify-between bg-primary/5 rounded-lg pb-3">
             <div className="flex items-center gap-2">
               <DollarOutlined className="h-4 w-4 text-muted-foreground" />
-              <span className="text-base font-medium">Total</span>
+              <span className="text-base font-medium">Precio de venta</span>
             </div>
-            <span className="font-semibold text-base text-blue-800">{getJobOrderPrice().total}</span>
+            <span className="font-semibold text-base text-blue-800">{getJobOrderPrice().sell_price}</span>
           </div>
         </div>
 

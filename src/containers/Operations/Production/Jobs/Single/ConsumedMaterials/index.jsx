@@ -77,16 +77,13 @@ function ConsumedMaterials({
                   const selectedMaterial = storageMaterials.find(
                     (item) => item._id === value
                   );
-                  setExistingQuantity(
-                    storageMaterials.find((item) => item._id === value).quantity
-                  );
-                  setPrice(
-                    storageMaterials.find((item) => item._id === value).price
-                  );
+                  setExistingQuantity(selectedMaterial.quantity);
+                  setPrice(selectedMaterial.price);
                   setSellPrice(
                     selectedMaterial.price * (selectedMaterial.margin / 100) +
                       selectedMaterial.price
                   );
+
                   setAddedMaterial(value);
                 }}
                 allowClear
@@ -250,7 +247,7 @@ function ConsumedMaterials({
         setShowSaveMaterials={setShowSaveMaterials}
         owner={owner}
       />
-      <div className="flex mt-4 flex-col gap-2">
+      {/* <div className="flex mt-4 flex-col gap-2">
         <div className="flex flex-row">
           <p className="text-gray-700 text-md font-medium">Costo:</p>
           <p className="ml-auto text-md font-medium">{`${formatToCurrency(
@@ -277,7 +274,7 @@ function ConsumedMaterials({
           )}`}</p>
         </div>
         <div className="flex flex-row">
-          <p className="text-gray-700 text-lg font-medium">Total:</p>
+          <p className="text-gray-700 text-lg font-medium">Precio de venta:</p>
           <p className="ml-auto text-lg text-blue-800 font-medium">{`${formatToCurrency(
             consumedMaterials
               .map((item) => item?.sell_price * item?.quantity)
@@ -287,7 +284,7 @@ function ConsumedMaterials({
                 .reduce((a, b) => a + b, 0)
           )}`}</p>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

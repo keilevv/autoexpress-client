@@ -161,6 +161,7 @@ function StorageMaterialForm({
             <Form.Item name={"margin"}>
               <InputNumber
                 min={0}
+                defaultValue={50}
                 className="w-full"
                 disabled={!isEditing}
                 formatter={(value) => `% ${value}`}
