@@ -10,7 +10,11 @@ function useJobOrder() {
   const [jobOrders, setJobOrders] = useState([]);
   const [jobOrder, setJobOrder] = useState(null);
   const [count, setCount] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState({
+    cost: 0,
+    material_profit: 0,
+    sell_profit: 0,
+  });
 
   useEffect(() => {
     if (auth.user && auth.user.accessToken) {
@@ -25,7 +29,11 @@ function useJobOrder() {
       .then((response) => {
         setCount(response.data.count);
         setJobOrders(response.data.results);
-        setTotal(response.data.total_price);
+        setTotal({
+          cost: response.data.total_cost,
+          material_profit: response.data.total_material_profit,
+          sell_profit: response.data.total_sell_profit,
+        });
         setLoading(false);
       })
       .catch((err) => {

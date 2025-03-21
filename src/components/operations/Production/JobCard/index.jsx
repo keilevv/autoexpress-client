@@ -140,12 +140,12 @@ export default function JobCard({ jobOrder }) {
             </div>
             <span className="font-semibold">{getJobOrderPrice().cost}</span>
           </div>
-          <div className="flex items-center justify-between bg-primary/5 rounded-lg">
+          {/* <div className="flex items-center justify-between bg-primary/5 rounded-lg">
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Margen</span>
             </div>
             <span className="font-semibold text-green-600">{getJobOrderPrice().margin}</span>
-          </div>
+          </div> */}
           <div className="flex items-center justify-between bg-primary/5 rounded-lg pb-3">
             <div className="flex items-center gap-2">
               <DollarOutlined className="h-4 w-4 text-muted-foreground" />

@@ -66,17 +66,28 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
       label: <p className="font-semibold text-base">Archivadas</p>,
     },
   ];
+
+  console.log("Array");
   return (
     <div>
       <div className="flex flex-col gap-4">
         {loading ? (
           <div className="flex flex-col gap-2">
-            <Skeleton.Input size="small" /> <Skeleton.Input size="small" />
+            <Skeleton.Input size="small" />
+            <Skeleton.Input size="small" />
+            <Skeleton.Input size="small" />
+            <Skeleton.Input size="small" />
           </div>
         ) : (
           <div className="flex flex-col gap-2">
-            <p className="font-semibold text-base">{`Precio total: ${formatToCurrency(
-              total
+            <p className="font-semibold text-base">{`Total costo: ${formatToCurrency(
+              total.cost
+            )}`}</p>
+            <p className="font-semibold text-base">{`Total utilidad de materiales: ${formatToCurrency(
+              total.material_profit
+            )}`}</p>
+            <p className="font-semibold text-base">{`Total utilidad de ventas: ${formatToCurrency(
+              total.sell_profit
             )}`}</p>
             <p className="font-semibold">Total de O.T: {count}</p>
           </div>

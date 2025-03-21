@@ -176,7 +176,9 @@ function ConsumedMaterials({
                 }, []);
 
                 setConsumedMaterials(combinedMaterials);
-                setShowSaveMaterials(true);
+                setShowSaveMaterials((prev) => {
+                  return { ...prev, materials: true };
+                });
                 setIsSaved(false);
                 setMaterialQuantity(null);
               }}
@@ -190,6 +192,7 @@ function ConsumedMaterials({
       <div className="flex flex-col gap-2 max-h-[500px] overflow-y-auto bg-gray-200 p-4 rounded-lg ">
         {consumedMaterials.length > 0 ? (
           consumedMaterials.map((item, index) => {
+            const costProfit = item.sell_price - item.price;
             return (
               <div className="flex flex-col" key={index}>
                 <div className="flex items-baseline" key={index}>
@@ -198,22 +201,27 @@ function ConsumedMaterials({
                     <p>{`${formatToCurrency(
                       item?.storage_material?.price
                     )}`}</p>
-                    <p className="text-green-600 ">
-                      +
-                      {formatToCurrency(Math.abs(item.price - item.sell_price))}
+                    <p
+                      className={`${
+                        costProfit > 0 ? "text-green-600" : "text-red-600"
+                      } `}
+                    >
+                      {costProfit > 0 ? "+" : "-"}
+                      {formatToCurrency(Math.abs(costProfit))}
                     </p>
                     <p className="font-medium ">x{item?.quantity}</p>
                   </div>
                   <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2" />
-                  <p className="text-base">{`${formatToCurrency(
+                  <p className="text-base font-semibold">{`${formatToCurrency(
                     item?.sell_price * item?.quantity
                   )}`}</p>
                   {isEditing && (
                     <DeleteOutlined
                       className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-blue-800 "
                       onClick={() => {
-                        setShowSaveMaterials(true);
-                        // Remove the material from the consumedMaterials list
+                        setShowSaveMaterials((prev) => {
+                          return { ...prev, materials: true };
+                        }); // Remove the material from the consumedMaterials list
                         const updatedMaterials = consumedMaterials.filter(
                           (i) =>
                             i.storage_material._id !== item.storage_material._id
@@ -247,44 +255,6 @@ function ConsumedMaterials({
         setShowSaveMaterials={setShowSaveMaterials}
         owner={owner}
       />
-      {/* <div className="flex mt-4 flex-col gap-2">
-        <div className="flex flex-row">
-          <p className="text-gray-700 text-md font-medium">Costo:</p>
-          <p className="ml-auto text-md font-medium">{`${formatToCurrency(
-            consumedMaterials
-              .map((item) => Math.abs(item.price) * item?.quantity)
-              .reduce((a, b) => a + b, 0) +
-              consumedColors
-                .map((item) => item?.price)
-                .reduce((a, b) => a + b, 0)
-          )}`}</p>
-        </div>
-        <div className="flex flex-row">
-          <p className="text-gray-700 text-md font-medium">Margen:</p>
-          <p className="ml-auto text-md text-green-500 font-medium">{`${formatToCurrency(
-            consumedMaterials
-              .map(
-                (item) =>
-                  Math.abs(item.sell_price - item.price) * item?.quantity
-              )
-              .reduce((a, b) => a + b, 0) +
-              consumedColors
-                .map((item) => item?.price)
-                .reduce((a, b) => a + b, 0)
-          )}`}</p>
-        </div>
-        <div className="flex flex-row">
-          <p className="text-gray-700 text-lg font-medium">Precio de venta:</p>
-          <p className="ml-auto text-lg text-blue-800 font-medium">{`${formatToCurrency(
-            consumedMaterials
-              .map((item) => item?.sell_price * item?.quantity)
-              .reduce((a, b) => a + b, 0) +
-              consumedColors
-                .map((item) => item?.price)
-                .reduce((a, b) => a + b, 0)
-          )}`}</p>
-        </div>
-      </div> */}
     </>
   );
 }

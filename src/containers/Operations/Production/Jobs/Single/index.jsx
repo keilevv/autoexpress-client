@@ -16,6 +16,12 @@ import JobOrderDetails from "./Details";
 import dayjs from "dayjs";
 import useJobOrder from "../../../../../hooks/useJobOrder";
 import ConsumedMaterials from "./ConsumedMaterials";
+import SaleDetails from "./SaleDetails";
+import {
+  FileOutlined,
+  BarcodeOutlined,
+  DollarCircleOutlined,
+} from "@ant-design/icons";
 
 function JobOrdersSingleContainer() {
   const user = useSelector((state) => state.auth.user);
@@ -30,13 +36,21 @@ function JobOrdersSingleContainer() {
   const [owner, setOwner] = useState("autocheck");
   const [consumedMaterials, setConsumedMaterials] = useState([]);
   const [consumedColors, setConsumedColors] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isEditingMaterials, setIsEditingMaterials] = useState(false);
-  const [showSave, setShowSave] = useState(false);
-  const [showSaveMaterials, setShowSaveMaterials] = useState(false);
+  const [sellPrice, setSellPrice] = useState(0);
   const [form] = Form.useForm();
   const [jobOrderId, setJobOrderId] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
+
+  const [showSaveButtons, setShowSaveButtons] = useState({
+    details: false,
+    materials: false,
+    sale: false,
+  });
+  const [isEditingCard, setIsEditingCard] = useState({
+    details: false,
+    materials: false,
+    sale: false,
+  });
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
@@ -98,8 +112,12 @@ function JobOrdersSingleContainer() {
             description: `O.T. #${response.data.results.number}`,
           });
           getJobOrder(jobOrderId);
-          setIsEditing(false);
-          setShowSave(false);
+          setIsEditingCard((prev) => {
+            return { ...prev, details: false };
+          });
+          setShowSaveButtons((prev) => {
+            return { ...prev, details: false };
+          });
           form.resetFields();
         })
         .catch((err) => {
@@ -129,8 +147,12 @@ function JobOrdersSingleContainer() {
             description: `O.T. #${response.data.results.number}`,
           });
           getJobOrder(jobOrderId);
-          setIsEditingMaterials(false);
-          setShowSaveMaterials(false);
+          setIsEditingCard((prev) => {
+            return { ...prev, materials: false };
+          });
+          setShowSaveButtons((prev) => {
+            return { ...prev, materials: false };
+          });
           setIsSaved(true);
 
           form.resetFields();
@@ -142,16 +164,23 @@ function JobOrdersSingleContainer() {
         });
     }
   };
-
   function EditButton({ type = "information", setIsSaved = () => {} }) {
     return (
       <Tooltip
         title={() => {
           switch (type) {
             case "materials":
-              return !isEditingMaterials ? "Editar materiales " : "Cancelar";
+              return !isEditingCard.materials
+                ? "Editar materiales "
+                : "Cancelar";
+            case "sale":
+              return !isEditingCard.sale
+                ? "Editar precio de venta "
+                : "Cancelar";
             default:
-              return !isEditing ? "Editar información " : "Cancelar";
+              return !isEditingCard.details
+                ? "Editar información "
+                : "Cancelar";
           }
         }}
       >
@@ -162,16 +191,32 @@ function JobOrdersSingleContainer() {
             setIsSaved(false);
             switch (type) {
               case "materials":
-                setIsEditingMaterials(!isEditingMaterials);
-                setShowSaveMaterials(false);
+                setIsEditingCard((prev) => {
+                  return { ...prev, materials: !isEditingCard.materials };
+                });
+                setShowSaveButtons((prev) => {
+                  return { ...prev, materials: false };
+                });
                 setConsumedColors(jobOrder?.consumed_colors);
                 setConsumedMaterials(jobOrder?.consumed_materials);
 
                 break;
+              case "sale":
+                setIsEditingCard((prev) => {
+                  return { ...prev, sale: !isEditingCard.sale };
+                });
+                setShowSaveButtons((prev) => {
+                  return { ...prev, sale: false };
+                });
+                break;
               default:
-                setIsEditing(!isEditing);
+                setIsEditingCard((prev) => {
+                  return { ...prev, details: !isEditingCard.details };
+                });
                 form.resetFields();
-                setShowSave(false);
+                setShowSaveButtons((prev) => {
+                  return { ...prev, details: false };
+                });
                 break;
             }
           }}
@@ -181,6 +226,34 @@ function JobOrdersSingleContainer() {
       </Tooltip>
     );
   }
+
+  const handleUpdateSellPrice = () => {
+    updateJobOrder(jobOrderId, { sell_price: sellPrice })
+      .then((response) => {
+        notification.success({
+          message: "Precio de venta actualizado con exito",
+          description: `O.T. #${response.data.results.number}`,
+        });
+        getJobOrder(jobOrderId);
+        setIsEditingCard((prev) => {
+          return { ...prev, sale: false };
+        });
+        setShowSaveButtons((prev) => {
+          return { ...prev, sale: false };
+        });
+      })
+      .catch((err) => {
+        notification.error({
+          message: "Error actualizando precio de venta",
+        });
+        setIsEditingCard((prev) => {
+          return { ...prev, sale: false };
+        });
+        setShowSaveButtons((prev) => {
+          return { ...prev, sale: false };
+        });
+      });
+  };
 
   return (
     <div className="lg:flex lg:justify-between lg:items-top mb-5 flex-col">
@@ -271,15 +344,20 @@ function JobOrdersSingleContainer() {
         Detalles de la orden de trabajo
       </h1>
 
-      <div className="flex flex-col md:flex-row gap-4">
+      <div className="flex flex-col md:flex-row gap-4 flex-wrap">
         <div className="w-full max-w-md">
           <div
             className={` bg-gray-100 rounded-lg ${
-              isEditing ? "outline" : ""
-            } outline-blue-200 p-4 p-4 h-full `}
+              isEditingCard.details ? "outline" : ""
+            } outline-blue-200 p-4 h-full `}
           >
             <div className="flex justify-between">
-              <h1 className="text-xl font-semibold">Información</h1>
+              <div className="flex gap-2">
+                <FileOutlined className="text-xl text-blue-800" />
+                <h1 className="text-xl font-semibold text-blue-800">
+                  Información
+                </h1>
+              </div>
               <EditButton />{" "}
             </div>
 
@@ -290,28 +368,32 @@ function JobOrdersSingleContainer() {
               <JobOrderDetails
                 jobOrder={jobOrder}
                 form={form}
-                isEditing={isEditing}
-                setIsChanged={setShowSave}
+                isEditing={isEditingCard.details}
+                setIsChanged={setShowSaveButtons}
               />
             )}
             <div className="mt-8">
-              {isEditing && (
+              {isEditingCard.details && (
                 <Button
                   onClick={() => {
-                    setIsEditing(false);
+                    setIsEditingCard((prev) => {
+                      return { ...prev, details: false };
+                    });
                     form.resetFields();
-                    setShowSave(false);
+                    setShowSaveButtons((prev) => {
+                      return { ...prev, details: false };
+                    });
                   }}
                   className={`storageMaterial-form-cancel-button`}
                 >
                   Cancelar
                 </Button>
               )}
-              {showSave && (
+              {showSaveButtons.details && (
                 <Button
                   type="primary"
                   className={`storageMaterial-form-save-button ml-2 ${
-                    !showSave && "disabled"
+                    !showSaveButtons.materials && "disabled"
                   }`}
                   icon={<i className="fa-solid fa-save"></i>}
                   onClick={handleUpdateJobOrder}
@@ -325,11 +407,16 @@ function JobOrdersSingleContainer() {
         <div className="w-full max-w-md">
           <div
             className={` bg-gray-100 rounded-lg ${
-              isEditingMaterials ? "outline" : ""
+              isEditingCard.materials ? "outline" : ""
             } outline-blue-200 p-4 p-4 `}
           >
             <div className="flex justify-between">
-              <h1 className="text-xl font-semibold ">Materiales utilizados</h1>
+              <div className="flex gap-2">
+                <BarcodeOutlined className="text-xl text-blue-800" />
+                <h1 className="text-xl font-semibold text-blue-800">
+                  Materiales Utilizados
+                </h1>
+              </div>{" "}
               <EditButton setIsSaved={setIsSaved} type="materials" />
             </div>
 
@@ -340,22 +427,26 @@ function JobOrdersSingleContainer() {
               <ConsumedMaterials
                 owner={jobOrder?.owner}
                 consumedMaterials={consumedMaterials}
-                isEditing={isEditingMaterials}
+                isEditing={isEditingCard.materials}
                 setConsumedMaterials={setConsumedMaterials}
                 consumedColors={consumedColors}
                 setConsumedColors={setConsumedColors}
-                setShowSaveMaterials={setShowSaveMaterials}
+                setShowSaveMaterials={setShowSaveButtons}
                 setIsSaved={setIsSaved}
                 isSaved={isSaved}
               />
             )}
             <div className="mt-2">
-              {isEditingMaterials && (
+              {isEditingCard.materials && (
                 <Button
                   onClick={() => {
-                    setIsEditingMaterials(false);
+                    setIsEditingCard((prev) => {
+                      return { ...prev, materials: false };
+                    });
                     form.resetFields();
-                    setShowSaveMaterials(false);
+                    setShowSaveButtons((prev) => {
+                      return { ...prev, materials: false };
+                    });
                     setConsumedColors(jobOrder?.consumed_colors);
                     setConsumedMaterials(jobOrder?.consumed_materials);
                   }}
@@ -364,15 +455,74 @@ function JobOrdersSingleContainer() {
                   Cancelar
                 </Button>
               )}
-              {showSaveMaterials && (
+              {showSaveButtons.materials && (
                 <Button
                   loading={loading}
                   type="primary"
                   className={`storageMaterial-form-save-button ml-2 ${
-                    !showSave && "disabled"
+                    !showSaveButtons.materials && "disabled"
                   }`}
                   icon={<i className="fa-solid fa-save"></i>}
                   onClick={handleAddMaterialsToJobOrder}
+                >
+                  Guardar
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="w-full max-w-md">
+          <div
+            className={` bg-gray-100 rounded-lg ${
+              isEditingCard.sale ? "outline" : ""
+            } outline-blue-200  p-4 `}
+          >
+            <div className="flex justify-between">
+              <div className="flex gap-2">
+                <DollarCircleOutlined className="text-xl text-blue-800" />
+                <h1 className="text-xl font-semibold text-blue-800">Venta</h1>
+              </div>{" "}
+              <EditButton setIsSaved={setIsSaved} type="sale" />
+            </div>
+
+            <Divider className="bg-gray-300 my-4 h-[2px]" />
+            {loading ? (
+              <Spin size="large" className="my-10 w-full" />
+            ) : (
+              <SaleDetails
+                setShowSaveSale={setShowSaveButtons}
+                jobOrder={jobOrder}
+                isEditing={isEditingCard.sale}
+                setSellPrice={setSellPrice}
+                sellPrice={sellPrice}
+              />
+            )}
+            <div className="mt-2">
+              {isEditingCard.sale && (
+                <Button
+                  onClick={() => {
+                    setIsEditingCard((prev) => {
+                      return { ...prev, sale: false };
+                    });
+                    form.resetFields();
+                    setShowSaveButtons((prev) => {
+                      return { ...prev, sale: false };
+                    });
+                  }}
+                  className={`storageMaterial-form-cancel-button`}
+                >
+                  Cancelar
+                </Button>
+              )}
+              {showSaveButtons.sale && (
+                <Button
+                  loading={loading}
+                  type="primary"
+                  className={`storageMaterial-form-save-button ml-2 ${
+                    !showSaveButtons.materials && "disabled"
+                  }`}
+                  icon={<i className="fa-solid fa-save"></i>}
+                  onClick={handleUpdateSellPrice}
                 >
                   Guardar
                 </Button>

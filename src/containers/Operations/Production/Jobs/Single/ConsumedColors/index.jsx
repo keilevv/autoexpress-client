@@ -17,9 +17,7 @@ function ConsumedColors({
     <>
       {owner === "autocheck" && (
         <div>
-          <p className="text-lg font-medium mb-4 text-blue-800 mt-4">
-            Colores
-          </p>
+          <p className="text-lg font-medium mb-4 text-blue-800 mt-4">Colores</p>
           {isEditing && (
             <div className="mt-4 mb-8">
               <p className="text-sm font-medium mb-4 ">Agregar Color</p>
@@ -64,7 +62,9 @@ function ConsumedColors({
                           price: colorPrice,
                         });
                     });
-                    setShowSaveMaterials(true);
+                    setShowSaveMaterials((prev) => {
+                      return { ...prev, materials: true };
+                    });
                   }}
                   disabled={!addedColor || !colorQuantity || !colorPrice}
                 >
@@ -90,7 +90,9 @@ function ConsumedColors({
                       <DeleteOutlined
                         className="pl-4 p-0 ml-auto p-4 cursor-pointer hover:text-blue-800 "
                         onClick={() => {
-                          setShowSaveMaterials(true);
+                          setShowSaveMaterials((prev) => {
+                            return { ...prev, materials: true };
+                          });
                           setConsumedColors(
                             consumedColors.filter((i) => i.name !== item.name)
                           );
