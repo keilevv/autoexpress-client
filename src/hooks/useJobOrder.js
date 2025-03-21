@@ -14,6 +14,7 @@ function useJobOrder() {
     cost: 0,
     material_profit: 0,
     sell_profit: 0,
+    sell_price: 0,
   });
 
   useEffect(() => {
@@ -33,6 +34,7 @@ function useJobOrder() {
           cost: response.data.total_cost,
           material_profit: response.data.total_material_profit,
           sell_profit: response.data.total_sell_profit,
+          sell_price: response.data.total_sell_price,
         });
         setLoading(false);
       })

@@ -67,7 +67,6 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
     },
   ];
 
-  console.log("Array");
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -86,8 +85,8 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
             <p className="font-semibold text-base">{`Total utilidad de materiales: ${formatToCurrency(
               total.material_profit
             )}`}</p>
-            <p className="font-semibold text-base">{`Total utilidad de ventas: ${formatToCurrency(
-              total.sell_profit
+            <p className="font-semibold text-base">{`Total de ventas: ${formatToCurrency(
+              total.sell_price
             )}`}</p>
             <p className="font-semibold">Total de O.T: {count}</p>
           </div>

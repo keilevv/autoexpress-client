@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import StatusLabel from "../StatusLabel";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { formatToCurrency } from "../../../../helpers";
 
 export default function JobCard({ jobOrder }) {
@@ -151,20 +151,24 @@ export default function JobCard({ jobOrder }) {
               <DollarOutlined className="h-4 w-4 text-muted-foreground" />
               <span className="text-base font-medium">Precio de venta</span>
             </div>
-            <span className="font-semibold text-base text-blue-800">{getJobOrderPrice().sell_price}</span>
+            <span className="font-semibold text-base text-blue-800">
+              {getJobOrderPrice().sell_price}
+            </span>
           </div>
         </div>
 
         {/* Action Button */}
-        <Button
-          className="w-full items-center justify-center flex font-semibold text-blue-800"
-          onClick={() =>
-            navigate(`/operations/production/jobs/${jobOrder._id}`)
-          }
-        >
-          Ver detalles
-          <ArrowRightOutlined className="h-4 w-4 text-muted-foreground" />
-        </Button>
+        <Link to={`/operations/production/jobs/${jobOrder._id}`}>
+          <Button
+            className="w-full items-center justify-center flex font-semibold text-blue-800"
+            onClick={() =>
+              navigate(`/operations/production/jobs/${jobOrder._id}`)
+            }
+          >
+            Ver detalles
+            <ArrowRightOutlined className="h-4 w-4 text-muted-foreground" />
+          </Button>
+        </Link>
       </div>
     </Card>
   );
