@@ -9,6 +9,7 @@ function ConsumedColors({
   setConsumedColors,
   setShowSaveMaterials = () => {},
   owner = "autocheck",
+  jobOrder = {},
 }) {
   const [addedColor, setAddedColor] = useState(null);
   const [colorQuantity, setColorQuantity] = useState(null);
@@ -79,11 +80,11 @@ function ConsumedColors({
                 return (
                   <div className="flex items-baseline " key={index}>
                     <div>
-                      <p className="text-gray-700 text-sm font-medium">{`${item?.name}`}</p>
+                      <p className="text-gray-700 text-sm font-semibold">{`${item?.name}`}</p>
                       <p>{`${item?.quantity} (gl)`}</p>
                     </div>
                     <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2" />
-                    <p className="text-base ">{`${formatToCurrency(
+                    <p className="text-base font-semibold ">{`${formatToCurrency(
                       item?.price
                     )}`}</p>
                     {isEditing && (
@@ -107,6 +108,15 @@ function ConsumedColors({
                 <p>Sin colores</p>
               </>
             )}
+          </div>
+          <div className="flex items-baseline w-full mt-2">
+            <div className="flex flex-col text-base font-semibold ">
+              Costo total de colores
+            </div>
+            <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2"></div>{" "}
+            <p className={`text-base font-semibold`}>
+              {formatToCurrency(jobOrder?.colors_cost)}
+            </p>
           </div>
         </div>
       )}

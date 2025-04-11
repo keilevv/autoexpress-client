@@ -35,6 +35,7 @@ function useJobOrder() {
           material_profit: response.data.total_material_profit,
           sell_profit: response.data.total_sell_profit,
           sell_price: response.data.total_sell_price,
+          profit: response.data.total_profit,
         });
         setLoading(false);
       })

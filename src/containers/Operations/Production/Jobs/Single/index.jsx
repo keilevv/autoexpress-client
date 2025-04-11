@@ -87,9 +87,8 @@ function JobOrdersSingleContainer() {
     updateJobOrder(jobOrderId, { archived: !jobOrder?.archived })
       .then((response) => {
         notification.success({
-          message: `O.T. ${
-            jobOrder?.archived ? "desarchivado" : "archivado"
-          } con éxito`,
+          message: `O.T. ${jobOrder?.archived ? "desarchivado" : "archivado"
+            } con éxito`,
           description: `O.T. #${response.data.results.number}`,
         });
         getJobOrder(jobOrderId);
@@ -164,7 +163,7 @@ function JobOrdersSingleContainer() {
         });
     }
   };
-  function EditButton({ type = "information", setIsSaved = () => {} }) {
+  function EditButton({ type = "information", setIsSaved = () => { } }) {
     return (
       <Tooltip
         title={() => {
@@ -319,12 +318,10 @@ function JobOrdersSingleContainer() {
             <div className="flex gap-2 mb-4 md:mb-0">
               <Tooltip title={jobOrder?.archived ? "Desarchivar" : "Archivar"}>
                 <Popconfirm
-                  title={`${
-                    jobOrder?.archived ? "Desarchivar" : "Archivar"
-                  } orden de trabajo`}
-                  description={`¿Está seguro de ${
-                    jobOrder?.archived ? "desarchivar" : "archivar"
-                  } esta orden de trabajo?`}
+                  title={`${jobOrder?.archived ? "Desarchivar" : "Archivar"
+                    } orden de trabajo`}
+                  description={`¿Está seguro de ${jobOrder?.archived ? "desarchivar" : "archivar"
+                    } esta orden de trabajo?`}
                   onConfirm={handleArchiveJobOrder}
                 >
                   <Button className="edit-button" shape="circle">
@@ -347,9 +344,8 @@ function JobOrdersSingleContainer() {
       <div className="flex flex-col md:flex-row gap-4 flex-wrap">
         <div className="w-full max-w-md">
           <div
-            className={` bg-gray-100 rounded-lg ${
-              isEditingCard.details ? "outline" : ""
-            } outline-blue-200 p-4 h-full `}
+            className={` bg-gray-100 rounded-lg ${isEditingCard.details ? "outline" : ""
+              } outline-blue-200 p-4 h-full `}
           >
             <div className="flex justify-between">
               <div className="flex gap-2">
@@ -392,9 +388,8 @@ function JobOrdersSingleContainer() {
               {showSaveButtons.details && (
                 <Button
                   type="primary"
-                  className={`storageMaterial-form-save-button ml-2 ${
-                    !showSaveButtons.materials && "disabled"
-                  }`}
+                  className={`storageMaterial-form-save-button ml-2 ${!showSaveButtons.materials && "disabled"
+                    }`}
                   icon={<i className="fa-solid fa-save"></i>}
                   onClick={handleUpdateJobOrder}
                 >
@@ -406,9 +401,8 @@ function JobOrdersSingleContainer() {
         </div>
         <div className="w-full max-w-md">
           <div
-            className={` bg-gray-100 rounded-lg ${
-              isEditingCard.materials ? "outline" : ""
-            } outline-blue-200 p-4 p-4 `}
+            className={` bg-gray-100 rounded-lg ${isEditingCard.materials ? "outline" : ""
+              } outline-blue-200 p-4 p-4 `}
           >
             <div className="flex justify-between">
               <div className="flex gap-2">
@@ -426,6 +420,7 @@ function JobOrdersSingleContainer() {
             ) : (
               <ConsumedMaterials
                 owner={jobOrder?.owner}
+                jobOrder={jobOrder}
                 consumedMaterials={consumedMaterials}
                 isEditing={isEditingCard.materials}
                 setConsumedMaterials={setConsumedMaterials}
@@ -459,9 +454,8 @@ function JobOrdersSingleContainer() {
                 <Button
                   loading={loading}
                   type="primary"
-                  className={`storageMaterial-form-save-button ml-2 ${
-                    !showSaveButtons.materials && "disabled"
-                  }`}
+                  className={`storageMaterial-form-save-button ml-2 ${!showSaveButtons.materials && "disabled"
+                    }`}
                   icon={<i className="fa-solid fa-save"></i>}
                   onClick={handleAddMaterialsToJobOrder}
                 >
@@ -473,9 +467,8 @@ function JobOrdersSingleContainer() {
         </div>
         <div className="w-full max-w-md">
           <div
-            className={` bg-gray-100 rounded-lg ${
-              isEditingCard.sale ? "outline" : ""
-            } outline-blue-200  p-4 `}
+            className={` bg-gray-100 rounded-lg ${isEditingCard.sale ? "outline" : ""
+              } outline-blue-200  p-4 `}
           >
             <div className="flex justify-between">
               <div className="flex gap-2">
@@ -518,9 +511,8 @@ function JobOrdersSingleContainer() {
                 <Button
                   loading={loading}
                   type="primary"
-                  className={`storageMaterial-form-save-button ml-2 ${
-                    !showSaveButtons.materials && "disabled"
-                  }`}
+                  className={`storageMaterial-form-save-button ml-2 ${!showSaveButtons.materials && "disabled"
+                    }`}
                   icon={<i className="fa-solid fa-save"></i>}
                   onClick={handleUpdateSellPrice}
                 >

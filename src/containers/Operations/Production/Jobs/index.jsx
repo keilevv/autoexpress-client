@@ -76,17 +76,22 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
             <Skeleton.Input size="small" />
             <Skeleton.Input size="small" />
             <Skeleton.Input size="small" />
+            <Skeleton.Input size="small" />
           </div>
         ) : (
           <div className="flex flex-col gap-2">
             <p className="font-semibold text-base">{`Total costo: ${formatToCurrency(
               total.cost
             )}`}</p>
-            <p className="font-semibold text-base">{`Total utilidad de materiales: ${formatToCurrency(
-              total.material_profit
-            )}`}</p>
+
             <p className="font-semibold text-base">{`Total de ventas: ${formatToCurrency(
               total.sell_price
+            )}`}</p>
+            <p className="font-semibold text-base">{`Total utilidad esperada de materiales: ${formatToCurrency(
+              total.material_profit
+            )}`}</p>
+            <p className="font-semibold text-base">{`Total de utilidad libre: ${formatToCurrency(
+              total.profit
             )}`}</p>
             <p className="font-semibold">Total de O.T: {count}</p>
           </div>

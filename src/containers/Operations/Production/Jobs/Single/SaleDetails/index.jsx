@@ -33,23 +33,28 @@ function SaleDetails({
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex items-baseline w-full">
-        <div className="flex flex-col text-base font-semibold ">Costo</div>
+        <div className="flex flex-col text-base font-semibold ">
+          Costo total
+        </div>
         <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2"></div>{" "}
-        <p className="text-base font-semibold">{formatToCurrency(cost)}</p>
+        <p className="text-base font-semibold">
+          {formatToCurrency(jobOrder?.materials_cost + jobOrder?.colors_cost)}
+        </p>
       </div>
       <div className="flex items-baseline w-full">
         <div className="flex flex-col text-base font-semibold ">
-          Utilidad de materiales
+          Utilidad esperada de materiales
         </div>
         <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2"></div>{" "}
         <p
           className={`text-base font-semibold ${
-            materialsProfit > 0 ? "text-green-600" : "text-red-600"
+            jobOrder?.materials_profit > 0 ? "text-green-600" : "text-red-600"
           }`}
         >
-          {formatToCurrency(materialsProfit)}
+          {formatToCurrency(jobOrder?.materials_profit)}
         </p>
       </div>
+
       <div className="flex items-baseline w-full">
         <div className="flex flex-col text-base font-semibold ">
           Utilidad de venta
@@ -57,10 +62,10 @@ function SaleDetails({
         <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2"></div>{" "}
         <p
           className={`text-base font-semibold ${
-            sellProfit > 0 ? "text-green-600" : "text-red-600"
+            jobOrder?.profit > 0 ? "text-green-600" : "text-red-600"
           }`}
         >
-          {formatToCurrency(sellProfit)}
+          {formatToCurrency(jobOrder?.profit)}
         </p>
       </div>
       {isEditing ? (

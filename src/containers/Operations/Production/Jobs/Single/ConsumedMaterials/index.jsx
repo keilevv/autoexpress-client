@@ -17,6 +17,7 @@ function ConsumedMaterials({
   isSaved = false,
   setIsSaved = () => {},
   owner = "autocheck",
+  jobOrder = {},
 }) {
   const { getStorageMaterials, storageMaterials, loading } = useInventory();
   const [addedMaterial, setAddedMaterial] = useState(null);
@@ -209,7 +210,9 @@ function ConsumedMaterials({
                       {costProfit > 0 ? "+" : "-"}
                       {formatToCurrency(Math.abs(costProfit))}
                     </p>
-                    <p className="font-medium ">x{item?.quantity}</p>
+                    <p className="font-medium ">
+                      x{formatNumber(item?.quantity)}
+                    </p>
                   </div>
                   <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2" />
                   <p className="text-base font-semibold">{`${formatToCurrency(
@@ -248,7 +251,21 @@ function ConsumedMaterials({
           <p>Sin materiales</p>
         )}
       </div>
+      <div className="mt-2">
+        <div className="flex items-baseline w-full">
+          <div className="flex flex-col text-base font-semibold ">
+            Costo total de materiales
+          </div>
+          <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2"></div>{" "}
+          <p
+            className={`text-base font-semibold`}
+          >
+            {formatToCurrency(jobOrder?.materials_cost)}
+          </p>
+        </div>
+      </div>
       <ConsumedColors
+        jobOrder={jobOrder}
         isEditing={isEditing}
         consumedColors={consumedColors}
         setConsumedColors={setConsumedColors}
