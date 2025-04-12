@@ -29,7 +29,11 @@ export const employeeRolesOptions = [
 ];
 
 export const statusTypes = [
-  { value: "pending", label: "Pendiente", color: "orange-300" },
-  { value: "in-progress", label: "En progreso", color: "blue-300" },
-  { value: "completed", label: "Completada", color: "green-300" },
+  { value: "pending", label: "Pendiente", color: "orange-300", hexColor: "#FFD7A8" },
+  { value: "in-progress", label: "En progreso", color: "blue-300", hexColor: "#BEDBFF" },
+  { value: "completed", label: "Completada", color: "green-300", hexColor: "#B9F8CF" },
+];
+
+export const archivedStatus = [
+  { value: "archived", label: "Archivadas", color: "gray-300", hexColor: "#79716B" },
 ];

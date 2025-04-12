@@ -59,7 +59,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer />
+                  <DashboardContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
@@ -69,7 +69,17 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer />
+                  <DashboardContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/operations/dashboard"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <DashboardContainer />
                 </MainLayout>
               </ProtectedRoute>
             }

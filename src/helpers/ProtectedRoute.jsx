@@ -10,8 +10,6 @@ const ProtectedRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const { getUser } = useAuth();
 
-  console.log("isValidSession", isValidSession);
-
   useEffect(() => {
     if (user) {
       getUser(user.id ? user.id : "invalid-user-id")

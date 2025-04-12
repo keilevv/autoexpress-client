@@ -60,6 +60,7 @@ export function formatToCurrency(number) {
     style: "currency",
     currency: "USD",
     maximumFractionDigits: 0,
+    numberingSystem: "latn",
   }).format(number);
 }
 
@@ -75,7 +76,12 @@ export const validateCarPlate = async (rule, value) => {
   );
 };
 
-
 export function formatNumber(num) {
-  return Number.isInteger(num) ? num.toString() : parseFloat(num.toFixed(2)).toString();
+  return Number.isInteger(num)
+    ? num.toString()
+    : parseFloat(num.toFixed(2)).toString();
+}
+
+export function isNotNumberThenZero(value) {
+  return isNaN(value) ? 0 : value;
 }

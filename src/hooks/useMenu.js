@@ -15,11 +15,11 @@ function useMenu() {
   const [items, setItems] = useState([]);
   const [defaultSelectedHeader, setDefaultSelectedHeader] = useState("");
   const allItems = [
-    // {
-    //   key: "operations",
-    //   label: "Inicio",
-    //   icon: React.createElement(HomeOutlined),
-    // },
+    {
+      key: "operations",
+      label: "Inicio",
+      icon: React.createElement(HomeOutlined),
+    },
     // {
     //   key: "agenda",
     //   label: "Agenda",
