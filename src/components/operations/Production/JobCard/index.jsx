@@ -95,16 +95,15 @@ export default function JobCard({ jobOrder }) {
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex items-center gap-2">
-              <CalendarOutlined className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-semibold">
-                {dayjs(jobOrder.due_date).format("DD/MM/YYYY")}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2">
               <UserOutlined className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-semibold">
                 {jobOrder.employee.name}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CalendarOutlined className="h-4 w-4 text-muted-foreground" />
+              <span className="text-sm font-semibold">
+                {dayjs(jobOrder.due_date).format("DD/MM/YYYY")}
               </span>
             </div>
           </div>
