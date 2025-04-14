@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Spin, Pagination, Skeleton, Tabs } from "antd";
+import {
+  Spin,
+  Pagination,
+  Skeleton,
+  Tabs,
+  Card,
+  Statistic,
+  Typography,
+  Divider,
+} from "antd";
 import JobCard from "../../../../components/operations/Production/JobCard";
 import useJobOrder from "../../../../hooks/useJobOrder";
 import {
@@ -9,6 +18,15 @@ import {
 } from "../../../../helpers";
 import { setProductionSubTab } from "../../../../redux/reducers/uiSlice";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  DollarOutlined,
+  ShoppingCartOutlined,
+  BarChartOutlined,
+  RiseOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
+
+const { Text } = Typography;
 
 function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
   const dispatch = useDispatch();
@@ -70,32 +88,6 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
   return (
     <div>
       <div className="flex flex-col gap-4">
-        {loading ? (
-          <div className="flex flex-col gap-2">
-            <Skeleton.Input size="small" />
-            <Skeleton.Input size="small" />
-            <Skeleton.Input size="small" />
-            <Skeleton.Input size="small" />
-            <Skeleton.Input size="small" />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <p className="font-semibold text-base">{`Total costo: ${formatToCurrency(
-              total.cost
-            )}`}</p>
-
-            <p className="font-semibold text-base">{`Total de ventas: ${formatToCurrency(
-              total.sell_price
-            )}`}</p>
-            <p className="font-semibold text-base">{`Total utilidad esperada de materiales: ${formatToCurrency(
-              total.material_profit
-            )}`}</p>
-            <p className="font-semibold text-base">{`Total de utilidad libre: ${formatToCurrency(
-              total.profit
-            )}`}</p>
-            <p className="font-semibold">Total de O.T: {count}</p>
-          </div>
-        )}
         <Tabs
           activeKey={currentTab}
           defaultActiveKey={currentTab}
@@ -105,16 +97,123 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
             dispatch(setProductionSubTab(key));
           }}
         />
-        {loading ? (
-          <Spin size="large" className="my-10 w-full" />
-        ) : (
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-              {jobOrders.map((job, index) => (
-                <JobCard jobOrder={job} key={index} />
-              ))}
-            </div>
-            <Pagination
+        <div className="flex flex-wrap gap-4">
+          <div className="flex-1 min-w-[250px] max-w-sm">
+            <Card hoverable className="h-full">
+              {loading ? (
+                <Skeleton />
+              ) : (
+                <Statistic
+                  title="Total de O.T."
+                  value={count}
+                  prefix={<FileTextOutlined className="text-blue-800 mr-1" />}
+                />
+              )}
+            </Card>
+          </div>
+          {/* Cost Card */}
+          <div className="flex-1 min-w-[250px]">
+            <Card className="h-full">
+              {loading ? (
+                <Skeleton />
+              ) : (
+                <>
+                  <Statistic
+                    title="Total Costo"
+                    value={total.cost}
+                    precision={2}
+                    formatter={(value) => formatToCurrency(value)}
+                    prefix={<DollarOutlined className="text-blue-800" />}
+                  />
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    Costo de materiales
+                  </Text>
+                </>
+              )}
+            </Card>
+          </div>
+
+          {/* Sales Card */}
+          <div className="flex-1 min-w-[250px]">
+            <Card className="h-full">
+              {loading ? (
+                <Skeleton />
+              ) : (
+                <>
+                  {" "}
+                  <Statistic
+                    title="Total Ventas"
+                    value={total.sell_price}
+                    precision={2}
+                    formatter={(value) => formatToCurrency(value)}
+                    prefix={<ShoppingCartOutlined className="text-blue-800" />}
+                  />
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    Precio de venta
+                  </Text>
+                </>
+              )}
+            </Card>
+          </div>
+
+          {/* Material Profit Card */}
+          <div className="flex-1 min-w-[250px]">
+            <Card className="h-full">
+              {loading ? (
+                <Skeleton />
+              ) : (
+                <>
+                  {" "}
+                  <Statistic
+                    title="Margen de Materiales"
+                    value={total.material_profit}
+                    precision={2}
+                    formatter={(value) => formatToCurrency(value)}
+                    prefix={<BarChartOutlined />}
+                    valueStyle={
+                      total.material_profit < 0
+                        ? { color: "#ff4d4f" }
+                        : { color: "#3f8600" }
+                    }
+                  />
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    Margen esperado de materiales
+                  </Text>
+                </>
+              )}
+            </Card>
+          </div>
+
+          {/* Net Profit Card */}
+          <div className="flex-1 min-w-[250px]">
+            <Card className="h-full">
+              {loading ? (
+                <Skeleton />
+              ) : (
+                <>
+                  {" "}
+                  <Statistic
+                    title="Utilidad Neta"
+                    value={total.profit}
+                    precision={2}
+                    formatter={(value) => formatToCurrency(value)}
+                    prefix={<RiseOutlined />}
+                    valueStyle={
+                      total.profit < 0
+                        ? { color: "#ff4d4f" }
+                        : { color: "#3f8600" }
+                    }
+                  />
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    Margen libre resultante
+                  </Text>
+                </>
+              )}
+            </Card>
+          </div>
+        </div>
+        <Divider className="bg-slate-200 my-2" />
+        <Pagination
               responsive
               pageSize={pagination.pageSize}
               showSizeChanger={false}
@@ -125,6 +224,15 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
               }}
               className="flex"
             />
+        {loading ? (
+          <Spin size="large" className="my-10 w-full" />
+        ) : (
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+              {jobOrders.map((job, index) => (
+                <JobCard jobOrder={job} key={index} />
+              ))}
+            </div>
           </div>
         )}
       </div>

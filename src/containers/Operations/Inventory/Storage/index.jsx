@@ -1,9 +1,10 @@
-import { Skeleton } from "antd";
+import { Skeleton, Card, Statistic, Typography } from "antd";
 import MaterialsTable from "../../../../components/operations/Inventory/MaterialsTable";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useInventory from "../../../../hooks/useInventory";
 import { formatToCurrency } from "../../../../helpers";
+import { DollarOutlined, ContainerOutlined } from "@ant-design/icons";
 
 function StorageInventoryContainer({ refresh, searchValue, owner }) {
   const {
@@ -18,6 +19,7 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
     current: 1,
     pageSize: 10,
     total: 0,
+    position: "topLeft",
   });
 
   useEffect(() => {
@@ -54,19 +56,38 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
   };
 
   return (
-    <div className="bg-gray-100 rounded-lg">
-      {loading ? (
-        <div className="flex flex-col gap-2 p-4">
-          <Skeleton.Input size="small" /> <Skeleton.Input size="small" />
+    <div className="flex flex-col gap-4">
+      {/* Cost Card */}
+      <div className="flex flex-wrap gap-4">
+        <div className="flex-1 min-w-[250px] max-w-sm">
+          <Card hoverable className="h-full">
+            {loading ? (
+              <Skeleton />
+            ) : (
+              <Statistic
+                title="Valor Total de Almacén"
+                value={totalPriceStorage}
+                precision={2}
+                formatter={(value) => formatToCurrency(value)}
+                prefix={<DollarOutlined className="text-blue-800 mr-1" />}
+              />
+            )}
+          </Card>
         </div>
-      ) : (
-        <div className="flex flex-col gap-2 p-4">
-          <p className="font-semibold text-base">{`Valor de almacén: ${formatToCurrency(
-            totalPriceStorage
-          )}`}</p>
-          <p className="font-semibold"># de productos: {count}</p>
+        <div className="flex-1 min-w-[250px] max-w-sm">
+          <Card hoverable className="h-full">
+            {loading ? (
+              <Skeleton />
+            ) : (
+              <Statistic
+                title="Total de productos"
+                value={count}
+                prefix={<ContainerOutlined className="text-blue-800 mr-1" />}
+              />
+            )}
+          </Card>
         </div>
-      )}
+      </div>
       <MaterialsTable
         owner={owner}
         type="storage"

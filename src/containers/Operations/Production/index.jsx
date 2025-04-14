@@ -10,30 +10,30 @@ function ProductionContainer({ owner }) {
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
   const [filterString, setFilterString] = useState("");
-  const items = [
-    {
-      key: "job-orders",
-      label: <p className="font-semibold text-base"> Órdenes de trabajo</p>,
-      children: (
-        <JobsContainer
-          owner={owner}
-          refresh={refresh}
-          searchValue={currentTab === "job-orders" ? searchValue : null}
-          filterString={currentTab === "job-orders" ? filterString : null}
-        />
-      ),
-    },
-    // {
-    //   key: "quality-control",
-    //   label: <p className="font-semibold text-base"> Control de calidad</p>,
-    //   children: (
-    //     <JobsContainer
-    //       refresh={refresh}
-    //       searchValue={currentTab === "storage-inventory" ? searchValue : null}
-    //     />
-    //   ),
-    // },
-  ];
+  // const items = [
+  //   {
+  //     key: "job-orders",
+  //     label: <p className="font-semibold text-base"> Órdenes de trabajo</p>,
+  //     children: (
+  //       <JobsContainer
+  //         owner={owner}
+  //         refresh={refresh}
+  //         searchValue={currentTab === "job-orders" ? searchValue : null}
+  //         filterString={currentTab === "job-orders" ? filterString : null}
+  //       />
+  //     ),
+  //   },
+  //   // {
+  //   //   key: "quality-control",
+  //   //   label: <p className="font-semibold text-base"> Control de calidad</p>,
+  //   //   children: (
+  //   //     <JobsContainer
+  //   //       refresh={refresh}
+  //   //       searchValue={currentTab === "storage-inventory" ? searchValue : null}
+  //   //     />
+  //   //   ),
+  //   // },
+  // ];
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
@@ -83,13 +83,11 @@ function ProductionContainer({ owner }) {
           }}
         />
       </div>
-      <Tabs
-        activeKey={currentTab}
-        defaultActiveKey={currentTab}
-        items={items}
-        onChange={(key) => {
-          setCurrentTab(key);
-        }}
+      <JobsContainer
+        owner={owner}
+        refresh={refresh}
+        searchValue={currentTab === "job-orders" ? searchValue : null}
+        filterString={currentTab === "job-orders" ? filterString : null}
       />
     </div>
   );

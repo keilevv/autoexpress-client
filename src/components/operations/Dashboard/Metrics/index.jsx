@@ -54,7 +54,7 @@ export default function Metrics({ data, count, statusPercentages, loading }) {
       <div className="flex flex-wrap gap-4 mb-4">
         {/* Cost Card */}
         <div className="flex-1 min-w-[250px]">
-          <Card hoverable className="h-full">
+          <Card  className="h-full">
             {loading ? (
               <Skeleton />
             ) : (
@@ -76,7 +76,7 @@ export default function Metrics({ data, count, statusPercentages, loading }) {
 
         {/* Sales Card */}
         <div className="flex-1 min-w-[250px]">
-          <Card hoverable className="h-full">
+          <Card  className="h-full">
             {loading ? (
               <Skeleton />
             ) : (
@@ -99,7 +99,7 @@ export default function Metrics({ data, count, statusPercentages, loading }) {
 
         {/* Material Profit Card */}
         <div className="flex-1 min-w-[250px]">
-          <Card hoverable className="h-full">
+          <Card  className="h-full">
             {loading ? (
               <Skeleton />
             ) : (
@@ -127,7 +127,7 @@ export default function Metrics({ data, count, statusPercentages, loading }) {
 
         {/* Net Profit Card */}
         <div className="flex-1 min-w-[250px]">
-          <Card hoverable className="h-full">
+          <Card  className="h-full">
             {loading ? (
               <Skeleton />
             ) : (

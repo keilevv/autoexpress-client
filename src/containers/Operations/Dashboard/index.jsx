@@ -4,7 +4,6 @@ import { Tabs } from "antd";
 import { useState, useCallback, useEffect } from "react";
 import { getFilterString, getFilterValue } from "../../../helpers";
 import useMetrics from "../../../hooks/useMetrics";
-import { set } from "lodash";
 
 function DashboardContainer() {
   const [refresh, setRefresh] = useState(0);
