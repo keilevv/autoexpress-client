@@ -87,7 +87,7 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
 
   return (
     <div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         <Tabs
           activeKey={currentTab}
           defaultActiveKey={currentTab}
@@ -97,9 +97,9 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
             dispatch(setProductionSubTab(key));
           }}
         />
-        <div className="flex flex-wrap gap-4">
+        {/* <div className="flex flex-wrap gap-4">
           <div className="flex-1 min-w-[250px] max-w-sm">
-            <Card hoverable className="h-full">
+            <Card className="h-full">
               {loading ? (
                 <Skeleton />
               ) : (
@@ -110,9 +110,9 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
                 />
               )}
             </Card>
-          </div>
-          {/* Cost Card */}
-          <div className="flex-1 min-w-[250px]">
+          </div> */}
+        {/* Cost Card */}
+        {/* <div className="flex-1 min-w-[250px]">
             <Card className="h-full">
               {loading ? (
                 <Skeleton />
@@ -131,10 +131,9 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
                 </>
               )}
             </Card>
-          </div>
-
-          {/* Sales Card */}
-          <div className="flex-1 min-w-[250px]">
+          </div> */}
+        {/* Sales Card */}
+        {/* <div className="flex-1 min-w-[250px]">
             <Card className="h-full">
               {loading ? (
                 <Skeleton />
@@ -154,10 +153,9 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
                 </>
               )}
             </Card>
-          </div>
-
-          {/* Material Profit Card */}
-          <div className="flex-1 min-w-[250px]">
+          </div> */}
+        {/* Material Profit Card */}
+        {/* <div className="flex-1 min-w-[250px]">
             <Card className="h-full">
               {loading ? (
                 <Skeleton />
@@ -182,10 +180,9 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
                 </>
               )}
             </Card>
-          </div>
-
-          {/* Net Profit Card */}
-          <div className="flex-1 min-w-[250px]">
+          </div> */}
+        {/* Net Profit Card */}
+        {/* <div className="flex-1 min-w-[250px]">
             <Card className="h-full">
               {loading ? (
                 <Skeleton />
@@ -211,19 +208,7 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
               )}
             </Card>
           </div>
-        </div>
-        <Divider className="bg-slate-200 my-2" />
-        <Pagination
-              responsive
-              pageSize={pagination.pageSize}
-              showSizeChanger={false}
-              current={pagination.current}
-              total={pagination.total}
-              onChange={(e) => {
-                setPagination({ ...pagination, current: e });
-              }}
-              className="flex"
-            />
+        </div> */}
         {loading ? (
           <Spin size="large" className="my-10 w-full" />
         ) : (
@@ -235,6 +220,17 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
             </div>
           </div>
         )}
+        <Pagination
+          responsive
+          pageSize={pagination.pageSize}
+          showSizeChanger={false}
+          current={pagination.current}
+          total={pagination.total}
+          onChange={(e) => {
+            setPagination({ ...pagination, current: e });
+          }}
+          className="flex mt-4"
+        />
       </div>
     </div>
   );

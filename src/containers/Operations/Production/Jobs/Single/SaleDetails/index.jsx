@@ -57,7 +57,7 @@ function SaleDetails({
 
       <div className="flex items-baseline w-full">
         <div className="flex flex-col text-base font-semibold ">
-          Utilidad de venta
+          Utilidad neta
         </div>
         <div className="flex-grow border-b-2 border-blue-800 border-dotted h-5 mx-2"></div>{" "}
         <p

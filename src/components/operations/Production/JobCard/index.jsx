@@ -12,6 +12,7 @@ import StatusLabel from "../StatusLabel";
 import dayjs from "dayjs";
 import { useNavigate, Link } from "react-router-dom";
 import { formatToCurrency } from "../../../../helpers";
+import moment from "moment";
 
 export default function JobCard({ jobOrder }) {
   const navigate = useNavigate();
@@ -59,20 +60,19 @@ export default function JobCard({ jobOrder }) {
 
   return (
     <Card className="w-full max-w-md">
-      <div className="p-2">
+      <div className="">
         {/* Header */}
         <div className="flex flex-row justify-between">
-          <div className="flex flex-col">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <FileOutlined className="h-4 w-4 text-muted-foreground" />
-                <span className="font-semibold">O.T. {jobOrder.number}</span>
-              </div>
-            </div>
-            <div className="mt-2">
-              <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
+          <div className="mt-2">
+            <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FileOutlined className="h-4 w-4 text-muted-foreground" />
+              <span className="font-semibold">O.T. {jobOrder.number}</span>
             </div>
           </div>
+
           {jobOrder.archived && (
             <div className="">
               <Tag className={"max-w-[70px]"} color={"gray"}>
@@ -82,15 +82,16 @@ export default function JobCard({ jobOrder }) {
           )}
         </div>
 
-        <Divider className="my-2" />
+        <Divider className="my-4 bg-slate-300 " />
 
         {/* Main Content */}
         <div className="grid gap-3">
           {jobOrder?.description && (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground font-medium">
               {jobOrder.description}
             </p>
           )}
+          <Divider className="bg-slate-300 my-1" />
 
           <div className="grid grid-cols-2 gap-3">
             <div className="flex items-center gap-2">

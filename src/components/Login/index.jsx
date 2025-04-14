@@ -29,7 +29,7 @@ function Login() {
         if (response?.data.roles?.includes("autodetailing-operator")) {
           navigate("/operations/production/autodetailing");
         } else {
-          navigate("/operations/dashboard");
+          navigate("/operations");
         }
       })
       .catch((err) => {

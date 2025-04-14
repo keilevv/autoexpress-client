@@ -60,7 +60,7 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
       {/* Cost Card */}
       <div className="flex flex-wrap gap-4">
         <div className="flex-1 min-w-[250px] max-w-sm">
-          <Card hoverable className="h-full">
+          <Card className="h-full">
             {loading ? (
               <Skeleton />
             ) : (
@@ -75,7 +75,7 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
           </Card>
         </div>
         <div className="flex-1 min-w-[250px] max-w-sm">
-          <Card hoverable className="h-full">
+          <Card className="h-full">
             {loading ? (
               <Skeleton />
             ) : (
