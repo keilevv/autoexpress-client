@@ -48,7 +48,15 @@ function ServicesContainer({ servicesRef }) {
         <h1 className="text-3xl text-center font-semibold mb-20">
           Aseguradoras aliadas:
         </h1>
-        <LogoSlider />
+        <LogoSlider
+          heightClasses={[
+            "h-12 md:h-14", // Sura
+            "h-10 md:h-12", // Seguros Bolívar
+            "h-12 md:h-14", // Seguros del Estado
+            "h-6  md:h-8", // Mapfre (shorter)
+            "h-16 md:h-20", // Quálitas (taller)
+          ]}
+        />{" "}
       </div>
     </div>
   );
