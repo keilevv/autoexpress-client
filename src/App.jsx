@@ -31,9 +31,7 @@ import Operators from "./components/operations/Operators";
 import Settings from "./components/operations/Settings/SettingsMenu";
 
 /* Styling */
-import "./App.css";
 import AgendaContainer from "./containers/Operations/Agenda";
-import { useEffect } from "react";
 
 function App() {
   const { defaultSelectedHeader } = useMenu();

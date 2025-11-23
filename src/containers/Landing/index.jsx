@@ -9,7 +9,6 @@ import GalleryContainer from "./Gallery";
 /* Components */
 import { Layout, Menu } from "antd";
 /* Style */
-import "./style.css";
 import AgendaContainer from "./Agenda";
 import ContactContainer from "./Contact";
 import GlaringText from "../../components/Common/GlaringText";
@@ -43,7 +42,9 @@ function LandingContainer() {
   return (
     <Layout className="landing-container">
       <Header
-        className={` px-4 ${showNavbar ? "sticky-navbar" : "ghost-navbar"}`}
+        className={` px-4 ${
+          showNavbar ? "sticky-navbar" : "ghost-navbar"
+        } bg-[#242424]`}
       >
         <Menu
           style={{ backgroundColor: "#242424" }}

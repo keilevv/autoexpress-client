@@ -24,7 +24,7 @@ function AppointmentContainer() {
         />
       </Header>
       <Content>
-        <div className="container px-4 py-10 max-w-[900px]">
+        <div className="container px-4 py-10 max-w-[900px] mx-auto">
           <AgendaContent />
         </div>
       </Content>

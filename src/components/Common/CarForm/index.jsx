@@ -4,7 +4,7 @@ import _debounce from "lodash/debounce";
 import dayjs from "dayjs";
 import Logo from "../../../assets/images/autoexpresslogo.png";
 /* Components */
-import { Form, Input, Row, Popover, DatePicker, Select } from "antd";
+import { Form, Input, Popover, DatePicker, Select } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import RegisteredMarkIcon from "../../../assets/icons/svg/RegisteredMarkIcon";
 /* Hooks */
@@ -152,68 +152,33 @@ function CarForm({
                 ? "Ingrese la información de su vehículo"
                 : "Información del vehículo"}
             </p>
-            <div>
-              <Row>
+            <div className="space-y-4">
+              <Form.Item
+                label="Placa"
+                name="plate"
+                rules={[
+                  {
+                    validator: validateCarPlate,
+                    message: "Por favor ingrese una placa válida",
+                  },
+                  {
+                    required: true,
+                    message: "Por favor ingrese su placa",
+                  },
+                ]}
+              >
+                <Input
+                  allowClear
+                  maxLength={6}
+                  className="uppercase-input"
+                  style={{ textTransform: "uppercase" }}
+                  disabled={!isEditing && car ? true : false}
+                />
+              </Form.Item>
+
+              <div className="grid gap-4 md:grid-cols-2">
                 <Form.Item
-                  label="Placa"
-                  name="plate"
-                  rules={[
-                    {
-                      validator: validateCarPlate,
-                      message: "Por favor ingrese una placa válida",
-                    },
-                    {
-                      required: true,
-                      message: "Por favor ingrese su placa",
-                    },
-                  ]}
-                >
-                  <Input
-                    allowClear
-                    maxLength={6}
-                    style={{ textTransform: "uppercase" }}
-                    disabled={!isEditing}
-                  />
-                </Form.Item>
-              </Row>
-              <Row>
-                <Form.Item
-                  label="VIN"
-                  name="vin"
-                  rules={[
-                    {
-                      validator: validateVin,
-                      message: "Por favor ingrese un VIN válido",
-                    },
-                    {
-                      required: true,
-                      message: "Por favor ingrese su VIN",
-                    },
-                  ]}
-                >
-                  <div className="flex gap-2">
-                    <Input
-                      disabled={!isEditing}
-                      allowClear
-                      className="uppercase-input"
-                      maxLength={16}
-                      onChange={(e) => {
-                        setVinValue(e.target.value);
-                      }}
-                      value={vinValue}
-                    />
-                    <Popover
-                      placement={isMobileScreen ? "top" : "right"}
-                      trigger={["click", "hover"]}
-                      content={vinExplainContent}
-                    >
-                      <InfoCircleOutlined className="form-item-explain-info-icon" />
-                    </Popover>
-                  </div>
-                </Form.Item>
-              </Row>
-              <Row style={{ display: "block", minWidth: "100%" }}>
-                <Form.Item
+                  className="w-full"
                   label="Marca"
                   name="brand"
                   rules={[
@@ -224,12 +189,13 @@ function CarForm({
                   ]}
                 >
                   <Select
-                    disabled={!isEditing}
+                    disabled={!isEditing && car ? true : false}
                     value={brand}
                     allowClear
                     loading={loading}
                     showSearch
                     options={carBrands}
+                    style={{ width: "100%" }}
                     onSearch={(value) => {
                       if (value) {
                         setBrand(value);
@@ -249,9 +215,8 @@ function CarForm({
                     }}
                   />
                 </Form.Item>
-              </Row>
-              <Row style={{ display: "block", minWidth: "100%" }}>
                 <Form.Item
+                  className="w-full"
                   label="Modelo"
                   name="model"
                   rules={[
@@ -264,10 +229,13 @@ function CarForm({
                   <Select
                     value={model}
                     allowClear
-                    disabled={(disableModels && !car) || !isEditing}
+                    disabled={
+                      (disableModels && !car) || (!isEditing && car ? true : false)
+                    }
                     loading={loading}
                     showSearch
                     options={carModels}
+                    style={{ width: "100%" }}
                     onSearch={(value) => {
                       if (value) {
                         setModel(value);
@@ -285,9 +253,10 @@ function CarForm({
                     }}
                   />
                 </Form.Item>
-              </Row>
-              <Row>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
                 <Form.Item
+                  className="w-full"
                   label="Año"
                   name="year"
                   rules={[
@@ -298,7 +267,7 @@ function CarForm({
                   ]}
                 >
                   <DatePicker
-                    disabled={!isEditing}
+                    disabled={!isEditing && car ? true : false}
                     allowClear
                     placeholder="Fecha"
                     picker="year"
@@ -311,9 +280,8 @@ function CarForm({
                     }}
                   />
                 </Form.Item>
-              </Row>
-              <Row>
                 <Form.Item
+                  className="w-full"
                   label="Color"
                   name="color"
                   rules={[
@@ -323,9 +291,12 @@ function CarForm({
                     },
                   ]}
                 >
-                  <Input allowClear disabled={!isEditing} />
+                  <Input
+                    allowClear
+                    disabled={!isEditing && car ? true : false}
+                  />
                 </Form.Item>
-              </Row>
+              </div>
             </div>
           </div>
         </Form>

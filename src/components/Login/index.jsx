@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Input, Button, Form, notification } from "antd";
-import logo from "../../assets/images/autoexpresslogo.png";
 /* Reducers */
 /* Custom hooks */
 import useAuth from "../../hooks/useAuth";
 import useViewport from "../../hooks/useViewport";
-import "./style.css";
 
 function Login() {
   const user = useSelector((state) => state?.auth?.user);
@@ -42,7 +40,7 @@ function Login() {
 
   return (
     <div>
-      <Form name="login-form" onFinish={onFinish}>
+      <Form name="login-form" onFinish={onFinish} className="flex flex-col gap-4">
         <Form.Item
           name="username"
           rules={[

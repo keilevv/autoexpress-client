@@ -24,10 +24,12 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
   const [current, setCurrent] = useState(0);
   const [form, setForm] = useState(null);
   const [showFullForm, setShowFullForm] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [appointmentPayload, setaAppointmentPayload] = useState({
     client: null,
     car: null,
   });
+  console.log("appointmentPayload", appointmentPayload);
 
   const {
     createClient,
@@ -52,6 +54,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
   } = useAppointment();
 
   const next = () => {
+    setIsEditing(false);
     setCurrent(current + 1);
   };
 
@@ -95,12 +98,15 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
     {
       title: <p className=" font-semibold">Cliente</p>,
       content: (
-        <ClientForm
-          setForm={setForm}
-          showFullForm={showFullForm}
-          client={client}
-          current={current}
-        />
+        <div className="flex flex-col pt-4">
+          <ClientForm
+            setForm={setForm}
+            showFullForm={showFullForm}
+            client={client}
+            current={current}
+            isEditing={isEditing}
+          />
+        </div>
       ),
     },
     {
@@ -112,6 +118,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
           client={client}
           car={car}
           current={current}
+          isEditing={isEditing}
         />
       ),
     },
@@ -276,6 +283,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
             car: response.data.results,
           };
         });
+        setIsEditing(false);
         setShowFullForm(true);
       })
       .catch((err) => {
@@ -291,6 +299,7 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
             message: "Auto no encontrado",
           });
           setShowFullForm(true);
+          setIsEditing(true);
         }
       });
   };
@@ -333,15 +342,24 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
     <div>
       <Steps current={current} items={items} />
       <div style={contentStyle}>{agendaSteps[current].content}</div>
+
       <div className="flex gap-4 mt-8 justify-center">
         <div className="flex gap-2">
+          {showFullForm && appointmentPayload.client && (
+            <Button
+              onClick={() => setIsEditing((prev) => !prev)}
+              type="default"
+            >
+              {isEditing ? "Bloquear edición" : "Editar"}
+            </Button>
+          )}
           {((current !== 0 && current !== agendaSteps.length - 1) ||
             showFullForm) && (
             <Button
               onClick={() => prev()}
               loading={loadingClient || loadingCar}
             >
-              Atras
+              Atrás
             </Button>
           )}
           {current < agendaSteps.length - 1 && (
@@ -366,11 +384,6 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
             </Button>
           )}
         </div>
-        {current !== agendaSteps.length - 1 && (
-          <Button icon={<RestOutlined />} onClick={() => form.resetFields()}>
-            Limpiar
-          </Button>
-        )}
       </div>
     </div>
   );

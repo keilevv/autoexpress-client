@@ -29,7 +29,6 @@ function MainLayout({ children }) {
   const auth = useSelector((state) => state.auth);
   const [owner, setOwner] = useState("autoexpress");
 
-
   useEffect(() => {
     getUser(auth.user.id);
   }, []);
@@ -128,7 +127,7 @@ function MainLayout({ children }) {
           background: "#242424",
         }}
       >
-        <div className="container flex mx-4 mt-4 md:mx-8 md:mt-8 lg:mx-12 lg:mt-10">
+        <div className="flex w-full">
           <div className="m-auto px-4">
             <img src={Logo} className="object-cover h-10 rounded lg" />
           </div>
