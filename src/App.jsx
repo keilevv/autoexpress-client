@@ -28,7 +28,6 @@ import OperationSettingsContainer from "./containers/Operations/Settings";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
-import Settings from "./components/operations/Settings/SettingsMenu";
 
 /* Styling */
 import AgendaContainer from "./containers/Operations/Agenda";
@@ -47,6 +46,7 @@ function App() {
 
             // Alias Token
             colorBgContainer: "#f5f5f5",
+            fontFamily: "Zen Dots, sans-serif",
           },
         }}
       >

@@ -127,7 +127,7 @@ function MainLayout({ children }) {
           background: "#242424",
         }}
       >
-        <div className="flex w-full">
+        <div className="flex w-full max-w-7xl m-auto">
           <div className="m-auto px-4">
             <img src={Logo} className="object-cover h-10 rounded lg" />
           </div>
@@ -181,7 +181,7 @@ function MainLayout({ children }) {
         </div>
       </Header>
       <div className="bg-gray-100 w-full h-screen">
-        <div className="container bg-white rounded-b-lg p-5">{children}</div>
+        <div className="max-w-7xl bg-white rounded-b-lg p-5 m-auto">{children}</div>
       </div>
     </Layout>
   );

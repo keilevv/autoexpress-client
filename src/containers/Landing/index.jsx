@@ -42,9 +42,8 @@ function LandingContainer() {
   return (
     <Layout className="landing-container">
       <Header
-        className={` px-4 ${
-          showNavbar ? "sticky-navbar" : "ghost-navbar"
-        } bg-[#242424]`}
+        className={` px-4 ${showNavbar ? "sticky-navbar" : "ghost-navbar"
+          } bg-[#242424]`}
       >
         <Menu
           style={{ backgroundColor: "#242424" }}

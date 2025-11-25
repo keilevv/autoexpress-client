@@ -20,13 +20,12 @@ function Agenda({ containerRef = null }) {
 
   return (
     <>
-      <Button
-        className="agenda-banner-button"
-        size="large"
+      <button
+        className="flex m-auto bg-red-700 hover:bg-red-400 text-white font-semibold py-2 px-4 rounded items-center mt-4 text-xl transition-colors duration-300"
         onClick={() => navigate("/appointment")}
       >
         Agendar ahora
-      </Button>
+      </button>
       <Modal
         className="agenda-modal"
         footer={null}

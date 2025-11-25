@@ -12,10 +12,9 @@ function Banner({ appointmentRef }) {
 
   return (
     <div className="relative flex flex-col bg-[#242424] justify-center duration-300 h-svh items-center overflow-hidden">
-      <img
-        src={background}
-        alt="autoexpress-background"
-        className="absolute inset-0 h-full w-full object-cover opacity-10 pointer-events-none"
+      <div
+        className="absolute inset-0 h-full w-full bg-fixed bg-center bg-cover opacity-10 pointer-events-none"
+        style={{ backgroundImage: `url(${background})` }}
       />
       <div className="flex justify-center relative z-10">
         <div className="relative inline-block">
