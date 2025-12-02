@@ -161,7 +161,7 @@ function NewEmployeeModal({
           <Select>
             {employeeRolesOptions.map((role) => (
               <Select.Option key={role.value} value={role.value}>
-                {role.label}
+                {role?.label}
               </Select.Option>
             ))}
           </Select>

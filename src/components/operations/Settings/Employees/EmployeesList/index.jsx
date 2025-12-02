@@ -51,7 +51,7 @@ function EmployeesList({ isSelect, setPayload, payload }) {
                       {
                         employeeRolesOptions.find(
                           (role) => role.value === item.roles
-                        ).label
+                        )?.label
                       }
                     </p>
                   </div>

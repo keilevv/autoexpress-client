@@ -65,13 +65,15 @@ function NewJobOrderModal({
   }, [isModalOpen]);
 
   useEffect(() => {
-    getCarsApi("", brand);
-    if (brand.length) {
-      setDisableModels(false);
-    } else {
-      setDisableModels(true);
+    if (isModalOpen) {
+      getCarsApi("", brand);
+      if (brand.length) {
+        setDisableModels(false);
+      } else {
+        setDisableModels(true);
+      }
     }
-  }, [brand]);
+  }, [brand, isModalOpen]);
 
   useEffect(() => {
     if (brand && brand.length) {
@@ -208,7 +210,7 @@ function NewJobOrderModal({
                   )
                     ? employeeRolesOptions.find(
                         (role) => role.value === employee.roles
-                      ).label
+                      )?.label
                     : "Desconocido "}
                 </Select.Option>
               ))}

@@ -21,7 +21,7 @@ function StatusLabel({ status }) {
   return (
     <div className="flex">
       <div className={`${statusState.color} p-1 rounded-lg shadow-md`}>
-        <p className="uppercase font-medium">{statusState.label}</p>
+        <p className="uppercase font-medium">{statusState?.label}</p>
       </div>
     </div>
   );
