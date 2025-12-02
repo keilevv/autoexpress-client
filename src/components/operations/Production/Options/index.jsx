@@ -117,7 +117,7 @@ function ProductionOptions({
                         )
                           ? employeeRolesOptions.find(
                               (role) => role.value === item.roles
-                            ).label
+                            )?.label
                           : "Desconocido"}
                       </Select.Option>
                     );
@@ -132,7 +132,7 @@ function ProductionOptions({
                 {statusTypes.map((item) => {
                   return (
                     <Select.Option key={item.value} value={item.value}>
-                      {item.label}
+                      {item?.label}
                     </Select.Option>
                   );
                 })}

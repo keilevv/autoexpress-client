@@ -57,13 +57,15 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
   }, [isEditing]);
 
   useEffect(() => {
+   if(isEditing){
     getCarsApi("", brand);
     if (brand.length) {
       setDisableModels(false);
     } else {
       setDisableModels(true);
     }
-  }, [brand]);
+   }
+  }, [brand, isEditing]);
 
   useEffect(() => {
     if (brand && brand.length) {
@@ -236,7 +238,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
                     {
                       employeeRolesOptions.find(
                         (role) => role.value === item.roles
-                      ).label
+                      )?.label
                     }
                   </Select.Option>
                 );
@@ -299,7 +301,7 @@ function JobOrderDetails({ jobOrder, form, isEditing, setIsChanged }) {
               {statusTypes.map((item) => {
                 return (
                   <Select.Option key={item.value} value={item.value}>
-                    {item.label}
+                    {item?.label}
                   </Select.Option>
                 );
               })}

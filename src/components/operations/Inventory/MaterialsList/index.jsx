@@ -247,7 +247,7 @@ function MaterialsList({
                           {quantities[_id]
                             ? quantity - quantities[_id]
                             : quantity}{" "}
-                          - {unitOptions.find((u) => u.value === unit).label}
+                          - {unitOptions.find((u) => u.value === unit)?.label}
                         </p>
                       </div>
                       {selectedMaterial === _id && isEditing && (
@@ -349,7 +349,7 @@ function MaterialsList({
                             } else {
                               return u.value === unit;
                             }
-                          }).label
+                          })?.label
                         }
                       </p>
                       {type === "sales" && (

@@ -67,9 +67,23 @@ function useEmployees() {
   const updateEmployee = useCallback((clientId, payload) => {
     setLoading(true);
     return employeesService
-      .updateEmployee(clientId, payload)
+      .updateEmployee(auth.user.accessToken, clientId, payload)
       .then((response) => {
         setEmployee(response.data.results);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+      });
+  }, []);
+
+  const deleteEmployee = useCallback((clientId) => {
+    setLoading(true);
+    return employeesService
+      .deleteEmployee(auth.user.accessToken, clientId)
+      .then((response) => {
         setLoading(false);
         return response;
       })
@@ -83,6 +97,7 @@ function useEmployees() {
     getEmployees,
     createEmployee,
     updateEmployee,
+    deleteEmployee,
     getEmployee,
     setEmployee,
     employee,

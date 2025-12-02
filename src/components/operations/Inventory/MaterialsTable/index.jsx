@@ -121,7 +121,7 @@ function MaterialsTable({
       dataIndex: "unit",
       key: "unit",
       render: (item) => {
-        return unitOptions.find((unit) => unit.value === item).label;
+        return unitOptions.find((unit) => unit.value === item)?.label;
       },
     },
     {

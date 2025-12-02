@@ -92,7 +92,7 @@ function ConsumedMaterials({
                       {`${item.material.name}  (${item.material.reference}) - ${
                         unitOptions.find(
                           (unit) => unit.value === item.material.unit
-                        ).label
+                        )?.label
                       }`}
                     </Select.Option>
                   );
