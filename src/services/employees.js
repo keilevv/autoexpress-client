@@ -23,10 +23,22 @@ const employeesService = {
     );
   },
 
-  updateEmployee(employee, payload) {
+  updateEmployee(token, employee, payload) {
     return axios.put(
       `${apiUrl}/settings/operations/update/employees/${employee}`,
-      payload
+      payload,
+      {
+        headers: { Authorization: `${token}` },
+      }
+    );
+  },
+
+  deleteEmployee(token, employeeId) {
+    return axios.delete(
+      `${apiUrl}/settings/operations/employees/${employeeId}`,
+      {
+        headers: { Authorization: `${token}` },
+      }
     );
   },
 };

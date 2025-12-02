@@ -7,7 +7,7 @@ import {
   Button,
   Popconfirm,
 } from "antd";
-import { SaveOutlined, RestOutlined } from "@ant-design/icons";
+import { FaSave, FaArchive, FaTrash } from "react-icons/fa";
 import { useEffect } from "react";
 import useEmployees from "../../../../../../hooks/useEmployee";
 import { employeeRolesOptions } from "../../../../../../helpers/constants";
@@ -19,8 +19,14 @@ function NewEmployeeModal({
   onFinish,
   employeeId,
 }) {
-  const { createEmployee, getEmployee, employee, setEmployee, updateEmployee } =
-    useEmployees();
+  const {
+    createEmployee,
+    getEmployee,
+    employee,
+    setEmployee,
+    updateEmployee,
+    deleteEmployee,
+  } = useEmployees();
 
   const handleOk = () => {
     form.validateFields().then((values) => {
@@ -79,6 +85,27 @@ function NewEmployeeModal({
       });
   };
 
+  const handleDeleteEmployee = () => {
+    if (employee) {
+      deleteEmployee(employeeId)
+        .then((response) => {
+          console.log("Delete employee", response);
+          notification.success({
+            message: "Empleado eliminado con exito",
+            description: `${employee.name}`,
+          });
+          setModalOpen(false);
+          onFinish();
+        })
+        .catch((err) => {
+          notification.error({
+            message: "Error al eliminar el empleado",
+            description: err.message,
+          });
+        });
+    }
+  };
+
   useEffect(() => {
     if (employeeId) {
       getEmployee(employeeId);
@@ -107,16 +134,26 @@ function NewEmployeeModal({
       footer={
         <div className="flex flex-wrap-reverse gap-2 justify-end">
           {employee && (
-            <Popconfirm
-              onConfirm={handleArchiveEmployee}
-              title={`¿Seguro desea ${
-                employee.archived ? "desarchivar" : "archivar"
-              } este empleado?`}
-            >
-              <Button icon={<RestOutlined />}>
-                {employee.archived ? "Desarchivar" : "Archivar"}
-              </Button>
-            </Popconfirm>
+            <>
+              {employee.archived && (
+                <Popconfirm
+                  onConfirm={handleDeleteEmployee}
+                  title={`¿Seguro desea eliminar este empleado?`}
+                >
+                  <Button icon={<FaTrash />}>Eliminar</Button>
+                </Popconfirm>
+              )}
+              <Popconfirm
+                onConfirm={handleArchiveEmployee}
+                title={`¿Seguro desea ${
+                  employee.archived ? "desarchivar" : "archivar"
+                } este empleado?`}
+              >
+                <Button icon={<FaArchive />}>
+                  {employee.archived ? "Desarchivar" : "Archivar"}
+                </Button>
+              </Popconfirm>
+            </>
           )}
           <Button
             onClick={() => {
@@ -126,7 +163,7 @@ function NewEmployeeModal({
           >
             Cancelar
           </Button>
-          <Button type="primary" onClick={handleOk} icon={<SaveOutlined />}>
+          <Button type="primary" onClick={handleOk} icon={<FaSave />}>
             Guardar
           </Button>
         </div>
@@ -140,6 +177,7 @@ function NewEmployeeModal({
         layout="vertical"
         name="new-employee-form"
         initialValues={{ roles: "painter" }}
+        className="flex flex-col gap-4 pb-2"
       >
         <Form.Item
           name="name"
