@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { Card, Button, Badge, Tooltip } from "antd"
 import {
@@ -77,7 +75,7 @@ export default function JobCard({ jobOrder }) {
         <div className="bg-gray-50 rounded-lg p-3 mb-3 border border-gray-100">
           <p className="text-sm text-gray-700 mb-0 line-clamp-2">
             <i className="fa fa-file-text-o mr-2 text-gray-500" />
-            {jobOrder.description}
+            {jobOrder?.description}
           </p>
         </div>
       )}
@@ -125,7 +123,7 @@ export default function JobCard({ jobOrder }) {
           </div>
           <div>
             <p className="text-xs text-gray-500 mb-0">Asignado a</p>
-            <span className="text-sm font-bold text-gray-800">{jobOrder.employee.name}</span>
+            <span className="text-sm font-bold text-gray-800">{jobOrder.employee?.name}</span>
           </div>
         </div>
       </div>
