@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react"
-import { Card, Button, Badge, Tooltip } from "antd"
+import { useState, useEffect } from "react";
+import { Card, Button, Badge, Tooltip } from "antd";
 import {
   FileOutlined,
   CalendarOutlined,
@@ -10,27 +10,40 @@ import {
   ClockCircleOutlined,
   BgColorsOutlined,
   ToolOutlined,
-} from "@ant-design/icons"
-import StatusLabel from "../StatusLabel"
-import dayjs from "dayjs"
-import { formatToCurrency } from "../../../../helpers"
+} from "@ant-design/icons";
+import StatusLabel from "../StatusLabel";
+import dayjs from "dayjs";
+import { formatToCurrency } from "../../../../helpers";
 
 export default function JobCard({ jobOrder }) {
-  const [consumedMaterials, setConsumedMaterials] = useState([])
-  const [consumedColors, setConsumedColors] = useState([])
+  const [consumedMaterials, setConsumedMaterials] = useState([]);
+  const [consumedColors, setConsumedColors] = useState([]);
 
   function getJobOrderPrice() {
     let materialsPrice = consumedMaterials
-      .map((item) => item?.storage_material?.price * item?.quantity)
-      .reduce((a, b) => a + b, 0)
-    let colorsPrice = consumedColors.map((item) => item?.price).reduce((a, b) => a + b, 0)
-    materialsPrice = isNaN(materialsPrice) ? 0 : materialsPrice
-    colorsPrice = isNaN(colorsPrice) ? 0 : colorsPrice
-    return formatToCurrency(materialsPrice + colorsPrice)
+      .map(
+        (item) => item?.consumption_material?.material?.price * item?.quantity
+      )
+      .reduce((a, b) => a + b, 0);
+    let colorsPrice = consumedColors
+      .map((item) => {
+        console.log("item", item);
+        return item?.price;
+      })
+      .reduce((a, b) => a + b, 0);
+
+    console.log("colorsPrice", colorsPrice);
+    materialsPrice = isNaN(materialsPrice) ? 0 : materialsPrice;
+    colorsPrice = isNaN(colorsPrice) ? 0 : colorsPrice;
+    return formatToCurrency(materialsPrice + colorsPrice);
   }
 
-  const isOverdue = jobOrder?.due_date && dayjs(jobOrder.due_date).isBefore(dayjs(), "day")
-  const isDueSoon = jobOrder?.due_date && !isOverdue && dayjs(jobOrder.due_date).diff(dayjs(), "day") <= 3
+  const isOverdue =
+    jobOrder?.due_date && dayjs(jobOrder.due_date).isBefore(dayjs(), "day");
+  const isDueSoon =
+    jobOrder?.due_date &&
+    !isOverdue &&
+    dayjs(jobOrder.due_date).diff(dayjs(), "day") <= 3;
 
   useEffect(() => {
     if (jobOrder?.consumed_materials?.length > 0) {
@@ -39,24 +52,24 @@ export default function JobCard({ jobOrder }) {
           consumption_material: item.consumption_material,
           quantity: item.quantity,
           storage_material: item.storage_material,
-        })),
-      )
+        }))
+      );
     }
     if (jobOrder?.consumed_colors?.length > 0) {
-      setConsumedColors(jobOrder.consumed_colors)
+      setConsumedColors(jobOrder.consumed_colors);
     }
-  }, [jobOrder])
+  }, [jobOrder]);
 
   const handleViewDetails = () => {
     if (typeof window !== "undefined") {
-      window.location.href = `/operations/production/jobs/${jobOrder._id}`
+      window.location.href = `/operations/production/jobs/${jobOrder._id}`;
     }
-  }
+  };
 
   return (
     <Card
       className="w-full hover:shadow-lg transition-shadow duration-300 border border-gray-200"
-      bodyStyle={{ padding: "16px" }}
+      styles={{ body: { padding: "16px" } }}
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
@@ -65,7 +78,9 @@ export default function JobCard({ jobOrder }) {
           </div>
           <div>
             <p className="text-xs text-gray-500 mb-0">Orden de Trabajo</p>
-            <span className="font-bold text-lg text-gray-800">#{jobOrder.number}</span>
+            <span className="font-bold text-lg text-gray-800">
+              #{jobOrder.number}
+            </span>
           </div>
         </div>
         <StatusLabel status={jobOrder?.status[0]} isJobCard={true} />
@@ -86,7 +101,9 @@ export default function JobCard({ jobOrder }) {
             <CalendarOutlined className="text-gray-600" />
             <span className="text-xs text-gray-600 font-medium">Creación</span>
           </div>
-          <p className="text-sm font-bold text-gray-800 mb-0">{dayjs(jobOrder?.created_date).format("DD/MM/YYYY")}</p>
+          <p className="text-sm font-bold text-gray-800 mb-0">
+            {dayjs(jobOrder?.created_date).format("DD/MM/YYYY")}
+          </p>
         </div>
 
         {jobOrder?.due_date && (
@@ -95,19 +112,31 @@ export default function JobCard({ jobOrder }) {
               isOverdue
                 ? "bg-red-50 border-red-200"
                 : isDueSoon
-                  ? "bg-orange-50 border-orange-200"
-                  : "bg-gray-50 border-gray-100"
+                ? "bg-orange-50 border-orange-200"
+                : "bg-gray-50 border-gray-100"
             }`}
           >
             <div className="flex items-center gap-2 mb-1">
               <ClockCircleOutlined
-                className={isOverdue ? "text-red-600" : isDueSoon ? "text-orange-600" : "text-gray-600"}
+                className={
+                  isOverdue
+                    ? "text-red-600"
+                    : isDueSoon
+                    ? "text-orange-600"
+                    : "text-gray-600"
+                }
               />
-              <span className="text-xs text-gray-600 font-medium">Vencimiento</span>
+              <span className="text-xs text-gray-600 font-medium">
+                Vencimiento
+              </span>
             </div>
             <p
               className={`text-sm font-bold mb-0 ${
-                isOverdue ? "text-red-700" : isDueSoon ? "text-orange-700" : "text-gray-800"
+                isOverdue
+                  ? "text-red-700"
+                  : isDueSoon
+                  ? "text-orange-700"
+                  : "text-gray-800"
               }`}
             >
               {dayjs(jobOrder?.due_date).format("DD/MM/YYYY")}
@@ -123,7 +152,9 @@ export default function JobCard({ jobOrder }) {
           </div>
           <div>
             <p className="text-xs text-gray-500 mb-0">Asignado a</p>
-            <span className="text-sm font-bold text-gray-800">{jobOrder.employee?.name}</span>
+            <span className="text-sm font-bold text-gray-800">
+              {jobOrder.employee?.name}
+            </span>
           </div>
         </div>
       </div>
@@ -135,7 +166,9 @@ export default function JobCard({ jobOrder }) {
           </div>
           <div>
             <p className="text-xs text-gray-600 mb-0">Vehículo</p>
-            <span className="text-lg font-bold text-slate-900">{jobOrder.car_plate.toUpperCase()}</span>
+            <span className="text-lg font-bold text-slate-900">
+              {jobOrder.car_plate.toUpperCase()}
+            </span>
           </div>
         </div>
 
@@ -146,7 +179,9 @@ export default function JobCard({ jobOrder }) {
               Marca
             </p>
             <p className="text-sm font-semibold text-gray-800 mb-0">
-              {jobOrder?.car_brand ? jobOrder.car_brand.toUpperCase() : "Sin definir"}
+              {jobOrder?.car_brand
+                ? jobOrder.car_brand.toUpperCase()
+                : "Sin definir"}
             </p>
           </div>
           <div className="bg-white rounded p-2 border border-slate-100">
@@ -155,7 +190,9 @@ export default function JobCard({ jobOrder }) {
               Modelo
             </p>
             <p className="text-sm font-semibold text-gray-800 mb-0">
-              {jobOrder?.car_model ? jobOrder.car_model.toUpperCase() : "Sin definir"}
+              {jobOrder?.car_model
+                ? jobOrder.car_model.toUpperCase()
+                : "Sin definir"}
             </p>
           </div>
         </div>
@@ -167,13 +204,20 @@ export default function JobCard({ jobOrder }) {
             <Tooltip
               title={
                 <div>
-                  {consumedMaterials.slice(0, 3).map((item, idx) => (
-                    <div key={idx} className="text-xs py-1">
-                      • {item?.storage_material?.name || "Material"}: {item?.quantity}
-                    </div>
-                  ))}
+                  {consumedMaterials.slice(0, 3).map((item, idx) => {
+                    return (
+                      <div key={idx} className="text-xs py-1">
+                        •{" "}
+                        {item?.consumption_material?.material?.name ||
+                          "Material"}
+                        : {item?.quantity}
+                      </div>
+                    );
+                  })}
                   {consumedMaterials.length > 3 && (
-                    <div className="text-xs">+ {consumedMaterials.length - 3} más...</div>
+                    <div className="text-xs">
+                      + {consumedMaterials.length - 3} más...
+                    </div>
                   )}
                 </div>
               }
@@ -213,7 +257,11 @@ export default function JobCard({ jobOrder }) {
                       • {item?.name}: {item?.quantity}
                     </div>
                   ))}
-                  {consumedColors.length > 3 && <div className="text-xs">+ {consumedColors.length - 3} más...</div>}
+                  {consumedColors.length > 3 && (
+                    <div className="text-xs">
+                      + {consumedColors.length - 3} más...
+                    </div>
+                  )}
                 </div>
               }
             >
@@ -251,9 +299,13 @@ export default function JobCard({ jobOrder }) {
             <div className="bg-white/20 p-2 rounded-lg">
               <DollarOutlined className="text-green-700s text-lg" />
             </div>
-            <span className="text-sm font-medium text-green-700s">Costo Total</span>
+            <span className="text-sm font-medium text-green-700s">
+              Costo Total
+            </span>
           </div>
-          <span className="text-xl font-bold text-green-700s">{getJobOrderPrice()}</span>
+          <span className="text-xl font-bold text-green-700s">
+            {getJobOrderPrice()}
+          </span>
         </div>
       </div>
 
@@ -268,5 +320,5 @@ export default function JobCard({ jobOrder }) {
         <ArrowRightOutlined className="ml-2" />
       </Button>
     </Card>
-  )
+  );
 }
