@@ -27,12 +27,10 @@ export default function JobCard({ jobOrder }) {
       .reduce((a, b) => a + b, 0);
     let colorsPrice = consumedColors
       .map((item) => {
-        console.log("item", item);
         return item?.price;
       })
       .reduce((a, b) => a + b, 0);
 
-    console.log("colorsPrice", colorsPrice);
     materialsPrice = isNaN(materialsPrice) ? 0 : materialsPrice;
     colorsPrice = isNaN(colorsPrice) ? 0 : colorsPrice;
     return formatToCurrency(materialsPrice + colorsPrice);
