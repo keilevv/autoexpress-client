@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login, logout } from "../redux/reducers/authSlice";
+import { login, logout, setAccessToken } from "../redux/reducers/authSlice";
 import { throwError } from "../helpers/index";
 import userService from "../services/user";
 import { useNavigate } from "react-router-dom";
@@ -16,9 +16,10 @@ function useAuth() {
     (userId) => {
       setLoading(true);
       return userService
-        .getUser(auth.user.accessToken, userId)
+        .getAuth(auth.accessToken, userId)
         .then((response) => {
-          setUser(response.data);
+          setUser(response.data.user);
+          dispatch(setAccessToken(response.data.accessToken));
           setLoading(false);
           return response;
         })
@@ -36,6 +37,7 @@ function useAuth() {
       .then((response) => {
         setUser(response.data);
         dispatch(login(response.data));
+        dispatch(setAccessToken(response.data.accessToken));
         setLoading(false);
         return response;
       })
@@ -52,7 +54,7 @@ function useAuth() {
   function updateUser(userId, payload) {
     setLoading(true);
     return userService
-      .updateUser(auth.user.accessToken, userId, payload)
+      .updateUser(auth.accessToken, userId, payload)
       .then((response) => {
         setUser(response.data);
         setLoading(false);

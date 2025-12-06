@@ -17,6 +17,11 @@ const userService = {
       headers: { Authorization: `${token}` },
     });
   },
+  getAuth(token, userId) {
+    return axios.get(`${apiUrl}/auth/${userId}`, {
+      headers: { Authorization: `${token}` },
+    });
+  },
   updateUser(token, userId, payload) {
     return axios.put(`${apiUrl}/users/${userId}`, payload, {
       headers: { Authorization: `${token}` },

@@ -1,8 +1,8 @@
 // In your store.js or a new authSlice.js file
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     isAuthenticated: false,
     user: null,
@@ -19,8 +19,11 @@ const authSlice = createSlice({
       state.user = null;
       state.accessToken = null;
     },
+    setAccessToken: (state, action) => {
+      state.accessToken = action.payload;
+    },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setAccessToken } = authSlice.actions;
 export default authSlice.reducer;
