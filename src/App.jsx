@@ -25,15 +25,18 @@ import SingleConsumptionMaterialContainer from "./containers/Operations/Inventor
 import ProductionContainer from "./containers/Operations/Production";
 import JobOrdersSingleContainer from "./containers/Operations/Production/Jobs/Single";
 import OperationSettingsContainer from "./containers/Operations/Settings";
+import InventoryRequest from "./containers/Operations/Inventory/Consumption/InventoryRequest";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
+import { useSelector } from "react-redux";
 
 /* Styling */
 import AgendaContainer from "./containers/Operations/Agenda";
 
 function App() {
   const { defaultSelectedHeader } = useMenu();
+  const user = useSelector((state) => state.auth.user);
   return (
     <div className="app  bg-gray-100 h-[100vh] overflow-y-scroll" id="app">
       <ConfigProvider
@@ -131,7 +134,20 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={<LandingContainer />}></Route>
+          <Route
+            path="/"
+            element={
+              user?.id ? (
+                <ProtectedRoute>
+                  <MainLayout defaultLocation={defaultSelectedHeader}>
+                    <DashboardContainer />
+                  </MainLayout>
+                </ProtectedRoute>
+              ) : (
+                <LoginContainer />
+              )
+            }
+          />
           <Route
             path="/operations/agenda"
             element={
@@ -154,6 +170,16 @@ function App() {
           ></Route>
           <Route
             path="/operations/inventory"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer owner="autoexpress" />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/consumption/add"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>

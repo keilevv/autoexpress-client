@@ -1,11 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import { Tabs, Input } from "antd";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Tabs, Input, Breadcrumb } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StorageInventoryContainer from "./Storage";
 import ConsumptionInventoryContainer from "./Consumption";
+import InventoryRequest from "./Consumption/InventoryRequest";
 import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
+import { useSelector } from "react-redux";
 
 function InventoryContainer({ owner }) {
   const [currentTab, setCurrentTab] = useState("storage");
@@ -13,6 +15,10 @@ function InventoryContainer({ owner }) {
   const [searchValue, setSearchValue] = useState(null);
   const [tabs, setTabs] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const user = useSelector((state) => state.auth.user);
+
+  const isAddConsumption = location.pathname.includes("/consumption/add");
 
   useEffect(() => {
     switch (owner) {
@@ -23,7 +29,10 @@ function InventoryContainer({ owner }) {
         setTabs(items);
         break;
     }
-  }, [owner, refresh, searchValue]);
+    if (!user?.roles.includes("admin")) {
+      setTabs(items.filter((item) => item.key !== "storage"));
+    }
+  }, [owner, refresh, searchValue, user, location.pathname]);
 
   const items = [
     {
@@ -40,7 +49,9 @@ function InventoryContainer({ owner }) {
     {
       key: "consumption",
       label: <p className="font-semibold text-base">Inventario de consumo</p>,
-      children: (
+      children: isAddConsumption ? (
+        <InventoryRequest />
+      ) : (
         <ConsumptionInventoryContainer
           owner={owner}
           refresh={refresh}
@@ -62,6 +73,9 @@ function InventoryContainer({ owner }) {
 
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
+      if (!user?.roles.includes("admin")) {
+        setCurrentTab("consumption");
+      }
       if (item === "inventory") {
         switch (window.location.pathname.split("/")[index + 1]) {
           case "storage":
@@ -95,9 +109,7 @@ function InventoryContainer({ owner }) {
 
     if (splitItems.includes("consumption")) {
       setCurrentTab("consumption");
-    }
-
-    if (splitItems.includes("storage")) {
+    } else if (splitItems.includes("storage")) {
       setCurrentTab("storage");
     }
   }
@@ -108,21 +120,61 @@ function InventoryContainer({ owner }) {
         Almacén {owner.charAt(0).toUpperCase() + owner.slice(1)}
       </h1>
       <div className="flex flex-col md:flex-row gap-5 mb-4">
-        <Input
-          prefix={<SearchOutlined className="text-gray-500 mx-[6px]" />}
-          className="w-full max-h-[32px] "
-          placeholder={currentTab === "sales" ? "Cliente..." : "Material..."}
-          onChange={(e) => {
-            debounceFn(e.target.value);
-          }}
-        />
-        <Options
-          owner={owner}
-          type={currentTab}
-          onFinish={() => {
-            setRefresh(refresh + 1);
-          }}
-        />
+        {isAddConsumption && (
+          <Breadcrumb
+            items={[
+              {
+                title: (
+                  <a onClick={() => navigate("/operations")}>Operaciones</a>
+                ),
+              },
+              {
+                title: (
+                  <a onClick={() => navigate(`/operations/inventory/${owner}`)}>
+                    Inventario
+                  </a>
+                ),
+              },
+              {
+                title: (
+                  <a
+                    onClick={() =>
+                      navigate(`/operations/inventory/${owner}/consumption`)
+                    }
+                  >
+                    Consumo
+                  </a>
+                ),
+              },
+              {
+                title: (
+                  <p className="text text-red-700 font-semibold">
+                    Solicitar materiales
+                  </p>
+                ),
+              },
+            ]}
+          />
+        )}
+        {!isAddConsumption && (
+          <Input
+            prefix={<SearchOutlined className="text-gray-500 mx-[6px]" />}
+            className="w-full max-h-[32px] "
+            placeholder={currentTab === "sales" ? "Cliente..." : "Material..."}
+            onChange={(e) => {
+              debounceFn(e.target.value);
+            }}
+          />
+        )}
+        {!isAddConsumption && (
+          <Options
+            owner={owner}
+            type={currentTab}
+            onFinish={() => {
+              setRefresh(refresh + 1);
+            }}
+          />
+        )}
       </div>
       <Tabs
         activeKey={currentTab}
