@@ -12,7 +12,7 @@ function InventoryRequest() {
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
         Solictud de materiales
       </h1>
-    </div>
+    </>
   );
 }
 
