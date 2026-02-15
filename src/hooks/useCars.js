@@ -15,7 +15,7 @@ function useCars() {
   const getCars = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     carsService
-      .getCarsList(auth.user.accessToken, page, limit, filter)
+      .getCarsList(auth.accessToken, page, limit, filter)
       .then((response) => {
         setLoading(false);
         setCount(response.data.count);
@@ -29,7 +29,7 @@ function useCars() {
   const getCar = useCallback((carId) => {
     setLoading(true);
     carsService
-      .getCar(auth.user.accessToken, carId)
+      .getCar(auth.accessToken, carId)
       .then((response) => {
         setLoading(false);
         setCar(response.data.results);
@@ -42,7 +42,7 @@ function useCars() {
   function getCarListByPlate(plateValue) {
     setLoading(true);
     carsService
-      .getCarListByPlate(auth.user.accessToken, plateValue)
+      .getCarListByPlate(auth.accessToken, plateValue)
       .then((response) => {
         setLoading(false);
         setCars(response.data.results);

@@ -13,7 +13,7 @@ function useMessages() {
   const getMessages = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     return messagesService
-      .getMessagesList(auth.user.accessToken, page, limit, filter)
+      .getMessagesList(auth.accessToken, page, limit, filter)
       .then((response) => {
         setMessages(response.data.results);
         setCount(response.data.count);

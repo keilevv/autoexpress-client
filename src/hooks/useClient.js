@@ -12,15 +12,15 @@ function useClient() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (auth.user && auth.user.accessToken) {
-      setToken(auth.user.accessToken);
+    if (auth.user && auth.accessToken) {
+      setToken(auth.accessToken);
     }
   }, [auth]);
 
   const getClients = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     return clientsService
-      .getClients(auth.user.accessToken, page, limit, filter)
+      .getClients(auth.accessToken, page, limit, filter)
       .then((response) => {
         setCount(response.data.count);
         setClients(response.data.results);
@@ -36,7 +36,7 @@ function useClient() {
   const getClient = useCallback((clientId) => {
     setLoading(true);
     clientsService
-      .getClient(auth.user.accessToken, clientId)
+      .getClient(auth.accessToken, clientId)
       .then((response) => {
         setLoading(false);
         setClient(response.data.results);

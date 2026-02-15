@@ -27,7 +27,7 @@ function useAuth() {
           navigate("/login");
         });
     },
-    [auth]
+    [auth],
   );
 
   const loginUser = useCallback((username, password) => {
@@ -35,9 +35,12 @@ function useAuth() {
     return userService
       .login({ username, password })
       .then((response) => {
-        setUser(response.data);
-        dispatch(login(response.data));
-        dispatch(setAccessToken(response.data.accessToken));
+        const userData = response.data;
+        const accessToken = userData.accessToken;
+        delete userData.accessToken;
+        setUser(userData);
+        dispatch(login(userData));
+        dispatch(setAccessToken(accessToken));
         setLoading(false);
         return response;
       })

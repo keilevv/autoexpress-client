@@ -13,7 +13,7 @@ function useAppointment() {
   const getAppointment = useCallback((carId) => {
     setLoading(true);
     appointmentsService
-      .getAppointment(auth.user.accessToken, carId)
+      .getAppointment(auth.accessToken, carId)
       .then((response) => {
         setLoading(false);
         setAppointment(response.data.results);
@@ -26,7 +26,7 @@ function useAppointment() {
   const getAppointments = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     appointmentsService
-      .getAppointmentList(auth.user.accessToken, page, limit, filter)
+      .getAppointmentList(auth.accessToken, page, limit, filter)
       .then((response) => {
         setLoading(false);
         setAppointments(response.data.results);
@@ -75,7 +75,7 @@ function useAppointment() {
   const updateAppointment = useCallback((appointmentId, payload) => {
     setLoading(true);
     return appointmentsService
-      .updateAppointment(auth.user.accessToken, appointmentId, payload)
+      .updateAppointment(auth.accessToken, appointmentId, payload)
       .then((response) => {
         setAppointment(response.data.results);
         setLoading(false);
