@@ -23,7 +23,7 @@ const userService = {
     });
   },
   updateUser(token, userId, payload) {
-    return axios.put(`${apiUrl}/users/${userId}`, payload, {
+    return axios.put(`${apiUrl}/users/update/${userId}`, payload, {
       headers: { Authorization: `${token}` },
     });
   },

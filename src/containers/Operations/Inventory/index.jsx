@@ -50,7 +50,7 @@ function InventoryContainer({ owner }) {
       key: "consumption",
       label: <p className="font-semibold text-base">Inventario de consumo</p>,
       children: isAddConsumption ? (
-        <InventoryRequest />
+        <InventoryRequest owner={owner} />
       ) : (
         <ConsumptionInventoryContainer
           owner={owner}

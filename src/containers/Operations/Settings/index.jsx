@@ -3,6 +3,7 @@ import EmployeesList from "../../../components/operations/Settings/Employees/Emp
 import { useState } from "react";
 import { FaCog, FaUsers } from "react-icons/fa";
 import BuilderBotSettings from "../../../components/operations/Settings/Builderbot";
+import UserSettingsContainer from "./User";
 
 function OperationSettingsContainer() {
   const [title, setTitle] = useState({
@@ -17,6 +18,8 @@ function OperationSettingsContainer() {
         return <EmployeesList />;
       case "whatsapp-bot":
         return <BuilderBotSettings />;
+      case "user":
+        return <UserSettingsContainer />;
     }
   };
 

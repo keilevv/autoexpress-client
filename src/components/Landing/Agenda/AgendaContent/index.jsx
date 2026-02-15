@@ -29,7 +29,6 @@ function AgendaContent({ isModalVisible, setIsModalVisible }) {
     client: null,
     car: null,
   });
-  console.log("appointmentPayload", appointmentPayload);
 
   const {
     createClient,

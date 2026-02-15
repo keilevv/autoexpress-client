@@ -25,7 +25,7 @@ const items = [
     key: "user",
     label: <p className="text-base font-semibold">Usuario</p>,
     icon: <FaUserCog />,
-    disabled: true,
+  
   },
 ];
 

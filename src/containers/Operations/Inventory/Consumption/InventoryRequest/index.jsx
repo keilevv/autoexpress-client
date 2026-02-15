@@ -1,17 +1,16 @@
-import { useState, useEffect } from "react";
-import { Table, Tag, Button, Input, Select, Modal } from "antd";
-import { SearchOutlined, PlusOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import axios from "axios";
 
-function InventoryRequest() {
+import RequestMaterialForm from "../../../../../components/operations/Inventory/RequestMaterialForm";
+
+function InventoryRequest({ owner }) {
   const user = useSelector((state) => state.auth.user);
 
   return (
     <>
-      <h1 className="text-2xl text-red-700 font-semibold mb-5 ">
-        Solictud de materiales
+      <h1 className="pl-6 pt-6 text-2xl text-red-700 font-semibold mb-5 ">
+        Solicitar materiales
       </h1>
+      <RequestMaterialForm owner={owner} />
     </>
   );
 }
