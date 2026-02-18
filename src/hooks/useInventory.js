@@ -9,18 +9,12 @@ function useInventory() {
   const [consumptionMaterials, setConsumptionMaterials] = useState([]);
   const [sale, setSale] = useState({});
   const [sales, setSales] = useState([]);
-  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const auth = useSelector((state) => state.auth);
   const [totalPriceStorage, setTotalPriceStorage] = useState(0);
   const [totalPriceConsumption, setTotalPriceConsumption] = useState(0);
-
-  useEffect(() => {
-    if (auth.user && auth.accessToken) {
-      setToken(auth.accessToken);
-    }
-  }, [auth]);
+  const [inventoryRequests, setInventoryRequests] = useState([]);
 
   const createStorageMaterial = useCallback((payload) => {
     setLoading(true);
@@ -56,7 +50,7 @@ function useInventory() {
           return err;
         });
     },
-    []
+    [],
   );
 
   const getStorageMaterial = useCallback((materialId) => {
@@ -139,7 +133,7 @@ function useInventory() {
           return err;
         });
     },
-    []
+    [],
   );
 
   const getConsumptionMaterial = useCallback((materialId) => {
@@ -188,6 +182,92 @@ function useInventory() {
         throwError(err.response.data.message);
       });
   }, []);
+
+  const createConsumptionMaterialRequest = useCallback((payload) => {
+    setLoading(true);
+    return inventoryService
+      .createConsumptionMaterialRequest(auth.accessToken, payload)
+      .then((response) => {
+        setInventoryRequests([...inventoryRequests, response.data.results]);
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+        return err;
+      });
+  }, []);
+
+  const getInventoryRequests = useCallback(
+    (page = 1, limit = 10, filter = "") => {
+      setLoading(true);
+      return inventoryService
+        .getInventoryRequests(auth.accessToken, page, limit, filter)
+        .then((response) => {
+          setInventoryRequests(response.data.results);
+          setCount(response.data.count);
+          setLoading(false);
+          return response;
+        })
+        .catch((err) => {
+          setLoading(false);
+          throwError(err.message.message);
+          return err;
+        });
+    },
+    [],
+  );
+
+  // const getConsumptionMaterialRequest = useCallback((requestId) => {
+  //   setLoading(true);
+  //   return inventoryService
+  //     .getConsumptionMaterialRequest(auth.accessToken, requestId)
+  //     .then((response) => {
+  //       setConsumptionMaterialRequest(response.data.results);
+  //       setLoading(false);
+  //       return response;
+  //     })
+  //     .catch((err) => {
+  //       setLoading(false);
+  //       throwError(err.message.message);
+  //       return err;
+  //     });
+  // }, []);
+
+  // const updateConsumptionMaterialRequest = useCallback(
+  //   (requestId, payload) => {
+  //     setLoading(true);
+  //     return inventoryService
+  //       .updateConsumptionMaterialRequest(auth.accessToken, requestId, payload)
+  //       .then((response) => {
+  //         if (response.data) {
+  //           setConsumptionMaterialRequest(response.data);
+  //           setLoading(false);
+  //           return response;
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         throwError(err.response.data.message);
+  //       });
+  //   },
+  //   [],
+  // );
+
+  // const deleteConsumptionMaterialRequest = useCallback((requestId) => {
+  //   setLoading(true);
+  //   return inventoryService
+  //     .deleteConsumptionMaterialRequest(auth.accessToken, requestId)
+  //     .then((response) => {
+  //       if (response.data) {
+  //         setLoading(false);
+  //         return response;
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       throwError(err.response.data.message);
+  //     });
+  // }, []);
 
   const createSale = useCallback((payload) => {
     setLoading(true);
@@ -280,6 +360,11 @@ function useInventory() {
     updateConsumptionMaterial,
     deleteConsumptionMaterial,
     getConsumptionMaterial,
+    createConsumptionMaterialRequest,
+    getInventoryRequests,
+    // updateConsumptionMaterialRequest,
+    // deleteConsumptionMaterialRequest,
+    // getConsumptionMaterialRequest,
     createSale,
     getSales,
     getSale,
@@ -295,6 +380,7 @@ function useInventory() {
     loading,
     totalPriceConsumption,
     totalPriceStorage,
+    inventoryRequests,
   };
 }
 

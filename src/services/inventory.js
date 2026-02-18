@@ -12,7 +12,7 @@ const materialsService = {
       `${apiUrl}/inventory/operations/storage/?page=${page}&limit=${limit}${filter}`,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -27,7 +27,7 @@ const materialsService = {
       `${apiUrl}/inventory/operations/delete/storage/${materialId}`,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -37,7 +37,7 @@ const materialsService = {
       payload,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -46,7 +46,7 @@ const materialsService = {
       `${apiUrl}/inventory/operations/consumption/${materialId}`,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -55,7 +55,7 @@ const materialsService = {
       `${apiUrl}/inventory/operations/consumption/?page=${page}&limit=${limit}${filter}`,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -70,7 +70,7 @@ const materialsService = {
       `${apiUrl}/inventory/operations/delete/consumption/${materialId}`,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -80,7 +80,22 @@ const materialsService = {
       payload,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
+    );
+  },
+
+  createConsumptionMaterialRequest(token, payload) {
+    return axios.post(`${apiUrl}/inventory/create-request`, payload, {
+      headers: { Authorization: `${token}` },
+    });
+  },
+
+  getInventoryRequests(token, page, limit, filter) {
+    return axios.get(
+      `${apiUrl}/inventory/operations/inventory-requests/?page=${page}&limit=${limit}${filter}`,
+      {
+        headers: { Authorization: `${token}` },
+      },
     );
   },
 
@@ -95,7 +110,7 @@ const materialsService = {
       `${apiUrl}/inventory/operations/sales/?page=${page}&limit=${limit}${filter}`,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -110,7 +125,7 @@ const materialsService = {
       `${apiUrl}/inventory/operations/delete/sales/${saleId}`,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 
@@ -120,7 +135,7 @@ const materialsService = {
       payload,
       {
         headers: { Authorization: `${token}` },
-      }
+      },
     );
   },
 };

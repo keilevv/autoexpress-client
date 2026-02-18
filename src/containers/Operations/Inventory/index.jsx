@@ -62,7 +62,11 @@ function InventoryContainer({ owner }) {
     },
     {
       key: "requests",
-      label: <p className="font-semibold text-base">Solicitudes</p>,
+      label: (
+        <p className="font-semibold text-base">
+          {user?.roles.includes("admin") ? "Solicitudes" : "Mis solicitudes"}
+        </p>
+      ),
       children: <InventoryRequestsContainer owner={owner} />,
     },
     // {
@@ -80,7 +84,11 @@ function InventoryContainer({ owner }) {
   useEffect(() => {
     window.location.pathname.split("/").forEach((item, index) => {
       if (!user?.roles.includes("admin")) {
-        setCurrentTab("consumption");
+        if (item === "requests") {
+          setCurrentTab("requests");
+        } else {
+          setCurrentTab("consumption");
+        }
       }
       if (item === "inventory") {
         switch (window.location.pathname.split("/")[index + 1]) {
@@ -89,6 +97,9 @@ function InventoryContainer({ owner }) {
             break;
           case "consumption":
             setCurrentTab("consumption");
+            break;
+          case "requests":
+            setCurrentTab("requests");
             break;
         }
       }
