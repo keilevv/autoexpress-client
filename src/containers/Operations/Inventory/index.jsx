@@ -8,6 +8,7 @@ import InventoryRequest from "./Consumption/InventoryRequest";
 import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
+import InventoryRequestsContainer from "./Requests";
 
 function InventoryContainer({ owner }) {
   const [currentTab, setCurrentTab] = useState("storage");
@@ -58,6 +59,11 @@ function InventoryContainer({ owner }) {
           searchValue={currentTab === "consumption" ? searchValue : null}
         />
       ),
+    },
+    {
+      key: "requests",
+      label: <p className="font-semibold text-base">Solicitudes</p>,
+      children: <InventoryRequestsContainer owner={owner} />,
     },
     // {
     //   key: "sales",

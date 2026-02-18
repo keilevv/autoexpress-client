@@ -1,26 +1,50 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Form, Button, notification } from "antd";
 import { useNavigate } from "react-router-dom";
 import MaterialsList from "../MaterialsList";
-import useInventory from "../../../../hooks/useInventory";
-import DigitalSignature from "../../../../components/Common/DigitalSignature";
+import EditSignature from "../../Settings/EditSignature";
+import useAuth from "../../../../hooks/useAuth";
 
-function RequestMaterialForm({ owner }) {
+function RequestMaterialForm({
+  owner,
+  handleRequestStorageMaterial = () => {},
+  loading = false,
+}) {
+  const { updateUser } = useAuth();
+  const user = useSelector((state) => state.auth.user);
   const [form] = Form.useForm();
   const navigate = useNavigate();
-  const { createConsumptionMaterial, loading } = useInventory();
   const [materials, setMaterials] = useState([]);
   const [signature, setSignature] = useState(null);
+  const [isValidSignature, setIsValidSignature] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
+    if (signature) {
+      const img = new Image();
+      img.src = signature;
+      img.onload = () => setIsValidSignature(true);
+      img.onerror = () => setIsValidSignature(false);
+    } else {
+      setIsValidSignature(false);
+    }
+  }, [signature]);
+
+  useEffect(() => {
+    if (user?.signature) {
+      setSignature(user.signature);
+    }
+  }, [user]);
+
+  useEffect(() => {
     form.setFieldValue("materials", materials);
-    if (materials.length > 0 && signature) {
+    if (materials.length > 0 && signature && isValidSignature) {
       setDisabled(false);
     } else {
       setDisabled(true);
     }
-  }, [materials, signature, form]);
+  }, [materials, signature, isValidSignature, form]);
 
   const onFinish = (values) => {
     const payload = {
@@ -28,24 +52,11 @@ function RequestMaterialForm({ owner }) {
       signature,
       owner: owner ? owner : "autoexpress",
     };
-    createConsumptionMaterial(payload)
-      .then(() => {
-        notification.success({
-          message: "Solicitud enviada",
-          description: "Los materiales han sido solicitados correctamente.",
-        });
-        navigate(`/operations/inventory/${owner}/consumption`);
-      })
-      .catch((err) => {
-        notification.error({
-          message: "Error al enviar solicitud",
-          description: err.message || "Ocurrió un error inesperado.",
-        });
-      });
+    handleRequestStorageMaterial(payload);
   };
 
   return (
-    <div className="bg-white px-6 rounded-lg shadow-sm">
+    <div className="bg-white px-4 rounded-lg shadow-sm">
       <Form
         name="request-material-form"
         form={form}
@@ -60,14 +71,30 @@ function RequestMaterialForm({ owner }) {
           />
         </Form.Item>
 
-        <div className="max-w-[500px]">
-          <DigitalSignature
-            onSave={(img) => setSignature(img)}
-            onClear={() => setSignature(null)}
+        <div className="mt-4">
+          <EditSignature
+            loading={loading}
+            user={user}
+            onUpdateSignature={(img) => {
+              updateUser(user.id, { signature: img })
+                .then((response) => {
+                  notification.success({
+                    message: "Firma actualizada",
+                    description: "La firma ha sido actualizada correctamente.",
+                  });
+                  setSignature(response?.results?.signature);
+                })
+                .catch((err) => {
+                  notification.error({
+                    message: "Error al actualizar firma",
+                    description: err.message || "Ocurrió un error inesperado.",
+                  });
+                });
+            }}
           />
         </div>
 
-        <div className="flex justify-end gap-3 mt-6">
+        <div className="flex justify-end gap-4 mt-4">
           <Button onClick={() => navigate(-1)}>Cancelar</Button>
           <Button
             type="primary"

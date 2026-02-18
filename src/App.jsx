@@ -25,7 +25,7 @@ import SingleConsumptionMaterialContainer from "./containers/Operations/Inventor
 import ProductionContainer from "./containers/Operations/Production";
 import JobOrdersSingleContainer from "./containers/Operations/Production/Jobs/Single";
 import OperationSettingsContainer from "./containers/Operations/Settings";
-import InventoryRequest from "./containers/Operations/Inventory/Consumption/InventoryRequest";
+import InventoryRequestsContainer from "./containers/Operations/Inventory/Requests";
 /* Components*/
 import Jobs from "./components/operations/Jobs";
 import Operators from "./components/operations/Operators";
@@ -184,6 +184,16 @@ function App() {
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
                   <InventoryContainer owner="autoexpress" />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/operations/inventory/autoexpress/requests"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer owner={"autoexpress"} />
                 </MainLayout>
               </ProtectedRoute>
             }

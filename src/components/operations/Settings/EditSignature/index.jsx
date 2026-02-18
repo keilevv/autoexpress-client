@@ -9,16 +9,9 @@ function EditSignature({
   onUpdateSignature = () => {},
 }) {
   const [showSignature, setShowSignature] = useState(false);
-  const [userData, setUserData] = useState({});
-
-  useEffect(() => {
-    setUserData({
-      signature: user.signature,
-    });
-  }, [user]);
 
   return (
-    <div className="flex flex-col gap-2 bg-gray-50 p-4 rounded-lg">
+    <div className="flex flex-col gap-2 bg-gray-100 p-4 rounded-lg">
       <p className="font-semibold">Firma</p>
       {loading ? (
         <Skeleton.Image
@@ -35,9 +28,9 @@ function EditSignature({
                 setShowSignature(false);
               }}
             />
-          ) : userData.signature ? (
+          ) : user.signature ? (
             <img
-              src={userData.signature}
+              src={user.signature}
               alt="user_signature"
               className="w-full h-full max-h-48 object-contain"
             />

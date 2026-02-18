@@ -5,8 +5,8 @@ import Logo from "../../assets/images/favicon.png";
 import { Layout, Menu, theme, Button, Dropdown } from "antd";
 import {
   LogoutOutlined,
-  UserOutlined,
   SettingOutlined,
+  MenuOutlined,
 } from "@ant-design/icons";
 
 /* Custom hooks*/
@@ -148,9 +148,9 @@ function MainLayout({ children }) {
                   navigate(
                     `/operations/inventory/${value.key.replace(
                       "inventory-",
-                      ""
+                      "",
                     )}`,
-                    { replace: true }
+                    { replace: true },
                   );
                   break;
                 case "production-autoexpress":
@@ -158,9 +158,9 @@ function MainLayout({ children }) {
                   navigate(
                     `/operations/production/${value.key.replace(
                       "production-",
-                      ""
+                      "",
                     )}`,
-                    { replace: true }
+                    { replace: true },
                   );
                   break;
                 default:
@@ -169,19 +169,16 @@ function MainLayout({ children }) {
             }}
           />
           <Dropdown menu={userMenuProps} trigger={"click"} className="m-auto">
-            <Button
-              shape="circle"
-              ghost
-              size="large"
-              className="flex items-center justify-center "
-            >
-              <UserOutlined />
-            </Button>
+            <button className="flex items-center justify-center hover:bg-red-700 hover:text-white rounded-lg text-white text-lg p-2">
+              <MenuOutlined />
+            </button>
           </Dropdown>
         </div>
       </Header>
       <div className="bg-gray-100 w-full h-screen">
-        <div className="max-w-7xl bg-white rounded-b-lg p-5 m-auto">{children}</div>
+        <div className="max-w-7xl bg-white rounded-b-lg p-5 m-auto">
+          {children}
+        </div>
       </div>
     </Layout>
   );

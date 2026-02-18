@@ -1,16 +1,19 @@
-import { useSelector } from "react-redux";
-
 import RequestMaterialForm from "../../../../../components/operations/Inventory/RequestMaterialForm";
 
 function InventoryRequest({ owner }) {
-  const user = useSelector((state) => state.auth.user);
+  const handleRequestStorageMaterial = (payload) => {
+    console.log(payload);
+  };
 
   return (
     <>
-      <h1 className="pl-6 pt-6 text-2xl text-red-700 font-semibold mb-5 ">
+      <h1 className="pl-4 pt-4 text-2xl text-red-700 font-medium mb-6 ">
         Solicitar materiales
       </h1>
-      <RequestMaterialForm owner={owner} />
+      <RequestMaterialForm
+        owner={owner}
+        handleRequestStorageMaterial={handleRequestStorageMaterial}
+      />
     </>
   );
 }
