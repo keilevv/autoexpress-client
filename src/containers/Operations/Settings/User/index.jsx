@@ -4,9 +4,10 @@ import useAuth from "../../../../hooks/useAuth";
 import { notification } from "antd";
 
 function UserSettingsContainer() {
-  const { updateUser } = useAuth();
+  const { loading, updateUser } = useAuth();
 
   const user = useSelector((state) => state.auth.user);
+
   const handleUpdateUser = (data) => {
     updateUser(user.id, data)
       .then(() => {
@@ -40,10 +41,10 @@ function UserSettingsContainer() {
 
   return (
     <UserForm
+      loading={loading}
       user={user}
       onUpdateUser={handleUpdateUser}
       onUpdateSignature={handleUpdateSignature}
-      
     />
   );
 }

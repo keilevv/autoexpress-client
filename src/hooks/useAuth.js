@@ -1,6 +1,11 @@
 import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { login, logout, setAccessToken } from "../redux/reducers/authSlice";
+import {
+  login,
+  logout,
+  setAccessToken,
+  setUserData,
+} from "../redux/reducers/authSlice";
 import { throwError } from "../helpers/index";
 import userService from "../services/user";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +24,6 @@ function useAuth() {
         .getAuth(auth.accessToken, userId)
         .then((response) => {
           setUser(response.data.user);
-          dispatch(setAccessToken(response.data.accessToken));
           setLoading(false);
           return response;
         })
@@ -35,12 +39,9 @@ function useAuth() {
     return userService
       .login({ username, password })
       .then((response) => {
-        const userData = response.data;
-        const accessToken = userData.accessToken;
-        delete userData.accessToken;
+        const { refreshToken, ...userData } = response.data;
         setUser(userData);
         dispatch(login(userData));
-        dispatch(setAccessToken(accessToken));
         setLoading(false);
         return response;
       })
@@ -59,9 +60,12 @@ function useAuth() {
     return userService
       .updateUser(auth.accessToken, userId, payload)
       .then((response) => {
-        setUser(response.data);
+        setUser(response.data.results);
+        const user = response.data.results;
+        user.id = response.data.results._id;
+        dispatch(setUserData(response.data.results));
         setLoading(false);
-        return response;
+        return response.data;
       })
       .catch((err) => {
         throwError(err.message.message);
