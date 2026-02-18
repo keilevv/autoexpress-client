@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Button, Modal } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, UserOutlined } from "@ant-design/icons";
 import AddMaterialModal from "./AddMaterialModal";
 import AddSaleModal from "./AddSaleModal";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function InventoryOptions({ onFinish, type, owner }) {
   const [addButtontitle, setAddButtontitle] = useState("Agregar");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     switch (type) {
@@ -14,7 +18,11 @@ function InventoryOptions({ onFinish, type, owner }) {
         setAddButtontitle("Agregar material a almacén");
         break;
       case "consumption":
-        setAddButtontitle("Agregar material de consumo");
+        if (user.roles.includes("user")) {
+          setAddButtontitle("Solicitar material");
+        } else {
+          setAddButtontitle("Agregar material de consumo");
+        }
         break;
       case "sales":
         setAddButtontitle("Agregar venta");
@@ -22,15 +30,27 @@ function InventoryOptions({ onFinish, type, owner }) {
       default:
         setAddButtontitle("agregar");
     }
-  }, [type]);
+  }, [type, user]);
+
+  const handleClick = () => {
+    switch (type) {
+      case "storage":
+        setIsModalOpen(true);
+        break;
+      case "sales":
+        setIsModalOpen(true);
+        break;
+      case "consumption":
+        navigate("/operations/inventory/consumption/add");
+        break;
+      default:
+        setIsModalOpen(true);
+    }
+  };
 
   return (
     <div className="flex flex-row">
-      <Button
-        type="primary"
-        icon={<PlusOutlined />}
-        onClick={() => setIsModalOpen(true)}
-      >
+      <Button type="primary" icon={<PlusOutlined />} onClick={handleClick}>
         {addButtontitle}
       </Button>
       <AddMaterialModal

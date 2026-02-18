@@ -17,15 +17,15 @@ function useInventory() {
   const [totalPriceConsumption, setTotalPriceConsumption] = useState(0);
 
   useEffect(() => {
-    if (auth.user && auth.user.accessToken) {
-      setToken(auth.user.accessToken);
+    if (auth.user && auth.accessToken) {
+      setToken(auth.accessToken);
     }
   }, [auth]);
 
   const createStorageMaterial = useCallback((payload) => {
     setLoading(true);
     return inventoryService
-      .createStorageMaterial(auth.user.accessToken, payload)
+      .createStorageMaterial(auth.accessToken, payload)
       .then((response) => {
         setStorageMaterials([...storageMaterials, response.data]);
         setLoading(false);
@@ -42,7 +42,7 @@ function useInventory() {
     (page = 1, limit = 10, filter = "") => {
       setLoading(true);
       return inventoryService
-        .getStorageMaterials(auth.user.accessToken, page, limit, filter)
+        .getStorageMaterials(auth.accessToken, page, limit, filter)
         .then((response) => {
           setTotalPriceStorage(response.data.total_price);
           setStorageMaterials(response.data.results);
@@ -62,7 +62,7 @@ function useInventory() {
   const getStorageMaterial = useCallback((materialId) => {
     setLoading(true);
     return inventoryService
-      .getStorageMaterial(auth.user.accessToken, materialId)
+      .getStorageMaterial(auth.accessToken, materialId)
       .then((response) => {
         setStorageMaterial(response.data.results);
         setLoading(false);
@@ -78,7 +78,7 @@ function useInventory() {
   const updateStorageMaterial = useCallback((materialId, payload) => {
     setLoading(true);
     return inventoryService
-      .updateStorageMaterial(auth.user.accessToken, materialId, payload)
+      .updateStorageMaterial(auth.accessToken, materialId, payload)
       .then((response) => {
         if (response.data) {
           setStorageMaterial(response.data);
@@ -94,7 +94,7 @@ function useInventory() {
   const deleteStorageMaterial = useCallback((marterialId) => {
     setLoading(true);
     return inventoryService
-      .deleteStorageMaterial(auth.user.accessToken, marterialId)
+      .deleteStorageMaterial(auth.accessToken, marterialId)
       .then((response) => {
         if (response.data) {
           setLoading(false);
@@ -109,7 +109,7 @@ function useInventory() {
   function createConsumptionMaterial(payload) {
     setLoading(true);
     return inventoryService
-      .createConsumptionMaterial(auth.user.accessToken, payload)
+      .createConsumptionMaterial(auth.accessToken, payload)
       .then((response) => {
         setConsumptionMaterials([...storageMaterials, response.data]);
         setLoading(false);
@@ -125,7 +125,7 @@ function useInventory() {
     (page = 1, limit = 10, filter = "") => {
       setLoading(true);
       return inventoryService
-        .getConsumptionMaterials(auth.user.accessToken, page, limit, filter)
+        .getConsumptionMaterials(auth.accessToken, page, limit, filter)
         .then((response) => {
           setTotalPriceConsumption(response.data.total_price);
           setConsumptionMaterials(response.data.results);
@@ -145,7 +145,7 @@ function useInventory() {
   const getConsumptionMaterial = useCallback((materialId) => {
     setLoading(true);
     return inventoryService
-      .getConsumptionMaterial(auth.user.accessToken, materialId)
+      .getConsumptionMaterial(auth.accessToken, materialId)
       .then((response) => {
         setConsumptionMaterial(response.data.results);
         setLoading(false);
@@ -161,7 +161,7 @@ function useInventory() {
   const updateConsumptionMaterial = useCallback((materialId, payload) => {
     setLoading(true);
     return inventoryService
-      .updateConsumptionMaterial(auth.user.accessToken, materialId, payload)
+      .updateConsumptionMaterial(auth.accessToken, materialId, payload)
       .then((response) => {
         if (response.data) {
           setConsumptionMaterial(response.data);
@@ -177,7 +177,7 @@ function useInventory() {
   const deleteConsumptionMaterial = useCallback((marterialId) => {
     setLoading(true);
     return inventoryService
-      .deleteStorageMaterial(auth.user.accessToken, marterialId)
+      .deleteStorageMaterial(auth.accessToken, marterialId)
       .then((response) => {
         if (response.data) {
           setLoading(false);
@@ -192,7 +192,7 @@ function useInventory() {
   const createSale = useCallback((payload) => {
     setLoading(true);
     return inventoryService
-      .createSale(auth.user.accessToken, payload)
+      .createSale(auth.accessToken, payload)
       .then((response) => {
         setSales([...sales, response.data]);
         setLoading(false);
@@ -208,7 +208,7 @@ function useInventory() {
   const getSales = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     return inventoryService
-      .getSales(auth.user.accessToken, page, limit, filter)
+      .getSales(auth.accessToken, page, limit, filter)
       .then((response) => {
         setSales(response.data.results);
         setCount(response.data.count);
@@ -225,7 +225,7 @@ function useInventory() {
   const getSale = useCallback((materialId) => {
     setLoading(true);
     return inventoryService
-      .getSale(auth.user.accessToken, materialId)
+      .getSale(auth.accessToken, materialId)
       .then((response) => {
         setSale(response.data.results);
         setLoading(false);
@@ -241,7 +241,7 @@ function useInventory() {
   const updateSale = useCallback((materialId, payload) => {
     setLoading(true);
     return inventoryService
-      .updateSale(auth.user.accessToken, materialId, payload)
+      .updateSale(auth.accessToken, materialId, payload)
       .then((response) => {
         if (response.data) {
           setSale(response.data);
@@ -257,7 +257,7 @@ function useInventory() {
   const deleteSale = useCallback((marterialId) => {
     setLoading(true);
     return inventoryService
-      .deleteSale(auth.user.accessToken, marterialId)
+      .deleteSale(auth.accessToken, marterialId)
       .then((response) => {
         if (response.data) {
           setLoading(false);

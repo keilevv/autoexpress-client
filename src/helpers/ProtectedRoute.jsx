@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children }) => {
     if (user) {
       getUser(user.id ? user.id : "invalid-user-id")
         .then((response) => {
-          if (response.data.results) {
+          if (response.data && response.data.user) {
             setIsValidSession(true);
             setLoading(false);
           }

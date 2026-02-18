@@ -14,15 +14,15 @@ function useEmployees() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (auth.user && auth.user.accessToken) {
-      setToken(auth.user.accessToken);
+    if (auth.user && auth.accessToken) {
+      setToken(auth.accessToken);
     }
   }, [auth]);
 
   const getEmployees = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     return employeesService
-      .getEmployees(auth.user.accessToken, page, limit, filter)
+      .getEmployees(auth.accessToken, page, limit, filter)
       .then((response) => {
         setCount(response.data.count);
         setEmployees(response.data.results);
@@ -38,7 +38,7 @@ function useEmployees() {
   const getEmployee = useCallback((clientId) => {
     setLoading(true);
     employeesService
-      .getEmployee(auth.user.accessToken, clientId)
+      .getEmployee(auth.accessToken, clientId)
       .then((response) => {
         setLoading(false);
         setEmployee(response.data.results);
@@ -67,7 +67,7 @@ function useEmployees() {
   const updateEmployee = useCallback((clientId, payload) => {
     setLoading(true);
     return employeesService
-      .updateEmployee(auth.user.accessToken, clientId, payload)
+      .updateEmployee(auth.accessToken, clientId, payload)
       .then((response) => {
         setEmployee(response.data.results);
         setLoading(false);
@@ -82,7 +82,7 @@ function useEmployees() {
   const deleteEmployee = useCallback((clientId) => {
     setLoading(true);
     return employeesService
-      .deleteEmployee(auth.user.accessToken, clientId)
+      .deleteEmployee(auth.accessToken, clientId)
       .then((response) => {
         setLoading(false);
         return response;

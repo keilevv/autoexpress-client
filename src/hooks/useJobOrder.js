@@ -13,15 +13,15 @@ function useJobOrder() {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    if (auth.user && auth.user.accessToken) {
-      setToken(auth.user.accessToken);
+    if (auth.user && auth.accessToken) {
+      setToken(auth.accessToken);
     }
   }, [auth]);
 
   const getJobOrders = useCallback((page = 1, limit = 10, filter = "") => {
     setLoading(true);
     return productionService
-      .getJobOrders(auth.user.accessToken, page, limit, filter)
+      .getJobOrders(auth.accessToken, page, limit, filter)
       .then((response) => {
         setCount(response.data.count);
         setJobOrders(response.data.results);
@@ -37,7 +37,7 @@ function useJobOrder() {
   const getJobOrder = useCallback((jobOrderId) => {
     setLoading(true);
     productionService
-      .getJobOrder(auth.user.accessToken, jobOrderId)
+      .getJobOrder(auth.accessToken, jobOrderId)
       .then((response) => {
         setLoading(false);
         setJobOrder(response.data.results);
@@ -52,7 +52,7 @@ function useJobOrder() {
   const createJobOrder = useCallback((payload) => {
     setLoading(true);
     return productionService
-      .createJobOrder(auth.user.accessToken, payload)
+      .createJobOrder(auth.accessToken, payload)
       .then((response) => {
         setLoading(false);
         return response;
@@ -66,7 +66,7 @@ function useJobOrder() {
   const updateJobOrder = useCallback((jobOrderId, payload) => {
     setLoading(true);
     return productionService
-      .updateJobOrder(auth.user.accessToken, jobOrderId, payload)
+      .updateJobOrder(auth.accessToken, jobOrderId, payload)
       .then((response) => {
         setJobOrder(response.data.results);
         setLoading(false);
@@ -82,7 +82,7 @@ function useJobOrder() {
     setLoading(true);
     return productionService
       .addConsumedMaterialsToJobOrder(
-        auth.user.accessToken,
+        auth.accessToken,
         jobOrderId,
         payload
       )
