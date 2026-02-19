@@ -99,6 +99,25 @@ const materialsService = {
     );
   },
 
+  updateInventoryRequest(token, requestId, payload) {
+    return axios.put(
+      `${apiUrl}/inventory/operations/inventory-request/${requestId}/update`,
+      payload,
+      {
+        headers: { Authorization: `${token}` },
+      },
+    );
+  },
+  approveInventoryRequest(token, requestId, approved) {
+    return axios.put(
+      `${apiUrl}/inventory/operations/inventory-request/${requestId}/${approved ? "approve" : "reject"}`,
+      { approved },
+      {
+        headers: { Authorization: `${token}` },
+      },
+    );
+  },
+
   getSale(token, saleId) {
     return axios.get(`${apiUrl}/inventory/operations/sales/${saleId}`, {
       headers: { Authorization: `${token}` },

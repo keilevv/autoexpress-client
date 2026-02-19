@@ -11,6 +11,7 @@ function InventoryOptions({ onFinish, type, owner }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
+  const [showButton, setShowButton] = useState(true);
 
   useEffect(() => {
     switch (type) {
@@ -19,13 +20,18 @@ function InventoryOptions({ onFinish, type, owner }) {
         break;
       case "consumption":
         if (user.roles.includes("user")) {
-          setAddButtontitle("Solicitar material");
+          setShowButton(false);
         } else {
           setAddButtontitle("Agregar material de consumo");
+          setShowButton(true);
         }
         break;
       case "sales":
         setAddButtontitle("Agregar venta");
+        break;
+      case "requests":
+        setAddButtontitle("Solicitar material");
+        setShowButton(true);
         break;
       default:
         setAddButtontitle("agregar");
@@ -41,7 +47,11 @@ function InventoryOptions({ onFinish, type, owner }) {
         setIsModalOpen(true);
         break;
       case "consumption":
+        setIsModalOpen(true);
+        break;
+      case "requests":
         navigate("/operations/inventory/consumption/add");
+
         break;
       default:
         setIsModalOpen(true);
@@ -50,9 +60,11 @@ function InventoryOptions({ onFinish, type, owner }) {
 
   return (
     <div className="flex flex-row">
-      <Button type="primary" icon={<PlusOutlined />} onClick={handleClick}>
-        {addButtontitle}
-      </Button>
+      {showButton && (
+        <Button type="primary" icon={<PlusOutlined />} onClick={handleClick}>
+          {addButtontitle}
+        </Button>
+      )}
       <AddMaterialModal
         owner={owner}
         type={type}

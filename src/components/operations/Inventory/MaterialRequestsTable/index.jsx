@@ -1,20 +1,18 @@
-import {
-  Table,
-  Tag,
-  Typography,
-  Tooltip,
-  Button,
-  Popconfirm,
-  Popover,
-  Badge,
-} from "antd";
+import { Table, Tag, Typography, Popover, Badge } from "antd";
 import dayjs from "dayjs";
 import { SyncOutlined, UserOutlined, ToolOutlined } from "@ant-design/icons";
 import { unitOptions } from "../../../../helpers/constants";
+import MaterialRequestsActionsMenu from "./ActionsMenu";
 
 const { Text } = Typography;
 
-function MaterialRequestsTable({ data, loading, onApprove, onReject }) {
+function MaterialRequestsTable({
+  data = [],
+  loading = false,
+  onApprove = () => {},
+  onReject = () => {},
+  onArchive = () => {},
+}) {
   const columns = [
     {
       title: "Fecha",
@@ -125,34 +123,13 @@ function MaterialRequestsTable({ data, loading, onApprove, onReject }) {
       title: "Acciones",
       key: "actions",
       render: (record) => (
-        <div className="flex gap-2">
-          <Tooltip title="Aprobar">
-            <Popconfirm
-              title="Aprobar Solicitud"
-              description={"¿Está seguro de aprobar esta solicitud?"}
-              onConfirm={onApprove}
-            >
-              <Button
-                disabled={loading}
-                type="text"
-                icon={<i className="fa-solid fa-check text-green-500"></i>}
-              />
-            </Popconfirm>
-          </Tooltip>
-          <Tooltip title={"Rechazar"}>
-            <Popconfirm
-              title="Rechazar Solicitud"
-              description={"¿Está seguro de rechazar esta solicitud?"}
-              onConfirm={onReject}
-            >
-              <Button
-                disabled={loading}
-                type="text"
-                icon={<i className="fa-solid fa-xmark text-red-500"></i>}
-              />
-            </Popconfirm>
-          </Tooltip>{" "}
-        </div>
+        <MaterialRequestsActionsMenu
+          isArchived={record.isArchived}
+          onApprove={() => onApprove(record._id)}
+          onReject={() => onReject(record._id)}
+          onArchive={() => onArchive(record._id, !record.isArchived)}
+          loading={loading}
+        />
       ),
     },
   ];

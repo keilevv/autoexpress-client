@@ -4,7 +4,7 @@ import { Tabs, Input, Breadcrumb } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StorageInventoryContainer from "./Storage";
 import ConsumptionInventoryContainer from "./Consumption";
-import InventoryRequest from "./Consumption/InventoryRequest";
+import InventoryRequest from "./Requests/InventoryRequest";
 import Options from "../../../components/operations/Inventory/Options";
 import _debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
@@ -90,6 +90,8 @@ function InventoryContainer({ owner }) {
           setCurrentTab("consumption");
         }
       }
+      console.log("tab", currentTab);
+      console.log("location", window.location.pathname.split("/")[index + 1]);
       if (item === "inventory") {
         switch (window.location.pathname.split("/")[index + 1]) {
           case "storage":
@@ -156,10 +158,12 @@ function InventoryContainer({ owner }) {
                 title: (
                   <a
                     onClick={() =>
-                      navigate(`/operations/inventory/${owner}/consumption`)
+                      navigate(`/operations/inventory/${owner}/requests`)
                     }
                   >
-                    Consumo
+                    {user?.roles.includes("admin")
+                      ? "Solicitudes"
+                      : "Mis solicitudes"}
                   </a>
                 ),
               },

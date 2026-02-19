@@ -15,6 +15,7 @@ function useInventory() {
   const [totalPriceStorage, setTotalPriceStorage] = useState(0);
   const [totalPriceConsumption, setTotalPriceConsumption] = useState(0);
   const [inventoryRequests, setInventoryRequests] = useState([]);
+  const [inventoryRequest, setInventoryRequest] = useState({});
 
   const createStorageMaterial = useCallback((payload) => {
     setLoading(true);
@@ -219,55 +220,21 @@ function useInventory() {
     [],
   );
 
-  // const getConsumptionMaterialRequest = useCallback((requestId) => {
-  //   setLoading(true);
-  //   return inventoryService
-  //     .getConsumptionMaterialRequest(auth.accessToken, requestId)
-  //     .then((response) => {
-  //       setConsumptionMaterialRequest(response.data.results);
-  //       setLoading(false);
-  //       return response;
-  //     })
-  //     .catch((err) => {
-  //       setLoading(false);
-  //       throwError(err.message.message);
-  //       return err;
-  //     });
-  // }, []);
-
-  // const updateConsumptionMaterialRequest = useCallback(
-  //   (requestId, payload) => {
-  //     setLoading(true);
-  //     return inventoryService
-  //       .updateConsumptionMaterialRequest(auth.accessToken, requestId, payload)
-  //       .then((response) => {
-  //         if (response.data) {
-  //           setConsumptionMaterialRequest(response.data);
-  //           setLoading(false);
-  //           return response;
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         throwError(err.response.data.message);
-  //       });
-  //   },
-  //   [],
-  // );
-
-  // const deleteConsumptionMaterialRequest = useCallback((requestId) => {
-  //   setLoading(true);
-  //   return inventoryService
-  //     .deleteConsumptionMaterialRequest(auth.accessToken, requestId)
-  //     .then((response) => {
-  //       if (response.data) {
-  //         setLoading(false);
-  //         return response;
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       throwError(err.response.data.message);
-  //     });
-  // }, []);
+  const updateInventoryRequest = useCallback((requestId, payload) => {
+    setLoading(true);
+    return inventoryService
+      .updateInventoryRequest(auth.accessToken, requestId, payload)
+      .then((response) => {
+        if (response.data) {
+          setInventoryRequest(response.data.results);
+          setLoading(false);
+          return response;
+        }
+      })
+      .catch((err) => {
+        throwError(err.response.data.message);
+      });
+  }, []);
 
   const createSale = useCallback((payload) => {
     setLoading(true);
@@ -362,9 +329,7 @@ function useInventory() {
     getConsumptionMaterial,
     createConsumptionMaterialRequest,
     getInventoryRequests,
-    // updateConsumptionMaterialRequest,
-    // deleteConsumptionMaterialRequest,
-    // getConsumptionMaterialRequest,
+    updateInventoryRequest,
     createSale,
     getSales,
     getSale,
@@ -381,6 +346,7 @@ function useInventory() {
     totalPriceConsumption,
     totalPriceStorage,
     inventoryRequests,
+    inventoryRequest,
   };
 }
 
