@@ -15,17 +15,16 @@ const carsService = {
       }
     );
   },
+
   getCarBrandsWithApi(brandName) {
     return axios.get(
-      `https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?${
-        brandName.length ? ` where="${brandName}"` : ""
+      `https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?${brandName.length ? ` where="${brandName}"` : ""
       }&group_by=make&limit=20`
     );
   },
   getCarModelsWithApi(modelName, brandName) {
     return axios.get(
-      `https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?where=make="${brandName}" ${
-        modelName.length ? `and "${modelName}"` : ""
+      `https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records?where=make="${brandName}" ${modelName.length ? `and "${modelName}"` : ""
       }&group_by=model&limit=20`
     );
   },
