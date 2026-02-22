@@ -1,6 +1,13 @@
 import { Table, Tag, Typography, Popover, Badge } from "antd";
 import dayjs from "dayjs";
-import { SyncOutlined, UserOutlined, ToolOutlined } from "@ant-design/icons";
+import {
+  SyncOutlined,
+  UserOutlined,
+  ToolOutlined,
+  CheckCircleOutlined,
+  EyeInvisibleOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 import { unitOptions } from "../../../../helpers/constants";
 import MaterialRequestsActionsMenu from "./ActionsMenu";
 
@@ -84,16 +91,42 @@ function MaterialRequestsTable({
     },
     {
       title: "Estado",
-      dataIndex: "approved",
-      key: "approved",
-      render: (approved) => (
-        <Tag
-          icon={approved ? <CheckCircleOutlined /> : <SyncOutlined />}
-          color={approved ? "success" : "processing"}
-        >
-          {approved ? "Aprobado" : "Pendiente"}
-        </Tag>
-      ),
+      key: "status",
+      render: (record) => {
+        if (record.archived) {
+          return (
+            <Tag icon={<EyeInvisibleOutlined />} color="default">
+              Archivado
+            </Tag>
+          );
+        }
+        switch (record.status) {
+          case "pending":
+            return (
+              <Tag icon={<SyncOutlined />} color="processing">
+                Pendiente
+              </Tag>
+            );
+          case "approved":
+            return (
+              <Tag icon={<CheckCircleOutlined />} color="success">
+                Aprobado
+              </Tag>
+            );
+          case "rejected":
+            return (
+              <Tag icon={<CloseCircleOutlined />} color="error">
+                Rechazado
+              </Tag>
+            );
+          default:
+            return (
+              <Tag icon={<SyncOutlined />} color="processing">
+                Pendiente
+              </Tag>
+            );
+        }
+      },
     },
     {
       title: "Firma",
@@ -124,10 +157,11 @@ function MaterialRequestsTable({
       key: "actions",
       render: (record) => (
         <MaterialRequestsActionsMenu
-          isArchived={record.isArchived}
+          record={record}
+          isArchived={record.archived}
           onApprove={() => onApprove(record._id)}
           onReject={() => onReject(record._id)}
-          onArchive={() => onArchive(record._id, !record.isArchived)}
+          onArchive={() => onArchive(record._id, !record.archived)}
           loading={loading}
         />
       ),

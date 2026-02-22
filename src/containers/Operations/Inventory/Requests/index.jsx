@@ -4,18 +4,20 @@ import { useSelector } from "react-redux";
 import MaterialRequestsTable from "../../../../components/operations/Inventory/MaterialRequestsTable";
 import { notification } from "antd";
 
-function InventoryRequestsContainer() {
+function InventoryRequestsContainer({ refresh }) {
   const user = useSelector((state) => state.auth.user);
   const {
     inventoryRequests,
     getInventoryRequests,
     loading,
     updateInventoryRequest,
+    approveInventoryRequest,
+    rejectInventoryRequest,
   } = useInventory();
 
   useEffect(() => {
     getInventoryRequests(1, 10, "");
-  }, [user]);
+  }, [user, refresh]);
 
   const handleArchive = (id, archived = false) => {
     updateInventoryRequest(id, { archived })
@@ -34,13 +36,47 @@ function InventoryRequestsContainer() {
       });
   };
 
+  const handleApprove = (id) => {
+    approveInventoryRequest(id)
+      .then(() => {
+        notification.success({
+          message: "Solicitud aprobada",
+          description: "La solicitud ha sido aprobada",
+        });
+        getInventoryRequests(1, 10, "");
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error al aprobar solicitud",
+          description: error,
+        });
+      });
+  };
+
+  const handleReject = (id) => {
+    rejectInventoryRequest(id)
+      .then(() => {
+        notification.success({
+          message: "Solicitud rechazada",
+          description: "La solicitud ha sido rechazada",
+        });
+        getInventoryRequests(1, 10, "");
+      })
+      .catch((error) => {
+        notification.error({
+          message: "Error al rechazar solicitud",
+          description: error,
+        });
+      });
+  };
+
   return (
     <div className="bg-gray-100 overflow-auto">
       <MaterialRequestsTable
         data={inventoryRequests}
         loading={loading}
-        onApprove={(id) => {}}
-        onReject={(id) => {}}
+        onApprove={(id) => handleApprove(id)}
+        onReject={(id) => handleReject(id)}
         onArchive={(id, archived) => handleArchive(id, archived)}
       />
     </div>

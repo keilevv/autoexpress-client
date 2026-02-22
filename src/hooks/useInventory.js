@@ -236,6 +236,42 @@ function useInventory() {
       });
   }, []);
 
+  const approveInventoryRequest = useCallback((requestId) => {
+    setLoading(true);
+    return inventoryService
+      .approveInventoryRequest(auth.accessToken, requestId)
+      .then((response) => {
+        setInventoryRequests(
+          inventoryRequests.filter((request) => request._id !== requestId),
+        );
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+        return err;
+      });
+  }, []);
+
+  const rejectInventoryRequest = useCallback((requestId) => {
+    setLoading(true);
+    return inventoryService
+      .rejectInventoryRequest(auth.accessToken, requestId)
+      .then((response) => {
+        setInventoryRequests(
+          inventoryRequests.filter((request) => request._id !== requestId),
+        );
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response.data.message);
+        return err;
+      });
+  }, []);
+
   const createSale = useCallback((payload) => {
     setLoading(true);
     return inventoryService
@@ -335,6 +371,8 @@ function useInventory() {
     getSale,
     updateSale,
     deleteSale,
+    approveInventoryRequest,
+    rejectInventoryRequest,
     consumptionMaterial,
     consumptionMaterials,
     storageMaterial,
