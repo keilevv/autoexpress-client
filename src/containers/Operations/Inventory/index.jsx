@@ -67,7 +67,7 @@ function InventoryContainer({ owner }) {
           {user?.roles.includes("admin") ? "Solicitudes" : "Mis solicitudes"}
         </p>
       ),
-      children: <InventoryRequestsContainer owner={owner} />,
+      children: <InventoryRequestsContainer owner={owner} refresh={refresh} />,
     },
     // {
     //   key: "sales",
@@ -90,8 +90,6 @@ function InventoryContainer({ owner }) {
           setCurrentTab("consumption");
         }
       }
-      console.log("tab", currentTab);
-      console.log("location", window.location.pathname.split("/")[index + 1]);
       if (item === "inventory") {
         switch (window.location.pathname.split("/")[index + 1]) {
           case "storage":

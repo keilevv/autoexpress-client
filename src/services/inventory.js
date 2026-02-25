@@ -50,9 +50,9 @@ const materialsService = {
     );
   },
 
-  getConsumptionMaterials(token, page, limit, filter) {
+  getConsumptionMaterials(token, page, limit, filter, type = "") {
     return axios.get(
-      `${apiUrl}/inventory/operations/consumption/?page=${page}&limit=${limit}${filter}`,
+      `${apiUrl}/inventory/operations/consumption/?page=${page}&limit=${limit}${filter}${type === "color" ? "&is_color=true" : ""}`,
       {
         headers: { Authorization: `${token}` },
       },
@@ -108,10 +108,19 @@ const materialsService = {
       },
     );
   },
-  approveInventoryRequest(token, requestId, approved) {
+  approveInventoryRequest(token, requestId) {
     return axios.put(
-      `${apiUrl}/inventory/operations/inventory-request/${requestId}/${approved ? "approve" : "reject"}`,
-      { approved },
+      `${apiUrl}/inventory/operations/inventory-request/${requestId}/approve`,
+      {},
+      {
+        headers: { Authorization: `${token}` },
+      },
+    );
+  },
+  rejectInventoryRequest(token, requestId) {
+    return axios.put(
+      `${apiUrl}/inventory/operations/inventory-request/${requestId}/reject`,
+      {},
       {
         headers: { Authorization: `${token}` },
       },

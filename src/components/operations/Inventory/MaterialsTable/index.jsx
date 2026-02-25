@@ -136,6 +136,9 @@ function MaterialsTable({
       title: "Cantidad",
       dataIndex: "quantity",
       key: "quantity",
+      render: (item) => {
+        return Number(Number(item).toFixed(3));
+      },
     },
     {
       title: "",
@@ -167,11 +170,13 @@ function MaterialsTable({
     <>
       <div className="table-container">
         <Table
-          rowClassName={(item) => { if(item.caution_quantity){
-            if(item.quantity <= item.caution_quantity){
-              return "bg-yellow-50"
+          rowClassName={(item) => {
+            if (item.caution_quantity) {
+              if (item.quantity <= item.caution_quantity) {
+                return "bg-yellow-50";
+              }
             }
-          }}}
+          }}
           loading={loading}
           dataSource={tableData}
           columns={columns}

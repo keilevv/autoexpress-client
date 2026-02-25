@@ -17,29 +17,55 @@ function ConsumedMaterials({
   setIsSaved = () => {},
   owner = "autoexpress",
 }) {
-  const { getConsumptionMaterials, consumptionMaterials, loading } =
-    useInventory();
+  const {
+    getConsumptionMaterials,
+    consumptionMaterials,
+    loading,
+    getConsumptionColors,
+    consumptionColors,
+  } = useInventory();
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedColor, setSelectedColor] = useState(null);
   const [addedMaterial, setAddedMaterial] = useState(null);
   const [addedColor, setAddedColor] = useState(null);
   const [colorQuantity, setColorQuantity] = useState(null);
   const [colorPrice, setColorPrice] = useState(null);
   const [materialQuantity, setMaterialQuantity] = useState(null);
   const [existingQuantity, setExistingQuantity] = useState(0);
+  const [existingColorQuantity, setExistingColorQuantity] = useState(0);
   const [consumptionMaterialFromList, setConsumptionMaterialFromList] =
     useState(null);
+
+  const [consumptionColorFromList, setConsumptionColorFromList] =
+    useState(null);
+  const [colorSearchValue, setColorSearchValue] = useState("");
 
   useEffect(() => {
     if (consumedMaterials.length && addedMaterial) {
       const materialFound = consumedMaterials.find(
-        (item) => item.consumption_material._id === addedMaterial
+        (item) => item.consumption_material._id === addedMaterial,
       );
       setConsumptionMaterialFromList(materialFound);
     }
   }, [addedMaterial, consumedMaterials]);
 
   useEffect(() => {
+    if (consumedColors.length && addedColor) {
+      const colorFound = consumedColors.find(
+        (item) => item.consumption_material?._id === addedColor,
+      );
+      setConsumptionColorFromList(colorFound);
+    }
+  }, [addedColor, consumedColors]);
+
+  useEffect(() => {
     if (isEditing) {
-      getConsumptionMaterials(1, 10, `&archived=false&owner=${owner}`);
+      getConsumptionMaterials(
+        1,
+        10,
+        `&archived=false&owner=${owner}&is_color=false`,
+      );
+      getConsumptionColors(1, 10, `&archived=false&owner=${owner}`);
     }
   }, [isEditing]);
 
@@ -47,7 +73,15 @@ function ConsumedMaterials({
     getConsumptionMaterials(
       1,
       10,
-      `&archived=false&owner=${owner}&search=${value}`
+      `&archived=false&owner=${owner}&search=${value}&is_color=false`,
+    );
+  };
+
+  const handleSearchColor = (value) => {
+    getConsumptionColors(
+      1,
+      10,
+      `&archived=false&owner=${owner}&search=${value}`,
     );
   };
 
@@ -56,6 +90,8 @@ function ConsumedMaterials({
   }, [materialQuantity]);
 
   const debounceFn = useCallback(_debounce(handleSearchMaterial, 300), []);
+  const debounceFnColor = useCallback(_debounce(handleSearchColor, 300), []);
+
   return (
     <>
       <p className="text-lg font-medium mb-4 text-red-700">Materiales</p>
@@ -73,10 +109,11 @@ function ConsumedMaterials({
                 optionFilterProp="children"
                 onSearch={(value) => debounceFn(value)}
                 onSelect={(value) => {
-                  setExistingQuantity(
-                    consumptionMaterials.find((item) => item._id === value)
-                      .quantity
+                  const newSelectedMaterial = consumptionMaterials.find(
+                    (item) => item._id === value,
                   );
+                  setSelectedMaterial(newSelectedMaterial);
+                  setExistingQuantity(newSelectedMaterial.quantity);
                   setAddedMaterial(value);
                 }}
                 allowClear
@@ -89,11 +126,7 @@ function ConsumedMaterials({
                       value={item._id}
                       label={item.material.name}
                     >
-                      {`${item.material.name}  (${item.material.reference}) - ${
-                        unitOptions.find(
-                          (unit) => unit.value === item.material.unit
-                        )?.label
-                      }`}
+                      {`${item.material.name} - ${item.material.reference}`}
                     </Select.Option>
                   );
                 })}
@@ -115,10 +148,14 @@ function ConsumedMaterials({
                   {" "}
                   Restante:{" "}
                   {isSaved || !consumptionMaterialFromList
-                    ? existingQuantity - materialQuantity
-                    : existingQuantity -
-                      consumptionMaterialFromList?.quantity -
-                      materialQuantity}
+                    ? Number(
+                        Number(existingQuantity - materialQuantity).toFixed(3),
+                      )
+                    : Number(
+                        Number(existingQuantity) -
+                          Number(consumptionMaterialFromList?.quantity) -
+                          Number(materialQuantity),
+                      ).toFixed(3)}
                 </p>
               </div>
             </div>
@@ -143,7 +180,7 @@ function ConsumedMaterials({
                   const existing = acc.find(
                     (entry) =>
                       entry.consumption_material._id ===
-                      item.consumption_material._id
+                      item.consumption_material._id,
                   );
 
                   if (existing) {
@@ -180,7 +217,7 @@ function ConsumedMaterials({
                 </div>
                 <div className="flex-grow border-b-2 border-red-700 border-dotted h-5 mx-2" />
                 <p className="text-base ">{`${formatToCurrency(
-                  item?.storage_material?.price * item?.quantity
+                  item?.storage_material?.price * item?.quantity,
                 )}`}</p>
                 {isEditing && (
                   <DeleteOutlined
@@ -191,7 +228,7 @@ function ConsumedMaterials({
                       const updatedMaterials = consumedMaterials.filter(
                         (i) =>
                           i.consumption_material._id !==
-                          item.consumption_material._id
+                          item.consumption_material._id,
                       );
 
                       // Update the consumed materials
@@ -222,10 +259,64 @@ function ConsumedMaterials({
             <div className="mt-4 mb-8">
               <p className="text-sm font-medium mb-4 ">Agregar Color</p>
               <div className="flex flex-col gap-4">
-                <Input
-                  placeholder="Nombre"
-                  onChange={(e) => setAddedColor(e.target.value)}
-                />
+                <Select
+                  loading={loading}
+                  className="w-full"
+                  value={addedColor}
+                  showSearch
+                  placeholder="Buscar..."
+                  optionLabelProp="label"
+                  optionFilterProp="children"
+                  onSearch={(value) => {
+                    setSelectedColor(null);
+                    setColorSearchValue(value);
+                    debounceFnColor(value);
+                  }}
+                  onSelect={(value) => {
+                    const newSelectedColor = consumptionColors.find(
+                      (item) => item._id === value,
+                    );
+                    if (newSelectedColor) {
+                      const existingColorQuantity =
+                        newSelectedColor.material.normalized_weight *
+                        newSelectedColor.quantity;
+                      setSelectedColor(newSelectedColor);
+                      setAddedColor(value);
+                      setExistingColorQuantity(existingColorQuantity);
+                      setColorSearchValue("");
+                    }
+                  }}
+                  onBlur={() => {
+                    if (colorSearchValue) {
+                      setAddedColor(colorSearchValue);
+                    }
+                  }}
+                  onChange={(value) => {
+                    if (!value) {
+                      setAddedColor(null);
+                      setColorSearchValue("");
+                      setExistingColorQuantity(0);
+                    }
+                  }}
+                  allowClear
+                  onClear={() => {
+                    setAddedColor(null);
+                    setColorSearchValue("");
+                    setExistingColorQuantity(0);
+                  }}
+                >
+                  {consumptionColors.map((item) => {
+                    return (
+                      <Select.Option
+                        key={item._id}
+                        value={item._id}
+                        label={item.material.name}
+                      >
+                        {`${item.material.name} - ${item.material.reference}`}
+                      </Select.Option>
+                    );
+                  })}
+                </Select>
                 <div className="flex items-center gap-4">
                   <div className="flex flex-col">
                     <p className="text-sm font-medium mb-2"> Cantidad (gr)</p>
@@ -238,30 +329,66 @@ function ConsumedMaterials({
                     />
                   </div>
                   <div className="flex flex-col">
-                    <p className="text-sm font-medium mb-2"> Precio</p>
-                    <InputNumber
-                      placeholder="Precio"
-                      formatter={(value) =>
-                        `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                      }
-                      onChange={(value) => setColorPrice(value)}
-                      className="w-full max-w-[200px]"
-                    />
+                    {selectedColor && (
+                      <>
+                        <p className="text-sm font-medium mb-2">
+                          {" "}
+                          Restante (gr)
+                        </p>
+                        <p>
+                          {" "}
+                          {isSaved || !consumptionColorFromList
+                            ? Number(
+                                Number(
+                                  existingColorQuantity - colorQuantity,
+                                ).toFixed(3),
+                              )
+                            : Number(
+                                Number(existingColorQuantity) -
+                                  Number(consumptionColorFromList?.quantity) -
+                                  Number(colorQuantity),
+                              ).toFixed(3)}{" "}
+                        </p>
+                      </>
+                    )}
                   </div>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-sm font-medium mb-2"> Precio</p>
+                  <InputNumber
+                    placeholder="Precio"
+                    formatter={(value) =>
+                      `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    onChange={(value) => setColorPrice(value)}
+                    className="w-full max-w-[200px]"
+                  />
                 </div>
                 <Button
                   type="primary"
                   onClick={() => {
+                    const colorName = selectedColor
+                      ? selectedColor.material.name
+                      : addedColor;
                     setConsumedColors((prev) => {
                       return prev
-                        .filter((item) => item.name !== addedColor)
+                        .filter((item) =>
+                          selectedColor
+                            ? item.consumption_material !== selectedColor._id
+                            : item.name !== colorName,
+                        )
                         .concat({
-                          name: addedColor,
+                          name: colorName,
+                          consumption_material: selectedColor?._id,
                           quantity: colorQuantity,
                           price: colorPrice,
                         });
                     });
                     setShowSaveMaterials(true);
+                    setAddedColor(null);
+                    setSelectedColor(null);
+                    setColorQuantity(null);
+                    setColorPrice(null);
                   }}
                   disabled={!addedColor || !colorQuantity || !colorPrice}
                 >
@@ -277,11 +404,11 @@ function ConsumedMaterials({
                   <div className="flex items-baseline " key={index}>
                     <div>
                       <p className="text-gray-700 text-sm font-medium">{`${item?.name}`}</p>
-                      <p>{`${item?.quantity} (gr)`}</p>
+                      <p>{`${Number(Number(item?.quantity).toFixed(3))} ${item?.consumption_material ? "lt" : "gr"}`}</p>
                     </div>
                     <div className="flex-grow border-b-2 border-red-700 border-dotted h-5 mx-2" />
                     <p className="text-base ">{`${formatToCurrency(
-                      item?.price
+                      item?.price,
                     )}`}</p>
                     {isEditing && (
                       <DeleteOutlined
@@ -289,7 +416,12 @@ function ConsumedMaterials({
                         onClick={() => {
                           setShowSaveMaterials(true);
                           setConsumedColors(
-                            consumedColors.filter((i) => i.name !== item.name)
+                            consumedColors.filter((i) =>
+                              i.consumption_material
+                                ? i.consumption_material !==
+                                  item.consumption_material
+                                : i.name !== item.name,
+                            ),
                           );
                         }}
                       />
@@ -311,7 +443,9 @@ function ConsumedMaterials({
           consumedMaterials
             .map((item) => item?.storage_material?.price * item?.quantity)
             .reduce((a, b) => a + b, 0) +
-            consumedColors.map((item) => item?.price).reduce((a, b) => a + b, 0)
+            consumedColors
+              .map((item) => item?.price)
+              .reduce((a, b) => a + b, 0),
         )}`}</p>
       </div>
     </>
