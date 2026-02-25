@@ -17,8 +17,6 @@ import {
   Form,
 } from "antd";
 
-import "./style.css";
-
 function SingleStorageMaterial() {
   const navigate = useNavigate();
   const [type, setType] = useState("");
@@ -69,7 +67,7 @@ function SingleStorageMaterial() {
         .catch((err) => {
           notification.error({
             message: "Error actualizando material",
-            description: err.message || err.message._message,
+            description: err,
           });
         });
     }
@@ -149,7 +147,7 @@ function SingleStorageMaterial() {
               )}
               {storageMaterial.created_date && (
                 <p className="text-sm text-gray-500 font-semibold">{`Fecha de creación: ${dayjs(
-                  storageMaterial.created_date
+                  storageMaterial.created_date,
                 ).format("DD/MM/YYYY")}`}</p>
               )}
             </div>

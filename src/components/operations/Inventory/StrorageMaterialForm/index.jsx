@@ -1,7 +1,8 @@
-import { Form, Input, Select, InputNumber } from "antd";
+import { Form, Input, Select, InputNumber, Tooltip } from "antd";
 import { useEffect } from "react";
 import { unitOptions } from "../../../../helpers/constants";
 import { formatToCurrency } from "../../../../helpers";
+import { InfoCircleOutlined } from "@ant-design/icons";
 
 /**
  * @param {{
@@ -28,8 +29,16 @@ function StorageMaterialForm({
 
   const handlePrefill = () => {
     if (storageMaterial) {
-      const { name, reference, unit, quantity, price, caution_quantity } =
-        storageMaterial;
+      const {
+        name,
+        reference,
+        unit,
+        quantity,
+        price,
+        caution_quantity,
+        isColor,
+        normalized_weight,
+      } = storageMaterial;
 
       form.setFieldsValue({
         name: name,
@@ -38,6 +47,8 @@ function StorageMaterialForm({
         quantity,
         price,
         caution_quantity,
+        isColor,
+        normalized_weight,
       });
     } else {
       form.setFieldsValue({
@@ -47,6 +58,8 @@ function StorageMaterialForm({
         quantity: "",
         caution_quantity: "",
         price: "",
+        isColor: false,
+        normalized_weight: "",
       });
     }
   };
@@ -58,7 +71,7 @@ function StorageMaterialForm({
   const renderContent = () => {
     return (
       <Form
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 md:grid md:grid-cols-2"
         form={form}
         layout="vertical"
         initialValues={{ unit: "unit" }}
@@ -129,7 +142,7 @@ function StorageMaterialForm({
           ) : (
             <p className="text-gray-500 ">{`${
               unitOptions.filter(
-                (item) => item.value === storageMaterial?.unit
+                (item) => item.value === storageMaterial?.unit,
               )[0]?.label
             }`}</p>
           )}
@@ -149,7 +162,7 @@ function StorageMaterialForm({
             </Form.Item>
           ) : (
             <p className="text-gray-500 ">{`${formatToCurrency(
-              storageMaterial?.price
+              storageMaterial?.price,
             )}`}</p>
           )}
         </div>
@@ -180,6 +193,51 @@ function StorageMaterialForm({
             </Form.Item>
           ) : (
             <p className="text-gray-500 ">{`${storageMaterial?.caution_quantity}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base ">
+            Color{" "}
+            <Tooltip
+              title="Marque si este material es un color"
+              className="ml-2"
+            >
+              {" "}
+              <InfoCircleOutlined />
+            </Tooltip>{" "}
+          </label>
+          {isEditing ? (
+            <Form.Item name={"isColor"}>
+              <Select
+                disabled={!isEditing}
+                defaultValue={storageMaterial?.isColor}
+                options={[
+                  { value: true, label: "Sí" },
+                  { value: false, label: "No" },
+                ]}
+              />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${storageMaterial?.isColor ? "Sí" : "No"}`}</p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-semibold text-base">
+            Peso normalizado
+            <Tooltip
+              title="Peso de una unidad del material en gramos"
+              className="ml-2"
+            >
+              {" "}
+              <InfoCircleOutlined />
+            </Tooltip>{" "}
+          </label>
+          {isEditing ? (
+            <Form.Item name={"normalized_weight"}>
+              <InputNumber min={0} className="w-full" disabled={!isEditing} />
+            </Form.Item>
+          ) : (
+            <p className="text-gray-500 ">{`${storageMaterial?.normalized_weight ? storageMaterial?.normalized_weight : "-"} gr`}</p>
           )}
         </div>
       </Form>

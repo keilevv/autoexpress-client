@@ -50,9 +50,9 @@ const materialsService = {
     );
   },
 
-  getConsumptionMaterials(token, page, limit, filter) {
+  getConsumptionMaterials(token, page, limit, filter, type = "") {
     return axios.get(
-      `${apiUrl}/inventory/operations/consumption/?page=${page}&limit=${limit}${filter}`,
+      `${apiUrl}/inventory/operations/consumption/?page=${page}&limit=${limit}${filter}${type === "color" ? "&is_color=true" : ""}`,
       {
         headers: { Authorization: `${token}` },
       },

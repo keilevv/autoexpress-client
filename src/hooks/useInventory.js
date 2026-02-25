@@ -7,6 +7,8 @@ function useInventory() {
   const [storageMaterials, setStorageMaterials] = useState([]);
   const [consumptionMaterial, setConsumptionMaterial] = useState({});
   const [consumptionMaterials, setConsumptionMaterials] = useState([]);
+  const [consumptionColors, setConsumptionColors] = useState([]);
+  const [colorsCount, setColorsCount] = useState(0);
   const [sale, setSale] = useState({});
   const [sales, setSales] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -125,6 +127,26 @@ function useInventory() {
           setTotalPriceConsumption(response.data.total_price);
           setConsumptionMaterials(response.data.results);
           setCount(response.data.count);
+          setLoading(false);
+          return response;
+        })
+        .catch((err) => {
+          setLoading(false);
+          throwError(err.message.message);
+          return err;
+        });
+    },
+    [],
+  );
+  const getConsumptionColors = useCallback(
+    (page = 1, limit = 10, filter = "") => {
+      setLoading(true);
+      return inventoryService
+        .getConsumptionMaterials(auth.accessToken, page, limit, filter, "color")
+        .then((response) => {
+          setTotalPriceConsumption(response.data.total_price);
+          setConsumptionColors(response.data.results);
+          setColorsCount(response.data.count);
           setLoading(false);
           return response;
         })
@@ -373,8 +395,11 @@ function useInventory() {
     deleteSale,
     approveInventoryRequest,
     rejectInventoryRequest,
+    getConsumptionColors,
     consumptionMaterial,
     consumptionMaterials,
+    consumptionColors,
+    colorsCount,
     storageMaterial,
     storageMaterials,
     sales,
