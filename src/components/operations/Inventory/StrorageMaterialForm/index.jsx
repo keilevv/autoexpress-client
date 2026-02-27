@@ -1,5 +1,5 @@
-import { Form, Input, Select, InputNumber, Tooltip } from "antd";
-import { useEffect } from "react";
+import { Form, Input, Select, InputNumber, Tooltip, Switch } from "antd";
+import { useEffect, useState } from "react";
 import { unitOptions } from "../../../../helpers/constants";
 import { formatToCurrency } from "../../../../helpers";
 import { InfoCircleOutlined } from "@ant-design/icons";
@@ -23,6 +23,8 @@ function StorageMaterialForm({
   setDisabledSubmit,
   setPayload,
 }) {
+  const [isColor, setIsColor] = useState(false);
+
   useEffect(() => {
     setForm && setForm(form);
   }, [form, setForm]);
@@ -36,7 +38,7 @@ function StorageMaterialForm({
         quantity,
         price,
         caution_quantity,
-        isColor,
+        is_color,
         normalized_weight,
       } = storageMaterial;
 
@@ -47,7 +49,7 @@ function StorageMaterialForm({
         quantity,
         price,
         caution_quantity,
-        isColor,
+        is_color,
         normalized_weight,
       });
     } else {
@@ -66,6 +68,7 @@ function StorageMaterialForm({
 
   useEffect(() => {
     handlePrefill(storageMaterial);
+    setIsColor(storageMaterial?.is_color);
   }, [storageMaterial, isEditing]);
 
   const renderContent = () => {
@@ -197,7 +200,7 @@ function StorageMaterialForm({
         </div>
         <div className="flex flex-col gap-2">
           <label className="font-semibold text-base ">
-            Color{" "}
+            Es color{" "}
             <Tooltip
               title="Marque si este material es un color"
               className="ml-2"
@@ -207,39 +210,38 @@ function StorageMaterialForm({
             </Tooltip>{" "}
           </label>
           {isEditing ? (
-            <Form.Item name={"isColor"}>
-              <Select
+            <Form.Item name={"is_color"}>
+              <Switch
                 disabled={!isEditing}
-                defaultValue={storageMaterial?.isColor}
-                options={[
-                  { value: true, label: "Sí" },
-                  { value: false, label: "No" },
-                ]}
+                defaultValue={storageMaterial?.is_color}
+                onChange={(e) => setIsColor(e)}
               />
             </Form.Item>
           ) : (
-            <p className="text-gray-500 ">{`${storageMaterial?.isColor ? "Sí" : "No"}`}</p>
+            <p className="text-gray-500 ">{`${storageMaterial?.is_color ? "Sí" : "No"}`}</p>
           )}
         </div>
-        <div className="flex flex-col gap-2">
-          <label className="font-semibold text-base">
-            Peso normalizado
-            <Tooltip
-              title="Peso de una unidad del material en gramos"
-              className="ml-2"
-            >
-              {" "}
-              <InfoCircleOutlined />
-            </Tooltip>{" "}
-          </label>
-          {isEditing ? (
-            <Form.Item name={"normalized_weight"}>
-              <InputNumber min={0} className="w-full" disabled={!isEditing} />
-            </Form.Item>
-          ) : (
-            <p className="text-gray-500 ">{`${storageMaterial?.normalized_weight ? storageMaterial?.normalized_weight : "-"} gr`}</p>
-          )}
-        </div>
+        {isColor && (
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold text-base">
+              Peso normalizado
+              <Tooltip
+                title="Peso de una unidad del material en gramos"
+                className="ml-2"
+              >
+                {" "}
+                <InfoCircleOutlined />
+              </Tooltip>{" "}
+            </label>
+            {isEditing ? (
+              <Form.Item name={"normalized_weight"}>
+                <InputNumber min={0} className="w-full" disabled={!isEditing} />
+              </Form.Item>
+            ) : (
+              <p className="text-gray-500 ">{`${storageMaterial?.normalized_weight ? storageMaterial?.normalized_weight : "-"} gr`}</p>
+            )}
+          </div>
+        )}
       </Form>
     );
   };
