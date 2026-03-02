@@ -125,7 +125,7 @@ function MaterialsTable({
       },
     },
     {
-      title: "Precio",
+      title: "Precio Unitario",
       dataIndex: "price",
       key: "price",
       render: (item) => {
