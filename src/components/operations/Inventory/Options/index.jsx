@@ -61,7 +61,7 @@ function InventoryOptions({ onFinish, type, owner }) {
   return (
     <div className="flex flex-row">
       {showButton && (
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleClick}>
+        <Button type="primary" icon={<PlusOutlined />} onClick={handleClick} className="font-bold">
           {addButtontitle}
         </Button>
       )}
