@@ -36,6 +36,7 @@ function MaterialsList({
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedMaterialsDetails, setSelectedMaterialsDetails] = useState({});
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
@@ -121,7 +122,28 @@ function MaterialsList({
     }
 
     setHasMore(listData.length + newData.length < count);
-  }, [storageMaterials, consumptionMaterials, count]);
+
+    // Sync selectedMaterialsDetails with information from listData
+    if (newData.length > 0) {
+      setSelectedMaterialsDetails((prev) => {
+        const next = { ...prev };
+        let changed = false;
+        materials.forEach((mat) => {
+          const matId = isProduction
+            ? mat.consumption_material
+            : mat.material_id;
+          if (!next[matId]) {
+            const detail = newData.find((d) => d._id === matId);
+            if (detail) {
+              next[matId] = detail;
+              changed = true;
+            }
+          }
+        });
+        return changed ? next : prev;
+      });
+    }
+  }, [storageMaterials, consumptionMaterials, count, materials, isProduction]);
 
   const onQuantityChange = (materialId, value) => {
     setQuantities((prevQuantities) => ({
@@ -168,12 +190,25 @@ function MaterialsList({
         delete newQuantities[materialId];
         return newQuantities;
       });
+      setSelectedMaterialsDetails((prev) => {
+        const next = { ...prev };
+        delete next[materialId];
+        return next;
+      });
       setSelectedMaterial(null);
     } else {
       // Add material to the list
       const quantity = quantities[materialId] || 0;
       const price = prices[materialId] || 0;
       if (quantity >= 0) {
+        const materialInfo = listData.find((m) => m._id === materialId);
+        if (materialInfo) {
+          setSelectedMaterialsDetails((prev) => ({
+            ...prev,
+            [materialId]: materialInfo,
+          }));
+        }
+
         setMaterials((prevMaterials) => {
           if (isProduction) {
             return [
@@ -275,8 +310,12 @@ function MaterialsList({
                                 ? "Cant. Disponible"
                                 : "Cant. Consumida"}{" "}
                               {quantities[_id]
-                                ? quantity - quantities[_id]
-                                : quantity}{" "}
+                                ? Number(
+                                    Number(quantity - quantities[_id]).toFixed(
+                                      3,
+                                    ),
+                                  )
+                                : Number(Number(quantity).toFixed(3))}{" "}
                               -{" "}
                               {unitOptions.find((u) => u.value === unit)?.label}
                             </p>
@@ -361,9 +400,9 @@ function MaterialsList({
                 ? selectedMaterial.consumption_material
                 : selectedMaterial.material_id;
 
-              const material = listData.find(
-                (m) => m._id === selectedMaterialId,
-              );
+              const material =
+                selectedMaterialsDetails[selectedMaterialId] ||
+                listData.find((m) => m._id === selectedMaterialId);
 
               if (!material) return null; // Safeguard in case material is not in listData
               const { name, unit } = material;

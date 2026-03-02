@@ -19,7 +19,7 @@ function RequestMaterialForm({
   const [signature, setSignature] = useState(null);
   const [isValidSignature, setIsValidSignature] = useState(false);
   const [disabled, setDisabled] = useState(true);
-
+  
   useEffect(() => {
     if (signature) {
       const img = new Image();
