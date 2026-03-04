@@ -137,7 +137,7 @@ function MaterialsTable({
       dataIndex: "quantity",
       key: "quantity",
       render: (item) => {
-        return Number(Number(item).toFixed(3));
+        return Number(Number(item).toFixed(1));
       },
     },
     {

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Tabs, Input, Breadcrumb } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
@@ -11,100 +11,97 @@ import { useSelector } from "react-redux";
 import InventoryRequestsContainer from "./Requests";
 
 function InventoryContainer({ owner }) {
-  const [currentTab, setCurrentTab] = useState("storage");
+  const [currentTab, setCurrentTab] = useState(null);
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
-  const [tabs, setTabs] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
   const user = useSelector((state) => state.auth.user);
 
   const isAddConsumption = location.pathname.includes("/consumption/add");
 
-  useEffect(() => {
-    switch (owner) {
-      case "autodetailing":
-        setTabs(items.filter((item) => item.key !== "sales"));
-        break;
-      default:
-        setTabs(items);
-        break;
+  const items = useMemo(() => {
+    const allItems = [
+      {
+        key: "storage",
+        label: <p className="font-semibold text-base">Inventario de almacén</p>,
+        children: (
+          <StorageInventoryContainer
+            owner={owner}
+            refresh={refresh}
+            searchValue={currentTab === "storage" ? searchValue : null}
+            currentTab={currentTab}
+          />
+        ),
+      },
+      {
+        key: "consumption",
+        label: <p className="font-semibold text-base">Inventario de consumo</p>,
+        children: isAddConsumption ? (
+          <InventoryRequest owner={owner} />
+        ) : (
+          <ConsumptionInventoryContainer
+            owner={owner}
+            refresh={refresh}
+            searchValue={currentTab === "consumption" ? searchValue : null}
+            currentTab={currentTab}
+          />
+        ),
+      },
+      {
+        key: "requests",
+        label: (
+          <p className="font-semibold text-base">
+            {user?.roles.includes("admin") ? "Solicitudes" : "Mis solicitudes"}
+          </p>
+        ),
+        children: (
+          <InventoryRequestsContainer
+            owner={owner}
+            refresh={refresh}
+            currentTab={currentTab}
+            setCurrentTab={setCurrentTab}
+          />
+        ),
+      },
+    ];
+
+    let filteredItems = allItems;
+    if (owner === "autodetailing") {
+      filteredItems = filteredItems.filter((item) => item.key !== "sales");
     }
+
     if (!user?.roles.includes("admin")) {
-      setTabs(items.filter((item) => item.key !== "storage"));
+      filteredItems = filteredItems.filter((item) => item.key !== "storage");
     }
-  }, [owner, refresh, searchValue, user, location.pathname]);
 
-  const items = [
-    {
-      key: "storage",
-      label: <p className="font-semibold text-base">Inventario de almacén</p>,
-      children: (
-        <StorageInventoryContainer
-          owner={owner}
-          refresh={refresh}
-          searchValue={currentTab === "storage" ? searchValue : null}
-        />
-      ),
-    },
-    {
-      key: "consumption",
-      label: <p className="font-semibold text-base">Inventario de consumo</p>,
-      children: isAddConsumption ? (
-        <InventoryRequest owner={owner} />
-      ) : (
-        <ConsumptionInventoryContainer
-          owner={owner}
-          refresh={refresh}
-          searchValue={currentTab === "consumption" ? searchValue : null}
-        />
-      ),
-    },
-    {
-      key: "requests",
-      label: (
-        <p className="font-semibold text-base">
-          {user?.roles.includes("admin") ? "Solicitudes" : "Mis solicitudes"}
-        </p>
-      ),
-      children: <InventoryRequestsContainer owner={owner} refresh={refresh} />,
-    },
-    // {
-    //   key: "sales",
-    //   label: <p className="font-semibold text-base">Ventas</p>,
-    //   children: (
-    //     <SalesInventoryContainer
-    //       refresh={refresh}
-    //       searchValue={currentTab === "sales" ? searchValue : null}
-    //     />
-    //   ),
-    // },
-  ];
+    return filteredItems;
+  }, [owner, refresh, searchValue, user, currentTab, isAddConsumption]);
 
   useEffect(() => {
-    window.location.pathname.split("/").forEach((item, index) => {
-      if (!user?.roles.includes("admin")) {
-        if (item === "requests") {
-          setCurrentTab("requests");
-        } else {
-          setCurrentTab("consumption");
-        }
-      }
-      if (item === "inventory") {
-        switch (window.location.pathname.split("/")[index + 1]) {
-          case "storage":
-            setCurrentTab("storage");
-            break;
-          case "consumption":
-            setCurrentTab("consumption");
-            break;
-          case "requests":
-            setCurrentTab("requests");
-            break;
-        }
-      }
-    });
-  }, [window.location.pathname]);
+    const pathParts = location.pathname.split("/").filter(Boolean);
+    const lastPart = pathParts[pathParts.length - 1];
+    const isAdmin = user?.roles.includes("admin");
+
+    const validTabs = items.map((i) => i.key);
+    
+    let tabToSet = "consumption"; // Default tab
+    
+    if (validTabs.includes(lastPart)) {
+      tabToSet = lastPart;
+    } else if (isAdmin && (lastPart === owner || lastPart === "inventory")) {
+      tabToSet = "storage";
+    }
+
+    // Ensure non-admins don't get stuck on storage if they land there
+    if (!isAdmin && tabToSet === "storage") {
+      tabToSet = "consumption";
+    }
+
+    if (tabToSet !== currentTab) {
+      setCurrentTab(tabToSet);
+    }
+  }, [location.pathname, user, items, owner, currentTab]);
 
   function handleSetSearchValue(value) {
     setSearchValue(value);
@@ -114,22 +111,6 @@ function InventoryContainer({ owner }) {
   useEffect(() => {
     setSearchValue(null);
   }, [currentTab]);
-
-  useEffect(() => {
-    getCurrentTab();
-  }, [window.location.pathname]);
-
-  function getCurrentTab() {
-    const splitItems = window.location.pathname
-      .split("/")
-      .filter((item) => item !== "");
-
-    if (splitItems.includes("consumption")) {
-      setCurrentTab("consumption");
-    } else if (splitItems.includes("storage")) {
-      setCurrentTab("storage");
-    }
-  }
 
   return (
     <div>
@@ -197,8 +178,7 @@ function InventoryContainer({ owner }) {
       </div>
       <Tabs
         activeKey={currentTab}
-        defaultActiveKey={currentTab}
-        items={tabs}
+        items={items}
         onChange={(key) => {
           setCurrentTab(key);
           navigate(`/operations/inventory${owner ? `/${owner}/${key}` : ``}`, {

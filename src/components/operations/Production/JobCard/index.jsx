@@ -22,7 +22,7 @@ export default function JobCard({ jobOrder }) {
   function getJobOrderPrice() {
     let materialsPrice = consumedMaterials
       .map(
-        (item) => item?.consumption_material?.material?.price * item?.quantity
+        (item) => item?.consumption_material?.material?.price * item?.quantity,
       )
       .reduce((a, b) => a + b, 0);
     let colorsPrice = consumedColors
@@ -50,7 +50,7 @@ export default function JobCard({ jobOrder }) {
           consumption_material: item.consumption_material,
           quantity: item.quantity,
           storage_material: item.storage_material,
-        }))
+        })),
       );
     }
     if (jobOrder?.consumed_colors?.length > 0) {
@@ -110,8 +110,8 @@ export default function JobCard({ jobOrder }) {
               isOverdue
                 ? "bg-red-50 border-red-200"
                 : isDueSoon
-                ? "bg-orange-50 border-orange-200"
-                : "bg-gray-50 border-gray-100"
+                  ? "bg-orange-50 border-orange-200"
+                  : "bg-gray-50 border-gray-100"
             }`}
           >
             <div className="flex items-center gap-2 mb-1">
@@ -120,8 +120,8 @@ export default function JobCard({ jobOrder }) {
                   isOverdue
                     ? "text-red-600"
                     : isDueSoon
-                    ? "text-orange-600"
-                    : "text-gray-600"
+                      ? "text-orange-600"
+                      : "text-gray-600"
                 }
               />
               <span className="text-xs text-gray-600 font-medium">
@@ -133,8 +133,8 @@ export default function JobCard({ jobOrder }) {
                 isOverdue
                   ? "text-red-700"
                   : isDueSoon
-                  ? "text-orange-700"
-                  : "text-gray-800"
+                    ? "text-orange-700"
+                    : "text-gray-800"
               }`}
             >
               {dayjs(jobOrder?.due_date).format("DD/MM/YYYY")}
@@ -159,12 +159,9 @@ export default function JobCard({ jobOrder }) {
 
       <div className="bg-slate-50 rounded-lg p-3 mb-3 border border-slate-200">
         <div className="flex items-center gap-2 mb-3">
-          <div className="bg-slate-700 p-2 rounded-lg">
-            <CarOutlined className="text-white text-lg" />
-          </div>
-          <div>
+          <div className="flex flex-col gap-2">
             <p className="text-xs text-gray-600 mb-0">Vehículo</p>
-            <span className="text-lg font-bold text-slate-900">
+            <span className="text-lg font-bold text-slate-900 bg-yellow-500 px-2 py-1 rounded-lg border-2 border-slate-900">
               {jobOrder.car_plate.toUpperCase()}
             </span>
           </div>
@@ -252,7 +249,7 @@ export default function JobCard({ jobOrder }) {
                 <div>
                   {consumedColors.slice(0, 3).map((item, idx) => (
                     <div key={idx} className="text-xs py-1">
-                      • {item?.name}: {item?.quantity}
+                      • {item?.name}: {item?.quantity} gr
                     </div>
                   ))}
                   {consumedColors.length > 3 && (
@@ -310,9 +307,8 @@ export default function JobCard({ jobOrder }) {
       <Button
         type="primary"
         size="large"
-        className="w-full h-12 bg-stone-600 border-0 font-semibold text-white shadow-sm hover:shadow-md transition-all duration-300"
+        className="w-full px-2 h-12 bg-stone-600 border-0 font-semibold text-white shadow-sm hover:shadow-md transition-all duration-300"
         onClick={handleViewDetails}
-        icon={<i className="fa fa-eye mr-2" />}
       >
         Ver detalles completos
         <ArrowRightOutlined className="ml-2" />

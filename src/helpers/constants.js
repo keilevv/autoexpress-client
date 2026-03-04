@@ -12,6 +12,9 @@ export const unitOptions = [
   { value: "galon", label: "Galón" },
   { value: "kilo", label: "Kilo" },
   { value: "gram", label: "Gramo" },
+  { value: "0.5L", label: "0.5L" },
+  { value: "1L", label: "1L" },
+  { value: "3.5L", label: "3.5L" },
 ];
 
 export const headerModules = ["operations"];
@@ -28,7 +31,19 @@ export const employeeRolesOptions = [
 ];
 
 export const statusTypes = [
-  { value: "pending", label: "Pendiente", color: "bg-orange-300" },
-  { value: "in-progress", label: "En progreso", color: "bg-blue-300" },
-  { value: "completed", label: "Completada", color: "bg-green-300" },
+  {
+    value: "pending",
+    label: "Pendiente",
+    color: "bg-orange-50 text-orange-700 border border-orange-200",
+  },
+  {
+    value: "in-progress",
+    label: "En progreso",
+    color: "bg-blue-50 text-blue-700 border border-blue-200",
+  },
+  {
+    value: "completed",
+    label: "Completada",
+    color: "bg-green-50 text-green-700 border border-green-200",
+  },
 ];

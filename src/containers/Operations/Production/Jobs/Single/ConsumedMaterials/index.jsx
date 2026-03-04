@@ -146,7 +146,7 @@ function ConsumedMaterials({
                 />
                 <p className="ml-5 text-red-70">
                   {" "}
-                  Restante:{" "}
+                  Disponible:{" "}
                   {isSaved || !consumptionMaterialFromList
                     ? Number(
                         Number(existingQuantity - materialQuantity).toFixed(3),
@@ -234,7 +234,7 @@ function ConsumedMaterials({
                       // Update the consumed materials
                       setConsumedMaterials(updatedMaterials);
 
-                      // Reset material quantity and the corresponding consumption material for accurate 'Restante'
+                      // Reset material quantity and the corresponding consumption material for accurate 'Disponible'
                       setMaterialQuantity(null);
                       setConsumptionMaterialFromList(null);
 
@@ -333,7 +333,7 @@ function ConsumedMaterials({
                       <>
                         <p className="text-sm font-medium mb-2">
                           {" "}
-                          Restante (gr)
+                          Disponible (gr)
                         </p>
                         <p>
                           {" "}
@@ -404,7 +404,7 @@ function ConsumedMaterials({
                   <div className="flex items-baseline " key={index}>
                     <div>
                       <p className="text-gray-700 text-sm font-medium">{`${item?.name}`}</p>
-                      <p>{`${Number(Number(item?.quantity).toFixed(3))} ${item?.consumption_material ? "lt" : "gr"}`}</p>
+                      <p>{`${Number(Number(item?.quantity).toFixed(3))} gr`}</p>
                     </div>
                     <div className="flex-grow border-b-2 border-red-700 border-dotted h-5 mx-2" />
                     <p className="text-base ">{`${formatToCurrency(
