@@ -7,7 +7,12 @@ import { formatToCurrency } from "../../../../helpers";
 
 import { FiDollarSign, FiBox } from "react-icons/fi";
 
-function StorageInventoryContainer({ refresh, searchValue, owner }) {
+function StorageInventoryContainer({
+  refresh,
+  searchValue,
+  owner,
+  currentTab,
+}) {
   const {
     storageMaterials,
     getStorageMaterials,
@@ -27,13 +32,13 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
   }, [count]);
 
   useEffect(() => {
-    if (user) {
+    if (user && currentTab === "storage") {
       getStorageMaterials(
         pagination.current,
         pagination.pageSize,
         `&archived=false&owner=${owner ? owner : "autoexpress"}${
           searchValue ? "&search=" + searchValue : ""
-        }`
+        }`,
       );
     }
   }, [
@@ -43,6 +48,7 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
     owner,
     searchValue,
     refresh,
+    currentTab,
   ]);
 
   const handleApplyFilters = (values) => {
@@ -51,7 +57,7 @@ function StorageInventoryContainer({ refresh, searchValue, owner }) {
       pagination.pageSize,
       `&archived=false${
         searchValue ? "&plate=" + searchValue : ""
-      }${getFilterString(values)}`
+      }${getFilterString(values)}`,
     );
   };
 

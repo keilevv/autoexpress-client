@@ -3,8 +3,14 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import MaterialRequestsTable from "../../../../components/operations/Inventory/MaterialRequestsTable";
 import { notification } from "antd";
+import { useNavigate } from "react-router-dom";
 
-function InventoryRequestsContainer({ refresh }) {
+function InventoryRequestsContainer({
+  refresh,
+  currentTab,
+  owner,
+  setCurrentTab,
+}) {
   const user = useSelector((state) => state.auth.user);
   const {
     inventoryRequests,
@@ -16,8 +22,10 @@ function InventoryRequestsContainer({ refresh }) {
   } = useInventory();
 
   useEffect(() => {
-    getInventoryRequests(1, 10, "");
-  }, [user, refresh]);
+    if (user && currentTab === "requests") {
+      getInventoryRequests(1, 10, "");
+    }
+  }, [user, refresh, currentTab]);
 
   const handleArchive = (id, archived = false) => {
     updateInventoryRequest(id, { archived })
@@ -26,6 +34,8 @@ function InventoryRequestsContainer({ refresh }) {
           message: "Solicitud archivada",
           description: "La solicitud ha sido archivada",
         });
+        navigate(`/operations/inventory/${owner}/requests`);
+        setCurrentTab("requests");
         getInventoryRequests(1, 10, "");
       })
       .catch((error) => {

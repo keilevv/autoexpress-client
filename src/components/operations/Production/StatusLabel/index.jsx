@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { statusTypes } from "../../../../helpers/constants";
 
-function StatusLabel({ status }) {
+function StatusLabel({ status  }) {
   const [statusState, setStatusState] = useState({
     value: "pending",
     label: "Pendiente",
     color: "orange",
   });
+  
 
   useEffect(() => {
     if (status) {
@@ -20,8 +21,10 @@ function StatusLabel({ status }) {
 
   return (
     <div className="flex">
-      <div className={`${statusState.color} p-1 rounded-lg shadow-md`}>
-        <p className="uppercase font-medium">{statusState?.label}</p>
+      <div
+        className={`${statusState.color} px-2 py-1 rounded-lg border border-gray-100`}
+      >
+        <p className="uppercase font-semibold">{statusState?.label}</p>
       </div>
     </div>
   );

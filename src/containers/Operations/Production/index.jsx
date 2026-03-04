@@ -23,16 +23,6 @@ function ProductionContainer({ owner }) {
         />
       ),
     },
-    // {
-    //   key: "quality-control",
-    //   label: <p className="font-semibold text-base"> Control de calidad</p>,
-    //   children: (
-    //     <JobsContainer
-    //       refresh={refresh}
-    //       searchValue={currentTab === "storage-inventory" ? searchValue : null}
-    //     />
-    //   ),
-    // },
   ];
 
   useEffect(() => {

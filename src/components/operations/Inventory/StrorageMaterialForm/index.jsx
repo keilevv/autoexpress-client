@@ -224,9 +224,9 @@ function StorageMaterialForm({
         {isColor && (
           <div className="flex flex-col gap-2">
             <label className="font-semibold text-base">
-              Peso normalizado
+              Peso unidad
               <Tooltip
-                title="Peso de una unidad del material en gramos"
+                title="Peso de una unidad de color en gramos sin incluir el envase. 3.5L = 338, 1L = 96, 0.5L= 48"
                 className="ml-2"
               >
                 {" "}
