@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useMessages from "../../../hooks/useMessages";
+import useDashboard from "../../../hooks/useDashboard";
 import MessagesTable from "../../../components/operations/Dashboard/MessagesTable";
 import DashboardGrid from "../../../components/operations/Dashboard/DashboardGrid";
 import "./style.css";
@@ -13,26 +14,31 @@ function DashboardContainer() {
     total: 0,
   });
 
-  const { messages, count, getMessages, loading } = useMessages();
+  const { messages, count: messagesCount, getMessages, loading: messagesLoading } = useMessages();
+  const { dashboardData, getDashboardData, loading: dashboardLoading } = useDashboard();
 
   useEffect(() => {
-    setPagination({ ...pagination, total: count });
-  }, [count]);
+    setPagination({ ...pagination, total: messagesCount });
+  }, [messagesCount]);
 
   useEffect(() => {
     getMessages(pagination.current, pagination.pageSize, "");
   }, [pagination.current, pagination.pageSize, user]);
 
+  useEffect(() => {
+    getDashboardData();
+  }, [getDashboardData]);
+
   return (
     <div>
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Operaciones</h1>
-      <div className="dashboard-grid-container">
-        <DashboardGrid />
+      <div className="dashboard-grid-container mb-8">
+        <DashboardGrid data={dashboardData} loading={dashboardLoading} />
       </div>
-      <h2 className="text-xl text-red-700 font-semibold mb-5">Mensajes</h2>
-      <div className="bg-gray-100 rounded-lg">
+      <h2 className="text-xl text-red-700 font-semibold mb-4">Mensajes Recientes</h2>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <MessagesTable
-          loading={loading}
+          loading={messagesLoading}
           messages={messages}
           pagination={pagination}
           setPagination={setPagination}

@@ -78,13 +78,23 @@ function JobsContainer({ refresh, searchValue, filterString = "", owner }) {
                   <div className="bg-green-100 p-3 rounded-full text-green-600">
                     <FiDollarSign size={24} />
                   </div>
-                  <div>
-                    <p className="text-sm text-green-700 font-medium whitespace-nowrap">
-                      Precio total
-                    </p>
-                    <p className="text-2xl font-bold text-green-800">
-                      {formatToCurrency(total)}
-                    </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:border-r md:border-gray-100 md:pr-4">
+                    <div>
+                      <p className="text-sm text-green-700 font-medium whitespace-nowrap">
+                        Gasto total en materiales
+                      </p>
+                      <p className="text-2xl font-bold text-green-800">
+                        {formatToCurrency(total)}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-green-700 font-medium whitespace-nowrap">
+                        Promedio por O.T
+                      </p>
+                      <p className="text-2xl font-bold text-green-800">
+                        {formatToCurrency(total / count)}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>

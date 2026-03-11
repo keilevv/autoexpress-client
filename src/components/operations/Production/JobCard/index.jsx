@@ -66,7 +66,7 @@ export default function JobCard({ jobOrder }) {
 
   return (
     <Card
-      className="w-full hover:shadow-lg transition-shadow duration-300 border border-gray-200"
+      className="w-full shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-200 bg-white"
       styles={{ body: { padding: "16px" } }}
     >
       <div className="flex items-center justify-between mb-3">
