@@ -10,7 +10,11 @@ import {
 } from "react-icons/fi";
 import "./style.css";
 
+import { useNavigate } from "react-router-dom";
+
 function DashboardGrid({ data, loading }) {
+  const navigate = useNavigate();
+
   if (loading || !data) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -39,7 +43,10 @@ function DashboardGrid({ data, loading }) {
         Producción (Órdenes de Trabajo)
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-wrap items-center gap-6 transition-all duration-300 hover:shadow-md">
+        <div
+          className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-wrap items-center gap-6 transition-all duration-300 hover:shadow-md cursor-pointer"
+          onClick={() => navigate("/operations/production")}
+        >
           <div className="flex items-center gap-4 border-r border-gray-100 pr-6 mr-2">
             <div className="bg-slate-50 p-3 rounded-full text-slate-600">
               <FiInbox size={24} />
@@ -88,7 +95,10 @@ function DashboardGrid({ data, loading }) {
           </div>
         </div>
 
-        <div className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md">
+        <div
+          className="bg-green-50 p-6 rounded-xl shadow-sm border border-green-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md cursor-pointer"
+          onClick={() => navigate("/operations/production")}
+        >
           <div className="bg-green-100 p-3 rounded-full text-green-600">
             <FiDollarSign size={24} />
           </div>
@@ -108,7 +118,10 @@ function DashboardGrid({ data, loading }) {
         Inventario
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md">
+        <div
+          className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md cursor-pointer"
+          onClick={() => navigate("/operations/inventory/storage")}
+        >
           <div className="bg-purple-50 p-3 rounded-full text-purple-600">
             <FiBox size={24} />
           </div>
@@ -120,7 +133,10 @@ function DashboardGrid({ data, loading }) {
           </div>
         </div>
 
-        <div className="bg-indigo-50 p-6 rounded-xl shadow-sm border border-indigo-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md">
+        <div
+          className="bg-indigo-50 p-6 rounded-xl shadow-sm border border-indigo-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md cursor-pointer"
+          onClick={() => navigate("/operations/inventory/storage")}
+        >
           <div className="bg-indigo-100 p-3 rounded-full text-indigo-600">
             <FiDollarSign size={24} />
           </div>
@@ -134,7 +150,10 @@ function DashboardGrid({ data, loading }) {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md">
+        <div
+          className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md cursor-pointer"
+          onClick={() => navigate("/operations/inventory/consumption")}
+        >
           <div className="bg-cyan-50 p-3 rounded-full text-cyan-600">
             <FiBox size={24} />
           </div>
@@ -148,7 +167,10 @@ function DashboardGrid({ data, loading }) {
           </div>
         </div>
 
-        <div className="bg-teal-50 p-6 rounded-xl shadow-sm border border-teal-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md">
+        <div
+          className="bg-teal-50 p-6 rounded-xl shadow-sm border border-teal-100 flex items-center gap-4 transition-all duration-300 hover:shadow-md cursor-pointer"
+          onClick={() => navigate("/operations/inventory/consumption")}
+        >
           <div className="bg-teal-100 p-3 rounded-full text-teal-600">
             <FiDollarSign size={24} />
           </div>
@@ -168,7 +190,10 @@ function DashboardGrid({ data, loading }) {
         Solicitudes de Material
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-wrap items-center gap-6 transition-all duration-300 hover:shadow-md">
+        <div
+          className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-wrap items-center gap-6 transition-all duration-300 hover:shadow-md cursor-pointer"
+          onClick={() => navigate("/operations/inventory/autoexpress/requests")}
+        >
           <div className="flex items-center gap-4 border-r border-gray-100 pr-6 mr-2">
             <div className="bg-slate-50 p-3 rounded-full text-slate-600">
               <FiFileText size={24} />
