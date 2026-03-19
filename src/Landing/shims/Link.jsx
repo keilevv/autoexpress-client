@@ -10,13 +10,8 @@ const Link = ({ href, children, className, onClick, ...props }) => {
     );
   }
 
-  // Map Next.js absolute paths to Vite app's /landing equivalents
-  let mappedHref = href;
-  if (href === '/') mappedHref = '/landing';
-  else if (href?.startsWith('/')) mappedHref = `/landing${href}`;
-
   return (
-    <RouterLink to={mappedHref} className={className} onClick={onClick} {...props}>
+    <RouterLink to={href} className={className} onClick={onClick} {...props}>
       {children}
     </RouterLink>
   );

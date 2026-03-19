@@ -138,20 +138,6 @@ function App() {
             }
           />
           <Route
-            path="/"
-            element={
-              user?.id ? (
-                <ProtectedRoute>
-                  <MainLayout defaultLocation={defaultSelectedHeader}>
-                    <DashboardContainer />
-                  </MainLayout>
-                </ProtectedRoute>
-              ) : (
-                <LoginContainer />
-              )
-            }
-          />
-          <Route
             path="/operations/agenda"
             element={
               <ProtectedRoute>
@@ -361,13 +347,16 @@ function App() {
               </ProtectedRoute>
             }
           ></Route>
-
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginContainer />} />
           <Route path="/landing" element={<Home />} />
           <Route path="/landing/colision" element={<ColisionPage />} />
+          <Route path="/colision" element={<ColisionPage />} />
           <Route path="/landing/detallado" element={<DetalladoPage />} />
+          <Route path="/detallado" element={<DetalladoPage />} />
           <Route path="/landing/link" element={<LinkPage />} />
-          <Route path="/appointment" element={<AppointmentContainer />} />
+          <Route path="/link" element={<LinkPage />} />
+          {/* <Route path="/appointment" element={<AppointmentContainer />} /> */}
         </Routes>
       </ConfigProvider>
     </div>

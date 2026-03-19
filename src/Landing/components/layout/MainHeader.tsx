@@ -22,9 +22,16 @@ export default function MainHeader() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const container = document.getElementById("app");
+    const target = container || window;
+    
+    const onScroll = () => {
+      const scrollY = container ? container.scrollTop : window.scrollY;
+      setScrolled(scrollY > 20);
+    };
+
+    target.addEventListener("scroll", onScroll, { passive: true });
+    return () => target.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
