@@ -13,7 +13,10 @@ import useMenu from "./hooks/useMenu";
 /* Containers */
 import DashboardContainer from "./containers/Operations/Dashboard";
 import CarsContainer from "./containers/Operations/Cars";
-import LandingContainer from "./containers/Landing";
+import Home from "./Landing/pages/Home";
+import ColisionPage from "./Landing/pages/Colision";
+import DetalladoPage from "./Landing/pages/Detallado";
+import LinkPage from "./Landing/pages/Link";
 import ClientsContainer from "./containers/Operations/Clients";
 import SingleCarContainer from "./containers/Operations/Cars/Single";
 import SingleClientContainer from "./containers/Operations/Clients/Single";
@@ -360,7 +363,10 @@ function App() {
           ></Route>
 
           <Route path="/login" element={<LoginContainer />} />
-          <Route path="/landing" element={<LandingContainer />} />
+          <Route path="/landing" element={<Home />} />
+          <Route path="/landing/colision" element={<ColisionPage />} />
+          <Route path="/landing/detallado" element={<DetalladoPage />} />
+          <Route path="/landing/link" element={<LinkPage />} />
           <Route path="/appointment" element={<AppointmentContainer />} />
         </Routes>
       </ConfigProvider>
