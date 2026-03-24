@@ -11,6 +11,7 @@ function InventoryRequestsContainer({
   owner,
   setCurrentTab,
 }) {
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const {
     inventoryRequests,
