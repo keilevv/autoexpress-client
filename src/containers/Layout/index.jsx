@@ -175,9 +175,9 @@ function MainLayout({ children }) {
           </Dropdown>
         </div>
       </Header>
-      <div className="bg-gray-100 w-full h-screen">
-        <div className="x-4 md:px-8 lg:px-12 p-5 m-auto">{children}</div>
-      </div>
+      <Content className="bg-gray-100 w-full min-h-[calc(100vh-64px)]">
+        <div className="px-4 md:px-8 lg:px-12 p-5 m-auto">{children}</div>
+      </Content>
     </Layout>
   );
 }
