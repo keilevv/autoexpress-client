@@ -41,8 +41,9 @@ function App() {
   const { defaultSelectedHeader } = useMenu();
   const user = useSelector((state) => state.auth.user);
   return (
-    <div className="app  bg-gray-100 h-[100vh] overflow-y-scroll" id="app">
+    <div className="app relative bg-gray-100 min-h-screen flex flex-col" id="app">
       <ConfigProvider
+        getPopupContainer={() => document.getElementById("app") || document.body}
         locale={esES}
         theme={{
           token: {
