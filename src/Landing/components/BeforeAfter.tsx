@@ -20,10 +20,10 @@ const COMPARISONS: ComparisonItem[] = [
     after: "/assets/results/Reparado1.png",
   },
   {
-    title: "Pintura completa de capó",
-    context: "Corrección de color y sellado cerámico",
-    before: "/assets/results/Dañado2.png",
-    after: "/assets/results/Reparado2.png",
+    title: "Reparación frontal completa",
+    context: "Guardafango y capó — enderezado, pintura y restauración de carrocería",
+    before: "/assets/results/IMG_8187.PNG",
+    after: "/assets/results/IMG_8188.PNG",
   },
   {
     title: "Restauración completa",
