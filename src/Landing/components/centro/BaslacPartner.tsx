@@ -1,7 +1,6 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { Palette, Shield, Target, Headset } from "lucide-react";
 import FadeIn from "@/components/motion/FadeIn";
 import SectionHeader from "@/components/shared/SectionHeader";
@@ -74,13 +73,12 @@ export default function BaslacPartner() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="relative w-48 h-24 mb-6"
+                  className="mb-6"
                 >
-                  <Image
+                  <img
                     src="/assets/results/BASF_baslac_Logo_800.png"
                     alt="Baslac — Aliado oficial"
-                    fill
-                    className="object-contain"
+                    className="w-40 h-auto"
                   />
                 </motion.div>
 
@@ -153,6 +151,33 @@ export default function BaslacPartner() {
             </div>
           </div>
         </FadeIn>
+
+        {/* Mixing station image */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
+          className="mt-8 rounded-card overflow-hidden border border-border"
+        >
+          <img
+            src="/assets/results/IMG_8190.PNG"
+            alt="Estación de mezcla Baslac — sistema de colorimetría automotriz"
+            className="w-full h-auto object-cover"
+          />
+          <div className="bg-surface p-4 text-center">
+            <p className="text-sm text-white font-semibold">
+              Nuestra estación de mezcla Baslac
+            </p>
+            <p
+              className="text-xs mt-1"
+              style={{ color: "rgba(255,255,255,0.52)" }}
+            >
+              Sistema profesional de colorimetría con acceso a miles de
+              referencias para una igualación de color exacta.
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
