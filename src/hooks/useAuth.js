@@ -46,7 +46,7 @@ function useAuth() {
         return response;
       })
       .catch((err) => {
-        throwError(err.message.message);
+        throwError(err.response.data.message);
       });
   }, []);
 
