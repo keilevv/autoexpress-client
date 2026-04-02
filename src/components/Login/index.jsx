@@ -34,13 +34,18 @@ function Login() {
         setLoading(false);
         notification.error({
           message: "Error al iniciar sesion",
+          description: err,
         });
       });
   };
 
   return (
     <div>
-      <Form name="login-form" onFinish={onFinish} className="flex flex-col gap-4">
+      <Form
+        name="login-form"
+        onFinish={onFinish}
+        className="flex flex-col gap-4"
+      >
         <Form.Item
           name="username"
           rules={[
