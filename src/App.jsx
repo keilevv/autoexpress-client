@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as AntApp } from "antd";
+import { StyleProvider } from "@ant-design/cssinjs";
 import LoginContainer from "./containers/Login";
 import MainLayout from "./containers/Layout";
 import ProtectedRoute from "./helpers/ProtectedRoute";
@@ -42,21 +43,23 @@ function App() {
   const user = useSelector((state) => state.auth.user);
   return (
     <div className="app relative bg-gray-100 min-h-screen flex flex-col" id="app">
-      <ConfigProvider
-        locale={esES}
-        theme={{
-          token: {
-            // Seed Token
-            colorPrimary: "#c00113",
-            borderRadius: 8,
+      <StyleProvider hashPriority="high">
+        <ConfigProvider
+          locale={esES}
+          theme={{
+            token: {
+              // Seed Token
+              colorPrimary: "#c00113",
+              borderRadius: 8,
+              zIndexPopupBase: 9999,
 
-            // Alias Token
-            colorBgContainer: "#f5f5f5",
-            fontFamily: "Zen Dots, sans-serif",
-          },
-        }}
-      >
-        <Routes>
+              // Alias Token
+              colorBgContainer: "#f5f5f5",
+              fontFamily: "Zen Dots, sans-serif",
+            },
+          }}
+        >
+          <Routes>
           <Route
             path="/operations"
             element={
@@ -357,8 +360,9 @@ function App() {
           <Route path="/landing/link" element={<LinkPage />} />
           <Route path="/link" element={<LinkPage />} />
           {/* <Route path="/appointment" element={<AppointmentContainer />} /> */}
-        </Routes>
-      </ConfigProvider>
+          </Routes>
+        </ConfigProvider>
+      </StyleProvider>
     </div>
   );
 }
