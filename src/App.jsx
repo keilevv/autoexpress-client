@@ -43,7 +43,6 @@ function App() {
   return (
     <div className="app relative bg-gray-100 min-h-screen flex flex-col" id="app">
       <ConfigProvider
-        getPopupContainer={() => document.getElementById("app") || document.body}
         locale={esES}
         theme={{
           token: {
