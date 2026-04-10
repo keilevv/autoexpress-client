@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import LoginContainer from "./containers/Login";
 import MainLayout from "./containers/Layout";
@@ -17,6 +17,7 @@ import Home from "./Landing/pages/Home";
 import ColisionPage from "./Landing/pages/Colision";
 import DetalladoPage from "./Landing/pages/Detallado";
 import LinkPage from "./Landing/pages/Link";
+import NotFound from "./Landing/pages/NotFound";
 import ClientsContainer from "./containers/Operations/Clients";
 import SingleCarContainer from "./containers/Operations/Cars/Single";
 import SingleClientContainer from "./containers/Operations/Clients/Single";
@@ -41,7 +42,10 @@ function App() {
   const { defaultSelectedHeader } = useMenu();
   const user = useSelector((state) => state.auth.user);
   return (
-    <div className="app relative bg-gray-100 min-h-screen flex flex-col" id="app">
+    <div
+      className="app relative bg-gray-100 min-h-screen flex flex-col"
+      id="app"
+    >
       <ConfigProvider
         locale={esES}
         theme={{
@@ -162,111 +166,72 @@ function App() {
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner="autoexpress" />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
-          ></Route>
-          <Route
-            path="/operations/inventory/consumption/add"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner="autoexpress" />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/autoexpress/requests"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/autoexpress"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/autodetailing"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autodetailing"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/autoexpress/storage"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
-          <Route
-            path="/operations/inventory/autodetailing/storage"
-            element={
-              <ProtectedRoute>
-                <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autodetailing"} />
-                </MainLayout>
-              </ProtectedRoute>
-            }
-          ></Route>
+          />
           <Route
             path="/operations/inventory/storage"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
-          ></Route>
+          />
           <Route
             path="/operations/inventory/consumption"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
-          ></Route>
+          />
           <Route
-            path="/operations/inventory/autoexpress/consumption"
+            path="/operations/inventory/consumption/add"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autoexpress"} />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
-          ></Route>
+          />
+          {/* Dynamic parameterized routes */}
           <Route
-            path="/operations/inventory/autodetailing/consumption"
+            path="/operations/inventory/:owner"
             element={
               <ProtectedRoute>
                 <MainLayout defaultLocation={defaultSelectedHeader}>
-                  <InventoryContainer owner={"autodetailing"} />
+                  <InventoryContainer />
                 </MainLayout>
               </ProtectedRoute>
             }
-          ></Route>
+          />
+          <Route
+            path="/operations/inventory/:owner/:tab"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/operations/inventory/:owner/consumption/add"
+            element={
+              <ProtectedRoute>
+                <MainLayout defaultLocation={defaultSelectedHeader}>
+                  <InventoryContainer />
+                </MainLayout>
+              </ProtectedRoute>
+            }
+          />{" "}
           <Route
             path="/operations/inventory/material/storage/:materialId"
             element={
@@ -356,6 +321,11 @@ function App() {
           <Route path="/detallado" element={<DetalladoPage />} />
           <Route path="/landing/link" element={<LinkPage />} />
           <Route path="/link" element={<LinkPage />} />
+          <Route
+            path="/operations/*"
+            element={<Navigate to="/operations" replace />}
+          />
+          <Route path="*" element={<NotFound />} />
           {/* <Route path="/appointment" element={<AppointmentContainer />} /> */}
         </Routes>
       </ConfigProvider>

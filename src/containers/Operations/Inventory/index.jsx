@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { Tabs, Input, Breadcrumb } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import StorageInventoryContainer from "./Storage";
@@ -10,7 +10,9 @@ import _debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
 import InventoryRequestsContainer from "./Requests";
 
-function InventoryContainer({ owner }) {
+
+function InventoryContainer() {
+  const { owner = "autoexpress"  } = useParams();
   const [currentTab, setCurrentTab] = useState(null);
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);

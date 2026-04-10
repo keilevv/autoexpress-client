@@ -60,7 +60,7 @@ function StorageMaterialForm({
         quantity: "",
         caution_quantity: "",
         price: "",
-        isColor: false,
+        is_color: false,
         normalized_weight: "",
       });
     }
