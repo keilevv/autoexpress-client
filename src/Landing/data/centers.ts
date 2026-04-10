@@ -23,7 +23,7 @@ export const CENTERS: Record<"colision" | "detallado", CenterData> = {
     heroSubtitle:
       "Reparación estructural, lámina, pintura y protección anticorrosiva con garantía real.",
     heroCTA: "Cotiza tu reparación",
-    heroImage: "/assets/hero/colision-taller.png",
+    heroImage: "/assets/results/IMG_8192.PNG",
     waMessage: "Hola, quiero cotizar una reparación (Centro de Colisión).",
     seo: {
       title: "Centro de Colisión | Auto Express Cartagena",

@@ -20,16 +20,16 @@ const COMPARISONS: ComparisonItem[] = [
     after: "/assets/results/Reparado1.png",
   },
   {
-    title: "Pintura completa de capó",
-    context: "Corrección de color y sellado cerámico",
-    before: "/assets/results/Dañado2.png",
-    after: "/assets/results/Reparado2.png",
+    title: "Reparación frontal completa",
+    context: "Guardafango y capó — enderezado, pintura y restauración de carrocería",
+    before: "/assets/results/IMG_8187.PNG",
+    after: "/assets/results/IMG_8188.PNG",
   },
   {
-    title: "Detailing interior profundo",
-    context: "Limpieza profunda de tapicería y tablero",
-    before: "/assets/results/antes3.jpg",
-    after: "/assets/results/despues3.jpg",
+    title: "Restauración completa",
+    context: "Reparación de carrocería y acabado de pintura",
+    before: "/assets/results/IMG_8094.PNG",
+    after: "/assets/results/IMG_8095.PNG",
   },
 ];
 
@@ -134,7 +134,7 @@ export default function BeforeAfter() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
-          title="Antes / Después"
+          title="Resultados"
           subtitle="No prometemos milagros. Mostramos resultados."
           highlight="resultados"
         />

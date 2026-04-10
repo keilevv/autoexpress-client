@@ -168,7 +168,7 @@ function MainLayout({ children }) {
               }
             }}
           />
-          <Dropdown menu={userMenuProps} trigger={"click"} className="m-auto">
+          <Dropdown menu={userMenuProps} trigger={["hover"]} className="m-auto">
             <button className="flex items-center justify-center hover:bg-red-700 hover:text-white rounded-lg text-white text-lg p-2">
               <MenuOutlined />
             </button>

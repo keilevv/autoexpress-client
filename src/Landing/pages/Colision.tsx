@@ -8,6 +8,8 @@ import ServiceGrid from "@/components/centro/ServiceGrid";
 import Process from "@/components/Process";
 import FAQAccordion from "@/components/centro/FAQAccordion";
 import CenterCTA from "@/components/centro/CenterCTA";
+import BeforeAfter from "@/components/BeforeAfter";
+import BaslacPartner from "@/components/centro/BaslacPartner";
 import { CENTERS } from "@/data/centers";
 
 import "../landing.css";
@@ -22,6 +24,8 @@ export default function ColisionPage() {
           <InsurancePartners />
           <ServiceGrid center="colision" />
           <Process />
+          <BeforeAfter />
+          <BaslacPartner />
           <FAQAccordion center="colision" />
           <CenterCTA center={CENTERS.colision} otherCenter={CENTERS.detallado} />
         </MainLayout>
