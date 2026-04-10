@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import MaterialRequestsTable from "../../../../components/operations/Inventory/MaterialRequestsTable";
 import { notification } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function InventoryRequestsContainer({
   refresh,
@@ -24,9 +24,9 @@ function InventoryRequestsContainer({
 
   useEffect(() => {
     if (user && currentTab === "requests") {
-      getInventoryRequests(1, 10, "");
+      getInventoryRequests(1, 10, `&owner=${owner}`); 
     }
-  }, [user, refresh, currentTab]);
+  }, [user, refresh, currentTab, owner]);
 
   const handleArchive = (id, archived = false) => {
     updateInventoryRequest(id, { archived })

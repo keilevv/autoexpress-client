@@ -6,6 +6,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import _debounce from "lodash/debounce";
 import { unitOptions } from "../../../../helpers/constants";
 import { formatToCurrency } from "../../../../helpers";
+import { useParams } from "react-router-dom";
 import "./style.css";
 
 /**
@@ -19,8 +20,8 @@ function MaterialsList({
   isReadOnly = false,
   isEditing = true,
   isProduction = false,
-  owner = "autoexpress",
 }) {
+  const { owner = "autoexpress"  } = useParams();
   const {
     getStorageMaterials,
     storageMaterials,
