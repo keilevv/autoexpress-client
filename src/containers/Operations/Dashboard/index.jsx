@@ -8,6 +8,7 @@ import "./style.css";
 
 function DashboardContainer() {
   const user = useSelector((state) => state.auth.user);
+  const [selectedOwner, setSelectedOwner] = useState("autoexpress");
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 5,
@@ -26,14 +27,19 @@ function DashboardContainer() {
   }, [pagination.current, pagination.pageSize, user]);
 
   useEffect(() => {
-    getDashboardData();
-  }, [getDashboardData]);
+    getDashboardData(selectedOwner);
+  }, [getDashboardData, selectedOwner]);
 
   return (
     <div>
       <h1 className="text-2xl text-red-700 font-semibold mb-5 ">Operaciones</h1>
       <div className="dashboard-grid-container mb-8">
-        <DashboardGrid data={dashboardData} loading={dashboardLoading} />
+        <DashboardGrid
+          data={dashboardData}
+          loading={dashboardLoading}
+          selectedOwner={selectedOwner}
+          setSelectedOwner={setSelectedOwner}
+        />
       </div>
       <h2 className="text-xl text-red-700 font-semibold mb-4">Mensajes Recientes</h2>
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

@@ -1,4 +1,4 @@
-import { Skeleton } from "antd";
+import { Skeleton, Tabs } from "antd";
 import { formatToCurrency } from "../../../../helpers";
 import {
   FiInbox,
@@ -12,7 +12,7 @@ import "./style.css";
 
 import { useNavigate } from "react-router-dom";
 
-function DashboardGrid({ data, loading }) {
+function DashboardGrid({ data, loading, selectedOwner, setSelectedOwner }) {
   const navigate = useNavigate();
 
   if (loading || !data) {
@@ -38,6 +38,33 @@ function DashboardGrid({ data, loading }) {
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex justify-start mb-2">
+        <Tabs
+          activeKey={selectedOwner}
+          onChange={setSelectedOwner}
+          items={[
+            {
+              label: (
+                <span className="flex items-center gap-2 px-4 py-1">
+                  <span className={`w-2 h-2 rounded-full ${selectedOwner === 'autoexpress' ? 'bg-red-500 animate-pulse' : 'bg-gray-300'}`} />
+                  Autoexpress
+                </span>
+              ),
+              key: "autoexpress",
+            },
+            {
+              label: (
+                <span className="flex items-center gap-2 px-4 py-1">
+                  <span className={`w-2 h-2 rounded-full ${selectedOwner === 'autodetailing' ? 'bg-blue-500 animate-pulse' : 'bg-gray-300'}`} />
+                  Autodetailing
+                </span>
+              ),
+              key: "autodetailing",
+            },
+          ]}
+          className="dashboard-tabs"
+        />
+      </div>
       {/* 1. Job Orders Summary */}
       <h3 className="text-lg font-semibold text-gray-700 mb-[-10px]">
         Producción (Órdenes de Trabajo)
