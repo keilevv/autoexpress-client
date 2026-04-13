@@ -13,6 +13,7 @@ import {
 import useMenu from "../../hooks/useMenu";
 import useAuth from "../../hooks/useAuth";
 import useViewport from "../../hooks/useViewport";
+import NotificationList from "../../components/Common/NotificationList";
 import { headerModules } from "../../helpers/constants";
 import "./style.css";
 
@@ -116,9 +117,47 @@ function MainLayout({ children }) {
     });
   };
 
+  const handleMenuClick = (value) => {
+    if (value.key === "settings" || value.key === "logout") return;
+
+    switch (value.key) {
+      case "operations":
+        navigate(`/operations`, { replace: true });
+        setSelectedSider(value.key);
+        break;
+      case "inventory-autoexpress":
+      case "inventory-autodetailing":
+        navigate(
+          `/operations/inventory/${value.key.replace("inventory-", "")}`,
+          { replace: true },
+        );
+        break;
+      case "production-autoexpress":
+      case "production-autodetailing":
+        navigate(
+          `/operations/production/${value.key.replace("production-", "")}`,
+          { replace: true },
+        );
+        break;
+      default:
+        navigate(`/operations/${value.key}`, { replace: true });
+    }
+  };
+
+  const dropdownItems = isMobileScreen
+    ? [...items, { type: "divider" }, ...userItems]
+    : userItems;
+
+  const mainMenuProps = {
+    items: dropdownItems,
+    onClick: handleMenuClick,
+    selectedKeys: [selectedSider],
+  };
+
   useEffect(() => {
     getSelectedSider();
   }, [window.location.pathname, owner, auth]);
+  
   return (
     <Layout className="max-w-none bg-inherit">
       <Header
@@ -127,52 +166,34 @@ function MainLayout({ children }) {
           background: "#242424",
         }}
       >
-        <div className="flex w-full m-auto">
-          <div className="m-auto px-4">
+        <div className="flex w-full m-auto items-center">
+          <div className="px-4">
             <img src={Logo} className="object-cover h-10 rounded lg" />
           </div>
+          
           <Menu
+            className="hidden md:flex"
             selectedKeys={[selectedSider]}
             mode="horizontal"
             theme="dark"
             items={items}
-            style={{ flex: 1, minWidth: 0, backgroundColor: "#242424" }}
-            onClick={(value) => {
-              switch (value.key) {
-                case "operations":
-                  navigate(`/operations`, { replace: true });
-                  setSelectedSider(value.key);
-                  break;
-                case "inventory-autoexpress":
-                case "inventory-autodetailing":
-                  navigate(
-                    `/operations/inventory/${value.key.replace(
-                      "inventory-",
-                      "",
-                    )}`,
-                    { replace: true },
-                  );
-                  break;
-                case "production-autoexpress":
-                case "production-autodetailing":
-                  navigate(
-                    `/operations/production/${value.key.replace(
-                      "production-",
-                      "",
-                    )}`,
-                    { replace: true },
-                  );
-                  break;
-                default:
-                  navigate(`/operations/${value.key}`, { replace: true });
-              }
-            }}
+            style={{ flex: 1, minWidth: 0, backgroundColor: "#242424", borderBottom: 0 }}
+            onClick={handleMenuClick}
           />
-          <Dropdown menu={userMenuProps} trigger={["hover"]} className="m-auto">
-            <button className="flex items-center justify-center hover:bg-red-700 hover:text-white rounded-lg text-white text-lg p-2">
-              <MenuOutlined />
-            </button>
-          </Dropdown>
+
+          <div className="flex items-center ml-auto h-full">
+            {auth?.user && (
+              <span className="text-white mr-4 font-medium hidden sm:inline-block">
+                {auth.user.username || auth.user.name || auth.user.email}
+              </span>
+            )}
+            <NotificationList />
+            <Dropdown menu={mainMenuProps} trigger={["hover"]} className="ml-2">
+              <button className="flex items-center justify-center hover:bg-red-700 hover:text-white rounded-lg text-white text-lg p-2">
+                <MenuOutlined />
+              </button>
+            </Dropdown>
+          </div>
         </div>
       </Header>
       <Content className="bg-gray-100 w-full min-h-[calc(100vh-64px)]">

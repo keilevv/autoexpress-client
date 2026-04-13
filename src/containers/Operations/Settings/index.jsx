@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FaCog, FaUsers } from "react-icons/fa";
 import BuilderBotSettings from "../../../components/operations/Settings/Builderbot";
 import UserSettingsContainer from "./User";
+import InventorySettingsContainer from "./Inventory";
 
 function OperationSettingsContainer() {
   const [title, setTitle] = useState({
@@ -20,6 +21,8 @@ function OperationSettingsContainer() {
         return <BuilderBotSettings />;
       case "user":
         return <UserSettingsContainer />;
+      case "inventory":
+        return <InventorySettingsContainer />;
     }
   };
 
