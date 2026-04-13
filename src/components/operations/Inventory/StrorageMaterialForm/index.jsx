@@ -156,7 +156,7 @@ function StorageMaterialForm({
             <Form.Item name={"price"}>
               <InputNumber
                 min={0}
-                className="w-full"
+                style={{ width: "100%" }}
                 disabled={!isEditing}
                 formatter={(value) =>
                   `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -182,7 +182,7 @@ function StorageMaterialForm({
                 },
               ]}
             >
-              <InputNumber min={0} className="w-full" disabled={!isEditing} />
+              <InputNumber min={0} style={{ width: "100%" }} disabled={!isEditing} />
             </Form.Item>
           ) : (
             <p className="text-gray-500 ">{`${storageMaterial?.quantity}`}</p>
@@ -192,7 +192,7 @@ function StorageMaterialForm({
           <label className="font-semibold text-base">Cantidad de alarma</label>
           {isEditing ? (
             <Form.Item name={"caution_quantity"} required>
-              <InputNumber min={0} className="w-full" disabled={!isEditing} />
+              <InputNumber min={0} style={{ width: "100%" }} disabled={!isEditing} />
             </Form.Item>
           ) : (
             <p className="text-gray-500 ">{`${storageMaterial?.caution_quantity}`}</p>
@@ -235,7 +235,7 @@ function StorageMaterialForm({
             </label>
             {isEditing ? (
               <Form.Item name={"normalized_weight"}>
-                <InputNumber min={0} className="w-full" disabled={!isEditing} />
+                <InputNumber min={0} style={{ width: "100%" }} disabled={!isEditing} />
               </Form.Item>
             ) : (
               <p className="text-gray-500 ">{`${storageMaterial?.normalized_weight ? storageMaterial?.normalized_weight : "-"} gr`}</p>
