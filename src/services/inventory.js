@@ -166,5 +166,19 @@ const materialsService = {
       },
     );
   },
+  uploadStorageMaterials(token, file) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return axios.post(
+      `${apiUrl}/inventory/operations/load-storage-materials`,
+      formData,
+      {
+        headers: {
+          Authorization: `${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+  },
 };
 export default materialsService;

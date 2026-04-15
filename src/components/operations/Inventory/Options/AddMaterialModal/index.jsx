@@ -72,7 +72,7 @@ function AddMaterialModal({
     switch (type) {
       case "storage":
         return (
-          <StorageMaterialForm form={form} setDisabledSubmit={setDisabled} />
+          <StorageMaterialForm form={form} setDisabledSubmit={setDisabled} owner={owner} />
         );
       case "consumption":
         return (
