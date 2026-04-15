@@ -75,6 +75,7 @@ function MaterialsTable({
           price: item.price,
           quantity: item.quantity,
           caution_quantity: item.caution_quantity,
+          quantity_in_grams: item.quantity_in_grams,
         };
       });
       setTableData(storageTableData);
@@ -88,6 +89,7 @@ function MaterialsTable({
           quantity: item.quantity,
           price: item.material.price,
           caution_quantity: item.material.caution_quantity,
+          quantity_in_grams: item.material.quantity_in_grams,
         };
       });
       setTableData(consumptionTableData);
@@ -140,6 +142,18 @@ function MaterialsTable({
         return Number(Number(item).toFixed(1));
       },
     },
+    ...(owner === "autodetailing"
+      ? [
+          {
+            title: "Peso actual (g)",
+            dataIndex: "quantity_in_grams",
+            key: "quantity_in_grams",
+            render: (item) => {
+              return item ? `${item} g` : "-";
+            },
+          },
+        ]
+      : []),
     {
       title: "",
       dataIndex: "",
