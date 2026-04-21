@@ -1,4 +1,4 @@
-import { FaUsers, FaUserCog, FaWhatsapp, FaBox } from "react-icons/fa";
+import { FaUsers, FaUserCog, FaWhatsapp, FaBox, FaTools } from "react-icons/fa";
 import { FaBuildingUser } from "react-icons/fa6";
 
 import { Menu } from "antd";
@@ -31,6 +31,11 @@ const items = [
     key: "inventory",
     label: <p className="text-base font-semibold">Inventario</p>,
     icon: <FaBox />,
+  },
+  {
+    key: "services",
+    label: <p className="text-base font-semibold">Servicios</p>,
+    icon: <FaTools />,
   },
 ];
 

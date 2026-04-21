@@ -193,7 +193,12 @@ function StorageMaterialForm({
                 },
               ]}
             >
-              <InputNumber min={0} style={{ width: "100%" }} disabled={!isEditing} />
+              <InputNumber
+                min={0}
+                style={{ width: "100%" }}
+                disabled={!isEditing || isGramConsumed && !isColor}
+                placeholder={isGramConsumed ? "1" : ""}
+              />
             </Form.Item>
           ) : (
             <p className="text-gray-500 ">{`${storageMaterial?.quantity}`}</p>
@@ -203,44 +208,55 @@ function StorageMaterialForm({
           <label className="font-semibold text-base">Cantidad de alarma</label>
           {isEditing ? (
             <Form.Item name={"caution_quantity"} required>
-              <InputNumber min={0} style={{ width: "100%" }} disabled={!isEditing} />
+              <InputNumber
+                min={0}
+                style={{ width: "100%" }}
+                disabled={!isEditing}
+              />
             </Form.Item>
           ) : (
             <p className="text-gray-500 ">{`${storageMaterial?.caution_quantity}`}</p>
           )}
         </div>
-        {currentOwner === "autodetailing" && (
-          <>
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold text-base">Peso actual (g)</label>
-              {isEditing ? (
-                <Form.Item name={"quantity_in_grams"}>
-                  <InputNumber min={0} style={{ width: "100%" }} disabled={!isEditing} />
-                </Form.Item>
-              ) : (
-                <p className="text-gray-500 ">{`${storageMaterial?.quantity_in_grams || 0} g`}</p>
-              )}
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-semibold text-base ">
-                Es consumido en gramos{" "}
-                <Tooltip title="Marque si este material se consume por gramos" className="ml-2">
-                  <InfoCircleOutlined />
-                </Tooltip>
-              </label>
-              {isEditing ? (
-                <Form.Item name={"is_gram_consumed"} valuePropName="checked">
-                  <Switch
-                    disabled={!isEditing}
-                    defaultChecked={storageMaterial?.is_gram_consumed}
-                    onChange={(e) => setIsGramConsumed(e)}
-                  />
-                </Form.Item>
-              ) : (
-                <p className="text-gray-500 ">{`${storageMaterial?.is_gram_consumed ? "Sí" : "No"}`}</p>
-              )}
-            </div>
-          </>
+        {owner === "autodetailing" && (
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold text-base ">
+              Es consumido en gramos{" "}
+              <Tooltip
+                title="Marque si este material se consume por gramos"
+                className="ml-2"
+              >
+                <InfoCircleOutlined />
+              </Tooltip>
+            </label>
+            {isEditing ? (
+              <Form.Item name={"is_gram_consumed"} valuePropName="checked">
+                <Switch
+                  disabled={!isEditing}
+                  defaultChecked={storageMaterial?.is_gram_consumed}
+                  onChange={(e) => setIsGramConsumed(e)}
+                />
+              </Form.Item>
+            ) : (
+              <p className="text-gray-500 ">{`${storageMaterial?.is_gram_consumed ? "Sí" : "No"}`}</p>
+            )}
+          </div>
+        )}
+        {owner === "autodetailing" && isGramConsumed && (
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold text-base">Peso actual (g)</label>
+            {isEditing ? (
+              <Form.Item name={"quantity_in_grams"}>
+                <InputNumber
+                  min={0}
+                  style={{ width: "100%" }}
+                  disabled={!isEditing}
+                />
+              </Form.Item>
+            ) : (
+              <p className="text-gray-500 ">{`${storageMaterial?.quantity_in_grams || 0} g`}</p>
+            )}
+          </div>
         )}
         <div className="flex flex-col gap-2">
           <label className="font-semibold text-base ">
@@ -268,7 +284,7 @@ function StorageMaterialForm({
         {(isColor || isGramConsumed) && (
           <div className="flex flex-col gap-2">
             <label className="font-semibold text-base">
-              Peso normalizado (g)
+              Peso unitario (g)
               <Tooltip
                 title="Peso de una unidad de color en gramos sin incluir el envase. 3.5L = 338, 1L = 96, 0.5L= 48"
                 className="ml-2"
@@ -279,7 +295,11 @@ function StorageMaterialForm({
             </label>
             {isEditing ? (
               <Form.Item name={"normalized_weight"}>
-                <InputNumber min={0} style={{ width: "100%" }} disabled={!isEditing} />
+                <InputNumber
+                  min={0}
+                  style={{ width: "100%" }}
+                  disabled={!isEditing}
+                />
               </Form.Item>
             ) : (
               <p className="text-gray-500 ">{`${storageMaterial?.normalized_weight ? storageMaterial?.normalized_weight : "-"} gr`}</p>

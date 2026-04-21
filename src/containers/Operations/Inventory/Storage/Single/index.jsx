@@ -212,6 +212,7 @@ function SingleStorageMaterial() {
               showFullForm={true}
               setIsChanged={setShowSave}
               setPayload={setPayload}
+              owner={owner}
             />
             <div className="mt-8">
               {isEditing && (

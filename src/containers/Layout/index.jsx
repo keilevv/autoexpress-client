@@ -157,7 +157,7 @@ function MainLayout({ children }) {
   useEffect(() => {
     getSelectedSider();
   }, [window.location.pathname, owner, auth]);
-  
+
   return (
     <Layout className="max-w-none bg-inherit">
       <Header
@@ -170,16 +170,23 @@ function MainLayout({ children }) {
           <div className="px-4">
             <img src={Logo} className="object-cover h-10 rounded lg" />
           </div>
-          
-          <Menu
-            className="hidden md:flex"
-            selectedKeys={[selectedSider]}
-            mode="horizontal"
-            theme="dark"
-            items={items}
-            style={{ flex: 1, minWidth: 0, backgroundColor: "#242424", borderBottom: 0 }}
-            onClick={handleMenuClick}
-          />
+
+          {!isMobileScreen && (
+            <Menu
+              className="hidden md:flex"
+              selectedKeys={[selectedSider]}
+              mode="horizontal"
+              theme="dark"
+              items={items}
+              style={{
+                flex: 1,
+                minWidth: 0,
+                backgroundColor: "#242424",
+                borderBottom: 0,
+              }}
+              onClick={handleMenuClick}
+            />
+          )}
 
           <div className="flex items-center ml-auto h-full">
             {auth?.user && (

@@ -56,6 +56,21 @@ function useInventory() {
     [],
   );
 
+  const getStorageMaterialsSimulation = useCallback((filter = "") => {
+    setLoading(true);
+    return inventoryService
+      .getStorageMaterialsSimulation(auth.accessToken, filter)
+      .then((response) => {
+        setLoading(false);
+        return response.data.results;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response?.data?.message || "Error fetching simulation materials");
+        return [];
+      });
+  }, []);
+
   const getStorageMaterial = useCallback((materialId) => {
     setLoading(true);
     return inventoryService
@@ -377,6 +392,7 @@ function useInventory() {
   return {
     createStorageMaterial,
     getStorageMaterials,
+    getStorageMaterialsSimulation,
     updateStorageMaterial,
     deleteStorageMaterial,
     getStorageMaterial,

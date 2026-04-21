@@ -74,6 +74,7 @@ function MaterialsTable({
           unit: item.unit,
           price: item.price,
           quantity: item.quantity,
+          normalized_weight: item.normalized_weight,
           caution_quantity: item.caution_quantity,
           quantity_in_grams: item.quantity_in_grams,
         };
@@ -90,6 +91,7 @@ function MaterialsTable({
           price: item.material.price,
           caution_quantity: item.material.caution_quantity,
           quantity_in_grams: item.material.quantity_in_grams,
+          normalized_weight: item.material.normalized_weight,
         };
       });
       setTableData(consumptionTableData);
@@ -127,7 +129,7 @@ function MaterialsTable({
       },
     },
     {
-      title: "Precio Unitario",
+      title: "Precio Unidad",
       dataIndex: "price",
       key: "price",
       render: (item) => {
@@ -148,6 +150,14 @@ function MaterialsTable({
             title: "Peso actual (g)",
             dataIndex: "quantity_in_grams",
             key: "quantity_in_grams",
+            render: (item) => {
+              return item ? `${item} g` : "-";
+            },
+          },
+          {
+            title: "Peso unitario (g)",
+            dataIndex: "normalized_weight",
+            key: "normalized_weight",
             render: (item) => {
               return item ? `${item} g` : "-";
             },
