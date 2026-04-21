@@ -1,6 +1,6 @@
 import { Skeleton, Button, Space } from "antd";
 import MaterialsTable from "../../../../components/operations/Inventory/MaterialsTable";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import useInventory from "../../../../hooks/useInventory";
 import useServices from "../../../../hooks/useServices";
@@ -36,6 +36,13 @@ function StorageInventoryContainer({
 
   const [isSimulating, setIsSimulating] = useState(false);
   const [simulationMaterials, setSimulationMaterials] = useState([]);
+  const [simulatedResults, setSimulatedResults] = useState([]);
+
+  const simulatedTotalPrice = useMemo(() => {
+    return simulatedResults.reduce((acc, curr) => {
+      return acc + (curr.simulated_quantity || 0) * (curr.price || 0);
+    }, 0);
+  }, [simulatedResults]);
 
   useEffect(() => {
     setPagination({ ...pagination, total: count });
@@ -107,10 +114,10 @@ function StorageInventoryContainer({
             </div>
             <div>
               <p className="text-sm text-gray-500 font-medium whitespace-nowrap">
-                Valor de almacén
+                {isSimulating ? "Valor simulado" : "Valor de almacén"}
               </p>
-              <p className="text-2xl font-bold text-gray-800">
-                {formatToCurrency(totalPriceStorage)}
+              <p className={`text-2xl font-bold ${isSimulating ? "text-orange-600" : "text-gray-800"}`}>
+                {formatToCurrency(isSimulating ? simulatedTotalPrice : totalPriceStorage)}
               </p>
             </div>
           </div>
@@ -143,7 +150,11 @@ function StorageInventoryContainer({
 
       {isSimulating && owner === "autodetailing" ? (
         <div className="px-4 pb-4">
-          <StockSimulation services={services} storageMaterials={simulationMaterials} />
+          <StockSimulation 
+            services={services} 
+            storageMaterials={simulationMaterials} 
+            onSimulationResult={setSimulatedResults}
+          />
         </div>
       ) : (
         <MaterialsTable

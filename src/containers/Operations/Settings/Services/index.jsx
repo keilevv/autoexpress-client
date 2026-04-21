@@ -159,7 +159,7 @@ function ServicesSettingsContainer() {
 
       <Modal
         title={editingService ? "Editar Servicio" : "Nuevo Servicio"}
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         footer={null}
         width={700}

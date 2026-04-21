@@ -1,16 +1,35 @@
-import { useState, useMemo } from "react";
-import { Table, InputNumber, Card, Typography, Divider, Button, Space, Tag, Input } from "antd";
-import { CalculatorOutlined, ReloadOutlined, SearchOutlined } from "@ant-design/icons";
+import { useState, useMemo, useEffect } from "react";
+import { Table, InputNumber, Card, Typography, Divider, Button, Space, Tag, Input, Select } from "antd";
+import { CalculatorOutlined, ReloadOutlined, SearchOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
-const StockSimulation = ({ services, storageMaterials }) => {
+const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => {
+  const [selectedServiceIds, setSelectedServiceIds] = useState([]);
   const [quantities, setQuantities] = useState({}); // { [serviceId]: { small_car: 0, large_car: 0, small_truck: 0, large_truck: 0 } }
   const [materialSearch, setMaterialSearch] = useState("");
   const [materialPagination, setMaterialPagination] = useState({
     current: 1,
     pageSize: 10,
   });
+  const [pendingServiceId, setPendingServiceId] = useState(null);
+
+  const handleAddService = () => {
+    if (pendingServiceId && !selectedServiceIds.includes(pendingServiceId)) {
+      setSelectedServiceIds([...selectedServiceIds, pendingServiceId]);
+      setPendingServiceId(null);
+    }
+  };
+
+  const handleRemoveService = (serviceId) => {
+    setSelectedServiceIds(selectedServiceIds.filter(id => id !== serviceId));
+    setQuantities(prev => {
+      const newQuantities = { ...prev };
+      delete newQuantities[serviceId];
+      return newQuantities;
+    });
+  };
 
   const handleQuantityChange = (serviceId, type, value) => {
     setQuantities((prev) => ({
@@ -24,20 +43,26 @@ const StockSimulation = ({ services, storageMaterials }) => {
 
   const resetQuantities = () => {
     setQuantities({});
+    setSelectedServiceIds([]);
   };
 
+  const selectedServices = useMemo(() => {
+    return selectedServiceIds
+      .map(id => services.find(s => s._id === id))
+      .filter(Boolean);
+  }, [selectedServiceIds, services]);
+
   const simulatedMaterials = useMemo(() => {
-    // 1. Calculate total consumption per material
-    const totalConsumption = {}; // { [materialId]: grams }
+    const totalConsumption = {};
 
     Object.entries(quantities).forEach(([serviceId, counts]) => {
+      if (!selectedServiceIds.includes(serviceId)) return;
       const service = services.find((s) => s._id === serviceId);
       if (!service) return;
 
       service.materials?.forEach((m) => {
         const materialId = m.material?._id || m.material;
         
-        // Calculate consumption based on per-category grams
         const consumedGrams = 
           (counts.small_car || 0) * (m.small_car_grams || 0) +
           (counts.large_car || 0) * (m.large_car_grams || 0) +
@@ -48,13 +73,11 @@ const StockSimulation = ({ services, storageMaterials }) => {
       });
     });
 
-    // 2. Apply consumption to current materials
     return storageMaterials.map((material) => {
       const consumedGrams = totalConsumption[material._id] || 0;
       let newQuantity = material.quantity;
 
       if (material.is_gram_consumed) {
-        // formula: quantity_in_grams/normalized_weight
         const currentGrams = material.quantity_in_grams || 0;
         const remainingGrams = Math.max(0, currentGrams - consumedGrams);
         newQuantity = remainingGrams / (material.normalized_weight || 1);
@@ -66,7 +89,13 @@ const StockSimulation = ({ services, storageMaterials }) => {
         consumed_grams: consumedGrams,
       };
     });
-  }, [quantities, services, storageMaterials]);
+  }, [quantities, selectedServiceIds, services, storageMaterials]);
+
+  useEffect(() => {
+    if (onSimulationResult) {
+      onSimulationResult(simulatedMaterials);
+    }
+  }, [simulatedMaterials, onSimulationResult]);
 
   const filteredSimulatedMaterials = useMemo(() => {
     return simulatedMaterials.filter(
@@ -131,6 +160,18 @@ const StockSimulation = ({ services, storageMaterials }) => {
         />
       ),
     },
+    {
+      title: "",
+      key: "action",
+      render: (_, record) => (
+        <Button 
+          type="text" 
+          danger 
+          icon={<DeleteOutlined />} 
+          onClick={() => handleRemoveService(record._id)}
+        />
+      )
+    }
   ];
 
   const materialColumns = [
@@ -192,19 +233,49 @@ const StockSimulation = ({ services, storageMaterials }) => {
         </Button>
       </div>
 
-      <Text type="secondary" className="block mb-4">
-        Ingrese el número de servicios proyectados por categoría de vehículo para visualizar el impacto en el inventario.
-      </Text>
+      <div className="bg-gray-50 p-4 rounded-lg mb-6 border border-dashed border-gray-300">
+        <div className="flex flex-col md:flex-row gap-4 items-end">
+          <div className="flex-grow">
+            <Text strong className="block mb-2">Seleccionar Servicio para Simular</Text>
+            <Select
+              showSearch
+              className="w-full"
+              placeholder="Buscar servicio..."
+              optionFilterProp="children"
+              value={pendingServiceId}
+              onChange={setPendingServiceId}
+            >
+              {services.map(s => (
+                <Option key={s._id} value={s._id}>{s.name}</Option>
+              ))}
+            </Select>
+          </div>
+          <Button 
+            type="primary" 
+            icon={<PlusOutlined />} 
+            onClick={handleAddService}
+            disabled={!pendingServiceId}
+          >
+            Añadir a Simulación
+          </Button>
+        </div>
+      </div>
 
-      <Table
-        dataSource={services}
-        columns={serviceColumns}
-        rowKey="_id"
-        pagination={false}
-        size="middle"
-        className="mb-8"
-        scroll={{ x: 600 }}
-      />
+      {selectedServices.length > 0 ? (
+        <Table
+          dataSource={selectedServices}
+          columns={serviceColumns}
+          rowKey="_id"
+          pagination={false}
+          size="middle"
+          className="mb-8"
+          scroll={{ x: 600 }}
+        />
+      ) : (
+        <div className="text-center py-10 bg-gray-50 rounded-lg mb-8 border border-dashed border-gray-200">
+          <Text type="secondary">No hay servicios añadidos a la simulación. Seleccione uno arriba para comenzar.</Text>
+        </div>
+      )}
 
       <Divider />
 
