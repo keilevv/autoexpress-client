@@ -1,11 +1,14 @@
-import { Skeleton } from "antd";
+import { Skeleton, Button, Space } from "antd";
 import MaterialsTable from "../../../../components/operations/Inventory/MaterialsTable";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useInventory from "../../../../hooks/useInventory";
+import useServices from "../../../../hooks/useServices";
+import StockSimulation from "../../../../components/operations/Inventory/StockSimulation";
 import { formatToCurrency } from "../../../../helpers";
 
 import { FiDollarSign, FiBox } from "react-icons/fi";
+import { CalculatorOutlined } from "@ant-design/icons";
 
 function StorageInventoryContainer({
   refresh,
@@ -16,16 +19,23 @@ function StorageInventoryContainer({
   const {
     storageMaterials,
     getStorageMaterials,
+    getStorageMaterialsSimulation,
     loading,
     count,
     totalPriceStorage,
   } = useInventory();
+  
+  const { services, getServices } = useServices();
+  
   const user = useSelector((state) => state.auth.user);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     total: 0,
   });
+
+  const [isSimulating, setIsSimulating] = useState(false);
+  const [simulationMaterials, setSimulationMaterials] = useState([]);
 
   useEffect(() => {
     setPagination({ ...pagination, total: count });
@@ -50,6 +60,15 @@ function StorageInventoryContainer({
     refresh,
     currentTab,
   ]);
+
+  useEffect(() => {
+    if (owner === "autodetailing") {
+      getServices(1, 100, "&owner=autodetailing");
+      getStorageMaterialsSimulation(`archived=false&owner=autodetailing`).then(res => {
+        if (res) setSimulationMaterials(res);
+      });
+    }
+  }, [owner]);
 
   const handleApplyFilters = (values) => {
     getStorageMaterials(
@@ -108,15 +127,35 @@ function StorageInventoryContainer({
           </div>
         </div>
       )}
-      <MaterialsTable
-        owner={owner}
-        type="storage"
-        data={storageMaterials}
-        getMaterials={getStorageMaterials}
-        loading={loading}
-        setPagination={setPagination}
-        pagination={pagination}
-      />
+
+      {owner === "autodetailing" && (
+        <div className="px-4 pb-4">
+          <Button 
+            type={isSimulating ? "primary" : "default"} 
+            icon={<CalculatorOutlined />}
+            onClick={() => setIsSimulating(!isSimulating)}
+            className="w-full md:w-auto"
+          >
+            {isSimulating ? "Cerrar Simulador" : "Simular Stock Proyectado"}
+          </Button>
+        </div>
+      )}
+
+      {isSimulating && owner === "autodetailing" ? (
+        <div className="px-4 pb-4">
+          <StockSimulation services={services} storageMaterials={simulationMaterials} />
+        </div>
+      ) : (
+        <MaterialsTable
+          owner={owner}
+          type="storage"
+          data={storageMaterials}
+          getMaterials={getStorageMaterials}
+          loading={loading}
+          setPagination={setPagination}
+          pagination={pagination}
+        />
+      )}
     </div>
   );
 }

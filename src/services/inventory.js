@@ -15,6 +15,14 @@ const materialsService = {
       },
     );
   },
+  getStorageMaterialsSimulation(token, filter) {
+    return axios.get(
+      `${apiUrl}/inventory/operations/storage-simulation/?${filter}`,
+      {
+        headers: { Authorization: `${token}` },
+      },
+    );
+  },
 
   createStorageMaterial(token, payload) {
     return axios.post(`${apiUrl}/inventory/register-storage`, payload, {
