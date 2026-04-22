@@ -196,12 +196,12 @@ function StorageMaterialForm({
               <InputNumber
                 min={0}
                 style={{ width: "100%" }}
-                disabled={!isEditing || isGramConsumed && !isColor}
+                disabled={!isEditing || (isGramConsumed && !isColor)}
                 placeholder={isGramConsumed ? "1" : ""}
               />
             </Form.Item>
           ) : (
-            <p className="text-gray-500 ">{`${storageMaterial?.quantity}`}</p>
+            <p className="text-gray-500 ">{`${Number(Number(storageMaterial?.quantity).toFixed(2))}`}</p>
           )}
         </div>
         <div className="flex flex-col gap-2">
@@ -258,29 +258,31 @@ function StorageMaterialForm({
             )}
           </div>
         )}
-        <div className="flex flex-col gap-2">
-          <label className="font-semibold text-base ">
-            Es color{" "}
-            <Tooltip
-              title="Marque si este material es un color"
-              className="ml-2"
-            >
-              {" "}
-              <InfoCircleOutlined />
-            </Tooltip>{" "}
-          </label>
-          {isEditing ? (
-            <Form.Item name={"is_color"}>
-              <Switch
-                disabled={!isEditing}
-                defaultValue={storageMaterial?.is_color}
-                onChange={(e) => setIsColor(e)}
-              />
-            </Form.Item>
-          ) : (
-            <p className="text-gray-500 ">{`${storageMaterial?.is_color ? "Sí" : "No"}`}</p>
-          )}
-        </div>
+        {owner !== "autodetailing" && (
+          <div className="flex flex-col gap-2">
+            <label className="font-semibold text-base ">
+              Es color{" "}
+              <Tooltip
+                title="Marque si este material es un color"
+                className="ml-2"
+              >
+                {" "}
+                <InfoCircleOutlined />
+              </Tooltip>{" "}
+            </label>
+            {isEditing ? (
+              <Form.Item name={"is_color"}>
+                <Switch
+                  disabled={!isEditing}
+                  defaultValue={storageMaterial?.is_color}
+                  onChange={(e) => setIsColor(e)}
+                />
+              </Form.Item>
+            ) : (
+              <p className="text-gray-500 ">{`${storageMaterial?.is_color ? "Sí" : "No"}`}</p>
+            )}
+          </div>
+        )}
         {(isColor || isGramConsumed) && (
           <div className="flex flex-col gap-2">
             <label className="font-semibold text-base">

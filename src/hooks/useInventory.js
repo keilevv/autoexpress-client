@@ -18,6 +18,8 @@ function useInventory() {
   const [totalPriceConsumption, setTotalPriceConsumption] = useState(0);
   const [inventoryRequests, setInventoryRequests] = useState([]);
   const [inventoryRequest, setInventoryRequest] = useState({});
+  const [discharges, setDischarges] = useState([]);
+  const [dischargesCount, setDischargesCount] = useState(0);
 
   const createStorageMaterial = useCallback((payload) => {
     setLoading(true);
@@ -99,6 +101,7 @@ function useInventory() {
         }
       })
       .catch((err) => {
+        setLoading(false);
         throwError(err.response.data.message);
       });
   }, []);
@@ -389,6 +392,41 @@ function useInventory() {
       });
   }, []);
 
+  const createDischarge = useCallback((payload) => {
+    setLoading(true);
+    return inventoryService
+      .createDischarge(auth.accessToken, payload)
+      .then((response) => {
+        setLoading(false);
+        return response;
+      })
+      .catch((err) => {
+        setLoading(false);
+        throwError(err.response?.data?.message || "Error al registrar descarga");
+        return err;
+      });
+  }, []);
+
+  const getDischarges = useCallback(
+    (page = 1, limit = 10, filter = "") => {
+      setLoading(true);
+      return inventoryService
+        .getDischarges(auth.accessToken, page, limit, filter)
+        .then((response) => {
+          setDischarges(response.data.results);
+          setDischargesCount(response.data.count);
+          setLoading(false);
+          return response;
+        })
+        .catch((err) => {
+          setLoading(false);
+          throwError(err.message.message);
+          return err;
+        });
+    },
+    [],
+  );
+
   return {
     createStorageMaterial,
     getStorageMaterials,
@@ -412,6 +450,8 @@ function useInventory() {
     approveInventoryRequest,
     rejectInventoryRequest,
     getConsumptionColors,
+    createDischarge,
+    getDischarges,
     consumptionMaterial,
     consumptionMaterials,
     consumptionColors,
@@ -426,6 +466,8 @@ function useInventory() {
     totalPriceStorage,
     inventoryRequests,
     inventoryRequest,
+    discharges,
+    dischargesCount,
   };
 }
 

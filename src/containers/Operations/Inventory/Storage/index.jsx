@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import useInventory from "../../../../hooks/useInventory";
 import useServices from "../../../../hooks/useServices";
 import StockSimulation from "../../../../components/operations/Inventory/StockSimulation";
+import DischargesList from "../../../../components/operations/Inventory/DischargesList";
 import { formatToCurrency } from "../../../../helpers";
 
 import { FiDollarSign, FiBox } from "react-icons/fi";
-import { CalculatorOutlined } from "@ant-design/icons";
+import { CalculatorOutlined, HistoryOutlined } from "@ant-design/icons";
 
 function StorageInventoryContainer({
   refresh,
@@ -35,6 +36,7 @@ function StorageInventoryContainer({
   });
 
   const [isSimulating, setIsSimulating] = useState(false);
+  const [showDischarges, setShowDischarges] = useState(false);
   const [simulationMaterials, setSimulationMaterials] = useState([]);
   const [simulatedResults, setSimulatedResults] = useState([]);
 
@@ -136,14 +138,28 @@ function StorageInventoryContainer({
       )}
 
       {owner === "autodetailing" && (
-        <div className="px-4 pb-4">
+        <div className="px-4 pb-4 flex flex-col md:flex-row gap-4">
           <Button 
             type={isSimulating ? "primary" : "default"} 
             icon={<CalculatorOutlined />}
-            onClick={() => setIsSimulating(!isSimulating)}
+            onClick={() => {
+              setIsSimulating(!isSimulating);
+              setShowDischarges(false);
+            }}
             className="w-full md:w-auto"
           >
-            {isSimulating ? "Cerrar Simulador" : "Simular Stock Proyectado"}
+            {isSimulating ? "Cerrar" : "Añadir Descargas"}
+          </Button>
+          <Button 
+            type={showDischarges ? "primary" : "default"} 
+            icon={<HistoryOutlined />}
+            onClick={() => {
+              setShowDischarges(!showDischarges);
+              setIsSimulating(false);
+            }}
+            className="w-full md:w-auto"
+          >
+            {showDischarges ? "Cerrar Descargas" : "Descargas"}
           </Button>
         </div>
       )}
@@ -154,7 +170,23 @@ function StorageInventoryContainer({
             services={services} 
             storageMaterials={simulationMaterials} 
             onSimulationResult={setSimulatedResults}
+            onSuccess={() => {
+              getStorageMaterials(
+                pagination.current,
+                pagination.pageSize,
+                `&archived=false&owner=${owner ? owner : "autoexpress"}${
+                  searchValue ? "&search=" + searchValue : ""
+                }`,
+              );
+              getStorageMaterialsSimulation(`archived=false&owner=autodetailing`).then(res => {
+                if (res) setSimulationMaterials(res);
+              });
+            }}
           />
+        </div>
+      ) : showDischarges && owner === "autodetailing" ? (
+        <div className="px-4 pb-4">
+          <DischargesList />
         </div>
       ) : (
         <MaterialsTable

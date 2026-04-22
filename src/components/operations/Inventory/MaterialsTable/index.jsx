@@ -141,7 +141,7 @@ function MaterialsTable({
       dataIndex: "quantity",
       key: "quantity",
       render: (item) => {
-        return Number(Number(item).toFixed(1));
+        return Number(Number(item).toFixed(2));
       },
     },
     ...(owner === "autodetailing"

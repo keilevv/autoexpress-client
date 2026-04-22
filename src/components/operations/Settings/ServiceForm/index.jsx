@@ -60,7 +60,8 @@ function ServiceForm({ form, onFinish, materials, loading, initialValues }) {
         </Select>
       </Form.Item>
 
-      <Divider orientation="left">Precios por Categoría</Divider>
+      <p className="font-semibold my-4 text-base">Precios por Categoría</p>
+
       <div className="grid grid-cols-2 gap-4">
         <Form.Item name="small_car_price" label="Carro Pequeño">
           <InputNumber
@@ -92,7 +93,7 @@ function ServiceForm({ form, onFinish, materials, loading, initialValues }) {
         </Form.Item>
       </div>
 
-      <Divider orientation="left">Materiales Utilizados</Divider>
+      <p className="font-semibold my-4 text-base">Materiales Utilizados</p>
       <Form.List name="materials">
         {(fields, { add, remove }) => (
           <>
@@ -110,7 +111,9 @@ function ServiceForm({ form, onFinish, materials, loading, initialValues }) {
                       placeholder="Seleccionar material"
                       optionFilterProp="label"
                       filterOption={(input, option) =>
-                        (option?.label ?? "").toLowerCase().includes(input.toLowerCase())
+                        (option?.label ?? "")
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
                       }
                     >
                       {filteredMaterials.map((m) => (
@@ -169,7 +172,12 @@ function ServiceForm({ form, onFinish, materials, loading, initialValues }) {
               </div>
             ))}
             <Form.Item>
-              <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+              <Button
+                type="dashed"
+                onClick={() => add()}
+                block
+                icon={<PlusOutlined />}
+              >
                 Agregar Material
               </Button>
             </Form.Item>
