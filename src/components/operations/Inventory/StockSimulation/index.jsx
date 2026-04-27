@@ -31,7 +31,7 @@ const StockSimulation = ({
   onSimulationResult,
   onSuccess,
 }) => {
-  const { createDischarge, loading } = useInventory();
+  const { createDischarge, loading, totalPriceStorageSimulation } = useInventory();
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
   const [quantities, setQuantities] = useState({}); // { [serviceId]: { small_car: 0, large_car: 0, small_truck: 0, large_truck: 0 } }
   const [materialSearch, setMaterialSearch] = useState("");
@@ -40,6 +40,8 @@ const StockSimulation = ({
     pageSize: 10,
   });
   const [pendingServiceId, setPendingServiceId] = useState(null);
+
+  
 
   const handleApplyChanges = async () => {
     const servicesPayload = selectedServiceIds
@@ -160,13 +162,11 @@ const StockSimulation = ({
 
     return storageMaterials.map((material) => {
       const consumedGrams = totalConsumption[material._id] || 0;
-      let newQuantity = material.quantity;
+      const quantityReduction = material.is_gram_consumed
+        ? consumedGrams / (material.normalized_weight || 1)
+        : 0;
 
-      if (material.is_gram_consumed) {
-        const currentGrams = material.quantity_in_grams || 0;
-        const remainingGrams = Math.max(0, currentGrams - consumedGrams);
-        newQuantity = remainingGrams / (material.normalized_weight || 1);
-      }
+      const newQuantity = Math.max(0, material.quantity - quantityReduction);
 
       return {
         ...material,
@@ -178,9 +178,12 @@ const StockSimulation = ({
 
   useEffect(() => {
     if (onSimulationResult) {
-      onSimulationResult(simulatedMaterials);
+      onSimulationResult({
+        results: simulatedMaterials,
+        isDirty: selectedServiceIds.length > 0,
+      });
     }
-  }, [simulatedMaterials, onSimulationResult]);
+  }, [simulatedMaterials, selectedServiceIds, onSimulationResult]);
 
   const filteredSimulatedMaterials = useMemo(() => {
     return simulatedMaterials.filter(

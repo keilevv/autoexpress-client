@@ -20,6 +20,9 @@ function useInventory() {
   const [inventoryRequest, setInventoryRequest] = useState({});
   const [discharges, setDischarges] = useState([]);
   const [dischargesCount, setDischargesCount] = useState(0);
+  const [totalPriceStorageSimulation, setTotalPriceStorageSimulation] = useState(0);
+
+  console.log("totalPriceStorageSimulation", totalPriceStorageSimulation);
 
   const createStorageMaterial = useCallback((payload) => {
     setLoading(true);
@@ -64,12 +67,15 @@ function useInventory() {
       .getStorageMaterialsSimulation(auth.accessToken, filter)
       .then((response) => {
         setLoading(false);
-        return response.data.results;
+        setTotalPriceStorageSimulation(response.data.total_price);
+        return response.data;
       })
       .catch((err) => {
         setLoading(false);
-        throwError(err.response?.data?.message || "Error fetching simulation materials");
-        return [];
+        throwError(
+          err.response?.data?.message || "Error fetching simulation materials",
+        );
+        return { results: [], total_price: 0 };
       });
   }, []);
 
@@ -468,6 +474,7 @@ function useInventory() {
     inventoryRequest,
     discharges,
     dischargesCount,
+    totalPriceStorageSimulation,
   };
 }
 
