@@ -10,9 +10,8 @@ import _debounce from "lodash/debounce";
 import { useSelector } from "react-redux";
 import InventoryRequestsContainer from "./Requests";
 
-
 function InventoryContainer() {
-  const { owner = "autoexpress"  } = useParams();
+  const { owner = "autoexpress" } = useParams();
   const [currentTab, setCurrentTab] = useState(null);
   const [refresh, setRefresh] = useState(0);
   const [searchValue, setSearchValue] = useState(null);
@@ -70,7 +69,12 @@ function InventoryContainer() {
 
     let filteredItems = allItems;
     if (owner === "autodetailing") {
-      filteredItems = filteredItems.filter((item) => item.key !== "sales");
+      filteredItems = allItems.filter(
+        (item) =>
+          item.key !== "sales" &&
+          item.key !== "consumption" &&
+          item.key !== "requests",
+      );
     }
 
     if (!user?.roles.includes("admin")) {
@@ -86,9 +90,9 @@ function InventoryContainer() {
     const isAdmin = user?.roles.includes("admin");
 
     const validTabs = items.map((i) => i.key);
-    
+
     let tabToSet = "consumption"; // Default tab
-    
+
     if (validTabs.includes(lastPart)) {
       tabToSet = lastPart;
     } else if (isAdmin && (lastPart === owner || lastPart === "inventory")) {

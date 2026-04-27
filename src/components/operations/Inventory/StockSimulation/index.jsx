@@ -1,11 +1,37 @@
 import { useState, useMemo, useEffect } from "react";
-import { Table, InputNumber, Card, Typography, Divider, Button, Space, Tag, Input, Select } from "antd";
-import { CalculatorOutlined, ReloadOutlined, SearchOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  Table,
+  InputNumber,
+  Card,
+  Typography,
+  Divider,
+  Button,
+  Space,
+  Tag,
+  Input,
+  Select,
+  notification,
+} from "antd";
+import {
+  CalculatorOutlined,
+  ReloadOutlined,
+  SearchOutlined,
+  PlusOutlined,
+  DeleteOutlined,
+  CheckOutlined,
+} from "@ant-design/icons";
+import useInventory from "../../../../hooks/useInventory";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
 
-const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => {
+const StockSimulation = ({
+  services,
+  storageMaterials,
+  onSimulationResult,
+  onSuccess,
+}) => {
+  const { createDischarge, loading } = useInventory();
   const [selectedServiceIds, setSelectedServiceIds] = useState([]);
   const [quantities, setQuantities] = useState({}); // { [serviceId]: { small_car: 0, large_car: 0, small_truck: 0, large_truck: 0 } }
   const [materialSearch, setMaterialSearch] = useState("");
@@ -15,6 +41,59 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
   });
   const [pendingServiceId, setPendingServiceId] = useState(null);
 
+  const handleApplyChanges = async () => {
+    const servicesPayload = selectedServiceIds
+      .map((id) => ({
+        service: id,
+        small_car: quantities[id]?.small_car || 0,
+        large_car: quantities[id]?.large_car || 0,
+        small_truck: quantities[id]?.small_truck || 0,
+        large_truck: quantities[id]?.large_truck || 0,
+      }))
+      .filter(
+        (s) =>
+          s.small_car > 0 ||
+          s.large_car > 0 ||
+          s.small_truck > 0 ||
+          s.large_truck > 0,
+      );
+
+    if (servicesPayload.length === 0) {
+      notification.warning({
+        message:
+          "Debe ingresar al menos un servicio proyectado con cantidad mayor a 0.",
+      });
+      return;
+    }
+
+    const materialsPayload = simulatedMaterials
+      .filter((m) => m.consumed_grams > 0)
+      .map((m) => ({
+        material: m._id,
+        consumed_grams: m.consumed_grams,
+        quantity_subtracted: m.quantity - m.simulated_quantity,
+      }));
+
+    if (materialsPayload.length === 0) {
+      notification.warning({
+        message: "La simulación no generó consumo de materiales.",
+      });
+      return;
+    }
+
+    const payload = {
+      services: servicesPayload,
+      materials_recipe: materialsPayload,
+    };
+
+    const res = await createDischarge(payload);
+    if (res) {
+      notification.success({ message: "Descarga registrada exitosamente." });
+      resetQuantities();
+      if (onSuccess) onSuccess();
+    }
+  };
+
   const handleAddService = () => {
     if (pendingServiceId && !selectedServiceIds.includes(pendingServiceId)) {
       setSelectedServiceIds([...selectedServiceIds, pendingServiceId]);
@@ -23,8 +102,8 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
   };
 
   const handleRemoveService = (serviceId) => {
-    setSelectedServiceIds(selectedServiceIds.filter(id => id !== serviceId));
-    setQuantities(prev => {
+    setSelectedServiceIds(selectedServiceIds.filter((id) => id !== serviceId));
+    setQuantities((prev) => {
       const newQuantities = { ...prev };
       delete newQuantities[serviceId];
       return newQuantities;
@@ -35,7 +114,12 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
     setQuantities((prev) => ({
       ...prev,
       [serviceId]: {
-        ...(prev[serviceId] || { small_car: 0, large_car: 0, small_truck: 0, large_truck: 0 }),
+        ...(prev[serviceId] || {
+          small_car: 0,
+          large_car: 0,
+          small_truck: 0,
+          large_truck: 0,
+        }),
         [type]: value,
       },
     }));
@@ -48,7 +132,7 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
 
   const selectedServices = useMemo(() => {
     return selectedServiceIds
-      .map(id => services.find(s => s._id === id))
+      .map((id) => services.find((s) => s._id === id))
       .filter(Boolean);
   }, [selectedServiceIds, services]);
 
@@ -62,14 +146,15 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
 
       service.materials?.forEach((m) => {
         const materialId = m.material?._id || m.material;
-        
-        const consumedGrams = 
+
+        const consumedGrams =
           (counts.small_car || 0) * (m.small_car_grams || 0) +
           (counts.large_car || 0) * (m.large_car_grams || 0) +
           (counts.small_truck || 0) * (m.small_truck_grams || 0) +
           (counts.large_truck || 0) * (m.large_truck_grams || 0);
 
-        totalConsumption[materialId] = (totalConsumption[materialId] || 0) + consumedGrams;
+        totalConsumption[materialId] =
+          (totalConsumption[materialId] || 0) + consumedGrams;
       });
     });
 
@@ -101,16 +186,16 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
     return simulatedMaterials.filter(
       (m) =>
         m.name?.toLowerCase().includes(materialSearch.toLowerCase()) ||
-        m.reference?.toLowerCase().includes(materialSearch.toLowerCase())
+        m.reference?.toLowerCase().includes(materialSearch.toLowerCase()),
     );
   }, [simulatedMaterials, materialSearch]);
 
   const serviceColumns = [
-    { 
-      title: "Servicio", 
-      dataIndex: "name", 
+    {
+      title: "Servicio",
+      dataIndex: "name",
       key: "name",
-      render: (text) => <strong>{text}</strong>
+      render: (text) => <strong>{text}</strong>,
     },
     {
       title: "Carro Peq.",
@@ -164,14 +249,14 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
       title: "",
       key: "action",
       render: (_, record) => (
-        <Button 
-          type="text" 
-          danger 
-          icon={<DeleteOutlined />} 
+        <Button
+          type="text"
+          danger
+          icon={<DeleteOutlined />}
           onClick={() => handleRemoveService(record._id)}
         />
-      )
-    }
+      ),
+    },
   ];
 
   const materialColumns = [
@@ -226,17 +311,33 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
       <div className="flex justify-between items-center mb-6">
         <Title level={4} className="!mb-0 flex items-center gap-2">
           <CalculatorOutlined className="text-blue-600" />
-          Simulador de Operaciones
+          Ingresar Servicios Realizados
         </Title>
-        <Button icon={<ReloadOutlined />} onClick={resetQuantities} type="dashed">
-          Reiniciar
-        </Button>
+        <Space>
+          <Button
+            icon={<ReloadOutlined />}
+            onClick={resetQuantities}
+            type="dashed"
+          >
+            Reiniciar
+          </Button>
+          <Button
+            type="primary"
+            icon={<CheckOutlined />}
+            onClick={handleApplyChanges}
+            loading={loading}
+          >
+            Aplicar Cambios
+          </Button>
+        </Space>
       </div>
 
       <div className="bg-gray-50 p-4 rounded-lg mb-6 border border-dashed border-gray-300">
         <div className="flex flex-col md:flex-row gap-4 items-end">
           <div className="flex-grow">
-            <Text strong className="block mb-2">Seleccionar Servicio para Simular</Text>
+            <Text strong className="block mb-2">
+              Seleccionar Servicio para Descargar
+            </Text>
             <Select
               showSearch
               className="w-full"
@@ -245,18 +346,20 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
               value={pendingServiceId}
               onChange={setPendingServiceId}
             >
-              {services.map(s => (
-                <Option key={s._id} value={s._id}>{s.name}</Option>
+              {services.map((s) => (
+                <Option key={s._id} value={s._id}>
+                  {s.name}
+                </Option>
               ))}
             </Select>
           </div>
-          <Button 
-            type="primary" 
-            icon={<PlusOutlined />} 
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
             onClick={handleAddService}
             disabled={!pendingServiceId}
           >
-            Añadir a Simulación
+            Añadir
           </Button>
         </div>
       </div>
@@ -273,14 +376,19 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
         />
       ) : (
         <div className="text-center py-10 bg-gray-50 rounded-lg mb-8 border border-dashed border-gray-200">
-          <Text type="secondary">No hay servicios añadidos a la simulación. Seleccione uno arriba para comenzar.</Text>
+          <Text type="secondary">
+            No hay servicios añadidos a la simulación. Seleccione uno arriba
+            para comenzar.
+          </Text>
         </div>
       )}
 
       <Divider />
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
-        <Title level={5} className="!mb-0">Resultados Proyectados</Title>
+        <Title level={5} className="!mb-0">
+          Resultados Proyectados
+        </Title>
         <Input
           placeholder="Buscar material o referencia..."
           prefix={<SearchOutlined className="text-gray-400" />}
@@ -297,7 +405,8 @@ const StockSimulation = ({ services, storageMaterials, onSimulationResult }) => 
         rowKey="_id"
         pagination={{
           ...materialPagination,
-          onChange: (page, pageSize) => setMaterialPagination({ current: page, pageSize }),
+          onChange: (page, pageSize) =>
+            setMaterialPagination({ current: page, pageSize }),
           showSizeChanger: true,
           pageSizeOptions: ["10", "20", "50"],
         }}

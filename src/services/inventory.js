@@ -188,5 +188,18 @@ const materialsService = {
       },
     );
   },
+  createDischarge(token, payload) {
+    return axios.post(`${apiUrl}/inventory/operations/discharge`, payload, {
+      headers: { Authorization: `${token}` },
+    });
+  },
+  getDischarges(token, page, limit, filter) {
+    return axios.get(
+      `${apiUrl}/inventory/operations/discharges/?page=${page}&limit=${limit}${filter}`,
+      {
+        headers: { Authorization: `${token}` },
+      },
+    );
+  },
 };
 export default materialsService;

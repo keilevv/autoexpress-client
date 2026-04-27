@@ -47,7 +47,7 @@ function OperationSettingsContainer() {
               {title.icon}
               {title.label}
             </h1>
-            <div className="overflow-auto">{onSelectMenuOption(title.key)}</div>
+            {onSelectMenuOption(title.key)}
           </div>
         </div>
       </div>
