@@ -24,6 +24,7 @@ function StorageInventoryContainer({
     loading,
     count,
     totalPriceStorage,
+    totalPriceStorageSimulation
   } = useInventory();
   
   const { services, getServices } = useServices();
@@ -39,12 +40,32 @@ function StorageInventoryContainer({
   const [showDischarges, setShowDischarges] = useState(false);
   const [simulationMaterials, setSimulationMaterials] = useState([]);
   const [simulatedResults, setSimulatedResults] = useState([]);
+  const [isSimulationDirty, setIsSimulationDirty] = useState(false);
+  const [basePriceStorage, setBasePriceStorage] = useState(0);
 
   const simulatedTotalPrice = useMemo(() => {
-    return simulatedResults.reduce((acc, curr) => {
-      return acc + (curr.simulated_quantity || 0) * (curr.price || 0);
+    if (!isSimulationDirty) return basePriceStorage || totalPriceStorage;
+
+    const consumptionValue = simulatedResults.reduce((acc, curr) => {
+      const q = Number(curr.quantity || 0);
+      const sq = Number(curr.simulated_quantity || 0);
+      const p = Number(curr.price || 0);
+      const quantityReduction = q - sq;
+      return acc + quantityReduction * p;
     }, 0);
-  }, [simulatedResults]);
+
+    return (basePriceStorage || totalPriceStorage) - consumptionValue;
+  }, [
+    isSimulationDirty,
+    simulatedResults,
+    basePriceStorage,
+    totalPriceStorage,
+  ]);
+
+  const handleSimulationResult = (data) => {
+    setSimulatedResults(data.results);
+    setIsSimulationDirty(data.isDirty);
+  };
 
   useEffect(() => {
     setPagination({ ...pagination, total: count });
@@ -73,11 +94,15 @@ function StorageInventoryContainer({
   useEffect(() => {
     if (owner === "autodetailing") {
       getServices(1, 100, "&owner=autodetailing");
-      getStorageMaterialsSimulation(`archived=false&owner=autodetailing`).then(res => {
-        if (res) setSimulationMaterials(res);
+      getStorageMaterialsSimulation(
+        `archived=false&owner=autodetailing${
+          searchValue ? "&search=" + searchValue : ""
+        }`,
+      ).then((res) => {
+        if (res) setSimulationMaterials(res.results);
       });
     }
-  }, [owner]);
+  }, [owner, searchValue]);
 
   const handleApplyFilters = (values) => {
     getStorageMaterials(
@@ -143,6 +168,9 @@ function StorageInventoryContainer({
             type={isSimulating ? "primary" : "default"} 
             icon={<CalculatorOutlined />}
             onClick={() => {
+              if (!isSimulating) {
+                setBasePriceStorage(totalPriceStorage);
+              }
               setIsSimulating(!isSimulating);
               setShowDischarges(false);
             }}
@@ -169,7 +197,7 @@ function StorageInventoryContainer({
           <StockSimulation 
             services={services} 
             storageMaterials={simulationMaterials} 
-            onSimulationResult={setSimulatedResults}
+            onSimulationResult={handleSimulationResult}
             onSuccess={() => {
               getStorageMaterials(
                 pagination.current,
@@ -178,8 +206,12 @@ function StorageInventoryContainer({
                   searchValue ? "&search=" + searchValue : ""
                 }`,
               );
-              getStorageMaterialsSimulation(`archived=false&owner=autodetailing`).then(res => {
-                if (res) setSimulationMaterials(res);
+              getStorageMaterialsSimulation(
+                `archived=false&owner=autodetailing${
+                  searchValue ? "&search=" + searchValue : ""
+                }`,
+              ).then((res) => {
+                if (res) setSimulationMaterials(res.results);
               });
             }}
           />
