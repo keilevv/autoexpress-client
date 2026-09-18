@@ -41,7 +41,7 @@ export const COLISION_SERVICES: ServiceData[] = [
     longDescription:
       "Restauramos la estructura y lámina de tu vehículo bajo especificaciones de fábrica, priorizando la seguridad y el valor de tu inversión. Contamos con bancos de enderezado profesional, sistemas de medición y alineación estructural, y herramientas especializadas para chasis y carrocería.",
     icon: Wrench,
-    image: null,
+    image: "/assets/results/lamina.jpg",
     waMessage: "Lámina y reparación estructural",
     features: [
       "Bancos de enderezado profesional",
@@ -112,7 +112,7 @@ export const COLISION_SERVICES: ServiceData[] = [
     longDescription:
       "Evaluamos cada vehículo de forma individual y recomendamos el tratamiento anticorrosivo adecuado. Para vehículos usados ofrecemos correctivos y preventivos. Para vehículos nuevos aplicamos pintura epóxica especializada. Incluye 1 año de garantía + revisiones cada 4 meses sin costo.",
     icon: ShieldCheck,
-    image: null,
+    image: "/assets/results/anticorrosivo.jpg",
     waMessage: "Protección anticorrosiva",
     features: [
       "Vehículos usados: tratamientos correctivos y preventivos",
@@ -151,7 +151,7 @@ export const DETALLADO_SERVICES: ServiceData[] = [
     longDescription:
       "Realizamos una limpieza profunda y restauración integral de cada superficie exterior de tu vehículo: accesorios exteriores, juntas y empaques, boseles y molduras, partes plásticas y acrílicos, emblemas, pulido de vidrios, y lámparas y stops.",
     icon: Sparkles,
-    image: null,
+    image: "/assets/results/IMG_3991.png",
     waMessage: "Detallado exterior",
     features: [
       "Accesorios exteriores",
@@ -189,7 +189,7 @@ export const DETALLADO_SERVICES: ServiceData[] = [
     longDescription:
       "Limpieza profunda y detallada de tapicería, paneles, consolas y todas las superficies interiores delicadas de tu vehículo. Tratamos cada material (tela, cuero, plásticos, madera) con productos y técnicas específicas para restaurar su aspecto original.",
     icon: CarFront,
-    image: null,
+    image: "/assets/results/IMG_4001.png",
     waMessage: "Detallado interior",
     features: [
       "Limpieza profunda de tapicería",
@@ -225,7 +225,7 @@ export const DETALLADO_SERVICES: ServiceData[] = [
     longDescription:
       "Limpieza especializada del compartimiento del motor, cuidando meticulosamente los componentes eléctricos y sensibles. Utilizamos productos desengrasantes profesionales y técnicas que restauran la apariencia del motor sin riesgo para los sistemas electrónicos.",
     icon: Wind,
-    image: null,
+    image: "/assets/results/MOTOR.png",
     waMessage: "Detallado de motor",
     features: [
       "Desengrase profesional del motor",
@@ -260,7 +260,7 @@ export const DETALLADO_SERVICES: ServiceData[] = [
     longDescription:
       "Eliminamos hasta un 97% de daños superficiales de la pintura: rayones, marcas de remolino (swirl marks), oxidación y opacidad. Se evalúa el espesor de la pintura con medidor digital antes de cada intervención para garantizar un proceso seguro y efectivo.",
     icon: Gem,
-    image: null,
+    image: "/assets/results/IMG_4005.png",
     waMessage: "Corrección de pintura",
     features: [
       "Eliminación de rayones y swirl marks",
@@ -296,7 +296,7 @@ export const DETALLADO_SERVICES: ServiceData[] = [
     longDescription:
       "Aplicamos protecciones de pintura de alta tecnología para mantener tu vehículo impecable por más tiempo. Desde nanocerámicas y recubrimientos de dureza 7H, 9H y 10H, hasta selladores y ceras técnicas, y reactivadores de brillo para mantenimiento.",
     icon: ShieldCheck,
-    image: null,
+    image: "/assets/results/IMG_4007.png",
     waMessage: "Protecciones de pintura",
     features: [
       "Nanocerámicas profesionales",
@@ -331,7 +331,7 @@ export const DETALLADO_SERVICES: ServiceData[] = [
     longDescription:
       "Tratamiento especializado de lavado y restauración para todo tipo de tapicería: tela, cuero y materiales mixtos. Devolvemos la suavidad, el color y la frescura original a los interiores de tu vehículo con productos profesionales y técnicas avanzadas.",
     icon: Brush,
-    image: null,
+    image: "/assets/results/IMG_4011.png",
     waMessage: "Restauración de tapicería",
     features: [
       "Lavado profundo de tapicería en tela",
