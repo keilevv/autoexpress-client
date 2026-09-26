@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { getServicesByCenter } from "@/data/services";
 import type { CenterSlug } from "@/data/centers";
 import ImagePlaceholder from "@/components/shared/ImagePlaceholder";
@@ -15,7 +15,36 @@ interface ServiceGridProps {
 
 export default function ServiceGrid({ center }: ServiceGridProps) {
   const services = getServicesByCenter(center);
-  const [selectedService, setSelectedService] = useState<{ src: string; alt: string; label: string } | null>(null);
+  const [selectedService, setSelectedService] = useState<{ src: string; alt: string; label: string; gallery?: string[] } | null>(null);
+  const [activeImage, setActiveImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (selectedService) setActiveImage(selectedService.src);
+    else setActiveImage(null);
+  }, [selectedService]);
+
+  const getAllImages = () => {
+    if (!selectedService) return [];
+    return [selectedService.src, ...(selectedService.gallery || []).filter(img => img !== selectedService.src)];
+  };
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const images = getAllImages();
+    if (images.length <= 1 || !activeImage) return;
+    const currentIndex = images.indexOf(activeImage);
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+    setActiveImage(images[prevIndex]);
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const images = getAllImages();
+    if (images.length <= 1 || !activeImage) return;
+    const currentIndex = images.indexOf(activeImage);
+    const nextIndex = (currentIndex + 1) % images.length;
+    setActiveImage(images[nextIndex]);
+  };
 
   // Close modal on escape key
   useEffect(() => {
@@ -69,7 +98,8 @@ export default function ServiceGrid({ center }: ServiceGridProps) {
                 onClick={() => setSelectedService({
                   src: service.image || "",
                   alt: service.title,
-                  label: service.shortTitle
+                  label: service.shortTitle,
+                  gallery: service.gallery
                 })}
                 className="group relative bg-surface border border-border rounded-card overflow-hidden h-full flex flex-col cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent/10 hover:border-accent/20"
               >
@@ -138,7 +168,7 @@ export default function ServiceGrid({ center }: ServiceGridProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-4xl max-h-[90vh] rounded-2xl overflow-hidden bg-surface border border-border shadow-2xl flex flex-col"
+              className="relative w-full max-w-6xl max-h-[95vh] rounded-2xl overflow-hidden bg-surface border border-border shadow-2xl flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -148,19 +178,60 @@ export default function ServiceGrid({ center }: ServiceGridProps) {
                 <X size={20} />
               </button>
               
-              <div className="relative w-full h-[60vh] sm:h-[70vh]">
-                {selectedService.src ? (
-                  <Image
-                    src={selectedService.src}
-                    alt={selectedService.alt}
-                    fill
-                    className="object-contain bg-black/20"
-                    sizes="(max-width: 1024px) 100vw, 1024px"
-                    priority
-                  />
-                ) : (
-                  <div className="w-full h-full">
-                    <ImagePlaceholder label={selectedService.label} />
+              <div className="flex flex-col w-full h-[85vh] md:h-[90vh]">
+                <div className="relative w-full flex-1 min-h-0">
+                  {activeImage ? (
+                    <>
+                      <Image
+                        src={activeImage}
+                        alt={selectedService.alt}
+                        fill
+                        className="object-contain bg-black/40"
+                        sizes="(max-width: 1024px) 100vw, 1024px"
+                        priority
+                      />
+                      
+                      {selectedService.gallery && selectedService.gallery.length > 0 && (
+                        <>
+                          <button
+                            onClick={handlePrev}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 hover:scale-110 transition-all duration-200"
+                          >
+                            <ChevronLeft size={24} />
+                          </button>
+                          <button
+                            onClick={handleNext}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 hover:scale-110 transition-all duration-200"
+                          >
+                            <ChevronRight size={24} />
+                          </button>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    <div className="w-full h-full">
+                      <ImagePlaceholder label={selectedService.label} />
+                    </div>
+                  )}
+                </div>
+
+                {selectedService.gallery && selectedService.gallery.length > 0 && (
+                  <div className="w-full h-24 md:h-32 bg-surface/50 border-t border-border p-3 overflow-x-auto flex flex-row gap-3">
+                    {getAllImages().map((img, idx) => (
+                      <div 
+                        key={idx} 
+                        onClick={() => setActiveImage(img)}
+                        className={`relative min-w-[100px] md:min-w-[120px] h-full rounded-md overflow-hidden cursor-pointer border-2 transition-all flex-shrink-0 ${activeImage === img ? 'border-accent shadow-[0_0_10px_rgba(225,6,0,0.4)]' : 'border-transparent hover:border-accent/50'}`}
+                      >
+                        <Image
+                          src={img}
+                          alt={`${selectedService.alt} thumbnail ${idx + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="120px"
+                        />
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
